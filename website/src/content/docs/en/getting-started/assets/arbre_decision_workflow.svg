@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #181825; }
+      .node { fill: #1e1e2e; stroke: #45475a; stroke-width: 1.5; }
+      .root { fill: #1e1e2e; stroke: #89b4fa; stroke-width: 2; }
+      .leaf-blue { fill: #1e1e2e; stroke: #89b4fa; stroke-width: 1.8; }
+      .leaf-cyan { fill: #1e1e2e; stroke: #94e2d5; stroke-width: 1.8; }
+      .leaf-amber { fill: #1e1e2e; stroke: #fab387; stroke-width: 1.8; }
+      .leaf-purple { fill: #1e1e2e; stroke: #cba6f7; stroke-width: 1.8; }
+      .leaf-green { fill: #1e1e2e; stroke: #a6e3a1; stroke-width: 1.8; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 19px; font-weight: 700; fill: #cdd6f4; text-anchor: middle; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a6adc8; text-anchor: middle; }
+      .lbl-bold { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #cdd6f4; }
+      .lbl-desc { font-family: system-ui, -apple-system, sans-serif; font-size: 11.5px; fill: #bac2de; }
+      .badge-txt { font-family: system-ui, -apple-system, sans-serif; font-size: 10.5px; font-weight: 700; fill: #181825; text-anchor: middle; }
+      .line { stroke: #6c7086; stroke-width: 2; fill: none; }
+    </style>
+    <marker id="arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#89b4fa"/>
+    </marker>
+  </defs>
+
+  <rect width="920" height="540" rx="16" class="bg"/>
+  <text x="460" y="36" class="title">Which AnkiDraft Workflow Fits Your Goal?</text>
+  <text x="460" y="56" class="subtitle">Pick your starting material and AI setup in under 15 seconds</text>
+
+  <!-- Root -->
+  <rect x="260" y="74" width="400" height="52" rx="10" class="root"/>
+  <text x="460" y="96" class="lbl-bold" text-anchor="middle">What is your main goal today?</text>
+  <text x="460" y="114" class="lbl-desc" text-anchor="middle">New study sources, an existing Anki deck, or driving AnkiDraft from Claude/Cursor</text>
+
+  <!-- Main branches -->
+  <path d="M 350 126 L 350 154 L 180 154 L 180 180" class="line" marker-end="url(#arr)"/>
+  <path d="M 460 126 L 460 180" class="line" marker-end="url(#arr)"/>
+  <path d="M 570 126 L 570 154 L 740 154 L 740 180" class="line" marker-end="url(#arr)"/>
+
+  <!-- 3 intermediate nodes -->
+  <rect x="40" y="184" width="280" height="56" rx="10" class="node"/>
+  <text x="180" y="207" class="lbl-bold" text-anchor="middle">Create from new material</text>
+  <text x="180" y="226" class="lbl-desc" text-anchor="middle">PDFs, slides, YouTube lectures, or vocabulary</text>
+
+  <rect x="340" y="184" width="240" height="56" rx="10" class="node"/>
+  <text x="460" y="207" class="lbl-bold" text-anchor="middle">Use without an API key</text>
+  <text x="460" y="226" class="lbl-desc" text-anchor="middle">Existing Claude, Cursor, or Antigravity plan</text>
+
+  <rect x="600" y="184" width="280" height="56" rx="10" class="node"/>
+  <text x="740" y="207" class="lbl-bold" text-anchor="middle">Clean up an Anki deck</text>
+  <text x="740" y="226" class="lbl-desc" text-anchor="middle">.colpkg import, duplicates, and leeches</text>
+
+  <!-- Connections to leaves -->
+  <path d="M 110 240 L 110 278" class="line" marker-end="url(#arr)"/>
+  <path d="M 180 240 L 180 374" class="line" marker-end="url(#arr)"/>
+  <path d="M 250 240 L 250 450 L 320 450" class="line" marker-end="url(#arr)"/>
+  <path d="M 460 240 L 460 278" class="line" marker-end="url(#arr)"/>
+  <path d="M 740 240 L 740 278" class="line" marker-end="url(#arr)"/>
+
+  <!-- Leaf 1: Medicine & STEM -->
+  <g transform="translate(30, 284)">
+    <rect width="270" height="76" rx="10" class="leaf-blue"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#89b4fa"/>
+    <text x="60" y="23" class="badge-txt">WORKFLOW 1</text>
+    <text x="118" y="24" class="lbl-bold">Medicine &amp; STEM</text>
+    <text x="12" y="45" class="lbl-desc">Dense PDFs, chapter scoping, KaTeX math</text>
+    <text x="12" y="63" class="lbl-desc">and image occlusion • Studio or MCP</text>
+  </g>
+
+  <!-- Leaf 2: Languages & TTS -->
+  <g transform="translate(30, 380)">
+    <rect width="270" height="76" rx="10" class="leaf-cyan"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#94e2d5"/>
+    <text x="60" y="23" class="badge-txt">WORKFLOW 2</text>
+    <text x="118" y="24" class="lbl-bold">Languages &amp; TTS</text>
+    <text x="12" y="45" class="lbl-desc">Vocabulary + offline Kokoro / Piper voices</text>
+    <text x="12" y="63" class="lbl-desc">Batch audio &amp; MCP bilingual cleanup</text>
+  </g>
+
+  <!-- Leaf 3: Video & Audio Lectures -->
+  <g transform="translate(325, 424)">
+    <rect width="270" height="86" rx="10" class="leaf-amber"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#fab387"/>
+    <text x="60" y="23" class="badge-txt">WORKFLOW 3</text>
+    <text x="118" y="24" class="lbl-bold">YouTube &amp; Audio</text>
+    <text x="12" y="47" class="lbl-desc">Local Whisper / subtitle transcription,</text>
+    <text x="12" y="64" class="lbl-desc">didactic structuring, and AI card drafting</text>
+  </g>
+
+  <!-- Leaf 4: Zero API Key MCP -->
+  <g transform="translate(325, 284)">
+    <rect width="270" height="114" rx="10" class="leaf-purple"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#cba6f7"/>
+    <text x="60" y="23" class="badge-txt">WORKFLOW 4</text>
+    <text x="118" y="24" class="lbl-bold">Zero API Key (MCP)</text>
+    <text x="12" y="46" class="lbl-desc">Connect Claude Desktop, Code, or Cursor.</text>
+    <text x="12" y="64" class="lbl-desc">Your agent reads courses, drafts cards,</text>
+    <text x="12" y="82" class="lbl-desc">refactors templates, and stages every</text>
+    <text x="12" y="100" class="lbl-desc">change in the Safeguard for approval.</text>
+  </g>
+
+  <!-- Leaf 5: Anki Rescue & MCP Hygiene -->
+  <g transform="translate(620, 284)">
+    <rect width="270" height="114" rx="10" class="leaf-green"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#a6e3a1"/>
+    <text x="60" y="23" class="badge-txt">WORKFLOW 5</text>
+    <text x="118" y="24" class="lbl-bold">Rescue &amp; MCP Hygiene</text>
+    <text x="12" y="46" class="lbl-desc">Import .colpkg without losing SRS state.</text>
+    <text x="12" y="64" class="lbl-desc">Find duplicates and leeches, run an MCP</text>
+    <text x="12" y="82" class="lbl-desc">audit campaign (flags, domain gaps),</text>
+    <text x="12" y="100" class="lbl-desc">and split heavy cards via Wozniak rules.</text>
+  </g>
+</svg>

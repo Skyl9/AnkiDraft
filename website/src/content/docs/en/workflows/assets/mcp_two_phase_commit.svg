@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #181825; }
+      .box { fill: #1e1e2e; stroke: #45475a; stroke-width: 1.6; }
+      .box-purple { fill: #1e1e2e; stroke: #cba6f7; stroke-width: 2; }
+      .box-amber { fill: #1e1e2e; stroke: #f9e2af; stroke-width: 2; }
+      .box-green { fill: #1e1e2e; stroke: #a6e3a1; stroke-width: 2; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 18px; font-weight: 700; fill: #cdd6f4; text-anchor: middle; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a6adc8; text-anchor: middle; }
+      .step-lbl { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #cdd6f4; }
+      .desc { font-family: system-ui, -apple-system, sans-serif; font-size: 11.5px; fill: #bac2de; }
+      .badge { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 800; fill: #181825; text-anchor: middle; }
+      .arrow { stroke: #89b4fa; stroke-width: 2.5; fill: none; }
+      .arrow-lbl { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 600; fill: #94e2d5; text-anchor: middle; }
+    </style>
+    <marker id="arr-b" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#89b4fa"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="320" rx="16" class="bg"/>
+  <text x="450" y="34" class="title">MCP Safeguard: Two-Phase Human Approval (2PC)</text>
+  <text x="450" y="54" class="subtitle">No external AI agent can ever edit or delete your flashcards without your explicit visual review</text>
+
+  <!-- Phase 1 -->
+  <g transform="translate(30, 84)">
+    <rect width="240" height="190" rx="12" class="box-purple"/>
+    <rect x="16" y="14" width="66" height="20" rx="6" fill="#cba6f7"/>
+    <text x="49" y="28" class="badge">PHASE 1</text>
+    <text x="16" y="56" class="step-lbl">External MCP Agent</text>
+    <text x="16" y="78" class="desc">Claude, Cursor, or Antigravity</text>
+    <text x="16" y="96" class="desc">reads your courses and stages:</text>
+    <text x="16" y="120" class="desc">• propose_card_refactor</text>
+    <text x="16" y="138" class="desc">• propose_card_split</text>
+    <text x="16" y="156" class="desc">• begin / commit_staged_bundle</text>
+    <text x="16" y="176" class="desc" fill="#cba6f7">Zero direct database writes</text>
+  </g>
+
+  <path d="M 272 179 L 324 179" class="arrow" marker-end="url(#arr-b)"/>
+  <text x="298" y="167" class="arrow-lbl">Staged</text>
+
+  <!-- Phase 2 -->
+  <g transform="translate(330, 84)">
+    <rect width="240" height="190" rx="12" class="box-amber"/>
+    <rect x="16" y="14" width="66" height="20" rx="6" fill="#f9e2af"/>
+    <text x="49" y="28" class="badge">PHASE 2</text>
+    <text x="16" y="56" class="step-lbl">AnkiDraft Safeguard</text>
+    <text x="16" y="78" class="desc">Pending proposals land in your</text>
+    <text x="16" y="96" class="desc">review queue (Staged Bundle):</text>
+    <text x="16" y="120" class="desc">• Semantic Before / After diff</text>
+    <text x="16" y="138" class="desc">• Live KaTeX &amp; HTML preview</text>
+    <text x="16" y="156" class="desc">• Explicit Apply or Reject actions</text>
+    <text x="16" y="176" class="desc" fill="#f9e2af">100% human control</text>
+  </g>
+
+  <path d="M 572 179 L 624 179" class="arrow" marker-end="url(#arr-b)"/>
+  <text x="598" y="167" class="arrow-lbl">Approved</text>
+
+  <!-- Applied -->
+  <g transform="translate(630, 84)">
+    <rect width="240" height="190" rx="12" class="box-green"/>
+    <rect x="16" y="14" width="66" height="20" rx="6" fill="#a6e3a1"/>
+    <text x="49" y="28" class="badge">APPLIED</text>
+    <text x="16" y="56" class="step-lbl">Collection &amp; Export</text>
+    <text x="16" y="78" class="desc">Once you approve the bundle:</text>
+    <text x="16" y="102" class="desc">• Atomic SQLite commit</text>
+    <text x="16" y="120" class="desc">• Time Machine snapshot kept</text>
+    <text x="16" y="138" class="desc">• Source provenance preserved</text>
+    <text x="16" y="156" class="desc">• Ready for Anki .apkg export</text>
+    <text x="16" y="176" class="desc" fill="#a6e3a1">Zero accidental data loss</text>
+  </g>
+</svg>

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #181825; }
+      .node { fill: #1e1e2e; stroke: #45475a; stroke-width: 1.5; }
+      .root { fill: #1e1e2e; stroke: #89b4fa; stroke-width: 2; }
+      .leaf-blue { fill: #1e1e2e; stroke: #89b4fa; stroke-width: 1.8; }
+      .leaf-cyan { fill: #1e1e2e; stroke: #94e2d5; stroke-width: 1.8; }
+      .leaf-amber { fill: #1e1e2e; stroke: #fab387; stroke-width: 1.8; }
+      .leaf-purple { fill: #1e1e2e; stroke: #cba6f7; stroke-width: 1.8; }
+      .leaf-green { fill: #1e1e2e; stroke: #a6e3a1; stroke-width: 1.8; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 19px; font-weight: 700; fill: #cdd6f4; text-anchor: middle; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a6adc8; text-anchor: middle; }
+      .lbl-bold { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #cdd6f4; }
+      .lbl-desc { font-family: system-ui, -apple-system, sans-serif; font-size: 11.5px; fill: #bac2de; }
+      .badge-txt { font-family: system-ui, -apple-system, sans-serif; font-size: 10.5px; font-weight: 700; fill: #181825; text-anchor: middle; }
+      .line { stroke: #6c7086; stroke-width: 2; fill: none; }
+      .branch-txt { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 600; fill: #89dceb; }
+    </style>
+    <marker id="arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#89b4fa"/>
+    </marker>
+  </defs>
+
+  <rect width="920" height="540" rx="16" class="bg"/>
+  <text x="460" y="36" class="title">Quel Parcours AnkiDraft Choisir Selon Votre Besoin ?</text>
+  <text x="460" y="56" class="subtitle">Identifiez votre point de départ et l'équipement IA disponible en moins de 15 secondes</text>
+
+  <!-- Racine -->
+  <rect x="260" y="74" width="400" height="52" rx="10" class="root"/>
+  <text x="460" y="96" class="lbl-bold" text-anchor="middle">Quel est votre objectif aujourd'hui ?</text>
+  <text x="460" y="114" class="lbl-desc" text-anchor="middle">Nouveaux cours à ficher, collection Anki existante ou pilotage par Claude/Cursor</text>
+
+  <!-- Branches principales -->
+  <path d="M 350 126 L 350 154 L 180 154 L 180 180" class="line" marker-end="url(#arr)"/>
+  <path d="M 460 126 L 460 180" class="line" marker-end="url(#arr)"/>
+  <path d="M 570 126 L 570 154 L 740 154 L 740 180" class="line" marker-end="url(#arr)"/>
+
+  <!-- 3 nœuds intermédiaires -->
+  <rect x="40" y="184" width="280" height="56" rx="10" class="node"/>
+  <text x="180" y="207" class="lbl-bold" text-anchor="middle">Créer depuis un nouveau support</text>
+  <text x="180" y="226" class="lbl-desc" text-anchor="middle">PDF, diaporama, vidéo YouTube ou vocabulaire</text>
+
+  <rect x="340" y="184" width="240" height="56" rx="10" class="node"/>
+  <text x="460" y="207" class="lbl-bold" text-anchor="middle">Piloter sans clé API</text>
+  <text x="460" y="226" class="lbl-desc" text-anchor="middle">Abonnement Claude, Cursor ou Antigravity</text>
+
+  <rect x="600" y="184" width="280" height="56" rx="10" class="node"/>
+  <text x="740" y="207" class="lbl-bold" text-anchor="middle">Assainir une collection Anki</text>
+  <text x="740" y="226" class="lbl-desc" text-anchor="middle">Archive .colpkg, doublons et sangsues</text>
+
+  <!-- Connexions vers feuilles -->
+  <path d="M 110 240 L 110 278" class="line" marker-end="url(#arr)"/>
+  <path d="M 180 240 L 180 374" class="line" marker-end="url(#arr)"/>
+  <path d="M 250 240 L 250 450 L 320 450" class="line" marker-end="url(#arr)"/>
+  <path d="M 460 240 L 460 278" class="line" marker-end="url(#arr)"/>
+  <path d="M 740 240 L 740 278" class="line" marker-end="url(#arr)"/>
+
+  <!-- Feuille 1 : Médecine & Sciences -->
+  <g transform="translate(30, 284)">
+    <rect width="270" height="76" rx="10" class="leaf-blue"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#89b4fa"/>
+    <text x="60" y="23" class="badge-txt">PARCOURS 1</text>
+    <text x="118" y="24" class="lbl-bold">Médecine &amp; Sciences</text>
+    <text x="12" y="45" class="lbl-desc">PDF dense, chapitres ciblés, formules KaTeX</text>
+    <text x="12" y="63" class="lbl-desc">et occlusions d'images • Studio ou MCP</text>
+  </g>
+
+  <!-- Feuille 2 : Langues & Audio TTS -->
+  <g transform="translate(30, 380)">
+    <rect width="270" height="76" rx="10" class="leaf-cyan"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#94e2d5"/>
+    <text x="60" y="23" class="badge-txt">PARCOURS 2</text>
+    <text x="118" y="24" class="lbl-bold">Langues &amp; Audio TTS</text>
+    <text x="12" y="45" class="lbl-desc">Vocabulaire + voix hors-ligne Kokoro / Piper</text>
+    <text x="12" y="63" class="lbl-desc">Génération par lot &amp; correction MCP</text>
+  </g>
+
+  <!-- Feuille 3 : Cours Vidéo YouTube & Audio -->
+  <g transform="translate(325, 424)">
+    <rect width="270" height="86" rx="10" class="leaf-amber"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#fab387"/>
+    <text x="60" y="23" class="badge-txt">PARCOURS 3</text>
+    <text x="118" y="24" class="lbl-bold">Vidéo YouTube &amp; Audio</text>
+    <text x="12" y="47" class="lbl-desc">Transcription locale Whisper / sous-titres,</text>
+    <text x="12" y="64" class="lbl-desc">structuration didactique et extraction IA</text>
+  </g>
+
+  <!-- Feuille 4 : Zéro Clé API via Agent MCP -->
+  <g transform="translate(325, 284)">
+    <rect width="270" height="114" rx="10" class="leaf-purple"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#cba6f7"/>
+    <text x="60" y="23" class="badge-txt">PARCOURS 4</text>
+    <text x="118" y="24" class="lbl-bold">Zéro Clé API (MCP)</text>
+    <text x="12" y="46" class="lbl-desc">Connectez Claude Desktop, Code ou Cursor.</text>
+    <text x="12" y="64" class="lbl-desc">L'agent lit vos cours, crée des cartes,</text>
+    <text x="12" y="82" class="lbl-desc">adapte les modèles et soumet tout au</text>
+    <text x="12" y="100" class="lbl-desc">Garde-Fou avant écriture dans votre base.</text>
+  </g>
+
+  <!-- Feuille 5 : Sauvetage & Hygiène Anki -->
+  <g transform="translate(620, 284)">
+    <rect width="270" height="114" rx="10" class="leaf-green"/>
+    <rect x="12" y="10" width="96" height="18" rx="5" fill="#a6e3a1"/>
+    <text x="60" y="23" class="badge-txt">PARCOURS 5</text>
+    <text x="118" y="24" class="lbl-bold">Sauvetage &amp; Hygiène</text>
+    <text x="12" y="46" class="lbl-desc">Import .colpkg sans perte d'historique SRS.</text>
+    <text x="12" y="64" class="lbl-desc">Détectez doublons et sangsues, lancez une</text>
+    <text x="12" y="82" class="lbl-desc">campagne d'audit MCP (drapeaux, lacunes)</text>
+    <text x="12" y="100" class="lbl-desc">et scindez selon les 20 règles de Wozniak.</text>
+  </g>
+</svg>
