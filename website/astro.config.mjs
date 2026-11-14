@@ -48,6 +48,11 @@ export default defineConfig({
           autogenerate: { directory: 'getting-started' },
         },
         {
+          label: "Parcours & Cas d'Usage",
+          translations: { en: 'Workflows & Use Cases' },
+          autogenerate: { directory: 'workflows' },
+        },
+        {
           label: 'Sources & Import',
           translations: { en: 'Sources & Import' },
           autogenerate: { directory: 'sources' },

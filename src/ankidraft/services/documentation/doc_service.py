@@ -227,6 +227,7 @@ class AppDocumentationService:
             if self._language == "en":
                 cat_map = {
                     "getting-started": "Getting Started",
+                    "workflows": "Workflows & Use Cases",
                     "sources": "Sources & Import",
                     "cards": "Cards & Editing",
                     "anki-sync": "Anki Sync",
@@ -239,6 +240,7 @@ class AppDocumentationService:
             else:
                 cat_map = {
                     "getting-started": "Démarrage",
+                    "workflows": "Parcours & Cas d'Usage",
                     "sources": "Sources & Import",
                     "cards": "Cartes & Édition",
                     "anki-sync": "Synchronisation Anki",
@@ -599,6 +601,16 @@ class AppDocumentationService:
                 "Fournisseurs LLM Locaux (Ollama)",
                 "guides/ia_fournisseurs.md",
                 "AnkiForge délègue l'exécution des modèles locaux à Ollama via l'API REST http://localhost:11434 sans dépendance PyTorch lourde embarquée.",
+            ),
+            "glossaire": (
+                "Glossaire Utilisateur Vulgarisé",
+                "guides/glossaire.md",
+                "Définitions simples des concepts clés d'AnkiDraft (Wozniak, Cloze, Smart Coverage, Écarter vs Neutraliser, DAG, RAG, MCP, Garde-Fou, .apkg vs .colpkg) avec exemples Avant / Après.",
+            ),
+            "parcours": (
+                "Guides de Parcours par Cas d'Usage",
+                "getting-started/quickstart.md",
+                ("Cinq recettes pas-à-pas : Médecine/Sciences (PDF & schémas), Langues & Audio TTS, Cours Vidéo YouTube/Audio, Zéro Clé API via Agent MCP et Sauvetage/Hygiène Anki."),
             ),
         }
 

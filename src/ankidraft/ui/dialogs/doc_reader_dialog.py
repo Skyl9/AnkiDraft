@@ -385,6 +385,7 @@ class DocReaderDialog(QDialog):
 
         candidates = [
             user_docs_path / "guides" / guide_name,
+            user_docs_path / "workflows" / guide_name,
             user_docs_path / guide_name,
             docs_path / "guides" / guide_name,
             docs_path / guide_name,
