@@ -2,6 +2,10 @@
 import { getLatestRelease } from '../../lib/release';
 
 const release = await getLatestRelease();
+const versionTag = release.version === 'latest' ? '' : ` v${release.version}`;
+const macExt = `.${release.macos.name.split('.').pop() || 'dmg'}`;
+const winExt = `.${release.windows.name.split('.').pop() || 'zip'}`;
+const linExt = `.${release.linux.name.split('.').pop() || 'AppImage'}`;
 ---
 <!doctype html>
 <html lang="fr">
@@ -387,13 +391,13 @@ const release = await getLatestRelease();
               Déposez vos cours PDF, vos vidéos ou vos notes. AnkiDraft en extrait des flashcards claires, prêtes à être révisées dans Anki sur votre ordinateur et votre téléphone.
             </p>
             <a id="primary-dl" class="btn-swiss" href={release.macos.url}>
-              <span id="primary-dl-label">Télécharger AnkiDraft v{release.version}</span>
+              <span id="primary-dl-label">Télécharger AnkiDraft{versionTag}</span>
               <span>↓</span>
             </a>
             <div class="os-strip">
-              <a href={release.macos.url}>macOS (.dmg)</a>
-              <a href={release.windows.url}>Windows (.exe)</a>
-              <a href={release.linux.url}>Linux (.AppImage)</a>
+              <a data-dl-os="macos" href={release.macos.url}>macOS ({macExt})</a>
+              <a data-dl-os="windows" href={release.windows.url}>Windows ({winExt})</a>
+              <a data-dl-os="linux" href={release.linux.url}>Linux ({linExt})</a>
               <a href="/fr/getting-started/quickstart/">Manuel →</a>
             </div>
           </div>
@@ -459,17 +463,17 @@ const release = await getLatestRelease();
               <tr>
                 <td class="os-name">macOS</td>
                 <td style="color: var(--muted);">macOS 13 ou supérieur (Apple Silicon) · Image disque .dmg</td>
-                <td class="dl-link"><a href={release.macos.url}>Télécharger v{release.version} →</a></td>
+                <td class="dl-link"><a data-dl-table="macos" href={release.macos.url}>Télécharger{versionTag} →</a></td>
               </tr>
               <tr>
                 <td class="os-name">Windows</td>
-                <td style="color: var(--muted);">Windows 10 &amp; 11 (64-bit) · Installateur autonome .exe</td>
-                <td class="dl-link"><a href={release.windows.url}>Télécharger v{release.version} →</a></td>
+                <td style="color: var(--muted);">Windows 10 &amp; 11 (64-bit) · Installateur .exe ou archive portable .zip</td>
+                <td class="dl-link"><a data-dl-table="windows" href={release.windows.url}>Télécharger{versionTag} →</a></td>
               </tr>
               <tr>
                 <td class="os-name">Linux</td>
                 <td style="color: var(--muted);">Distribution x86_64 · Exécutable portable .AppImage</td>
-                <td class="dl-link"><a href={release.linux.url}>Télécharger v{release.version} →</a></td>
+                <td class="dl-link"><a data-dl-table="linux" href={release.linux.url}>Télécharger{versionTag} →</a></td>
               </tr>
             </tbody>
           </table>
@@ -487,22 +491,109 @@ const release = await getLatestRelease();
       </footer>
     </div>
 
-    <script is:inline define:vars={{ macosUrl: release.macos.url, windowsUrl: release.windows.url, linuxUrl: release.linux.url, version: release.version }}>
+    <script
+      is:inline
+      define:vars={{
+        macosUrl: release.macos.url,
+        windowsUrl: release.windows.url,
+        linuxUrl: release.linux.url,
+        macosName: release.macos.name,
+        windowsName: release.windows.name,
+        linuxName: release.linux.name,
+        version: release.version,
+      }}
+    >
       (function () {
+        var LATEST_API = 'https://api.github.com/repos/Skyl9/AnkiDraft/releases/latest';
+        var LATEST_BASE = 'https://github.com/Skyl9/AnkiDraft/releases/latest/download/';
+        var LATEST_PAGE = 'https://github.com/Skyl9/AnkiDraft/releases/latest';
         var ua = navigator.userAgent || '';
         var btn = document.getElementById('primary-dl');
         var lbl = document.getElementById('primary-dl-label');
-        if (!btn || !lbl) return;
-        if (/Win/i.test(ua)) {
-          btn.href = windowsUrl;
-          lbl.textContent = 'Télécharger pour Windows (v' + version + ')';
-        } else if (/Linux/i.test(ua) && !/Android/i.test(ua)) {
-          btn.href = linuxUrl;
-          lbl.textContent = 'Télécharger pour Linux (v' + version + ')';
-        } else {
-          btn.href = macosUrl;
-          lbl.textContent = 'Télécharger pour macOS (v' + version + ')';
+
+        function pickAsset(assets, keywords, fallbackUrl, fallbackName) {
+          for (var i = 0; i < keywords.length; i++) {
+            var kw = keywords[i];
+            for (var j = 0; j < assets.length; j++) {
+              var a = assets[j];
+              var n = ((a && a.name) || '').toLowerCase();
+              if (!n || n.endsWith('.sha256') || n.endsWith('.sig') || n.endsWith('.txt')) continue;
+              if (n.indexOf(kw) !== -1) {
+                return { name: a.name, url: LATEST_BASE + encodeURIComponent(a.name) };
+              }
+            }
+          }
+          return { name: fallbackName, url: fallbackUrl || LATEST_PAGE };
         }
+
+        function extLabel(name, fallbackExt) {
+          var idx = (name || '').lastIndexOf('.');
+          return idx !== -1 ? name.slice(idx) : fallbackExt;
+        }
+
+        function applyRelease(state) {
+          var vLabel = state.ver && state.ver !== 'latest' ? 'v' + state.ver : '';
+          var osStripNames = {
+            macos: 'macOS (' + extLabel(state.macos.name, '.dmg') + ')',
+            windows: 'Windows (' + extLabel(state.windows.name, '.zip') + ')',
+            linux: 'Linux (' + extLabel(state.linux.name, '.AppImage') + ')',
+          };
+
+          ['macos', 'windows', 'linux'].forEach(function (key) {
+            var info = state[key];
+            var stripEl = document.querySelector('[data-dl-os="' + key + '"]');
+            if (stripEl && info) {
+              stripEl.href = info.url;
+              stripEl.textContent = osStripNames[key];
+            }
+            var tableEl = document.querySelector('[data-dl-table="' + key + '"]');
+            if (tableEl && info) {
+              tableEl.href = info.url;
+              tableEl.textContent = vLabel ? 'Télécharger ' + vLabel + ' →' : 'Télécharger →';
+            }
+          });
+
+          if (!btn || !lbl) return;
+          var targetOs = 'macos';
+          var osDisplay = 'macOS';
+          if (/Win/i.test(ua)) {
+            targetOs = 'windows';
+            osDisplay = 'Windows';
+          } else if (/Linux/i.test(ua) && !/Android/i.test(ua)) {
+            targetOs = 'linux';
+            osDisplay = 'Linux';
+          }
+          btn.href = state[targetOs].url;
+          lbl.textContent = vLabel
+            ? 'Télécharger pour ' + osDisplay + ' (' + vLabel + ')'
+            : 'Télécharger pour ' + osDisplay;
+        }
+
+        var initial = {
+          ver: version,
+          macos: { name: macosName, url: macosUrl },
+          windows: { name: windowsName, url: windowsUrl },
+          linux: { name: linuxName, url: linuxUrl },
+        };
+        applyRelease(initial);
+
+        if (typeof fetch !== 'function') return;
+        fetch(LATEST_API, { headers: { Accept: 'application/vnd.github+json' } })
+          .then(function (r) {
+            return r.ok ? r.json() : null;
+          })
+          .then(function (data) {
+            if (!data) return;
+            var assets = Array.isArray(data.assets) ? data.assets : [];
+            var ver = (data.tag_name || '').replace(/^v/i, '') || version;
+            applyRelease({
+              ver: ver,
+              macos: pickAsset(assets, ['macos-arm64.dmg', '.dmg', 'macos-arm64.zip'], macosUrl, macosName),
+              windows: pickAsset(assets, ['setup-x64.exe', '.exe', 'windows-x64.zip'], windowsUrl, windowsName),
+              linux: pickAsset(assets, ['x86_64.appimage', '.appimage', 'linux-x86_64.tar.gz', '.tar.gz'], linuxUrl, linuxName),
+            });
+          })
+          .catch(function () {});
       })();
     </script>
   </body>
