@@ -121,7 +121,7 @@ def capture(
 
         from ankidraft.ui.main_window import MainWindow
 
-        with patch("ankiforge.ui.views.dashboard_view.StatsWorker.start"):
+        with patch("ankidraft.ui.views.dashboard_view.StatsWorker.start"):
             window = MainWindow(ai_manager=None, profile_name=profile_name)
             window.resize(width, height)
             window.show()
@@ -213,7 +213,7 @@ def generate_layout_thumbnails(
     try:
         from ankidraft.ui.main_window import MainWindow
 
-        with patch("ankiforge.ui.views.dashboard_view.StatsWorker.start"):
+        with patch("ankidraft.ui.views.dashboard_view.StatsWorker.start"):
             window = MainWindow(ai_manager=None, profile_name=profile_name)
             window.resize(1440, 900)
             window.show()
