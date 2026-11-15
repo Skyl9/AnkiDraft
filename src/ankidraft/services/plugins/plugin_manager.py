@@ -50,11 +50,11 @@ def check_version_compatibility(
         if min_ver:
             min_v_obj = Version(min_ver.strip().lstrip("vV"))
             if current_v < min_v_obj:
-                return False, f"Nécessite AnkiForge v{min_ver} ou supérieure (actuelle : v{current_ver_str})"
+                return False, f"Nécessite AnkiDraft v{min_ver} ou supérieure (actuelle : v{current_ver_str})"
         if max_ver:
             max_v_obj = Version(max_ver.strip().lstrip("vV"))
             if current_v > max_v_obj:
-                return False, f"Compatible jusqu'à AnkiForge v{max_ver} (actuelle : v{current_ver_str})"
+                return False, f"Compatible jusqu'à AnkiDraft v{max_ver} (actuelle : v{current_ver_str})"
         return True, None
     except Exception as e:
         logger.warning("Erreur lors de la vérification de version de l'addon : %s", e)

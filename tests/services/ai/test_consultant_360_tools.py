@@ -56,7 +56,7 @@ def sample_data():
 
 def test_get_collection_panorama_360(sample_data):
     panorama = MCPToolRegistry.get_collection_panorama_360()
-    assert "Panorama 360° de la Collection AnkiForge" in panorama
+    assert "Panorama 360° de la Collection AnkiDraft" in panorama
     assert "Total Paquets :" in panorama
     assert "Total Cartes :" in panorama
     assert "Cartes Sangsues globales" in panorama

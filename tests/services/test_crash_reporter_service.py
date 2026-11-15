@@ -189,7 +189,7 @@ class TestCrashReporterPayloadSecurity:
         rep = reports[0]
 
         url = CrashReporterService.build_github_issue_url(rep)
-        assert "https://github.com/Skyl9/AnkiForge/issues/new" in url
+        assert "https://github.com/Skyl9/AnkiDraft/issues/new" in url
         assert "labels=crash" in url
         assert "AttributeError" in url
 

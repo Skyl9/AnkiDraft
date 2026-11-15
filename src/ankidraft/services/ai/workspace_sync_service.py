@@ -48,7 +48,7 @@ SYNC_MANIFEST_NAME = ".agents/.ankidraft-sync.json"
 # Contenu canonique du fichier .gitignore déployé à l'initialisation du workspace.
 GITIGNORE_CANONICAL = "\n".join(
     [
-        "# Fichiers et dossiers ignorés par le workspace agentique AnkiForge",
+        "# Fichiers et dossiers ignorés par le workspace agentique AnkiDraft",
         "",
         ".git/",
         ".venv/",
@@ -301,7 +301,7 @@ class WorkspaceSyncService:
     ) -> WorkspaceDriftReport:
         """Initialise un workspace agentique : dépôt Git, .gitignore, gabarits et manifeste de synchronisation.
 
-        Refuse d'écrire sur un dossier non vide ne possédant aucune signature AnkiForge
+        Refuse d'écrire sur un dossier non vide ne possédant aucune signature AnkiDraft
         sauf si ``force=True``.
         """
         root = validate_workspace_path(workspace_path)
@@ -320,7 +320,7 @@ class WorkspaceSyncService:
                                 relative_path="",
                                 category=DriftCategory.STRUCTURE,
                                 severity=DriftSeverity.CRITICAL,
-                                message="Dossier non vide sans signature AnkiForge ; utilisez force=True pour initialiser.",
+                                message="Dossier non vide sans signature AnkiDraft ; utilisez force=True pour initialiser.",
                             )
                         ],
                         active_profile_name=self.active_profile,

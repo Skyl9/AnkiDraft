@@ -81,7 +81,7 @@ class YouTubeParser:
             oembed_url = f"https://www.youtube.com/oembed?url={urllib.parse.quote(url)}&format=json"
             req = urllib.request.Request(
                 oembed_url,
-                headers={"User-Agent": "AnkiForge/1.0 (Desktop App)"},
+                headers={"User-Agent": "AnkiDraft/1.0 (Desktop App)"},
             )
             with urllib.request.urlopen(req, timeout=4) as response:  # nosec B310
                 raw_data = response.read().decode("utf-8")

@@ -155,7 +155,7 @@ TOOLS_CATALOG: list[ToolSpec] = [
     ToolSpec(
         key="search_app_documentation",
         label="Recherche Doc Zensical FTS5",
-        description="Recherche plein-texte BM25 avec extraits dans la documentation officielle d'AnkiForge.",
+        description="Recherche plein-texte BM25 avec extraits dans la documentation officielle d'AnkiDraft.",
         category="RAG & Documentation",
         color="#06b6d4",
     ),

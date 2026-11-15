@@ -56,9 +56,9 @@ def test_update_checker_detects_newer_version() -> None:
     fake_response.json.return_value = [
         {
             "tag_name": "v1.1.0",
-            "name": "AnkiForge 1.1.0",
+            "name": "AnkiDraft 1.1.0",
             "body": "## Nouveautés\n- Système d'auto-update\n- Nouvelles icônes",
-            "html_url": "https://github.com/Skyl9/AnkiForge/releases/tag/v1.1.0",
+            "html_url": "https://github.com/Skyl9/AnkiDraft/releases/tag/v1.1.0",
             "published_at": "2026-09-02T08:00:00Z",
             "prerelease": False,
             "draft": False,
@@ -74,9 +74,9 @@ def test_update_checker_detects_newer_version() -> None:
     assert len(received_updates) == 1
     info = received_updates[0]
     assert info.version == "1.1.0"
-    assert info.title == "AnkiForge 1.1.0"
+    assert info.title == "AnkiDraft 1.1.0"
     assert "Système d'auto-update" in info.release_notes
-    assert info.html_url == "https://github.com/Skyl9/AnkiForge/releases/tag/v1.1.0"
+    assert info.html_url == "https://github.com/Skyl9/AnkiDraft/releases/tag/v1.1.0"
 
 
 def test_update_checker_no_update_when_same_or_older_version() -> None:
@@ -88,9 +88,9 @@ def test_update_checker_no_update_when_same_or_older_version() -> None:
     fake_response.json.return_value = [
         {
             "tag_name": "v1.0.5",
-            "name": "AnkiForge 1.0.5",
+            "name": "AnkiDraft 1.0.5",
             "body": "Release actuelle",
-            "html_url": "https://github.com/Skyl9/AnkiForge/releases/tag/v1.0.5",
+            "html_url": "https://github.com/Skyl9/AnkiDraft/releases/tag/v1.0.5",
             "prerelease": False,
             "draft": False,
         }
@@ -120,7 +120,7 @@ def test_update_checker_ignores_release_older_than_current_1_1_5() -> None:
     fake_response.json.return_value = [
         {
             "tag_name": "v1.1.0",
-            "name": "AnkiForge 1.1.0",
+            "name": "AnkiDraft 1.1.0",
             "prerelease": False,
             "draft": False,
         }
@@ -146,7 +146,7 @@ def test_update_checker_uses_latest_stable_release() -> None:
     fake_response.status_code = 200
     fake_response.json.return_value = {
         "tag_name": "v1.1.5",
-        "name": "AnkiForge 1.1.5",
+        "name": "AnkiDraft 1.1.5",
         "body": "Correctifs de production",
         "prerelease": False,
         "draft": False,
@@ -188,9 +188,9 @@ def test_update_checker_nightly_channel() -> None:
     fake_response.status_code = 200
     fake_response.json.return_value = {
         "tag_name": "nightly",
-        "name": "AnkiForge Nightly Build",
+        "name": "AnkiDraft Nightly Build",
         "body": "Nouveautés nightly",
-        "html_url": "https://github.com/Skyl9/AnkiForge/releases/tag/nightly",
+        "html_url": "https://github.com/Skyl9/AnkiDraft/releases/tag/nightly",
         "published_at": "2029-01-01T00:00:00Z",
         "prerelease": True,
     }
@@ -214,9 +214,9 @@ def test_update_checker_nightly_no_false_alarm_when_build_date_missing() -> None
     fake_response.status_code = 200
     fake_response.json.return_value = {
         "tag_name": "nightly",
-        "name": "AnkiForge Nightly",
+        "name": "AnkiDraft Nightly",
         "body": "Nightly build",
-        "html_url": "https://github.com/Skyl9/AnkiForge/releases/tag/nightly",
+        "html_url": "https://github.com/Skyl9/AnkiDraft/releases/tag/nightly",
         "published_at": "2026-09-01T00:00:00Z",
         "prerelease": True,
     }
@@ -293,21 +293,21 @@ def test_update_checker_selects_highest_semver_from_releases_list() -> None:
     fake_releases = [
         {
             "tag_name": "v1.0.6",
-            "name": "AnkiForge 1.0.6 (Patch récent)",
+            "name": "AnkiDraft 1.0.6 (Patch récent)",
             "published_at": "2026-09-04T12:00:00Z",
             "draft": False,
             "prerelease": False,
         },
         {
             "tag_name": "v1.1.0",
-            "name": "AnkiForge 1.1.0 (Version supérieure)",
+            "name": "AnkiDraft 1.1.0 (Version supérieure)",
             "published_at": "2026-09-01T12:00:00Z",
             "draft": False,
             "prerelease": False,
         },
         {
             "tag_name": "v1.0.5",
-            "name": "AnkiForge 1.0.5",
+            "name": "AnkiDraft 1.0.5",
             "published_at": "2026-08-30T12:00:00Z",
             "draft": False,
             "prerelease": False,
@@ -327,7 +327,7 @@ def test_update_checker_selects_highest_semver_from_releases_list() -> None:
     assert len(received_updates) == 1
     # La version sélectionnée doit être 1.1.0 (et non 1.0.6)
     assert received_updates[0].version == "1.1.0"
-    assert received_updates[0].title == "AnkiForge 1.1.0 (Version supérieure)"
+    assert received_updates[0].title == "AnkiDraft 1.1.0 (Version supérieure)"
 
 
 def test_update_checker_handles_rate_limit_403_with_tags_fallback() -> None:

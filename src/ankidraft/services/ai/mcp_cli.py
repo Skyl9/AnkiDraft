@@ -115,7 +115,7 @@ def run_mcp_server_cli(
             data_dir=target_data_dir,
         )
 
-    logger.info("Démarrage du daemon MCP AnkiForge sur le port %d...", port)
+    logger.info("Démarrage du daemon MCP AnkiDraft sur le port %d...", port)
     if not daemon.start(timeout=10.0):
         logger.error("Impossible de démarrer le serveur MCP sur le port %d.", port)
         sys.stderr.write(f"Erreur : Impossible de démarrer le serveur MCP sur le port {port}.\n")
@@ -139,7 +139,7 @@ def run_mcp_server_cli(
     banner = (
         "\n"
         "======================================================================\n"
-        "  🚀 AnkiForge MCP Server — Mode Console Headless\n"
+        "  🚀 AnkiDraft MCP Server — Mode Console Headless\n"
         "======================================================================\n"
         f"  Statut              : En cours d'exécution (PID: {pid})\n"
         f"  Profil actif        : {target_profile}\n"
@@ -156,7 +156,7 @@ def run_mcp_server_cli(
     sys.stdout.write(banner)
     sys.stdout.flush()
 
-    logger.info("Serveur MCP AnkiForge opérationnel sur %s (Streamable HTTP) et %s (SSE) (port %d)", daemon.url, daemon.sse_url, daemon.port)
+    logger.info("Serveur MCP AnkiDraft opérationnel sur %s (Streamable HTTP) et %s (SSE) (port %d)", daemon.url, daemon.sse_url, daemon.port)
     logger.info("Jeton d'authentification Bearer : %s", daemon.token_file)
     logger.info("Fichier d'état et découverte : %s", daemon.state_file)
 
@@ -166,7 +166,7 @@ def run_mcp_server_cli(
     def _handle_signal(signum: int, frame: Any) -> None:
         signame = "SIGINT" if signum == signal.SIGINT else "SIGTERM" if signum == signal.SIGTERM else str(signum)
         logger.info("Signal d'arrêt reçu (%s). Arrêt du serveur MCP...", signame)
-        sys.stdout.write(f"\nSignal d'arrêt reçu ({signame}). Fermeture du serveur MCP AnkiForge...\n")
+        sys.stdout.write(f"\nSignal d'arrêt reçu ({signame}). Fermeture du serveur MCP AnkiDraft...\n")
         sys.stdout.flush()
         stop_event.set()
 
@@ -193,7 +193,7 @@ def run_mcp_server_cli(
         sys.stdout.write("\nInterruption clavier détectée. Arrêt du serveur...\n")
         sys.stdout.flush()
     finally:
-        logger.info("Arrêt du serveur MCP AnkiForge en cours...")
+        logger.info("Arrêt du serveur MCP AnkiDraft en cours...")
         daemon.stop(timeout=5.0)
         if not db.is_closed():
             db.close()
@@ -206,7 +206,7 @@ def run_mcp_server_cli(
         except (ValueError, AttributeError):
             pass
 
-        sys.stdout.write("Serveur MCP AnkiForge arrêté avec succès.\n")
+        sys.stdout.write("Serveur MCP AnkiDraft arrêté avec succès.\n")
         sys.stdout.flush()
 
     return exit_code

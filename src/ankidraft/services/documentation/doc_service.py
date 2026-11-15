@@ -590,7 +590,7 @@ class AppDocumentationService:
             "nuitka": (
                 "Compilation Binaire Autonome",
                 "dev/compilation_nuitka.md",
-                "AnkiForge se compile en binaire natif autonome C via Nuitka sans dépendance Python préalable sur le poste client.",
+                "AnkiDraft se compile en binaire natif autonome C via Nuitka sans dépendance Python préalable sur le poste client.",
             ),
             "smart merge": (
                 "Synchronisation & Smart Merge",
@@ -600,7 +600,7 @@ class AppDocumentationService:
             "ollama": (
                 "Fournisseurs LLM Locaux (Ollama)",
                 "guides/ia_fournisseurs.md",
-                "AnkiForge délègue l'exécution des modèles locaux à Ollama via l'API REST http://localhost:11434 sans dépendance PyTorch lourde embarquée.",
+                "AnkiDraft délègue l'exécution des modèles locaux à Ollama via l'API REST http://localhost:11434 sans dépendance PyTorch lourde embarquée.",
             ),
             "glossaire": (
                 "Glossaire Utilisateur Vulgarisé",
@@ -638,7 +638,7 @@ class AppDocumentationService:
 
 
 def search_app_documentation(query: str, category: str = "", limit: int = 5, scope: str = "user") -> str:
-    """Recherche des extraits pertinents dans la documentation officielle d'AnkiForge."""
+    """Recherche des extraits pertinents dans la documentation officielle d'AnkiDraft."""
     service = AppDocumentationService.get_instance(scope=scope)
     results = service.search(query=query, category=category, limit=limit)
     if not results and scope == "user":
@@ -647,7 +647,7 @@ def search_app_documentation(query: str, category: str = "", limit: int = 5, sco
     if not results:
         return f"Aucun résultat trouvé dans la documentation pour la recherche : '{query}'" + (f" (catégorie: {category})" if category else "") + "."
 
-    lines: list[str] = [f"📚 **Résultats de recherche dans la documentation AnkiForge ({len(results)}) :**"]
+    lines: list[str] = [f"📚 **Résultats de recherche dans la documentation AnkiDraft ({len(results)}) :**"]
     for i, r in enumerate(results, start=1):
         lines.append(f"{i}. **{r.page_title}** ➔ *{r.section_title}* `[{r.category}]`\n   - 🔗 Référence : `{r.ref}`\n   - 📝 Extrait : {r.snippet}")
     lines.append("\n💡 *Astuce : utilisez `read_app_doc_page(doc_path, section_anchor)` pour lire le contenu complet d'une section.*")
@@ -676,7 +676,7 @@ def list_app_doc_topics(category: str = "", scope: str = "user") -> str:
     for t in topics:
         by_cat.setdefault(t.category, []).append(t)
 
-    lines: list[str] = ["📚 **Sommaire de la Documentation Officielle d'AnkiForge :**\n"]
+    lines: list[str] = ["📚 **Sommaire de la Documentation Officielle d'AnkiDraft :**\n"]
     for cat, items in by_cat.items():
         lines.append(f"### 📁 {cat}")
         for item in items:
@@ -688,6 +688,6 @@ def list_app_doc_topics(category: str = "", scope: str = "user") -> str:
 
 
 def get_feature_quick_help(feature_name: str, scope: str = "user") -> str:
-    """Retourne une fiche synthétique d'aide sur une fonctionnalité d'AnkiForge."""
+    """Retourne une fiche synthétique d'aide sur une fonctionnalité d'AnkiDraft."""
     service = AppDocumentationService.get_instance(scope=scope)
     return service.get_feature_quick_help(feature_name)

@@ -291,12 +291,12 @@ def test_addon_version_compatibility(temp_addons_dir):
     ok, err = check_version_compatibility("2.0.0", None, "1.1.5")
     assert ok is False
     assert err is not None
-    assert "Nécessite AnkiForge v2.0.0" in err
+    assert "Nécessite AnkiDraft v2.0.0" in err
 
     ok, err = check_version_compatibility(None, "1.0.0", "1.1.5")
     assert ok is False
     assert err is not None
-    assert "Compatible jusqu'à AnkiForge v1.0.0" in err
+    assert "Compatible jusqu'à AnkiDraft v1.0.0" in err
 
     # Intégration dans discover_addons et chargement
     addon_folder = temp_addons_dir / "future_addon"

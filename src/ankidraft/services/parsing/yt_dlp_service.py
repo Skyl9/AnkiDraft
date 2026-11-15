@@ -22,7 +22,7 @@ class YtDlpUnavailableError(RuntimeError):
     """Exception levée lorsque yt-dlp n'est pas disponible et requis pour l'opération."""
 
     def __init__(self, message: str | None = None) -> None:
-        default_msg = "yt-dlp est introuvable. Pour transcrire des vidéos YouTube sans sous-titres, veuillez installer yt-dlp (ex: 'uv add yt-dlp' ou via les outils déportés AnkiForge)."
+        default_msg = "yt-dlp est introuvable. Pour transcrire des vidéos YouTube sans sous-titres, veuillez installer yt-dlp (ex: 'uv add yt-dlp' ou via les outils déportés AnkiDraft)."
         super().__init__(message or default_msg)
 
 

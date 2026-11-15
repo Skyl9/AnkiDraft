@@ -23,7 +23,7 @@ from ankidraft.version import get_version_info
 
 logger = logging.getLogger(__name__)
 
-GITHUB_REPO_URL = "https://github.com/Skyl9/AnkiForge"
+GITHUB_REPO_URL = "https://github.com/Skyl9/AnkiDraft"
 GITHUB_NEW_ISSUE_URL = f"{GITHUB_REPO_URL}/issues/new"
 
 
@@ -55,7 +55,7 @@ class SystemDiagnosticInfo:
             "",
             "| Élément | Valeur |",
             "| :--- | :--- |",
-            f"| **AnkiForge** | `{self.ankiforge_version}` ({self.build_channel}) commit `{self.commit_hash}` |",
+            f"| **AnkiDraft** | `{self.ankiforge_version}` ({self.build_channel}) commit `{self.commit_hash}` |",
             f"| **OS / Plateforme** | `{self.os_platform}` |",
             f"| **Python** | `{self.python_version}` |",
             f"| **Qt / PySide6** | PySide6 `{self.pyside_version}` (Qt `{self.qt_version}`) |",
@@ -214,7 +214,7 @@ class FeedbackService:
         md_parts = [
             f"# 🐛 [Bug] {clean_title}",
             "",
-            f"*Rapport généré le {now_utc} depuis AnkiForge.*",
+            f"*Rapport généré le {now_utc} depuis AnkiDraft.*",
             "",
             f"**Sévérité :** `{data.severity}`",
             "",
@@ -253,7 +253,7 @@ class FeedbackService:
         md_parts = [
             f"# 💡 [Idée] {data.title or 'Nouvelle fonctionnalité'}",
             "",
-            f"*Proposition soumise le {now_utc} depuis AnkiForge.*",
+            f"*Proposition soumise le {now_utc} depuis AnkiDraft.*",
             "",
             f"**Catégorie :** `{data.category}` | **Priorité souhaitée :** `{data.priority}`",
             "",
@@ -264,7 +264,7 @@ class FeedbackService:
             data.solution.strip() or "_Non précisé_",
             "",
             "---",
-            f"*Proposé via le menu Feedback d'AnkiForge v{get_version_info().short_display_version}*",
+            f"*Proposé via le menu Feedback d'AnkiDraft v{get_version_info().short_display_version}*",
         ]
 
         return "\n".join(md_parts)
@@ -280,7 +280,7 @@ class FeedbackService:
         max_body_len = 3500
         safe_body = body
         if len(safe_body) > max_body_len:
-            safe_body = safe_body[:max_body_len] + "\n\n*(Logs tronqués pour respecter la limite d'URL. Le rapport complet peut être copié via le bouton 'Copier le rapport' d'AnkiForge)*"
+            safe_body = safe_body[:max_body_len] + "\n\n*(Logs tronqués pour respecter la limite d'URL. Le rapport complet peut être copié via le bouton 'Copier le rapport' d'AnkiDraft)*"
 
         params = {
             "title": title,

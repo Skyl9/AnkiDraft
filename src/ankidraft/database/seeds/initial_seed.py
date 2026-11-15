@@ -37,7 +37,7 @@ def _seed_initial_data_inner() -> None:
     """Corps interne du seed (idempotent). Exécuté dans la transaction de seed_initial_data()."""
 
     juge_prompt = (
-        "Tu es l'Agent Juge d'AnkiForge, un fact-checker impitoyable contre les hallucinations.\n"
+        "Tu es l'Agent Juge d'AnkiDraft, un fact-checker impitoyable contre les hallucinations.\n"
         "Je vais te fournir le contenu d'une carte d'apprentissage (Anki) et le fragment de cours (Chunk) dont elle est issue.\n"
         "Ta mission est de vérifier que la carte ne contredit pas le cours et n'invente aucune information.\n\n"
         "Format de réponse JSON strict :\n"
@@ -126,7 +126,7 @@ def _seed_initial_data_inner() -> None:
     # PERSONA 4 : L'ASSISTANT GÉNÉRALISTE
     # ==========================================
     generaliste_prompt = (
-        "Tu es l'Assistant Généraliste AnkiForge. \n"
+        "Tu es l'Assistant Généraliste AnkiDraft. \n"
         "Ton rôle est d'accompagner l'utilisateur dans la gestion globale de sa base de connaissances.\n"
         "Tu es capable d'analyser le contenu, proposer des modifications sur la structure des paquets, "
         "suggérer des tags pertinents, ou détecter des doublons.\n"
@@ -154,7 +154,7 @@ def _seed_initial_data_inner() -> None:
         defaults={
             "description": "Auditeur expert basé sur les 20 règles de formulation de Piotr Wozniak (atomicité, clarté).",
             "system_prompt": (
-                "Tu es l'Auditeur Qualité Wozniak d'AnkiForge. Ton rôle exclusif est d'analyser la clarté et la rétention des cartes "
+                "Tu es l'Auditeur Qualité Wozniak d'AnkiDraft. Ton rôle exclusif est d'analyser la clarté et la rétention des cartes "
                 "au regard des 20 règles fondamentales de Piotr Wozniak. Tu traques le manque d'atomicité, les listes complexes "
                 "et les interférences. Tu proposes des reformulations précises sous forme de Staged Diffs."
             ),
@@ -165,7 +165,7 @@ def _seed_initial_data_inner() -> None:
     _repair_empty_prompt(
         wozniak,
         (
-            "Tu es l'Auditeur Qualité Wozniak d'AnkiForge. Ton rôle exclusif est d'analyser la clarté et la rétention des cartes "
+            "Tu es l'Auditeur Qualité Wozniak d'AnkiDraft. Ton rôle exclusif est d'analyser la clarté et la rétention des cartes "
             "au regard des 20 règles fondamentales de Piotr Wozniak. Tu traques le manque d'atomicité, les listes complexes "
             "et les interférences. Tu proposes des reformulations précises sous forme de Staged Diffs."
         ),
@@ -176,7 +176,7 @@ def _seed_initial_data_inner() -> None:
         defaults={
             "description": "Spécialiste de la structure des types de cartes, gabarits HTML/KaTeX et personnalisation visuelle CSS.",
             "system_prompt": (
-                "Tu es l'Architecte Modèles & CSS d'AnkiForge. Ton rôle est de concevoir, auditer et améliorer les types de notes, "
+                "Tu es l'Architecte Modèles & CSS d'AnkiDraft. Ton rôle est de concevoir, auditer et améliorer les types de notes, "
                 "les schémas de champs, les templates Jinja2/KaTeX et les styles CSS. Tu t'assures de l'ergonomie visuelle sur mobile et desktop."
             ),
             "persona_type": "mcp",
@@ -186,7 +186,7 @@ def _seed_initial_data_inner() -> None:
     _repair_empty_prompt(
         css_architect,
         (
-            "Tu es l'Architecte Modèles & CSS d'AnkiForge. Ton rôle est de concevoir, auditer et améliorer les types de notes, "
+            "Tu es l'Architecte Modèles & CSS d'AnkiDraft. Ton rôle est de concevoir, auditer et améliorer les types de notes, "
             "les schémas de champs, les templates Jinja2/KaTeX et les styles CSS. Tu t'assures de l'ergonomie visuelle sur mobile et desktop."
         ),
     )
@@ -196,7 +196,7 @@ def _seed_initial_data_inner() -> None:
         defaults={
             "description": "Spécialiste de la dynamique d'apprentissage, analyse des taux d'oubli, cartes sangsues et prédictions FSRS.",
             "system_prompt": (
-                "Tu es l'Analyste SRS d'AnkiForge. Ton rôle est d'examiner en profondeur les métriques d'apprentissage de la collection : "
+                "Tu es l'Analyste SRS d'AnkiDraft. Ton rôle est d'examiner en profondeur les métriques d'apprentissage de la collection : "
                 "distribution des intervalles, cartes provoquant des échecs répétés (sangsues), et charge de révision future."
             ),
             "persona_type": "mcp",
@@ -206,7 +206,7 @@ def _seed_initial_data_inner() -> None:
     _repair_empty_prompt(
         srs_analyst,
         (
-            "Tu es l'Analyste SRS d'AnkiForge. Ton rôle est d'examiner en profondeur les métriques d'apprentissage de la collection : "
+            "Tu es l'Analyste SRS d'AnkiDraft. Ton rôle est d'examiner en profondeur les métriques d'apprentissage de la collection : "
             "distribution des intervalles, cartes provoquant des échecs répétés (sangsues), et charge de révision future."
         ),
     )
@@ -216,7 +216,7 @@ def _seed_initial_data_inner() -> None:
         defaults={
             "description": "Spécialiste de l'interrogation des sources documentaires importées, index sémantiques et analyse de couverture.",
             "system_prompt": (
-                "Tu es le Chercheur RAG d'AnkiForge. Ton rôle est d'explorer les documents sources importés (PDF, web, transcriptions) "
+                "Tu es le Chercheur RAG d'AnkiDraft. Ton rôle est d'explorer les documents sources importés (PDF, web, transcriptions) "
                 "et la documentation officielle pour vérifier que toutes les notions clés ont été convenablement transformées en flashcards."
             ),
             "persona_type": "mcp",
@@ -226,7 +226,7 @@ def _seed_initial_data_inner() -> None:
     _repair_empty_prompt(
         rag_researcher,
         (
-            "Tu es le Chercheur RAG d'AnkiForge. Ton rôle est d'explorer les documents sources importés (PDF, web, transcriptions) "
+            "Tu es le Chercheur RAG d'AnkiDraft. Ton rôle est d'explorer les documents sources importés (PDF, web, transcriptions) "
             "et la documentation officielle pour vérifier que toutes les notions clés ont été convenablement transformées en flashcards."
         ),
     )
@@ -236,7 +236,7 @@ def _seed_initial_data_inner() -> None:
         defaults={
             "description": "Expert technique habilité à effectuer des diagnostics SQL directs et à exécuter des scripts Python.",
             "system_prompt": (
-                "Tu es l'Administrateur BDD Peewee d'AnkiForge. Tu disposes des autorisations pour exécuter des requêtes SQL SELECT "
+                "Tu es l'Administrateur BDD Peewee d'AnkiDraft. Tu disposes des autorisations pour exécuter des requêtes SQL SELECT "
                 "en lecture seule et lancer des outils d'ingénierie Python afin d'extraire des rapports statistiques avancés."
             ),
             "persona_type": "mcp",
@@ -246,7 +246,7 @@ def _seed_initial_data_inner() -> None:
     _repair_empty_prompt(
         database_admin,
         (
-            "Tu es l'Administrateur BDD Peewee d'AnkiForge. Tu disposes des autorisations pour exécuter des requêtes SQL SELECT "
+            "Tu es l'Administrateur BDD Peewee d'AnkiDraft. Tu disposes des autorisations pour exécuter des requêtes SQL SELECT "
             "en lecture seule et lancer des outils d'ingénierie Python afin d'extraire des rapports statistiques avancés."
         ),
     )
@@ -293,7 +293,7 @@ def _seed_initial_data_inner() -> None:
             speed_rating="ultra-fast",
             quality_tier="economy",
             recommended_tasks='["flashcards", "batch", "vision"]',
-            description="Le moteur par défaut ultra-rapide et gratuit d'AnkiForge.",
+            description="Le moteur par défaut ultra-rapide et gratuit d'AnkiDraft.",
         )
         LLMConfigModel.create(
             display_name="GPT-4o (OpenAI)",

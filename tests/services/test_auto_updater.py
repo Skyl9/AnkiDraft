@@ -486,9 +486,9 @@ def test_apply_update_and_restart_dev_mode_safety(tmp_path: Path) -> None:
 
 def test_apply_update_and_restart_macos_detache_attend_mort_pid(tmp_path: Path) -> None:
     """T-25/T-42 : relance macOS détachée via /bin/sh, attend la mort du PID, pas de -a LaunchServices."""
-    fake_update = tmp_path / "AnkiForge-Update.dmg"
+    fake_update = tmp_path / "AnkiDraft-Update.dmg"
     fake_update.write_bytes(b"fake dmg")
-    dest_app = Path("/Applications/AnkiForge.app")
+    dest_app = Path("/Applications/AnkiDraft.app")
 
     run_mock = MagicMock()
     run_mock.returncode = 0
@@ -497,7 +497,7 @@ def test_apply_update_and_restart_macos_detache_attend_mort_pid(tmp_path: Path) 
         try:
             mp_idx = list(cmd).index("-mountpoint")
             mount_dir = list(cmd)[mp_idx + 1]
-            app_bundle = Path(mount_dir) / "AnkiForge.app"
+            app_bundle = Path(mount_dir) / "AnkiDraft.app"
             app_bundle.mkdir(parents=True, exist_ok=True)
         except (ValueError, IndexError):
             pass

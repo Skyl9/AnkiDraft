@@ -38,8 +38,8 @@ _DEFAULT_MAX_RETRIES = 2
 
 # En-têtes recommandés par OpenRouter pour le tracking du trafic (référence à l'application).
 _OPENROUTER_DEFAULT_HEADERS: dict[str, str] = {
-    "HTTP-Referer": "https://github.com/Skyl9/AnkiForge",
-    "X-Title": "AnkiForge",
+    "HTTP-Referer": "https://github.com/Skyl9/AnkiDraft",
+    "X-Title": "AnkiDraft",
 }
 
 

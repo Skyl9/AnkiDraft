@@ -166,7 +166,7 @@ class MCPHooksAPI:
     ) -> None:
         """Enregistre un outil déterministe invocable par le Consultant IA / agent ReAct."""
         tool_name = name.strip()
-        doc = description or (handler.__doc__ or "Outil fourni par un addon AnkiForge").strip()
+        doc = description or (handler.__doc__ or "Outil fourni par un addon AnkiDraft").strip()
         MCPHooksAPI._tools_registry[tool_name] = {
             "addon_id": self.addon_id,
             "name": tool_name,

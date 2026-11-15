@@ -112,7 +112,7 @@ CURATED_MODELS: dict[str, ModelSpec] = {
         prompt_pricing=0.0,
         completion_pricing=0.0,
         recommended_tasks=["flashcards", "batch", "vision"],
-        ankiforge_use_case="Le moteur par défaut ultra-rapide et gratuit d'AnkiForge. Idéal pour la création massive de flashcards et le découpage RAG.",
+        ankiforge_use_case="Le moteur par défaut ultra-rapide et gratuit d'AnkiDraft. Idéal pour la création massive de flashcards et le découpage RAG.",
         description="Modèle ultra-léger de Google avec fenêtre de 1M tokens, gratuit sur l'API AI Studio.",
     ),
     "gemini:gemini-2.0-flash": ModelSpec(

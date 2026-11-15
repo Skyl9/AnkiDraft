@@ -1,18 +1,18 @@
-# AnkiForge — Workspace Agentique de Référence (AGENT.md)
+# AnkiDraft — Workspace Agentique de Référence (AGENT.md)
 
-Ce fichier constitue le maître d'instructions du workspace agentique d'AnkiForge.
+Ce fichier constitue le maître d'instructions du workspace agentique d'AnkiDraft.
 Il est généré dynamiquement depuis le gabarit `AGENT.md.j2` embarqué dans le package
-`ankiforge.services.ai.templates.workspace` et ne doit pas être édité manuellement
+`ankidraft.services.ai.templates.workspace` et ne doit pas être édité manuellement
 hors procédure de resynchronisation (`sync_agent_workspace`).
 
 ## Contexte actif
 
-- Profil AnkiForge courant : **{{ active_profile }}**
-- Généré depuis : AnkiForge (source canonique `../../../..`)
+- Profil AnkiDraft courant : **{{ active_profile }}**
+- Généré depuis : AnkiDraft (source canonique `../../../..`)
 
 ## Protocole d'interaction
 
-L'agent externe (Antigravity, Claude Code, Cursor, Gemini CLI) pilote AnkiForge via le
+L'agent externe (Antigravity, Claude Code, Cursor, Gemini CLI) pilote AnkiDraft via le
 serveur FastMCP in-process. Toutes les mutations de collection passent par le
 **Garde-Fou (Two-Phase Commit)** : proposition de patch intermédiaire puis validation
 humaine explicite avant persistance. Aucune écriture destructive n'est appliquée

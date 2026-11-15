@@ -62,7 +62,7 @@ def _find_current_macos_app_bundle() -> Path:
     Remonte depuis Contents/MacOS/<binary> vers le .app parent.
     Retourne /Applications/AnkiForge.app comme fallback si non détectable.
     """
-    fallback = Path("/Applications/AnkiForge.app")
+    fallback = Path("/Applications/AnkiDraft.app")
     exe = Path(sys.executable).resolve()
     try:
         parts = exe.parts
@@ -222,7 +222,7 @@ class UpdateDownloaderWorker(QRunnable):
             if self.signature_url:
                 _validate_download_url(self.signature_url)
 
-            headers = {"User-Agent": "AnkiForge-AutoUpdater"}
+            headers = {"User-Agent": "AnkiDraft-AutoUpdater"}
             expected_sha256: str | None = None
 
             # 2. Vérification cryptographique préalable du manifeste d'intégrité
@@ -250,7 +250,7 @@ class UpdateDownloaderWorker(QRunnable):
 
                     if not verify_manifest_signature(manifest_bytes, signature_bytes, public_keys=self.trusted_public_keys):
                         logger.critical("ÉCHEC CRITIQUE : Signature Ed25519 invalide pour le manifeste de release !")
-                        self.signals.download_error.emit("Échec de validation cryptographique : la signature officielle d'AnkiForge est invalide ou corrompue.")
+                        self.signals.download_error.emit("Échec de validation cryptographique : la signature officielle d'AnkiDraft est invalide ou corrompue.")
                         return
                     self.has_signature_verified = True
                     logger.info("Signature Ed25519 authentifiée avec succès pour le manifeste de release.")
@@ -399,14 +399,14 @@ def apply_update_and_restart(update_file: Path) -> tuple[bool, str]:
                 capture_output=True,
             )
 
-            source_app = Path(mount_dir) / "AnkiForge.app"
+            source_app = Path(mount_dir) / "AnkiDraft.app"
 
             # BUG 4 : Résolution dynamique du chemin d'installation réel (au lieu de /Applications/ codé en dur)
             dest_app = _find_current_macos_app_bundle()
             logger.info("Destination d'installation résolue dynamiquement : %s", dest_app)
 
             if not source_app.is_dir():
-                raise FileNotFoundError(f"AnkiForge.app introuvable dans le DMG monté ({mount_dir}).")
+                raise FileNotFoundError(f"AnkiDraft.app introuvable dans le DMG monté ({mount_dir}).")
 
             logger.info("Copie sécurisée de l'application vers %s via ditto", dest_app)
             source_app_str = str(source_app)

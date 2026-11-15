@@ -160,7 +160,7 @@ def _download_verified(
         ValueError: si la taille annoncée ou reçue dépasse le plafond, ou si
             l'empreinte SHA-256 ne correspond pas à la valeur attendue.
     """
-    req = urllib.request.Request(url, headers={"User-Agent": "AnkiForge/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "AnkiDraft/1.0"})
     hasher = hashlib.sha256()
     downloaded = 0
     chunk_size = 1024 * 64
@@ -611,7 +611,7 @@ class PiperSidecarProvider(TTSProvider):
         """Synthétise l'audio WAV via l'exécutable Piper local."""
         piper_exe = self.get_piper_executable()
         if not piper_exe:
-            raise RuntimeError("Le binaire Piper est introuvable. Téléchargez-le dans les Paramètres d'AnkiForge ou installez-le dans ~/.ankidraft/tools/tts/piper.")
+            raise RuntimeError("Le binaire Piper est introuvable. Téléchargez-le dans les Paramètres d'AnkiDraft ou installez-le dans ~/.ankidraft/tools/tts/piper.")
 
         ok, reason = self.is_functional()
         if not ok:
@@ -805,7 +805,7 @@ class KokoroSidecarProvider(TTSProvider):
         """Synthétise l'audio WAV via le runner Kokoro local."""
         cmd = self.get_kokoro_command()
         if not cmd:
-            raise RuntimeError("Le runner Kokoro est introuvable. Installez-le dans ~/.ankidraft/tools/tts/kokoro/ ou configurez-le dans les Paramètres d'AnkiForge.")
+            raise RuntimeError("Le runner Kokoro est introuvable. Installez-le dans ~/.ankidraft/tools/tts/kokoro/ ou configurez-le dans les Paramètres d'AnkiDraft.")
 
         ok, reason = self.is_functional()
         if not ok:
@@ -916,7 +916,7 @@ class KokoroSidecarProvider(TTSProvider):
 
         script_content = '''#!/usr/bin/env python3
 """
-Runner Kokoro-82M autonome pour AnkiForge.
+Runner Kokoro-82M autonome pour AnkiDraft.
 Supporte les options CLI : --version, --text, --voice, --rate, --pitch, --output.
 """
 import argparse
@@ -933,7 +933,7 @@ logger = logging.getLogger(__name__)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="AnkiForge Kokoro-82M Sidecar Runner")
+    parser = argparse.ArgumentParser(description="AnkiDraft Kokoro-82M Sidecar Runner")
     parser.add_argument("--version", action="store_true", help="Affiche la version")
     parser.add_argument("--text", type=str, help="Texte à synthétiser")
     parser.add_argument("--voice", type=str, default="af_heart", help="Identifiant de la voix")
@@ -943,7 +943,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.version:
-        logger.info("Kokoro-82M Runner 1.0 (AnkiForge Sidecar)")
+        logger.info("Kokoro-82M Runner 1.0 (AnkiDraft Sidecar)")
         sys.exit(0)
 
     if not args.text or not args.output:

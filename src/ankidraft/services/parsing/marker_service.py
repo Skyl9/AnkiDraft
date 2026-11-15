@@ -76,7 +76,7 @@ class MarkerOptions:
         """Valide les options et interdit formellement les options LLM non supervisées."""
         for arg in self.extra_cli_args:
             if arg == "--use_llm" or arg.startswith("--use_llm"):
-                raise ValueError("L'option '--use_llm' est strictement interdite dans MarkerOptions. L'enrichissement IA relève exclusivement des pipelines supervisés d'AnkiForge.")
+                raise ValueError("L'option '--use_llm' est strictement interdite dans MarkerOptions. L'enrichissement IA relève exclusivement des pipelines supervisés d'AnkiDraft.")
         if self.force_ocr and self.disable_ocr:
             raise ValueError("Les options 'force_ocr' et 'disable_ocr' sont mutuellement exclusives.")
 

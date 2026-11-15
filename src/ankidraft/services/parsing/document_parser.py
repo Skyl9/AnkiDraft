@@ -276,7 +276,7 @@ class DocumentParser:
             # CHANGEMENT CRUCIAL : action=parse & prop=text ramène le vrai HTML de la page
             api_url = f"https://{lang}.wikipedia.org/w/api.php?action=parse&format=json&page={urllib.parse.quote(title)}&prop=text"
 
-            req = urllib.request.Request(api_url, headers={"User-Agent": "AnkiForge/1.0"})
+            req = urllib.request.Request(api_url, headers={"User-Agent": "AnkiDraft/1.0"})
             with urllib.request.urlopen(req, timeout=15.0) as response:  # nosec B310  # HTTPS + timeout borné (15 s)
                 data = json.loads(response.read().decode("utf-8"))
 

@@ -659,7 +659,7 @@ class MCPServerDaemon:
                         logger.debug("Exception lors de la synchronisation de la config client MCP : %s", e)
 
                     logger.info(
-                        "Daemon MCP AnkiForge opérationnel sur %s (Streamable HTTP) et %s (SSE legacy) (port %d).",
+                        "Daemon MCP AnkiDraft opérationnel sur %s (Streamable HTTP) et %s (SSE legacy) (port %d).",
                         self.url,
                         self.sse_url,
                         port,
@@ -684,7 +684,7 @@ class MCPServerDaemon:
                 self._loop = None
                 return
 
-            logger.info("Arrêt du daemon MCP AnkiForge en cours...")
+            logger.info("Arrêt du daemon MCP AnkiDraft en cours...")
 
             from ankidraft.services.ai.mcp_server import unregister_mutation_listener, unregister_staged_patch_listener
 

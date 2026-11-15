@@ -1936,7 +1936,7 @@ class MCPToolRegistry:
             recent_ids = [str(n.id) for n in recent_notes]
 
             return (
-                f"🌐 Panorama 360° de la Collection AnkiForge :\n"
+                f"🌐 Panorama 360° de la Collection AnkiDraft :\n"
                 f"- Total Paquets : {total_decks}\n"
                 f"- Total Notes : {total_notes}\n"
                 f"- Total Cartes : {total_cards}\n"
@@ -2764,7 +2764,7 @@ class MCPToolRegistry:
 
     @staticmethod
     def search_app_documentation(query: str, category: str = "", limit: int = 5, scope: str = "user") -> str:
-        """Recherche des extraits pertinents dans la documentation officielle d'AnkiForge via SQLite FTS5 BM25."""
+        """Recherche des extraits pertinents dans la documentation officielle d'AnkiDraft via SQLite FTS5 BM25."""
         from ankidraft.services.documentation.doc_service import search_app_documentation as _search_doc
 
         return _search_doc(query=query, category=category, limit=limit, scope=scope)
@@ -2801,7 +2801,7 @@ class MCPToolRegistry:
             if not agents:
                 return "Aucun agent dédié trouvé dans la collection."
 
-            lines = [f"🤖 **Agents Dédiés AnkiForge Disponibles ({len(agents)}) :**\n"]
+            lines = [f"🤖 **Agents Dédiés AnkiDraft Disponibles ({len(agents)}) :**\n"]
             for ag in agents:
                 raw_tools = ag.allowed_tools or "[]"
                 try:
@@ -2873,7 +2873,7 @@ class MCPToolRegistry:
             logger.error("Erreur création provider pour l'agent '%s' : %s", agent_name, e)
             return f"Erreur lors de l'initialisation du fournisseur IA pour l'agent '{agent_name}' : {e}"
 
-        system_prompt = agent.system_prompt or "Tu es un agent dédié AnkiForge. Réponds de manière concise et pertinente."
+        system_prompt = agent.system_prompt or "Tu es un agent dédié AnkiDraft. Réponds de manière concise et pertinente."
         try:
             response = provider.generate(system_prompt=system_prompt, user_prompt=message, response_format="text")
             return str(response)
@@ -3791,7 +3791,7 @@ class MCPToolRegistry:
 
     @staticmethod
     def list_pipelines(limit: int = 50, offset: int = 0) -> str:
-        """Liste les pipelines DAG configurés dans AnkiForge avec leurs étapes ordonnées, leurs comportements de branchement et le statut de leur dernière exécution."""
+        """Liste les pipelines DAG configurés dans AnkiDraft avec leurs étapes ordonnées, leurs comportements de branchement et le statut de leur dernière exécution."""
         try:
             eff_limit = max(1, min(int(limit), 200))
             eff_offset = max(0, int(offset))
@@ -5706,11 +5706,11 @@ DEFAULT_CONSULTANT_TOOLS: list[dict[str, Any]] = [
         "type": "function",
         "function": {
             "name": "search_app_documentation",
-            "description": "Recherche des explications, guides et références d'architecture dans la documentation officielle d'AnkiForge via SQLite FTS5 BM25.",
+            "description": "Recherche des explications, guides et références d'architecture dans la documentation officielle d'AnkiDraft via SQLite FTS5 BM25.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "query": {"type": "string", "description": "Mots-clés ou question sur le fonctionnement d'AnkiForge"},
+                    "query": {"type": "string", "description": "Mots-clés ou question sur le fonctionnement d'AnkiDraft"},
                     "category": {"type": "string", "description": "Filtre optionnel par catégorie (ex: 'Fonctionnalités', 'Architecture', 'Guides & Prompts', 'Développement')"},
                     "limit": {"type": "integer", "description": "Nombre maximum de résultats (défaut: 5)"},
                 },
@@ -5722,7 +5722,7 @@ DEFAULT_CONSULTANT_TOOLS: list[dict[str, Any]] = [
         "type": "function",
         "function": {
             "name": "read_app_doc_page",
-            "description": "Consulte le contenu intégral ou une section d'une page de documentation officielle d'AnkiForge (ex: 'features/consultant_mcp.md').",
+            "description": "Consulte le contenu intégral ou une section d'une page de documentation officielle d'AnkiDraft (ex: 'features/consultant_mcp.md').",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -5737,7 +5737,7 @@ DEFAULT_CONSULTANT_TOOLS: list[dict[str, Any]] = [
         "type": "function",
         "function": {
             "name": "list_app_doc_topics",
-            "description": "Consulte le sommaire exhaustif de la documentation officielle d'AnkiForge classé par thématiques.",
+            "description": "Consulte le sommaire exhaustif de la documentation officielle d'AnkiDraft classé par thématiques.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -6161,7 +6161,7 @@ DEFAULT_CONSULTANT_TOOLS: list[dict[str, Any]] = [
         "type": "function",
         "function": {
             "name": "list_pipelines",
-            "description": "Liste les pipelines DAG configurés dans AnkiForge avec leurs étapes ordonnées et le statut de leur dernière exécution.",
+            "description": "Liste les pipelines DAG configurés dans AnkiDraft avec leurs étapes ordonnées et le statut de leur dernière exécution.",
             "parameters": {
                 "type": "object",
                 "properties": {

@@ -201,12 +201,12 @@ class CrashReporterService:
         timestamp_str = crash.timestamp or now_utc
 
         md_parts = [
-            "# 💥 [Crash Report] Arrêt Inattendu d'AnkiForge",
+            "# 💥 [Crash Report] Arrêt Inattendu d'AnkiDraft",
             "",
-            f"*Rapport d'incident généré le {now_utc} depuis AnkiForge.*",
+            f"*Rapport d'incident généré le {now_utc} depuis AnkiDraft.*",
             "",
             "### 🖥️ Environnement & Versions",
-            f"- **AnkiForge :** `{v_info.full_display_version}` ({v_info.build_channel}) commit `{v_info.commit_hash[:8] if v_info.commit_hash else 'local'}`",
+            f"- **AnkiDraft :** `{v_info.full_display_version}` ({v_info.build_channel}) commit `{v_info.commit_hash[:8] if v_info.commit_hash else 'local'}`",
             f"- **OS / Plateforme :** `{clean_platform}`",
             f"- **Python :** `{clean_py}`",
             f"- **Profil actif :** `{clean_profile}`",

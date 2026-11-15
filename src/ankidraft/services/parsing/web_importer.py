@@ -32,7 +32,7 @@ from ankidraft.services.cards.media_manager import MediaManager
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) AnkiForge/1.1"
+DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) AnkiDraft/1.1"
 DEFAULT_TIMEOUT = 15.0
 DEFAULT_MAX_BYTES = 10 * 1024 * 1024  # 10 Mo
 DEFAULT_MAX_IMAGES = 30

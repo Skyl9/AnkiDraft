@@ -17,11 +17,11 @@ from ankidraft.version import VERSION_INFO
 
 logger = logging.getLogger(__name__)
 
-GITHUB_API_BASE = "https://api.github.com/repos/Skyl9/AnkiForge/releases"
+GITHUB_API_BASE = "https://api.github.com/repos/Skyl9/AnkiDraft/releases"
 GITHUB_RELEASES_LIST_URL = f"{GITHUB_API_BASE}?per_page=100"
 GITHUB_LATEST_URL = f"{GITHUB_API_BASE}/latest"
 GITHUB_NIGHTLY_URL = f"{GITHUB_API_BASE}/tags/nightly"
-GITHUB_TAGS_URL = "https://api.github.com/repos/Skyl9/AnkiForge/tags?per_page=30"
+GITHUB_TAGS_URL = "https://api.github.com/repos/Skyl9/AnkiDraft/tags?per_page=30"
 
 SETTINGS_KEY_LAST_CHECK = "updates/last_check_timestamp"
 SETTINGS_KEY_CACHED_VERSION = "updates/cached_latest_version"
@@ -151,7 +151,7 @@ def get_cached_update_info() -> UpdateInfo | None:
             return None
     elif not cached_version or not is_version_strictly_greater(cached_version, current_version):
         return None
-    html_url = str(metadata.get("html_url", f"https://github.com/Skyl9/AnkiForge/releases/tag/v{cached_version}"))
+    html_url = str(metadata.get("html_url", f"https://github.com/Skyl9/AnkiDraft/releases/tag/v{cached_version}"))
 
     logger.debug(
         "Cache de mise à jour restauré : v%s [%s] (Actuelle : v%s)",
@@ -161,8 +161,8 @@ def get_cached_update_info() -> UpdateInfo | None:
     )
     return UpdateInfo(
         version=cached_version,
-        title=str(metadata.get("title", f"AnkiForge v{cached_version}")),
-        release_notes=str(metadata.get("release_notes", "Une nouvelle version d'AnkiForge est disponible.")),
+        title=str(metadata.get("title", f"AnkiDraft v{cached_version}")),
+        release_notes=str(metadata.get("release_notes", "Une nouvelle version d'AnkiDraft est disponible.")),
         html_url=html_url,
         published_at=str(metadata.get("published_at", "")),
         channel=cached_channel,
@@ -234,7 +234,7 @@ class UpdateCheckerWorker(QRunnable):
 
         headers = {
             "Accept": "application/vnd.github.v3+json",
-            "User-Agent": f"AnkiForge/v{self.current_version} ({VERSION_INFO.platform_str})",
+            "User-Agent": f"AnkiDraft/v{self.current_version} ({VERSION_INFO.platform_str})",
         }
 
         try:
@@ -251,7 +251,7 @@ class UpdateCheckerWorker(QRunnable):
 
     def _check_stable_update(self, headers: dict[str, str], active_channel: str, settings: Any) -> None:
         """Interroge la liste des releases pour identifier la version maximale selon SemVer vx.x.x."""
-        logger.info("Interrogation de la release stable courante AnkiForge : %s", GITHUB_LATEST_URL)
+        logger.info("Interrogation de la release stable courante AnkiDraft : %s", GITHUB_LATEST_URL)
         etag = "" if self.force else str(settings.value(SETTINGS_KEY_ETAG_STABLE, "")).strip()
         if etag:
             headers = {**headers, "If-None-Match": etag}
@@ -322,8 +322,8 @@ class UpdateCheckerWorker(QRunnable):
             logger.info("Nouvelle version disponible : v%s [%s] (Actuelle : v%s)", highest_tag, active_channel, self.current_version)
             info = UpdateInfo(
                 version=highest_tag,
-                title=str(highest_release.get("name", f"AnkiForge v{highest_tag}")),
-                release_notes=str(highest_release.get("body", "Une nouvelle version d'AnkiForge est disponible.")),
+                title=str(highest_release.get("name", f"AnkiDraft v{highest_tag}")),
+                release_notes=str(highest_release.get("body", "Une nouvelle version d'AnkiDraft est disponible.")),
                 html_url=str(highest_release.get("html_url", GITHUB_LATEST_URL)),
                 published_at=str(highest_release.get("published_at", "")),
                 channel=active_channel,
@@ -339,7 +339,7 @@ class UpdateCheckerWorker(QRunnable):
         """Conserve les métadonnées utiles au dialogue affiché depuis le cache."""
         metadata = {
             "title": str(release.get("name", "")),
-            "release_notes": str(release.get("body", "Une nouvelle version d'AnkiForge est disponible.")),
+            "release_notes": str(release.get("body", "Une nouvelle version d'AnkiDraft est disponible.")),
             "html_url": str(release.get("html_url", GITHUB_LATEST_URL)),
             "published_at": str(release.get("published_at", "")),
             "is_prerelease": bool(release.get("prerelease", channel == "nightly")),
@@ -360,8 +360,8 @@ class UpdateCheckerWorker(QRunnable):
             self.signals.update_available.emit(
                 UpdateInfo(
                     version=cached_version,
-                    title=str(metadata.get("title", f"AnkiForge v{cached_version}")),
-                    release_notes=str(metadata.get("release_notes", "Une nouvelle version d'AnkiForge est disponible.")),
+                    title=str(metadata.get("title", f"AnkiDraft v{cached_version}")),
+                    release_notes=str(metadata.get("release_notes", "Une nouvelle version d'AnkiDraft est disponible.")),
                     html_url=str(metadata.get("html_url", GITHUB_LATEST_URL)),
                     published_at=str(metadata.get("published_at", "")),
                     channel="stable",
@@ -400,9 +400,9 @@ class UpdateCheckerWorker(QRunnable):
         settings.setValue(SETTINGS_KEY_CACHED_CHANNEL, active_channel)
         info = UpdateInfo(
             version=highest_tag,
-            title=f"AnkiForge v{highest_tag}",
-            release_notes="Une nouvelle version d'AnkiForge est disponible. Consultez GitHub pour les notes et les téléchargements.",
-            html_url=f"https://github.com/Skyl9/AnkiForge/releases/tag/v{highest_tag}",
+            title=f"AnkiDraft v{highest_tag}",
+            release_notes="Une nouvelle version d'AnkiDraft est disponible. Consultez GitHub pour les notes et les téléchargements.",
+            html_url=f"https://github.com/Skyl9/AnkiDraft/releases/tag/v{highest_tag}",
             published_at="",
             channel=active_channel,
             assets=[],
@@ -465,7 +465,7 @@ class UpdateCheckerWorker(QRunnable):
         if is_available:
             info = UpdateInfo(
                 version=remote_tag,
-                title=str(data.get("name", "AnkiForge Nightly")),
+                title=str(data.get("name", "AnkiDraft Nightly")),
                 release_notes=str(data.get("body", "Nouvelle version Nightly disponible.")),
                 html_url=str(data.get("html_url", GITHUB_NIGHTLY_URL)),
                 published_at=published_at,

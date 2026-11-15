@@ -83,7 +83,7 @@ def cloze_starter_pack_entry() -> dict[str, Any]:
         "id": "cloze",
         "name": definition["name"],
         "category": "Mémorisation",
-        "author": "AnkiForge",
+        "author": "AnkiDraft",
         "version": "1.0.0",
         "description": definition["description"],
         "fields_schema": definition["fields_schema"],

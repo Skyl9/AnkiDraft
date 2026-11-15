@@ -281,7 +281,7 @@ def _compute_guide_version_hash() -> str:
 
 _GUIDE_VERSION_HASH: str = _compute_guide_version_hash()
 
-mcp = MCPServer("AnkiForge")
+mcp = MCPServer("AnkiDraft")
 get_mcp_activity_tracker().attach_to_server(mcp)
 
 
@@ -1631,19 +1631,19 @@ def reindex_document(
 
 @mcp.tool()
 def search_app_documentation(query: str, category: str = "", limit: int = 5, scope: str = "user") -> str:
-    """Recherche des explications, guides et références d'architecture dans la documentation officielle d'AnkiForge via SQLite FTS5 BM25."""
+    """Recherche des explications, guides et références d'architecture dans la documentation officielle d'AnkiDraft via SQLite FTS5 BM25."""
     return MCPToolRegistry.search_app_documentation(query, category, limit, scope=scope)
 
 
 @mcp.tool()
 def read_app_doc_page(doc_path: str, section_anchor: str = "", scope: str = "user") -> str:
-    """Consulte le contenu intégral ou une section d'une page de documentation officielle d'AnkiForge (ex: 'features/consultant_mcp.md')."""
+    """Consulte le contenu intégral ou une section d'une page de documentation officielle d'AnkiDraft (ex: 'features/consultant_mcp.md')."""
     return MCPToolRegistry.read_app_doc_page(doc_path, section_anchor, scope=scope)
 
 
 @mcp.tool()
 def list_app_doc_topics(category: str = "", scope: str = "user") -> str:
-    """Consulte le sommaire exhaustif de la documentation officielle d'AnkiForge classé par thématiques."""
+    """Consulte le sommaire exhaustif de la documentation officielle d'AnkiDraft classé par thématiques."""
     return MCPToolRegistry.list_app_doc_topics(category, scope=scope)
 
 
@@ -1704,10 +1704,10 @@ def get_artifact_resource(filename: str) -> str:
 
 @mcp.prompt("explain_ankiforge_feature")
 def prompt_explain_feature(feature_name: str) -> str:
-    """Prompt guidé pour expliquer pas à pas une fonctionnalité d'AnkiForge avec extraits officiels."""
+    """Prompt guidé pour expliquer pas à pas une fonctionnalité d'AnkiDraft avec extraits officiels."""
     doc_summary = MCPToolRegistry.get_feature_quick_help(feature_name)
     return _PROMPT_ENV.from_string(
-        "Tu es un expert d'AnkiForge. Explique la fonctionnalité '{{ feature_name }}' en t'appuyant sur la documentation officielle ci-dessous :\n\n"
+        "Tu es un expert d'AnkiDraft. Explique la fonctionnalité '{{ feature_name }}' en t'appuyant sur la documentation officielle ci-dessous :\n\n"
         "<<< CONTENU UTILISATEUR (FONCTIONNALITÉ) >>>\n{{ feature_name }}\n<<< FIN >>>\n\n"
         "<<< CONTENU DOCUMENTATION OFFICIELLE >>>\n{{ doc_summary }}\n<<< FIN >>>\n\n"
         "Donne des exemples concrets d'utilisation et les bonnes pratiques recommandées."
@@ -1716,10 +1716,10 @@ def prompt_explain_feature(feature_name: str) -> str:
 
 @mcp.prompt("audit_architecture_compliance")
 def prompt_audit_architecture(target_code_or_rule: str) -> str:
-    """Prompt guidé pour vérifier la conformité d'un code ou d'une conception avec les 9 dossiers d'architecture AnkiForge."""
+    """Prompt guidé pour vérifier la conformité d'un code ou d'une conception avec les 9 dossiers d'architecture AnkiDraft."""
     arch_doc = MCPToolRegistry.read_app_doc_page("Dossier_architecture/02_architecture_technique.md")
     return _PROMPT_ENV.from_string(
-        "Tu es l'architecte en chef d'AnkiForge. Vérifie que le code ou la proposition suivante respecte les principes architecturaux "
+        "Tu es l'architecte en chef d'AnkiDraft. Vérifie que le code ou la proposition suivante respecte les principes architecturaux "
         "décrits dans la documentation :\n\n"
         "<<< CONTENU DOCUMENTATION ARCHITECTURE >>>\n{{ arch_doc }}...\n<<< FIN >>>\n\n"
         "Élément à auditer :\n<<< CONTENU UTILISATEUR >>>\n{{ target_code_or_rule }}\n<<< FIN >>>"
@@ -1762,7 +1762,7 @@ def get_album_plates(
 
 @mcp.tool()
 def list_pipelines(limit: int = 50, offset: int = 0) -> str:
-    """Liste les pipelines DAG configurés dans AnkiForge (id, nom, description, étapes ordonnées, branchements, statut du dernier run)."""
+    """Liste les pipelines DAG configurés dans AnkiDraft (id, nom, description, étapes ordonnées, branchements, statut du dernier run)."""
     return MCPToolRegistry.list_pipelines(limit=limit, offset=offset)
 
 
@@ -2335,7 +2335,7 @@ def get_workspace_agent_guide_resource() -> str:
 
 def run_server(transport: Literal["stdio", "sse", "streamable-http"] = "streamable-http") -> None:
     """Démarre le serveur FastMCP en mode asynchrone sécurisé (transport par défaut: streamable-http)."""
-    logger.info("Démarrage du serveur MCP AnkiForge (transport: %s)...", transport)
+    logger.info("Démarrage du serveur MCP AnkiDraft (transport: %s)...", transport)
     if db.is_closed():
         db.connect()
 
@@ -2347,7 +2347,7 @@ def run_server(transport: Literal["stdio", "sse", "streamable-http"] = "streamab
         else:
             mcp.run(transport="stdio")
     except KeyboardInterrupt:
-        logger.info("Arrêt du serveur MCP AnkiForge.")
+        logger.info("Arrêt du serveur MCP AnkiDraft.")
     finally:
         if not db.is_closed():
             db.close()

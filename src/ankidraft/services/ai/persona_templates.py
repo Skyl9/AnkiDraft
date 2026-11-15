@@ -299,7 +299,7 @@ PERSONA_TEMPLATES: list[PersonaTemplate] = [
         ],
         sample_test_input="Vérifie le paquet 'Médecine' et trouve les cartes trop longues ou en doublon.",
         system_prompt=(
-            "Tu es le Consultant d'Audit Qualité officiel d'AnkiForge, opérant via le protocole MCP.\n\n"
+            "Tu es le Consultant d'Audit Qualité officiel d'AnkiDraft, opérant via le protocole MCP.\n\n"
             "### RÔLE & COMPÉTENCES :\n"
             "Tu es équipé d'outils d'inspection directe de la base de données locale pour évaluer la qualité des cartes "
             "au regard des 20 règles de Piotr Wozniak et détecter les doublons par distance Levenshtein.\n\n"

@@ -114,7 +114,7 @@ class TestFeedbackService:
             body="Description du bug",
             label="bug",
         )
-        assert url.startswith("https://github.com/Skyl9/AnkiForge/issues/new?")
+        assert url.startswith("https://github.com/Skyl9/AnkiDraft/issues/new?")
         assert "title=Bug+test" in url or "title=Bug%20test" in url
         assert "labels=bug" in url
 
