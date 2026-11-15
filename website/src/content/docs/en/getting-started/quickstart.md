@@ -37,17 +37,17 @@ You do not need a credit card or paid subscription to use the built-in Studio �
 1. **Google AI Studio (`Gemini`) — easiest starting point**: sign in with a Google account at [aistudio.google.com](https://aistudio.google.com/) and click **Create API key** (no credit card required). Paste the key (`AIzaSy...`) under **Settings > AI Engines > Gemini**, click **Test**, and pick the built-in **`Google Gemini 3.5 Flash Lite`** preset (great for PDFs and diagrams within daily rate limits; avoid sending sensitive private data on the free tier).
 2. **OpenRouter (`:free`) — multiple free models from one key**: create a free account at [openrouter.ai](https://openrouter.ai/) with no credit card, generate a key (`sk-or-...`), and use built-in `$0` models ending in `:free` such as **`OpenRouter Free (Qwen 3.8 27B)`** (subject to per-minute and daily rate caps).
 3. **Groq Console — ultra-fast open models**: generate a free key (`gsk_...`) at [console.groq.com](https://console.groq.com/) with no credit card for high-speed card drafting and auditing (subject to tokens-per-minute limits).
-4. **Student perks & campus access**: use your university email to check eligibility for the **GitHub Student Developer Pack** (including **GitHub Models** access), **Google AI student offers**, **Mistral's** free experimentation tier ([console.mistral.ai](https://console.mistral.ai/)), or university-hosted AI endpoints / academic cloud credits (configurable via **Custom model…**).
+4. **Student perks, gateway & campus access**: use your university email to check eligibility for the **GitHub Student Developer Pack** (**GitHub Models**), **Google AI student offers**, **Mistral** ([console.mistral.ai](https://console.mistral.ai/)), the **OpenCode Gateway**, or university-hosted endpoints (added via **Add a model ▾ › Custom model…**).
 
 :::tip
-See exact UI presets, privacy tips, and budget caps in [Configuring AI Providers](/en/ai-setup/ia_fournisseurs/).
+See exact UI presets, privacy tips, and token caps in [Configuring AI Providers](/en/ai-setup/ia_fournisseurs/).
 :::
 
 ## Get Started in 4 Simple Steps
 
 ### Step 1: Select or Create Your Profile
 
-On first launch, AnkiDraft opens the `default` profile. To keep bulky course files separate from personal decks, create a dedicated profile from the selector at the top of the window ([Manage profiles](/en/getting-started/profiles-and-workspaces/)).
+On first launch, AnkiDraft opens the `default` profile. To keep bulky course files separate from personal decks, create a dedicated profile from **`Profil : default`** at the bottom of the left sidebar ([Manage profiles](/en/getting-started/profiles-and-workspaces/)).
 
 ### Step 2: Choose an AI Engine (Optional)
 

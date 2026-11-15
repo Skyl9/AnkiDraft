@@ -20,9 +20,9 @@ Visit the [AnkiDraft homepage](https://ankidraft.app/en/#download) or go straigh
 ### On macOS
 1. Double-click the `.dmg` disk image downloaded from the [latest release](https://github.com/Skyl9/AnkiDraft/releases/latest).
 2. Drag the application icon into your **Applications** folder.
-3. **First launch (unsigned Apple build):** macOS will show a Gatekeeper warning because the app is not notarized by Apple.
+3. **First launch:** official macOS releases are notarized by Apple; if you install a nightly or unsigned build and macOS shows a Gatekeeper warning:
    - Open **System Settings** → **Privacy & Security**, scroll to **Security**, and click **Open Anyway** for AnkiDraft (or **Right-click** → **Open** on the app in Applications).
-   - You only need to do this **once**: subsequent built-in updates are automatic and will not ask for this step again.
+   - You only need to do this **once** for that installation.
 
 ### On Windows *(not yet tested in production)*
 1. If you download the `.exe` installer, double-click it and follow the wizard (no administrator rights required for a user-level installation).
@@ -45,10 +45,12 @@ All your study data stays locally on your drive inside your user folder:
 Each profile contains:
 - `ankidraft.db`: your local SQLite database of cards, documents, and history.
 - `media/`: images and audio clips attached to your flashcards.
+- `backups/`: automatic local snapshots (up to 5 recent backups kept on startup and before sensitive operations).
+- `staging/`: isolated temporary workspace for staged transfers and MCP file staging.
 
 ## 4. Automatic Updates
 
-AnkiDraft automatically checks for official releases and verifies both the cryptographic signature (Ed25519) and SHA-256 checksum before installing any update.
+AnkiDraft automatically checks for official releases and verifies both the SHA-256 manifest (`checksums.txt`) and its Ed25519 cryptographic signature (`checksums.txt.sig`) when provided.
 
 ## 5. Report an Issue or Suggest Improvements
 

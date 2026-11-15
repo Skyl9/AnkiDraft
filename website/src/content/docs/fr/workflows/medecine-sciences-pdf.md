@@ -11,7 +11,7 @@ Ce parcours montre comment transformer un polycopié universitaire dense (médec
 2. Choisissez la méthode adaptée :
    - **Extraction rapide** pour un PDF numérique propre sans formules complexes.
    - **Reconnaissance avancée (OCR Marker)** pour les scans, polycopiés à deux colonnes, tableaux et équations mathématiques.
-3. AnkiDraft extrait automatiquement les schémas et figures dans votre bibliothèque média. Consultez [Importer des PDF](/fr/sources/import-pdf/) pour les réglages détaillés.
+3. AnkiDraft extrait automatiquement les schémas et figures dans votre bibliothèque média (vous pouvez aussi importer une liasse de schémas sous forme d'[Album d'images](/fr/sources/albums-images/)). Consultez [Importer des PDF](/fr/sources/import-pdf/) pour les réglages détaillés.
 
 ![Vue Documents d'AnkiDraft](assets/screen_documents.png)
 
@@ -29,7 +29,7 @@ Dans le sélecteur de portée ([Cibler les chapitres](/fr/sources/scope-and-slic
 
 1. Pour travailler sur un chapitre ou un extrait ciblé avec aperçu direct, ouvrez **Studio de Création** (<kbd>Alt+2</kbd>). Pour traiter plusieurs chapitres ou tout un polycopié à la chaîne, ouvrez **Batch Factory** (<kbd>Alt+6</kbd>) et cliquez sur **Composer le lot…** (<kbd>Ctrl+N</kbd>).
 2. Choisissez un modèle adapté (*Basique*, *Texte à trous* ou *Image Occlusion*) et le paquet de destination (ex. `Médecine::Cardiologie`).
-3. Dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), vérifiez le rendu mathématique en direct et créez des textes à trous sur les mots-clés avec <kbd>Ctrl+Shift+C</kbd> (<kbd>Cmd+Shift+C</kbd> sur macOS) ou masquez les légendes d'un schéma ([Éditeur de Notes & KaTeX](/fr/cards/editeur_notes_katex/)).
+3. Dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), vérifiez le rendu mathématique en direct, créez des textes à trous sur les mots-clés avec <kbd>Ctrl+Shift+C</kbd> (<kbd>Cmd+Shift+C</kbd> sur macOS) ou masquez les légendes d'un schéma ([Éditeur de Notes & KaTeX](/fr/cards/editeur_notes_katex/) · [Image Occlusion](/fr/cards/image-occlusion/)).
 
 ![Éditeur de Notes et rendu KaTeX](assets/screen_edition.png)
 

@@ -21,7 +21,7 @@
 - [Language Learning & Audio Workflow: Offline TTS Flashcards](https://ankidraft.app/en/workflows/langues-et-audio-tts/): Build language vocabulary decks in AnkiDraft with offline neural text-to-speech audio (Kokoro or Piper), instant preview, and MCP batch enrichment.
 - [Medicine & STEM Workflow: Dense PDFs, Math, and Diagrams](https://ankidraft.app/en/workflows/medecine-sciences-pdf/): Step-by-step guide to turning dense medical or STEM textbook PDFs into atomic Anki flashcards complete with KaTeX math formulas, diagrams, and MCP.
 - [Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene](https://ankidraft.app/en/workflows/sauvetage-et-hygiene-anki-mcp/): Clean up an Anki deck (.apkg) or full collection (.colpkg): spot duplicates and leeches, run an MCP hygiene campaign, and split overloaded cards safely.
-- [Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](https://ankidraft.app/en/workflows/zero-cle-api-agent-mcp/): Connect Claude, Cursor, or Antigravity to AnkiDraft's local MCP server, load your Skills workspace, and review every flashcard batch in Safeguard.
+- [Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](https://ankidraft.app/en/workflows/zero-cle-api-agent-mcp/): Connect Claude, Cursor, or Antigravity to AnkiDraft's local MCP server, sync your agent workspace, and review every batch in Safeguard without API keys.
 
 ### Sources & Import
 - [Image Albums, Photo Scans, and Vision OCR](https://ankidraft.app/en/sources/albums-images/): Combine whiteboard photos, scanned handouts, and diagrams in an Image Album, transcribe pages with Vision AI, index in RAG, and forge flashcards.
@@ -70,7 +70,7 @@
 - [Parcours Langues & Audio : Vocabulaire et Prononciation TTS](https://ankidraft.app/fr/workflows/langues-et-audio-tts/): Apprenez une langue avec AnkiDraft : générez des cartes de vocabulaire illustrées d'un audio naturel hors-ligne (Kokoro ou Piper) en Studio ou MCP.
 - [Parcours Médecine & Sciences : PDF, Formules et Schémas](https://ankidraft.app/fr/workflows/medecine-sciences-pdf/): Guide pas-à-pas pour transformer un cours PDF dense de médecine ou de sciences en flashcards Anki atomiques avec formules KaTeX, schémas et MCP.
 - [Parcours Sauvetage Anki : Doublons, Sangsues et Hygiène MCP](https://ankidraft.app/fr/workflows/sauvetage-et-hygiene-anki-mcp/): Assainissez un paquet (.apkg) ou une collection Anki (.colpkg) : repérez doublons et sangsues, lancez une hygiène MCP et scindez vos cartes longues.
-- [Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor](https://ankidraft.app/fr/workflows/zero-cle-api-agent-mcp/): Connectez Claude, Cursor ou Antigravity au serveur MCP d'AnkiDraft, chargez votre espace de Skills et validez vos cartes dans Garde-Fou sans clé API.
+- [Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor](https://ankidraft.app/fr/workflows/zero-cle-api-agent-mcp/): Connectez Claude, Cursor ou Antigravity au serveur MCP local d'AnkiDraft, synchronisez votre workspace et validez chaque lot dans Garde-Fou sans clé API.
 
 ### Sources & Import
 - [Albums d'Images, Scans Photo et OCR Vision](https://ankidraft.app/fr/sources/albums-images/): Rassemblez photos de tableaux, scans et schémas dans un Album d'Images, transcrivez-les en Markdown par IA vision, indexez en RAG et créez vos cartes.

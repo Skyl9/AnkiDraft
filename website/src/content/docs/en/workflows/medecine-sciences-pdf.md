@@ -11,7 +11,7 @@ This workflow shows how to turn dense university handouts or STEM textbooks (med
 2. Pick the extraction engine matching your file:
    - **Fast standard extraction** for clean digital PDFs without complex mathematical notation.
    - **Advanced OCR (Marker)** for scanned handouts, multi-column layouts, tables, and mathematical equations.
-3. Extracted figures and diagrams are saved automatically to your local media library. See [Import PDFs, Slides, and Ebooks](/en/sources/import-pdf/) for details.
+3. Extracted figures and diagrams are saved automatically to your local media library (you can also bundle scans or plates into an [Image Album](/en/sources/albums-images/)). See [Import PDFs, Slides, and Ebooks](/en/sources/import-pdf/) for details.
 
 ![AnkiDraft Documents View](assets/screen_documents.png)
 
@@ -29,7 +29,7 @@ In the [Scope & Chapter Selector](/en/sources/scope-and-slices/):
 
 1. To draft interactively from one chapter or excerpt, open **Creation Studio** (<kbd>Alt+2</kbd>). To process multiple chapters or an entire textbook in a queue, switch to **Batch Factory** (<kbd>Alt+6</kbd>) and click **Batch Slice Composer** (<kbd>Ctrl+N</kbd>).
 2. Pick the target note type (*Basic*, *Cloze*, or *Image Occlusion*) and destination deck (e.g., `Medicine::Cardiology`).
-3. In **Editor & Browser** (<kbd>Alt+3</kbd>), verify live math rendering, turn key terms into cloze deletions with <kbd>Ctrl+Shift+C</kbd> (<kbd>Cmd+Shift+C</kbd> on macOS), or mask diagram labels ([Notes Editor & KaTeX](/en/cards/editeur_notes_katex/)).
+3. In **Editor & Browser** (<kbd>Alt+3</kbd>), verify live math rendering, turn key terms into cloze deletions with <kbd>Ctrl+Shift+C</kbd> (<kbd>Cmd+Shift+C</kbd> on macOS), or mask diagram labels ([Notes Editor & KaTeX](/en/cards/editeur_notes_katex/) · [Image Occlusion](/en/cards/image-occlusion/)).
 
 ![Notes Editor and Live KaTeX Rendering](assets/screen_edition.png)
 

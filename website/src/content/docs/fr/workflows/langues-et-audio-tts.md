@@ -24,17 +24,17 @@ Par défaut, pour garder l'installeur léger, les moteurs neuronaux hors-ligne (
 2. Choisissez votre mode de fonctionnement :
    - **Piper TTS (recommandé hors-ligne)** : dépliez la section **MOTEUR LOCAL PIPER**, cliquez sur **Télécharger Piper CLI (1-Clic)**, puis dans **Voix additionnelles**, sélectionnez la voix de votre langue et cliquez sur **Télécharger**.
    - **Kokoro-82M (optionnel, haute fidélité hors-ligne)** : dépliez **MOTEUR LOCAL KOKORO-82M (OPTIONNEL)** et cliquez sur **Installer Kokoro (1-Clic)** (puis **Télécharger les modèles Kokoro** si demandé).
-   - **Sans téléchargement préalable** : utilisez **Edge-TTS (Voix Neuronales Cloud Gratuit)** (nécessite Internet, sans clé API) ou le **Moteur Système OS** (voix natives de votre ordinateur).
-3. Dans **Moteur de synthèse**, sélectionnez le moteur installé (**Piper TTS**, **Kokoro-82M**, **Edge-TTS** ou **Moteur Système OS**), choisissez la voix par défaut et cliquez sur **Tester la voix sélectionnée**.
+   - **Sans téléchargement préalable** : utilisez **Edge-TTS (Voix Neuronales Cloud Gratuit)** (nécessite Internet, sans clé API) ou **Moteur Système OS (Fallback Natif)**.
+3. Choisissez le moteur installé (**Piper TTS (Local Hors-Ligne Standalone)**, **Kokoro-82M**, **Edge-TTS** ou **Moteur Système OS**), définissez vos voix par défaut et cliquez sur **Tester la voix sélectionnée**.
 
 :::note
-Les modules téléchargés sont stockés localement dans le dossier outils d'AnkiDraft (`tools/tts/piper` et `tools/tts/kokoro`) : une fois installés, la génération audio fonctionne **100 % hors-ligne**.
+Les modules téléchargés sont stockés localement dans `~/.ankidraft/tools/tts/` (`piper/`, `voices/` et `kokoro/`) : une fois installés, la génération audio fonctionne **100 % hors-ligne**.
 :::
 
 ### Étape B — Générer l'audio sur vos cartes
 
-1. **Sur une seule carte** : dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), cliquez dans le champ de la phrase cible puis sur l'icône **TTS / haut-parleur** pour créer et écouter le fichier `[sound:tts_xxx.mp3]` immédiatement.
-2. **Sur tout un paquet** : sélectionnez plusieurs notes dans le navigateur et lancez la **Génération TTS par lot** pour sonoriser toutes les cartes manquantes en arrière-plan.
+1. **Champ par champ dans l'éditeur** : dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), cliquez dans le champ de la phrase cible puis sur l'icône haut-parleur **Générer la prononciation audio (TTS)** pour créer et écouter le fichier `[sound:tts_xxx.mp3]` immédiatement.
+2. **Par lot sur tout un paquet** : utilisez une étape **Génération Audio (TTS)** dans un [Pipeline DAG](/fr/cards/dag_et_rag/) ou l'outil MCP `generate_cards_batch_audio` (décrit en section 3 ci-dessous).
 
 ![Navigateur et Éditeur de cartes AnkiDraft](assets/screen_edition.png)
 

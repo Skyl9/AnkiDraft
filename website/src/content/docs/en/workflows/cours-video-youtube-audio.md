@@ -9,8 +9,8 @@ Recorded university lectures, YouTube explainers, and seminar audio files pack h
 
 1. Open **My Documents** (<kbd>Alt+7</kbd>).
 2. Choose your source type ([Import YouTube & Audio](/en/sources/import-youtube-audio/)):
-   - **YouTube lecture**: click **Import from Web** and paste the video URL. AnkiDraft downloads official captions when present or falls back to local speech-to-text transcription.
-   - **Recorded lecture or voice memo** (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.ogg`): drag and drop the file into **My Documents**. Local **Whisper** transcription runs on your machine without uploading your recordings to third-party servers.
+   - **YouTube lecture**: click **Import from Web / YouTube** (or **Import from Web**) and paste the video URL. AnkiDraft downloads official captions when present or falls back to speech-to-text transcription (local Whisper, or OpenAI / Groq API key if configured).
+   - **Recorded lecture or voice memo** (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.ogg`): drag and drop the file into **My Documents**. Local **Whisper** (`whisper` / `whisper-cli`) transcribes audio offline without uploading your recordings to third-party servers.
 
 ![AnkiDraft Documents View](assets/screen_documents.png)
 

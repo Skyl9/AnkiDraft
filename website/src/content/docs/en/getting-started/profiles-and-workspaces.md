@@ -7,16 +7,17 @@ AnkiDraft lets you completely isolate multiple collections using **user profiles
 
 ## 1. Why Use Multiple Profiles?
 
-Each profile has its own SQLite database and dedicated media folder (images, audio). This makes profiles ideal for **splitting your work into large, focused collections**:
+Each profile has its own SQLite database (`ankidraft.db`), `media/` folder, `staging/` area, and `backups/` snapshots. This makes profiles ideal for **splitting your work into large, focused collections**:
 - **Separate your personal notes from your academic years** (e.g., *Personal Notes / Languages*, *Year 1 Med School*, *Year 2 Med School*, *Exam Prep*).
 - **Avoid getting lost in bulky documents**: imported study materials (PDF textbooks, lecture slides, video transcripts) can quickly become quite large. Isolating each major area in its own profile keeps your library clean, fast, and easy to navigate.
 
-## 2. Creating or Switching Profiles
+## 2. Creating, Transferring, or Switching Profiles
 
-1. Open the profile selector from the application header or at startup.
-2. Click **New Profile** and give it a clear name.
-3. Switch between profiles in one click: AnkiDraft automatically locks the active profile to prevent concurrent write conflicts.
+1. Click **`Profil : <name>`** at the bottom of the left sidebar (or use the startup *Workspaces & Profiles* dialog).
+2. Enter a clear name and click **+ Create** to add a new independent space, or select an existing profile to switch.
+3. AnkiDraft automatically locks the active profile (`ProfileLockService`) to prevent concurrent write conflicts across windows.
+4. Click **Transfer...** to selectively copy decks, tags, note types, or image albums from another profile into the active one, or **Delete this space** to remove an unused unlocked profile.
 
 ## 3. Automatic Backups
 
-Before any sensitive operation (such as replacing your collection from a `.colpkg` archive or applying an update), AnkiDraft automatically creates a timestamped backup of your local database inside your profile folder.
+AnkiDraft automatically saves timestamped SQLite snapshots inside the profile's `backups/` subfolder (retaining up to 5 recent backups on startup as well as creating a safety snapshot before sensitive actions like replacing your collection from a `.colpkg` archive).

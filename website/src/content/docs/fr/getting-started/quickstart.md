@@ -37,17 +37,17 @@ Pas besoin de carte bancaire ni de budget mensuel pour utiliser le Studio intég
 1. **Google AI Studio (`Gemini`) — recommandé pour débuter** : connectez-vous avec un simple compte Google sur [aistudio.google.com](https://aistudio.google.com/) et cliquez sur **Create API key** (sans carte bancaire). Collez la clé (`AIzaSy...`) dans **Paramètres > Moteurs IA > Gemini**, cliquez sur **Tester**, puis choisissez le preset **`Google Gemini 3.5 Flash Lite`** (idéal pour les PDF et schémas dans la limite des quotas quotidiens ; évitez toutefois d'y envoyer des données personnelles sensibles sur le palier gratuit).
 2. **OpenRouter (`:free`) — plusieurs modèles gratuits avec une seule clé** : créez un compte sur [openrouter.ai](https://openrouter.ai/) sans carte bancaire, générez une clé (`sk-or-...`), puis sélectionnez le preset **`OpenRouter Gratuit (Qwen 3.8 27B)`** (ou d'autres modèles se terminant par `:free`, facturés `0 $` sous réserve de quotas par minute/jour).
 3. **Groq Console — ultra-rapide sur modèles ouverts** : créez une clé (`gsk_...`) sans carte bancaire sur [console.groq.com](https://console.groq.com/) pour générer ou auditer des cartes à très haute vitesse (dans la limite des jetons par minute).
-4. **Avantages étudiants & campus** : utilisez votre adresse e-mail universitaire pour vérifier si vous avez droit au **GitHub Student Developer Pack** (accès sandbox/API **GitHub Models**), aux offres étudiantes **Google AI**, au palier gratuit d'expérimentation **Mistral** ([console.mistral.ai](https://console.mistral.ai/)), ou à un serveur IA / des crédits cloud fournis par votre université (ajoutable via **Modèle personnalisé…**).
+4. **Avantages étudiants, passerelle & campus** : utilisez votre adresse e-mail universitaire pour vérifier votre accès au **GitHub Student Developer Pack** (`models.github.ai`), aux offres étudiantes **Google AI**, au palier gratuit **Mistral** ([console.mistral.ai](https://console.mistral.ai/)), à la **Passerelle OpenCode** ou à un serveur universitaire (ajoutable via **Ajouter un modèle ▾ › Modèle personnalisé…**).
 
 :::tip
-Retrouvez la comparaison complète, les réglages exacts et le suivi de budget dans le guide [Configurer vos Fournisseurs d'IA](/fr/ai-setup/ia_fournisseurs/).
+Retrouvez la comparaison complète, les réglages exacts et le suivi des plafonds dans le guide [Configurer vos Fournisseurs d'IA](/fr/ai-setup/ia_fournisseurs/).
 :::
 
 ## Démarrer en 4 étapes simples
 
 ### Étape 1 : Choisir ou créer votre profil
 
-Au premier lancement, AnkiDraft ouvre le profil `default`. Pour éviter de mélanger vos cours volumineux et vos fiches personnelles, créez un profil séparé depuis le sélecteur en haut de l'écran ([Gérer vos profils](/fr/getting-started/profiles-and-workspaces/)).
+Au premier lancement, AnkiDraft ouvre le profil `default`. Pour éviter de mélanger vos cours volumineux et vos fiches personnelles, créez un profil séparé depuis **`Profil : default`** en bas de la barre latérale ([Gérer vos profils](/fr/getting-started/profiles-and-workspaces/)).
 
 ### Étape 2 : Choisir votre moteur d'IA (optionnel)
 

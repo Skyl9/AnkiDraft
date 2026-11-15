@@ -9,8 +9,8 @@ Les vidéos de cours (YouTube, conférences enregistrées) et les mémos audio d
 
 1. Ouvrez **My Documents** (<kbd>Alt+7</kbd>).
 2. Selon votre support ([Importer Vidéo & Audio](/fr/sources/import-youtube-audio/)) :
-   - **Vidéo YouTube** : cliquez sur **Importer depuis le Web** et collez l'URL de la vidéo. AnkiDraft récupère automatiquement les sous-titres officiels ou lance la transcription vocale locale.
-   - **Enregistrement audio ou cours local** (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.ogg`) : cliquez sur **Importer un fichier** ou glissez-déposez l'enregistrement. Le moteur local **Whisper** transcrit l'audio sans envoyer vos fichiers sur un serveur tiers.
+   - **Vidéo YouTube** : cliquez sur l'icône **Importer depuis le Web / YouTube** (ou **Importer depuis le Web**) et collez l'URL. AnkiDraft récupère automatiquement les sous-titres officiels ou lance la transcription vocale locale (Whisper local, ou via clé OpenAI / Groq si configurée).
+   - **Enregistrement audio ou cours local** (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.ogg`) : cliquez sur **Importer** / **Importer un fichier** ou glissez-déposez l'enregistrement. Le binaire local **Whisper** (`whisper` / `whisper-cli`) transcrit l'audio hors-ligne sans envoyer vos fichiers sur un serveur tiers.
 
 ![Vue Documents d'AnkiDraft](assets/screen_documents.png)
 

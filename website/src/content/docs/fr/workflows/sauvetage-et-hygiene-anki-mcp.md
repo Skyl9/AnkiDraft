@@ -24,29 +24,29 @@ Dans AnkiDraft, appuyez sur <kbd>Ctrl+Shift+I</kbd> et glissez votre fichier `.a
 
 ## 3. Nettoyer tout un paquet avec Claude ou Cursor (sans clé API)
 
-Pour traiter des centaines de cartes rapidement sur plusieurs paquets, connectez Claude, Cursor ou Antigravity dans **Serveur MCP & Agents** (<kbd>Alt+5</kbd>), ouvrez votre espace de travail (`~/ankiforge_agentique` depuis l'onglet **Guides & Workspaces**) afin de charger les **Skills de nettoyage**, et enchaînez ces quatre étapes :
+Pour traiter des centaines de cartes rapidement sur plusieurs paquets, connectez Claude, Cursor ou Antigravity dans **Serveur MCP & Agents** (<kbd>Alt+5</kbd>), ouvrez votre espace de travail (`~/ankiforge_agentique` depuis l'onglet **Guides & Workspaces**), et enchaînez ces quatre étapes via les outils MCP dédiés :
 
 ### Étape A — Traiter les cartes marquées d'un drapeau pendant vos révisions
 Pendant vos révisions dans Anki, marquez les cartes pénibles d'un drapeau (Rouge = à découper, Orange = à vérifier), puis réimportez votre `.apkg` (exporté avec la planification incluse) ou votre `.colpkg` dans AnkiDraft :
-- **Skills activés** : `refactorisation-cartes`, `chasse-sangsues` (`get_flagged_cards`, `get_note_full_profile_360`, `set_card_flag`).
-- **Demande** : *« Récupère toutes mes cartes marquées d'un drapeau rouge et mes sangsues récentes, analyse pourquoi je les rate et propose un découpage en cartes courtes pour chacune. »*
+- **Outils MCP** : `get_flagged_cards`, `get_note_full_profile_360`, `set_card_flag`.
+- **Demande** : *« Récupère toutes mes cartes marquées d'un drapeau rouge via `get_flagged_cards`, analyse leur historique avec `get_note_full_profile_360` et propose un découpage en cartes courtes pour chacune. »*
 
 ### Étape B — Repérer les notions oubliées et les doublons
-- **Skills activés** : `audit-qualite`, `deduplication-consolidation`, `audit-couverture-rag` (`diagnose_domain_knowledge_gaps`, `find_duplicate_cards`).
-- **Demande** : *« Analyse le thème Physiologie Rénale sur tous mes paquets : repère les cartes isolées qui parlent du sujet, les doublons à fusionner et les notions manquantes ou trop denses. »*
+- **Outils MCP** : `diagnose_domain_knowledge_gaps`, `find_duplicate_cards`.
+- **Demande** : *« Analyse le thème Physiologie Rénale sur tous mes paquets avec `diagnose_domain_knowledge_gaps`, repère les doublons avec `find_duplicate_cards` et identifie les notions manquantes ou trop denses. »*
 
 ### Étape C — Nettoyer les tags et supprimer les cartes vides
-- **Skill activé** : `hygiene-taxonomie-tags` (`audit_tag_hygiene`, `merge_tag_clusters`, `list_empty_cards`, `delete_empty_cards`).
+- **Outils MCP** : `audit_tag_hygiene`, `merge_tag_clusters`, `list_empty_cards`, `delete_empty_cards`.
 - **Demande** : *« Audite la cohérence de mes tags, propose la fusion des variantes quasi-identiques et repère les éventuelles cartes au recto vide. »*
 
 ### Étape D — Découper et reformuler par lots avec validation
-- **Skill activé** : `amelioration-deck` (`begin_staged_bundle`, `propose_card_split`, `propose_card_refactor`, `commit_staged_bundle`).
-- **Demande** : *« Prépare un lot groupé pour scinder les 8 cartes dépassant 40 mots en 2 à 3 cartes courtes chacune et reformuler les énoncés flous avant validation. »*
+- **Outils MCP** : `begin_staged_bundle`, `propose_card_split`, `propose_card_refactor`, `commit_staged_bundle`.
+- **Demande** : *« Prépare un lot groupé (`Staged Bundle`) pour scinder les 8 cartes dépassant 40 mots en 2 à 3 cartes courtes chacune et reformuler les énoncés flous avant validation. »*
 
 ![Supervision & Configuration du Serveur MCP et accès à l'onglet Garde-Fou & Validation](assets/screen_consultant.png)
 
 ## 4. Valider et ré-exporter sans perdre votre progression
 
-1. Ouvrez **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) > **Garde-Fou & Validation** et vérifiez visuellement chaque modification Avant / Après.
-2. Cliquez sur **Appliquer** pour enregistrer le lot dans AnkiDraft.
+1. Ouvrez **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) › **Garde-Fou & Validation** et vérifiez visuellement chaque modification Avant / Après.
+2. Cliquez sur **Appliquer** pour enregistrer le lot dans AnkiDraft (ou **Rejeter la proposition** / **Tout rejeter** pour annuler).
 3. Exportez le paquet nettoyé via <kbd>Ctrl+Alt+E</kbd> (ou l'outil `export_deck_apkg`) puis importez le `.apkg` dans Anki : grâce aux identifiants stables et à la [fusion intelligente](/fr/anki-sync/synchro_smart_merge/), vos cartes sont mises à jour sans réinitialiser vos intervalles de révision.

@@ -20,9 +20,9 @@ Rendez-vous sur la [page d'accueil d'AnkiDraft](https://ankidraft.app/fr/#telech
 ### Sur macOS
 1. Double-cliquez sur l'image disque `.dmg` téléchargée depuis la [dernière release](https://github.com/Skyl9/AnkiDraft/releases/latest).
 2. Faites glisser l'icône de l'application vers le dossier **Applications**.
-3. **Premier lancement (application non signée par Apple) :** macOS affichera une alerte Gatekeeper indiquant que l'application ne peut pas être vérifiée.
+3. **Premier lancement :** les releases officielles macOS sont notarisées par Apple ; si toutefois vous testez une build *nightly* ou non signée et que macOS affiche une alerte Gatekeeper :
    - Ouvrez **Réglages Système** → **Confidentialité et sécurité**, descendez jusqu'à la section **Sécurité** et cliquez sur **Ouvrir quand même** pour AnkiDraft (ou faites **Clic droit** → **Ouvrir** sur l'icône dans Applications).
-   - Cette manipulation n'est nécessaire **qu'une seule fois** : par la suite, les mises à jour intégrées sont automatiques et ne redemandent plus cette autorisation.
+   - Cette manipulation n'est nécessaire **qu'une seule fois** pour l'application installée.
 
 ### Sur Windows *(non testé en conditions réelles)*
 1. Si vous téléchargez l'installateur `.exe`, double-cliquez dessus et suivez l'assistant (aucun droit administrateur n'est requis pour une installation dans votre session).
@@ -45,10 +45,12 @@ Toutes vos données restent localement sur votre disque dur, dans votre dossier 
 Chaque profil contient :
 - `ankidraft.db` : votre base de cartes, documents et historiques.
 - `media/` : les images et fichiers audio attachés à vos flashcards.
+- `backups/` : les instantanés automatiques de secours (jusqu'à 5 sauvegardes récentes conservées au démarrage et avant toute opération sensible).
+- `staging/` : la zone de travail isolée pour les échanges temporaires et lots MCP.
 
 ## 4. Mises à jour automatiques
 
-AnkiDraft vérifie automatiquement la disponibilité d'une nouvelle version officielle et vérifie la signature cryptographique (Ed25519) ainsi que l'empreinte SHA-256 avant toute mise à jour.
+AnkiDraft vérifie automatiquement la disponibilité d'une nouvelle version officielle et valide l'empreinte SHA-256 du manifeste (`checksums.txt`) ainsi que sa signature cryptographique Ed25519 (`checksums.txt.sig`) lorsqu'elle est publiée.
 
 ## 5. Signaler un problème ou proposer une amélioration
 

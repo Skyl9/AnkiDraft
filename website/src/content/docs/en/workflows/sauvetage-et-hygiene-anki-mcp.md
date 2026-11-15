@@ -24,29 +24,29 @@ In AnkiDraft, press <kbd>Ctrl+Shift+I</kbd> and drop your `.apkg` or `.colpkg` f
 
 ## 3. Clean Up an Entire Deck with Claude or Cursor (Zero API Key)
 
-To clean hundreds of cards across multiple decks quickly, connect Claude, Cursor, or Antigravity under **MCP Server & Agents** (<kbd>Alt+5</kbd>), open your agent workspace (`~/ankiforge_agentique` from **Guides & Workspaces**) so your **cleanup Skills** load automatically, and follow these four stages:
+To clean hundreds of cards across multiple decks quickly, connect Claude, Cursor, or Antigravity under **MCP Server & Agents** (<kbd>Alt+5</kbd>), open your agent workspace (`~/ankiforge_agentique` from **Guides & Workspaces**), and follow these four stages using the dedicated MCP tools:
 
 ### Stage A — Fix Cards Flagged During Daily Reviews
 While reviewing in Anki, flag painful cards (Red = split needed, Orange = fact-check), then re-import your `.apkg` (with scheduling included) or `.colpkg` into AnkiDraft:
-- **Skills triggered**: `refactorisation-cartes`, `chasse-sangsues` (`get_flagged_cards`, `get_note_full_profile_360`, `set_card_flag`).
-- **Prompt**: *"Fetch all my red-flagged cards and recent leeches, diagnose why they keep failing, and stage shorter card rewrites for each."*
+- **MCP tools**: `get_flagged_cards`, `get_note_full_profile_360`, `set_card_flag`.
+- **Prompt**: *"Fetch all my red-flagged cards via `get_flagged_cards`, inspect their history with `get_note_full_profile_360`, and stage shorter card rewrites for each."*
 
 ### Stage B — Find Missed Topics, Duplicates, and Overloaded Cards
-- **Skills triggered**: `audit-qualite`, `deduplication-consolidation`, `audit-couverture-rag` (`diagnose_domain_knowledge_gaps`, `find_duplicate_cards`).
-- **Prompt**: *"Analyze Renal Physiology across all my decks: surface related isolated cards, clear duplicates to merge, and missing or overloaded concepts."*
+- **MCP tools**: `diagnose_domain_knowledge_gaps`, `find_duplicate_cards`.
+- **Prompt**: *"Analyze Renal Physiology across all my decks with `diagnose_domain_knowledge_gaps`, spot duplicates using `find_duplicate_cards`, and surface missing or overloaded concepts."*
 
 ### Stage C — Clean Up Tags and Empty Cards
-- **Skill triggered**: `hygiene-taxonomie-tags` (`audit_tag_hygiene`, `merge_tag_clusters`, `list_empty_cards`, `delete_empty_cards`).
+- **MCP tools**: `audit_tag_hygiene`, `merge_tag_clusters`, `list_empty_cards`, `delete_empty_cards`.
 - **Prompt**: *"Audit tag consistency, stage merges for near-duplicate typo or plural tags, and check for any cards with an empty front."*
 
 ### Stage D — Batch Split and Rewrite with Approval
-- **Skill triggered**: `amelioration-deck` (`begin_staged_bundle`, `propose_card_split`, `propose_card_refactor`, `commit_staged_bundle`).
-- **Prompt**: *"Stage a grouped cleanup bundle that splits the 8 cards exceeding 40 words into 2–3 short cards each and tightens vague prompts for review."*
+- **MCP tools**: `begin_staged_bundle`, `propose_card_split`, `propose_card_refactor`, `commit_staged_bundle`.
+- **Prompt**: *"Stage a grouped Staged Bundle that splits the 8 cards exceeding 40 words into 2–3 short cards each and tightens vague prompts for review."*
 
 ![AnkiDraft MCP Server Supervision & Configuration (open Safeguard & Validation beside it)](assets/screen_consultant.png)
 
 ## 4. Approve and Export Back Without Losing Progress
 
-1. Open **MCP Server & Agents** (<kbd>Alt+5</kbd>) > **Safeguard & Validation** and review every Before / After change visually.
-2. Click **Apply** to save the bundle into AnkiDraft.
+1. Open **MCP Server & Agents** (<kbd>Alt+5</kbd>) › **Safeguard & Validation** and review every Before / After change visually.
+2. Click **Apply** to save the bundle into AnkiDraft (or **Reject proposal** / **Reject all** to discard).
 3. Export the cleaned deck via <kbd>Ctrl+Alt+E</kbd> (or `export_deck_apkg`) and open the `.apkg` in Anki: thanks to stable note IDs and [Smart Merge](/en/anki-sync/synchro_smart_merge/), updated wording lands cleanly while preserving your review progress.
