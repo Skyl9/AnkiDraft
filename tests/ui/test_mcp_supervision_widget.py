@@ -104,7 +104,7 @@ def test_mcp_supervision_widget_snippets(qtbot) -> None:
     # agy
     agy_cfg = widget.get_snippet_config("agy")
     parsed_agy = json.loads(agy_cfg)
-    assert parsed_agy["name"] == "ankidraft"
+    assert parsed_agy["mcpServers"]["ankidraft"]["headers"]["Authorization"] == "Bearer secret_supervision"
 
     # Cursor
     cursor_cfg = widget.get_snippet_config("cursor")
@@ -118,10 +118,15 @@ def test_mcp_supervision_widget_snippets(qtbot) -> None:
 
     # Changement d'onglet client (1 = agy)
     assert isinstance(widget.tab_bar_clients, SegmentedTabBar)
-    assert widget.tab_bar_clients.count() == 4
+    assert widget.tab_bar_clients.count() == 6
     widget.tab_bar_clients.setCurrentIndex(1)
-    assert "ankidraft.json" in widget.lbl_snippet_hint.text()
+    assert "mcp_config.json" in widget.lbl_snippet_hint.text()
     assert "ankidraft" in widget.edit_snippet_code.toPlainText()
+
+    # Claude Code & Windsurf
+    assert "claude mcp add" in widget.get_snippet_config("claude_code")
+    parsed_windsurf = json.loads(widget.get_snippet_config("windsurf"))
+    assert "mcpServers" in parsed_windsurf
 
     # Copie
     widget.copy_current_snippet()
@@ -171,16 +176,18 @@ def test_mcp_supervision_widget_endpoints_copy(qtbot) -> None:
 
 
 def test_mcp_supervision_widget_client_tab_bar_segmented(qtbot) -> None:
-    """Vérifie que tab_bar_clients est un SegmentedTabBar avec 4 onglets et que le changement d'index rafraîchit la vue snippet."""
+    """Vérifie que tab_bar_clients est un SegmentedTabBar avec 6 onglets et que le changement d'index rafraîchit la vue snippet."""
     widget = MCPSupervisionWidget(initial_status="running", initial_port=8765, initial_token="tok")
     qtbot.addWidget(widget)
 
     assert isinstance(widget.tab_bar_clients, SegmentedTabBar)
-    assert widget.tab_bar_clients.count() == 4
+    assert widget.tab_bar_clients.count() == 6
     assert widget.tab_bar_clients.tabText(0) == widget.tr("Claude")
     assert widget.tab_bar_clients.tabText(1) == widget.tr("Antigravity (agy)")
     assert widget.tab_bar_clients.tabText(2) == widget.tr("Cursor")
     assert widget.tab_bar_clients.tabText(3) == widget.tr("cURL")
+    assert widget.tab_bar_clients.tabText(4) == widget.tr("Claude Code")
+    assert widget.tab_bar_clients.tabText(5) == widget.tr("Windsurf")
     assert widget.tab_bar_clients.get_active_index() == 0
 
     with qtbot.waitSignal(widget.tab_bar_clients.tab_index_changed, timeout=1000):
@@ -341,3 +348,106 @@ def test_mcp_supervision_widget_button_styles_and_no_pulse_dot(qtbot) -> None:
     assert not widget.btn_start.isEnabled()
     assert widget.btn_stop.isEnabled()
     assert widget.btn_restart.isEnabled()
+
+
+def test_mcp_supervision_widget_auto_configure_and_detection(qtbot, tmp_path, monkeypatch) -> None:
+    """Vérifie la détection d'état client et la configuration automatique 1-clic avec fusion + .bak."""
+    fake_cfg = tmp_path / "claude" / "claude_desktop_config.json"
+    fake_cfg.parent.mkdir(parents=True)
+    fake_cfg.write_text(
+        json.dumps({"mcpServers": {"existing_tool": {"command": "echo"}}}),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        "ankidraft.ui.views.consultant_view.widgets.mcp_supervision_widget.get_client_config_path",
+        lambda client, **kwargs: fake_cfg if client == "claude" else None,
+    )
+    monkeypatch.setattr(
+        "ankidraft.ui.views.consultant_view.widgets.mcp_supervision_widget.detect_mcp_clients",
+        lambda **kwargs: {
+            "claude": type(
+                "Stub",
+                (),
+                {
+                    "client_key": "claude",
+                    "display_name": "Claude Desktop",
+                    "config_path": fake_cfg,
+                    "installed": True,
+                    "status": "configured" if "tok_auto" in fake_cfg.read_text(encoding="utf-8") else "unconfigured",
+                    "detail": "ok",
+                },
+            )()
+        },
+    )
+
+    widget = MCPSupervisionWidget(initial_status="running", initial_port=8765, initial_token="tok_auto")
+    qtbot.addWidget(widget)
+
+    assert not widget.btn_auto_configure_client.isHidden()
+    assert widget.badge_client_status.text() == widget.tr("Non configuré")
+
+    ok = widget.auto_configure_current_client()
+    assert ok is True
+
+    merged = json.loads(fake_cfg.read_text(encoding="utf-8"))
+    assert "existing_tool" in merged["mcpServers"]
+    assert merged["mcpServers"]["ankidraft"]["headers"]["Authorization"] == "Bearer tok_auto"
+    backups = list(fake_cfg.parent.glob("claude_desktop_config.json.bak.*"))
+    assert len(backups) == 1
+    assert widget.badge_client_status.text() == widget.tr("Configuré")
+
+    # En mode cURL, le bouton configurer automatiquement est masqué
+    widget.tab_bar_clients.setCurrentIndex(3)
+    assert widget.btn_auto_configure_client.isHidden()
+
+
+def test_mcp_supervision_widget_handshake_indicator(qtbot) -> None:
+    """Vérifie l'indicateur de premier contact (Handshake Test) à la réception d'un appel MCP."""
+    from ankidraft.services.ai.mcp_tracker import get_mcp_activity_tracker
+
+    tracker = get_mcp_activity_tracker()
+    tracker.clear_history()
+
+    widget = MCPSupervisionWidget(initial_status="running", initial_port=8765, initial_token="tok_hs")
+    qtbot.addWidget(widget)
+
+    assert widget.badge_handshake.text() == widget.tr("En attente")
+    assert "attente" in widget.lbl_handshake_status.text().lower()
+
+    tracker.signals.activity_started.emit({"tool_name": "get_collections_overview"})
+    qtbot.waitUntil(lambda: widget.badge_handshake.text() == widget.tr("Connecté"), timeout=2000)
+    assert "get_collections_overview" in widget.lbl_handshake_status.text()
+
+    # Un appel ultérieur ne doit pas écraser l'outil du premier contact
+    tracker.signals.activity_started.emit({"tool_name": "second_tool"})
+    assert "get_collections_overview" in widget.lbl_handshake_status.text()
+
+    # Arrêt du serveur -> réinitialise l'indicateur
+    widget.set_status("stopped")
+    assert widget.badge_handshake.text() == widget.tr("En attente")
+
+    tracker.signals.activity_started.emit({"tool_name": "third_tool"})
+    qtbot.waitUntil(lambda: widget.badge_handshake.text() == widget.tr("Connecté"), timeout=2000)
+    tracker.signals.history_cleared.emit()
+    qtbot.waitUntil(lambda: widget.badge_handshake.text() == widget.tr("En attente"), timeout=2000)
+
+
+def test_mcp_supervision_widget_open_claude_code_creates_valid_json(qtbot, tmp_path, monkeypatch) -> None:
+    """Ouvrir le fichier depuis l'onglet Claude Code crée un JSON valide et non une commande bash."""
+    from PySide6.QtGui import QDesktopServices
+
+    widget = MCPSupervisionWidget(initial_status="running", initial_port=8765, initial_token="tok_cc_json")
+    qtbot.addWidget(widget)
+
+    fake_claude_json = tmp_path / ".claude.json"
+    monkeypatch.setattr(widget, "_get_client_config_path", lambda client: fake_claude_json if client == "claude_code" else None)
+    monkeypatch.setattr(QDesktopServices, "openUrl", lambda _url: True)
+
+    widget.tab_bar_clients.setCurrentIndex(4)  # claude_code
+    widget.open_client_config()
+
+    assert fake_claude_json.exists()
+    parsed = json.loads(fake_claude_json.read_text(encoding="utf-8"))
+    assert parsed["mcpServers"]["ankidraft"]["type"] == "http"
+    assert parsed["mcpServers"]["ankidraft"]["headers"]["Authorization"] == "Bearer tok_cc_json"

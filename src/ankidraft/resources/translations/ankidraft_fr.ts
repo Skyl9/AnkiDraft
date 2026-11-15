@@ -26,6 +26,102 @@ L&apos;accès simultané au même profil est formellement bloqué pour éviter t
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../services/ai/mcp_client_config_service.py" line="+221"/>
+        <source>Fichier JSON existant invalide ou illisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Client détecté — AnkiDraft non encore configuré</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Jeton obsolète — mise à jour recommandée</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Configuré et synchronisé</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Client détecté — prêt pour configuration 1-clic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Non détecté sur cet ordinateur</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+58"/>
+        <source>Aucun chemin de configuration disponible pour le client &apos;%1&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Le fichier JSON existant est invalide (%1) : %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Le fichier JSON existant (%1) doit contenir un objet racine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+66"/>
+        <source>URL non locale (anti-SSRF)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Par sécurité, l&apos;adresse Ollama doit pointer vers localhost ou 127.0.0.1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>En ligne (0 modèle)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ollama est actif mais aucun modèle n&apos;est téléchargé — modèle léger recommandé : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="+1084"/>
+        <source>%1 modèle(s) détecté(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ollama est opérationnel avec %1 modèle(s) prêt(s) à l&apos;emploi.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Service arrêté</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ollama est installé sur cet ordinateur mais le service ne répond pas. Lancez l&apos;application Ollama ou exécutez « ollama serve ».</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Non installé</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ollama n&apos;est pas détecté sur cet ordinateur. Installez-le sur ollama.com ou utilisez une clé API Cloud.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../services/cards/note_type_roles.py" line="+38"/>
         <source>Basique (Q/R standard)</source>
         <translation type="unfinished"></translation>
@@ -343,8 +439,8 @@ L&apos;accès simultané au même profil est formellement bloqué pour éviter t
         <location line="+36"/>
         <location filename="../../ui/views/creation_view/widgets/document_editor.py" line="+744"/>
         <location line="+10"/>
-        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="+752"/>
-        <location line="+345"/>
+        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="-275"/>
+        <location line="+423"/>
         <source>%1%%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -520,7 +616,7 @@ Cliquer pour tronquer la saisie à ce niveau</source>
         <location line="+108"/>
         <location filename="../../ui/views/agents_view/view.py" line="+817"/>
         <location filename="../../ui/views/creation_view/dialogs/card_edit_dialog.py" line="+176"/>
-        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="-874"/>
+        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="-1005"/>
         <source>%1 :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -657,7 +753,7 @@ Voulez-vous vraiment continuer ?</source>
         <location line="+29"/>
         <location line="+16"/>
         <location line="+15"/>
-        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="+809"/>
+        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="+940"/>
         <location filename="../../ui/widgets/settings_modal/tabs/tts_tab.py" line="+681"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"></translation>
@@ -4159,13 +4255,13 @@ Gabarits : %3</source>
     </message>
     <message>
         <location line="+131"/>
-        <location line="+277"/>
+        <location line="+281"/>
         <source>Nouvelle proposition de refactorisation reçue (#%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-275"/>
-        <location line="+277"/>
+        <location line="-279"/>
+        <location line="+281"/>
         <source>Nouvelle proposition reçue (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4669,13 +4765,13 @@ Cette action est irréversible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/consultant_view/widgets/mcp_supervision_widget.py" line="+275"/>
-        <location line="+424"/>
+        <location filename="../../ui/views/consultant_view/widgets/mcp_supervision_widget.py" line="+280"/>
+        <location line="+474"/>
         <source>Port : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+20"/>
         <source>Uptime : %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4690,7 +4786,27 @@ Cette action est irréversible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+137"/>
+        <source>Premier contact validé (%1 à %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+91"/>
+        <source>Configuration fusionnée dans %1 (sauvegarde : %2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Configuration créée dans %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Configuration automatique impossible : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
         <source>Fichier de configuration créé : %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4710,7 +4826,7 @@ Cette action est irréversible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+45"/>
         <source>Contexte ciblé : %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8577,7 +8693,38 @@ Toutes les cartes, documents, personas et médias associés seront définitiveme
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="-548"/>
+        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="-1119"/>
+        <location line="+24"/>
+        <source>Format valide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Connecté</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Clé rejetée (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Quota épuisé (429)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>En ligne (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Hors ligne (format valide)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+455"/>
         <source>Supprimer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8613,12 +8760,12 @@ Toutes les cartes, documents, personas et médias associés seront définitiveme
     </message>
     <message>
         <location line="+37"/>
-        <location line="+279"/>
+        <location line="+357"/>
         <source>Trousseau OS indisponible : clé %1 non enregistrée (sécurité).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-275"/>
+        <location line="-353"/>
         <source>Impossible d&apos;enregistrer la clé %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8628,12 +8775,23 @@ Toutes les cartes, documents, personas et médias associés seront définitiveme
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+67"/>
-        <source>%1 modèle(s) détecté(s)</source>
+        <location line="+104"/>
+        <source>Copier : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+25"/>
+        <source>Commande copiée : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Ollama est actif mais aucun modèle n&apos;est téléchargé — modèle léger recommandé : %1</source>
+        <comment>qwen2.5:7b</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
         <source>Ollama en ligne : %1 modèles scannés (+%2 importés) !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9509,7 +9667,7 @@ Une nouvelle version sera automatiquement créée.</source>
 <context>
     <name>AIEnginesTab</name>
     <message>
-        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="-1136"/>
+        <location filename="../../ui/widgets/settings_modal/tabs/ai_engines_tab.py" line="-1267"/>
         <source>CLÉS API DES FOURNISSEURS CLOUD</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9520,12 +9678,12 @@ Une nouvelle version sera automatiquement créée.</source>
     </message>
     <message>
         <location line="+55"/>
-        <location line="+602"/>
+        <location line="+655"/>
         <source>Format valide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-591"/>
+        <location line="-644"/>
         <source>SERVEURS LOCAUX &amp; PASSERELLES D&apos;ACCÈS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9535,7 +9693,27 @@ Une nouvelle version sera automatiquement créée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+15"/>
+        <source>Tester la connexion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Diagnostique l&apos;installation Ollama, l&apos;état du service local et la disponibilité des modèles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Scanner les modèles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Copier la commande</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Passerelle OpenCode :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9907,17 +10085,22 @@ Une nouvelle version sera automatiquement créée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+50"/>
         <source>URL non locale (anti-SSRF)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+1"/>
+        <source>Par sécurité, l&apos;adresse Ollama doit pointer vers localhost ou 127.0.0.1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
         <source>En ligne (0 modèle)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+44"/>
         <source>Serveur Ollama inaccessible sur cette adresse.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9948,7 +10131,7 @@ Une nouvelle version sera automatiquement créée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+243"/>
+        <location line="+252"/>
         <source>Renouveler le jeton MCP</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18283,7 +18466,7 @@ exact → section → page → lexical</source>
 <context>
     <name>MCPActivityDetailDialog</name>
     <message>
-        <location filename="../../ui/views/consultant_view/widgets/mcp_dashboard_widget.py" line="-430"/>
+        <location filename="../../ui/views/consultant_view/widgets/mcp_dashboard_widget.py" line="-434"/>
         <source>Succès</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18342,7 +18525,7 @@ exact → section → page → lexical</source>
     <name>MCPServerDashboardWidget</name>
     <message>
         <location line="+57"/>
-        <location line="+277"/>
+        <location line="+281"/>
         <source>Nouvelle proposition de refactorisation reçue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18447,7 +18630,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
 <context>
     <name>MCPSupervisionWidget</name>
     <message>
-        <location filename="../../ui/views/consultant_view/widgets/mcp_supervision_widget.py" line="-872"/>
+        <location filename="../../ui/views/consultant_view/widgets/mcp_supervision_widget.py" line="-987"/>
         <source>Serveur MCP Local (Model Context Protocol)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18478,35 +18661,35 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+30"/>
-        <location line="+802"/>
+        <location line="+917"/>
         <source>Copier le prompt pour mon agent (CLI / Claude)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-774"/>
+        <location line="-889"/>
         <source>ÉTAT DU SERVEUR &amp; PILOTAGE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+429"/>
+        <location line="+479"/>
         <source>Arrêté</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-417"/>
+        <location line="-467"/>
         <source>Streamable HTTP + SSE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+403"/>
-        <location line="+33"/>
+        <location line="+453"/>
+        <location line="+35"/>
         <source>Uptime : —</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-430"/>
+        <location line="-482"/>
         <source>Tester (Ping)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18557,12 +18740,23 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+1"/>
-        <location line="+540"/>
+        <location line="+598"/>
         <source>Aucun appel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-527"/>
+        <location line="-570"/>
+        <source>En attente du premier appel d&apos;un client externe…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+583"/>
+        <source>En attente</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-571"/>
         <source>CONNEXION &amp; SÉCURITÉ</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18575,14 +18769,16 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <location line="+8"/>
         <location line="+20"/>
         <location line="+25"/>
-        <location line="+338"/>
+        <location line="+67"/>
+        <location line="+291"/>
         <location line="+7"/>
         <location line="+10"/>
+        <location line="+287"/>
         <source>Copier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-397"/>
+        <location line="-704"/>
         <source>Copier l&apos;URL Streamable HTTP (/mcp)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18628,23 +18824,23 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+5"/>
-        <location line="+341"/>
+        <location line="+361"/>
         <source>Export Shell (ENV)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-338"/>
+        <location line="-358"/>
         <source>Copier la variable d&apos;environnement shell &apos;export ANKIFORGE_MCP_TOKEN=...&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
-        <location line="+344"/>
+        <location line="+364"/>
         <source>URL avec Jeton</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-341"/>
+        <location line="-361"/>
         <source>Copier l&apos;URL complète incluant le jeton en paramètre de requête pour les clients compatibles</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18655,12 +18851,16 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+6"/>
-        <location line="+515"/>
-        <source>Copier la configuration</source>
+        <source>Vérification...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-505"/>
+        <location line="+5"/>
+        <source>Copier la configuration du client sélectionné</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Claude</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18671,17 +18871,28 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+1"/>
+        <location line="+12"/>
         <source>Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-11"/>
         <source>cURL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Onglet configuration Claude Desktop et Code</source>
+        <source>Claude Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Windsurf</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Onglet configuration Claude Desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18691,7 +18902,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+1"/>
-        <source>Onglet configuration Cursor et Windsurf</source>
+        <source>Onglet configuration Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18701,7 +18912,17 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+1"/>
-        <source>Claude (Desktop &amp; Code)</source>
+        <source>Onglet configuration Claude Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Onglet configuration Windsurf</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Claude Desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18710,23 +18931,38 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Cursor / Windsurf</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>cURL / CLI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Claude Code (CLI / .claude.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Windsurf (.codeium/windsurf/mcp_config.json)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+8"/>
-        <location line="+469"/>
+        <location line="+537"/>
         <source>Collez ce bloc dans votre fichier claude_desktop_config.json :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-464"/>
+        <location line="-532"/>
+        <source>Configurer automatiquement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Sauvegarde le fichier client existant (.bak) et fusionne la configuration AnkiDraft en 1 clic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Ouvrir le fichier</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18756,7 +18992,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+50"/>
         <source>Copié !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18776,7 +19012,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Renouvellement du jeton demandé. Pensez à actualiser vos configurations clientes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18791,13 +19027,70 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+104"/>
+        <location line="+87"/>
+        <source>Connecté</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>En attente du premier appel d&apos;un agent externe…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <location line="+6"/>
+        <location line="+11"/>
+        <source>Manuel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-6"/>
+        <source>Configuré</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Jeton obsolète</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Non configuré</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>JSON invalide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Non détecté</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Le mode cURL s&apos;exécute directement dans un terminal.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Chemin de configuration introuvable pour ce client sur cet OS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Démarrez le serveur MCP afin de générer un jeton Bearer actif.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Aucun fichier de configuration requis pour ce mode (commande directe en terminal).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+67"/>
-        <source>Collez ce bloc dans ~/.gemini/antigravity-cli/mcp/ankidraft.json :</source>
+        <location line="+30"/>
+        <source>Ajoutez ce serveur dans ~/.gemini/config/mcp_config.json :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18811,7 +19104,17 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+1"/>
+        <source>Exécutez cette commande CLI ou configurez automatiquement ~/.claude.json :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ajoutez ce serveur dans les paramètres MCP de Windsurf (~/.codeium/windsurf/mcp_config.json) :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
         <source>Configuration client MCP copiée dans le presse-papiers.</source>
         <translation type="unfinished"></translation>
     </message>

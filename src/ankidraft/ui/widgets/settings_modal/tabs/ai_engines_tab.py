@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import sys
@@ -7,7 +6,7 @@ import urllib.request
 from typing import Any
 
 from PySide6.QtCore import QObject, QRunnable, Qt, QThreadPool, QTimer, Signal
-from PySide6.QtGui import QAction
+from PySide6.QtGui import QAction, QGuiApplication
 from PySide6.QtWidgets import (
     QCheckBox,
     QDoubleSpinBox,
@@ -27,6 +26,7 @@ from PySide6.QtWidgets import (
 )
 
 from ankidraft.database.models import LLMConfigModel, db
+from ankidraft.services.ai.mcp_client_config_service import OllamaDiagnostic, diagnose_ollama_connection
 from ankidraft.services.ai.model_catalog import ModelCatalog, _is_loopback_url
 from ankidraft.services.settings_service import SettingsService, values_equal
 from ankidraft.ui.components import (
@@ -56,6 +56,11 @@ from ankidraft.utils.icon_loader import load_on_accent_icon, load_phosphor_icon
 logger = logging.getLogger(__name__)
 
 
+def _is_pytest_env() -> bool:
+    """Indique si le code s'exécute dans un contexte de test pytest."""
+    return "pytest" in sys.modules or bool(os.environ.get("PYTEST_CURRENT_TEST"))
+
+
 class CloudKeyPingSignals(QObject):
     """Signaux Qt pour le worker de ping des clés API."""
 
@@ -72,8 +77,8 @@ class CloudKeyPingWorker(QRunnable):
         self.signals = CloudKeyPingSignals()
 
     def run(self) -> None:
-        if "pytest" in sys.modules or os.environ.get("PYTEST_CURRENT_TEST"):
-            self.signals.result_ready.emit(self.provider_id, True, "Format valide")
+        if _is_pytest_env():
+            self.signals.result_ready.emit(self.provider_id, True, tr("Format valide"))
             return
 
         try:
@@ -97,25 +102,28 @@ class CloudKeyPingWorker(QRunnable):
                 req = urllib.request.Request(f"{or_base}/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiDraft"})
 
             if req is None:
-                self.signals.result_ready.emit(self.provider_id, True, "Format valide")
+                self.signals.result_ready.emit(self.provider_id, True, tr("Format valide"))
                 return
 
             with urllib.request.urlopen(req, timeout=2.5):  # nosec B310
-                self.signals.result_ready.emit(self.provider_id, True, "Connecté")
+                self.signals.result_ready.emit(self.provider_id, True, tr("Connecté"))
 
         except urllib.error.HTTPError as err:
             if err.code in (401, 403):
-                self.signals.result_ready.emit(self.provider_id, False, f"Rejetée ({err.code})")
+                self.signals.result_ready.emit(self.provider_id, False, tr("Clé rejetée (%1)", err.code))
+            elif err.code == 429:
+                self.signals.result_ready.emit(self.provider_id, True, tr("Quota épuisé (429)"))
             else:
-                self.signals.result_ready.emit(self.provider_id, True, f"En ligne ({err.code})")
+                self.signals.result_ready.emit(self.provider_id, True, tr("En ligne (%1)", err.code))
         except Exception:
-            self.signals.result_ready.emit(self.provider_id, True, "Format valide")
+            self.signals.result_ready.emit(self.provider_id, True, tr("Hors ligne (format valide)"))
 
 
 class OllamaScanSignals(QObject):
-    """Signaux Qt pour le worker de scan des modèles Ollama locaux."""
+    """Signaux Qt pour le worker de scan et diagnostic des modèles Ollama locaux."""
 
     scan_ready = Signal(list, list)  # (models, results) où results = [(model_id, ModelSpec | None)]
+    diag_ready = Signal(object)  # OllamaDiagnostic
     scan_failed = Signal(str)
 
 
@@ -128,20 +136,16 @@ class OllamaScanWorker(QRunnable):
         self.signals = OllamaScanSignals()
 
     def run(self) -> None:
-        try:
-            models, results = _fetch_ollama_models_and_caps(self.base_url)
-            self.signals.scan_ready.emit(models, results)
-        except Exception:
-            self.signals.scan_failed.emit("Hors ligne")
+        diag = diagnose_ollama_connection(self.base_url)
+        if diag.status == "online_models":
+            results = _detect_caps_for_models(self.base_url, diag.models)
+            self.signals.scan_ready.emit(diag.models, results)
+        else:
+            self.signals.diag_ready.emit(diag)
 
 
-def _fetch_ollama_models_and_caps(base_url: str) -> tuple[list[str], list[tuple[str, Any]]]:
-    """Interroge /api/tags puis détecte les capacités de chaque modèle (réseau seul, appelé côté worker)."""
-    req = urllib.request.Request(f"{base_url}/api/tags", headers={"User-Agent": "AnkiDraft"})
-    with urllib.request.urlopen(req, timeout=1.2) as resp:  # nosec B310  # boucle locale uniquement + timeout borné
-        data = json.loads(resp.read().decode())
-
-    models = [m.get("name") for m in data.get("models", [])]
+def _detect_caps_for_models(base_url: str, models: list[str]) -> list[tuple[str, Any]]:
+    """Détecte les capacités de chaque modèle Ollama déjà listé (réseau seul)."""
     results: list[tuple[str, Any]] = []
     for m_name in models:
         try:
@@ -149,7 +153,7 @@ def _fetch_ollama_models_and_caps(base_url: str) -> tuple[list[str], list[tuple[
             results.append((m_name, caps))
         except Exception:
             results.append((m_name, None))
-    return models, results
+    return results
 
 
 class AIEnginesTab(SettingsDirtyMixin, QWidget):
@@ -264,7 +268,7 @@ class AIEnginesTab(SettingsDirtyMixin, QWidget):
         ollama_layout.setContentsMargins(14, 10, 14, 10)
         ollama_layout.setSpacing(8)
 
-        # Ligne Ollama
+        # Ligne Ollama (URL)
         row_ol = QHBoxLayout()
         row_ol.setSpacing(10)
         lbl_ol_icon = QLabel()
@@ -280,16 +284,69 @@ class AIEnginesTab(SettingsDirtyMixin, QWidget):
         self.le_ollama_url.setFixedHeight(28)
         self.le_ollama_url.setText(str(SettingsService.get("ollama/url", "http://localhost:11434")))
         row_ol.addWidget(self.le_ollama_url, 1)
-        self.btn_scan_ollama = SecondaryButton("Scanner les modèles")
+        ollama_layout.addLayout(row_ol)
+
+        # Ligne actions Ollama (Tester la connexion + Scanner les modèles + Badge statut)
+        row_ol_actions = QHBoxLayout()
+        row_ol_actions.setSpacing(8)
+        self.btn_test_ollama = SecondaryButton(self.tr("Tester la connexion"))
+        self.btn_test_ollama.setMinimumWidth(0)
+        self.btn_test_ollama.setFixedHeight(28)
+        self.btn_test_ollama.setIcon(load_phosphor_icon("ph.plugs-connected", color=DesignTokens.ACCENT_PRIMARY))
+        self.btn_test_ollama.setToolTip(self.tr("Diagnostique l'installation Ollama, l'état du service local et la disponibilité des modèles"))
+        self.btn_test_ollama.clicked.connect(self._test_ollama_connection)
+        row_ol_actions.addWidget(self.btn_test_ollama)
+
+        self.btn_scan_ollama = SecondaryButton(self.tr("Scanner les modèles"))
         self.btn_scan_ollama.setMinimumWidth(0)
         self.btn_scan_ollama.setFixedHeight(28)
         self.btn_scan_ollama.setIcon(load_phosphor_icon("ph.arrows-clockwise", color=DesignTokens.COLOR_GREEN))
         self.btn_scan_ollama.clicked.connect(self._scan_ollama)
-        row_ol.addWidget(self.btn_scan_ollama)
+        row_ol_actions.addWidget(self.btn_scan_ollama)
+
         self.badge_ollama_status = QLabel("", self.card_ollama)
         self.badge_ollama_status.hide()
-        row_ol.addWidget(self.badge_ollama_status)
-        ollama_layout.addLayout(row_ol)
+        row_ol_actions.addWidget(self.badge_ollama_status)
+        row_ol_actions.addStretch()
+        ollama_layout.addLayout(row_ol_actions)
+
+        # Bandeau de diagnostic guidé Ollama (masqué par défaut)
+        self._ollama_recommended_cmd = ""
+        self._ollama_diag_is_error = False
+        self.ollama_diag_banner = QFrame(self.card_ollama)
+        self.ollama_diag_banner.setObjectName("ollama_diag_banner")
+        self.ollama_diag_banner.setStyleSheet(f"""
+            QFrame#ollama_diag_banner {{
+                background-color: {DesignTokens.BG_INPUT};
+                border: 1px solid {DesignTokens.BORDER_COLOR};
+                border-left: 3px solid {DesignTokens.COLOR_YELLOW};
+                border-radius: {DesignTokens.RADIUS_SM}px;
+            }}
+            QFrame#ollama_diag_banner QLabel {{
+                border: none;
+                background: transparent;
+            }}
+        """)
+        diag_layout = QHBoxLayout(self.ollama_diag_banner)
+        diag_layout.setContentsMargins(10, 8, 10, 8)
+        diag_layout.setSpacing(8)
+
+        self.lbl_ollama_diag = QLabel("", self.ollama_diag_banner)
+        self.lbl_ollama_diag.setWordWrap(True)
+        self.lbl_ollama_diag.setMinimumWidth(0)
+        self.lbl_ollama_diag.setStyleSheet(f"color: {DesignTokens.TEXT_SECONDARY}; font-size: 11.5px;")
+        diag_layout.addWidget(self.lbl_ollama_diag, 1)
+
+        self.btn_copy_ollama_cmd = SecondaryButton(self.tr("Copier la commande"))
+        self.btn_copy_ollama_cmd.setMinimumWidth(0)
+        self.btn_copy_ollama_cmd.setFixedHeight(26)
+        self.btn_copy_ollama_cmd.setIcon(load_phosphor_icon("ph.copy", color=DesignTokens.TEXT_PRIMARY))
+        self.btn_copy_ollama_cmd.clicked.connect(self._copy_ollama_recommended_command)
+        self.btn_copy_ollama_cmd.hide()
+        diag_layout.addWidget(self.btn_copy_ollama_cmd)
+
+        self.ollama_diag_banner.hide()
+        ollama_layout.addWidget(self.ollama_diag_banner)
 
         # Ligne Passerelle OpenCode
         row_oc = QHBoxLayout()
@@ -890,7 +947,7 @@ class AIEnginesTab(SettingsDirtyMixin, QWidget):
 
     def _verify_cloud_key_online(self, provider_id: str, provider_name: str, key_val: str) -> None:
         """Lance une vérification réseau légère en arrière-plan sans bloquer l'UI."""
-        if "pytest" in sys.modules or os.environ.get("PYTEST_CURRENT_TEST"):
+        if _is_pytest_env():
             return
         worker = CloudKeyPingWorker(provider_id, key_val)
         worker.signals.result_ready.connect(self._on_key_ping_result)
@@ -901,7 +958,14 @@ class AIEnginesTab(SettingsDirtyMixin, QWidget):
         if not badge:
             return
         badge.setText(status_text)
-        apply_pill_badge_style(badge, DesignTokens.COLOR_GREEN if is_valid else DesignTokens.COLOR_RED)
+        is_quota = "429" in status_text or "Quota" in status_text
+        if not is_valid:
+            color = DesignTokens.COLOR_RED
+        elif is_quota:
+            color = DesignTokens.COLOR_YELLOW
+        else:
+            color = DesignTokens.COLOR_GREEN
+        apply_pill_badge_style(badge, color)
         badge.show()
 
     def _open_catalog_dialog(self) -> None:
@@ -910,42 +974,113 @@ class AIEnginesTab(SettingsDirtyMixin, QWidget):
         dlg.exec()
         self.refresh_data()
 
-    def _scan_ollama(self) -> None:
-        """Lance le scan des modèles Ollama : synchrone sous pytest, worker QThreadPool en production."""
+    def _normalized_ollama_url(self) -> str:
         url = self.le_ollama_url.text().strip().rstrip("/")
         if not (url.startswith("http://") or url.startswith("https://")):
             url = f"http://{url}"
+        return url
+
+    def _test_ollama_connection(self) -> None:
+        """Lance un diagnostic guidé complet de la connexion Ollama (installation, service, modèles)."""
+        self._scan_ollama()
+
+    def _scan_ollama(self) -> None:
+        """Lance le scan des modèles Ollama : synchrone sous pytest, worker QThreadPool en production."""
+        url = self._normalized_ollama_url()
         if not _is_loopback_url(url):
-            self.badge_ollama_status.setText(self.tr("URL non locale (anti-SSRF)"))
-            apply_pill_badge_style(self.badge_ollama_status, DesignTokens.COLOR_RED)
-            self.badge_ollama_status.show()
+            self._apply_ollama_diagnostic(
+                OllamaDiagnostic(
+                    status="invalid_url",
+                    title=self.tr("URL non locale (anti-SSRF)"),
+                    detail=self.tr("Par sécurité, l'adresse Ollama doit pointer vers localhost ou 127.0.0.1."),
+                )
+            )
             return
 
-        if "pytest" in sys.modules or os.environ.get("PYTEST_CURRENT_TEST"):
+        if _is_pytest_env():
             self._scan_ollama_sync(url)
             return
 
         worker = OllamaScanWorker(url)
         worker.signals.scan_ready.connect(self._on_ollama_scan_ready)
+        worker.signals.diag_ready.connect(self._apply_ollama_diagnostic)
         worker.signals.scan_failed.connect(self._on_ollama_scan_failed)
         QThreadPool.globalInstance().start(worker)
 
     def _scan_ollama_sync(self, url: str) -> None:
-        """Chemin synchrone utilisé sous pytest : récupère /api/tags puis persiste immédiatement."""
-        try:
-            models, results = _fetch_ollama_models_and_caps(url)
-            self._on_ollama_scan_ready(models, results)
-        except Exception:
-            self._on_ollama_scan_failed("Hors ligne")
+        """Chemin synchrone utilisé sous pytest : diagnostique puis persiste les modèles détectés."""
+        diag = diagnose_ollama_connection(url)
+        if diag.status == "online_models":
+            results = _detect_caps_for_models(url, diag.models)
+            self._on_ollama_scan_ready(diag.models, results)
+        else:
+            self._apply_ollama_diagnostic(diag)
+
+    def _apply_ollama_diagnostic(self, diag: OllamaDiagnostic) -> None:
+        """Affiche le badge de statut et le bandeau de diagnostic guidé Ollama en français."""
+        self.badge_ollama_status.setText(diag.title)
+        if diag.status == "online_models":
+            self._ollama_diag_is_error = False
+            badge_color = DesignTokens.COLOR_GREEN
+            self.ollama_diag_banner.hide()
+        elif diag.status == "online_empty":
+            self._ollama_diag_is_error = False
+            badge_color = DesignTokens.COLOR_YELLOW
+            self._show_ollama_diag_banner(diag.detail, diag.recommended_command, DesignTokens.COLOR_YELLOW)
+        else:
+            self._ollama_diag_is_error = True
+            badge_color = DesignTokens.COLOR_RED
+            self._show_ollama_diag_banner(diag.detail, diag.recommended_command, DesignTokens.COLOR_RED)
+
+        apply_pill_badge_style(self.badge_ollama_status, badge_color)
+        self.badge_ollama_status.show()
+
+    def _show_ollama_diag_banner(self, detail: str, recommended_command: str, accent_color: str) -> None:
+        """Affiche le bandeau pédagogique de remédiation Ollama avec bouton Copier optionnel."""
+        self._ollama_recommended_cmd = recommended_command
+        self.lbl_ollama_diag.setText(detail)
+        if recommended_command:
+            self.btn_copy_ollama_cmd.setText(tr("Copier : %1", recommended_command))
+            self.btn_copy_ollama_cmd.show()
+        else:
+            self.btn_copy_ollama_cmd.hide()
+        self.ollama_diag_banner.setStyleSheet(f"""
+            QFrame#ollama_diag_banner {{
+                background-color: {DesignTokens.BG_INPUT};
+                border: 1px solid {DesignTokens.BORDER_COLOR};
+                border-left: 3px solid {accent_color};
+                border-radius: {DesignTokens.RADIUS_SM}px;
+            }}
+            QFrame#ollama_diag_banner QLabel {{
+                border: none;
+                background: transparent;
+            }}
+        """)
+        self.ollama_diag_banner.show()
+
+    def _copy_ollama_recommended_command(self) -> None:
+        """Copie la commande Ollama recommandée dans le presse-papiers."""
+        if not self._ollama_recommended_cmd:
+            return
+        clipboard = QGuiApplication.clipboard()
+        if clipboard is not None:
+            clipboard.setText(self._ollama_recommended_cmd)
+            show_toast(self, tr("Commande copiée : %1", self._ollama_recommended_cmd))
 
     def _on_ollama_scan_ready(self, models: list[str], results: list[tuple[str, Any]]) -> None:
         """Reçoit les modèles scannés par le worker (thread principal) et persiste en BDD."""
         if not models:
-            self.badge_ollama_status.setText(self.tr("En ligne (0 modèle)"))
-            apply_pill_badge_style(self.badge_ollama_status, DesignTokens.COLOR_YELLOW)
-            self.badge_ollama_status.show()
+            self._apply_ollama_diagnostic(
+                OllamaDiagnostic(
+                    status="online_empty",
+                    title=self.tr("En ligne (0 modèle)"),
+                    detail=tr("Ollama est actif mais aucun modèle n'est téléchargé — modèle léger recommandé : %1", "qwen2.5:7b"),
+                    recommended_command="ollama pull qwen2.5:7b",
+                )
+            )
             return
 
+        self.ollama_diag_banner.hide()
         self.badge_ollama_status.setText(tr("%1 modèle(s) détecté(s)", len(models)))
         apply_pill_badge_style(self.badge_ollama_status, DesignTokens.COLOR_GREEN)
         self.badge_ollama_status.show()
@@ -1494,6 +1629,15 @@ class AIEnginesTab(SettingsDirtyMixin, QWidget):
 
         if hasattr(self, "lbl_ol_url"):
             self.lbl_ol_url.setStyleSheet(f"color: {profile.text_primary}; font-size: 12px; font-weight: 500;")
+        if hasattr(self, "lbl_ollama_diag"):
+            self.lbl_ollama_diag.setStyleSheet(f"color: {profile.text_secondary}; font-size: 11.5px;")
+        if hasattr(self, "ollama_diag_banner"):
+            diag_accent = profile.color_red if getattr(self, "_ollama_diag_is_error", False) else profile.color_yellow
+            self.ollama_diag_banner.setStyleSheet(
+                f"QFrame#ollama_diag_banner {{ background-color: {profile.bg_input}; border: 1px solid {profile.border_color}; "
+                f"border-left: 3px solid {diag_accent}; border-radius: {DesignTokens.RADIUS_SM}px; }} "
+                f"QFrame#ollama_diag_banner QLabel {{ border: none; background: transparent; }}"
+            )
         if hasattr(self, "lbl_oc_url"):
             self.lbl_oc_url.setStyleSheet(f"color: {profile.text_primary}; font-size: 12px; font-weight: 500;")
         if hasattr(self, "lbl_or_url"):

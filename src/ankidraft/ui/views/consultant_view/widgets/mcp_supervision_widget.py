@@ -8,10 +8,7 @@ l'ouverture directe des fichiers de configuration sur le système.
 
 from __future__ import annotations
 
-import json
 import logging
-import os
-import sys
 import threading
 import time
 import urllib.error
@@ -34,6 +31,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ankidraft.services.ai.mcp_client_config_service import (
+    configure_client_mcp,
+    detect_mcp_clients,
+    get_client_config_path,
+    render_client_file_template,
+    render_client_snippet,
+)
 from ankidraft.ui.components.badges import Badge
 from ankidraft.ui.components.buttons import (
     IconButton,
@@ -76,6 +80,7 @@ class MCPSupervisionWidget(QWidget):
         self._token = initial_token
         self._token_visible = False
         self._active_snippet_key = "claude"
+        self._handshake_received = False
         self.pending_request: dict[str, Any] | None = None
 
         self._started_at: datetime | None = datetime.now() if initial_status == "running" else None
@@ -356,6 +361,38 @@ class MCPSupervisionWidget(QWidget):
         kpis_row.addWidget(self.kpi_box_last_tool, 1)
 
         lifecycle_layout.addLayout(kpis_row)
+
+        # Indicateur visuel de Premier Contact ("Handshake Test")
+        self.handshake_box = QFrame()
+        self.handshake_box.setObjectName("mcp_handshake_box")
+        self.handshake_box.setStyleSheet(f"""
+            QFrame#mcp_handshake_box {{
+                background-color: {DesignTokens.BG_INPUT};
+                border: 1px solid {DesignTokens.BORDER_COLOR};
+                border-radius: {DesignTokens.RADIUS_SM}px;
+            }}
+            QFrame#mcp_handshake_box QLabel {{
+                border: none;
+                background: transparent;
+            }}
+        """)
+        handshake_row = QHBoxLayout(self.handshake_box)
+        handshake_row.setContentsMargins(10, 8, 10, 8)
+        handshake_row.setSpacing(8)
+
+        self.lbl_handshake_icon = QLabel()
+        self.lbl_handshake_icon.setPixmap(load_phosphor_icon("ph.handshake", color=DesignTokens.TEXT_MUTED).pixmap(16, 16))
+        handshake_row.addWidget(self.lbl_handshake_icon)
+
+        self.lbl_handshake_status = QLabel(self.tr("En attente du premier appel d'un client externe…"))
+        self.lbl_handshake_status.setStyleSheet(f"color: {DesignTokens.TEXT_SECONDARY}; font-size: 11.5px; background: transparent; border: none;")
+        self.lbl_handshake_status.setWordWrap(True)
+        handshake_row.addWidget(self.lbl_handshake_status, 1)
+
+        self.badge_handshake = Badge(self.tr("En attente"), variant="neutral")
+        handshake_row.addWidget(self.badge_handshake)
+
+        lifecycle_layout.addWidget(self.handshake_box)
         col_left.addWidget(self.card_lifecycle)
 
         # 3.2 Carte Points de Terminaison & Jeton d'Authentification
@@ -488,10 +525,14 @@ class MCPSupervisionWidget(QWidget):
         header_snippets_row.addWidget(lbl_snippets_sec)
         header_snippets_row.addStretch()
 
-        self.btn_copy_snippet = PrimaryButton(self.tr("Copier la configuration"))
-        self.btn_copy_snippet.setIcon(load_phosphor_icon("ph.copy", color=DesignTokens.TEXT_ON_ACCENT))
+        self.badge_client_status = Badge(self.tr("Vérification..."), variant="neutral")
+        header_snippets_row.addWidget(self.badge_client_status)
+
+        self.btn_copy_snippet = SecondaryButton(self.tr("Copier"))
+        self.btn_copy_snippet.setIcon(load_phosphor_icon("ph.copy", color=DesignTokens.TEXT_PRIMARY))
+        self.btn_copy_snippet.setToolTip(self.tr("Copier la configuration du client sélectionné"))
         self.btn_copy_snippet.setCursor(Qt.CursorShape.PointingHandCursor)
-        apply_compact_style(self.btn_copy_snippet, height=30)
+        apply_compact_style(self.btn_copy_snippet, height=28)
         self.btn_copy_snippet.clicked.connect(self.copy_current_snippet)
         header_snippets_row.addWidget(self.btn_copy_snippet)
         snippets_layout.addLayout(header_snippets_row)
@@ -502,18 +543,24 @@ class MCPSupervisionWidget(QWidget):
         btn_agy = self.tab_bar_clients.add_tab("agy", self.tr("Antigravity (agy)"), icon_name="ph.terminal")
         btn_cursor = self.tab_bar_clients.add_tab("cursor", self.tr("Cursor"), icon_name="ph.cursor")
         btn_curl = self.tab_bar_clients.add_tab("curl", self.tr("cURL"), icon_name="ph.terminal-window")
-        btn_claude.setAccessibleName(self.tr("Onglet configuration Claude Desktop et Code"))
+        btn_claude_code = self.tab_bar_clients.add_tab("claude_code", self.tr("Claude Code"), icon_name="ph.terminal")
+        btn_windsurf = self.tab_bar_clients.add_tab("windsurf", self.tr("Windsurf"), icon_name="ph.code")
+        btn_claude.setAccessibleName(self.tr("Onglet configuration Claude Desktop"))
         btn_agy.setAccessibleName(self.tr("Onglet configuration Antigravity CLI"))
-        btn_cursor.setAccessibleName(self.tr("Onglet configuration Cursor et Windsurf"))
+        btn_cursor.setAccessibleName(self.tr("Onglet configuration Cursor"))
         btn_curl.setAccessibleName(self.tr("Onglet configuration cURL et CLI"))
-        btn_claude.setToolTip(self.tr("Claude (Desktop & Code)"))
+        btn_claude_code.setAccessibleName(self.tr("Onglet configuration Claude Code"))
+        btn_windsurf.setAccessibleName(self.tr("Onglet configuration Windsurf"))
+        btn_claude.setToolTip(self.tr("Claude Desktop"))
         btn_agy.setToolTip(self.tr("Antigravity CLI (agy)"))
-        btn_cursor.setToolTip(self.tr("Cursor / Windsurf"))
+        btn_cursor.setToolTip(self.tr("Cursor"))
         btn_curl.setToolTip(self.tr("cURL / CLI"))
+        btn_claude_code.setToolTip(self.tr("Claude Code (CLI / .claude.json)"))
+        btn_windsurf.setToolTip(self.tr("Windsurf (.codeium/windsurf/mcp_config.json)"))
         self.tab_bar_clients.tab_index_changed.connect(self._on_client_tab_changed)
         snippets_layout.addWidget(self.tab_bar_clients)
 
-        # Ligne d'aide contextuelle avec bouton Ouvrir le fichier
+        # Ligne d'aide contextuelle et actions 1-clic
         row_hint = QHBoxLayout()
         row_hint.setSpacing(8)
 
@@ -522,11 +569,19 @@ class MCPSupervisionWidget(QWidget):
         self.lbl_snippet_hint.setWordWrap(True)
         row_hint.addWidget(self.lbl_snippet_hint, 1)
 
+        self.btn_auto_configure_client = PrimaryButton(self.tr("Configurer automatiquement"))
+        self.btn_auto_configure_client.setIcon(load_phosphor_icon("ph.magic-wand", color=DesignTokens.TEXT_ON_ACCENT))
+        self.btn_auto_configure_client.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_auto_configure_client.setToolTip(self.tr("Sauvegarde le fichier client existant (.bak) et fusionne la configuration AnkiDraft en 1 clic"))
+        apply_compact_style(self.btn_auto_configure_client, height=28)
+        self.btn_auto_configure_client.clicked.connect(self.auto_configure_current_client)
+        row_hint.addWidget(self.btn_auto_configure_client)
+
         self.btn_open_client_config = SecondaryButton(self.tr("Ouvrir le fichier"))
         self.btn_open_client_config.setIcon(load_phosphor_icon("ph.arrow-square-out", color=DesignTokens.TEXT_PRIMARY))
         self.btn_open_client_config.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_open_client_config.setToolTip(self.tr("Ouvrir directement le fichier de configuration cible dans l'éditeur système"))
-        apply_compact_style(self.btn_open_client_config, height=26)
+        apply_compact_style(self.btn_open_client_config, height=28)
         self.btn_open_client_config.clicked.connect(self.open_client_config)
         row_hint.addWidget(self.btn_open_client_config)
 
@@ -696,11 +751,13 @@ class MCPSupervisionWidget(QWidget):
                 self.status_badge.setText(self.tr("Arrêté"))
                 self.status_badge.set_variant("neutral")
 
-        self.lbl_port_info.setText(tr("Port : %1", self._port))
+            self.lbl_port_info.setText(tr("Port : %1", self._port))
         self.edit_url_http.setText(self.url)
         self.edit_url_sse.setText(self.sse_url)
         self._update_token_display()
         self._refresh_snippet_view()
+        if not is_running and self._status in ("stopped", "error"):
+            self._reset_handshake_indicator()
 
     def _update_uptime_display(self) -> None:
         if self._started_at and self._status == "running":
@@ -805,6 +862,7 @@ class MCPSupervisionWidget(QWidget):
             show_toast(self, self.tr("URL avec jeton d'authentification copiée."))
 
     def _handle_rotate_token_requested(self) -> None:
+        self._reset_handshake_indicator()
         self.rotate_token_requested.emit()
         show_toast(self, self.tr("Renouvellement du jeton demandé. Pensez à actualiser vos configurations clientes."))
 
@@ -868,8 +926,11 @@ class MCPSupervisionWidget(QWidget):
             if hasattr(self, "lbl_kpi_calls") and self.lbl_kpi_calls:
                 self.lbl_kpi_calls.setText(str(total))
             history = tracker.get_history()
-            if history and hasattr(self, "lbl_kpi_last_tool") and self.lbl_kpi_last_tool:
-                self.lbl_kpi_last_tool.setText(history[-1].tool_name)
+            if history:
+                last_rec = history[-1]
+                if hasattr(self, "lbl_kpi_last_tool") and self.lbl_kpi_last_tool:
+                    self.lbl_kpi_last_tool.setText(last_rec.tool_name)
+                self._mark_handshake_connected(last_rec.tool_name, last_rec.started_at.strftime("%H:%M:%S"))
         except Exception as exc:
             logger.debug("Télémétrie d'activité MCP non initialisée : %s", exc)
 
@@ -884,6 +945,8 @@ class MCPSupervisionWidget(QWidget):
             tool_name = str(data.get("tool_name", ""))
             if tool_name and hasattr(self, "lbl_kpi_last_tool") and self.lbl_kpi_last_tool:
                 self.lbl_kpi_last_tool.setText(tool_name)
+            if not self._handshake_received:
+                self._mark_handshake_connected(tool_name or "tools/call", datetime.now().strftime("%H:%M:%S"))
         except Exception as exc:
             logger.debug("Erreur rafraîchissement KPI MCP : %s", exc)
 
@@ -892,29 +955,118 @@ class MCPSupervisionWidget(QWidget):
             self.lbl_kpi_calls.setText("0")
         if hasattr(self, "lbl_kpi_last_tool") and self.lbl_kpi_last_tool:
             self.lbl_kpi_last_tool.setText(self.tr("Aucun appel"))
+        self._reset_handshake_indicator()
+
+    def _mark_handshake_connected(self, tool_name: str, timestamp_str: str) -> None:
+        """Met à jour l'indicateur de premier contact dès qu'un client externe appelle le serveur."""
+        self._handshake_received = True
+        if hasattr(self, "badge_handshake"):
+            self.badge_handshake.setText(self.tr("Connecté"))
+            self.badge_handshake.set_variant("success")
+        if hasattr(self, "lbl_handshake_status"):
+            self.lbl_handshake_status.setText(tr("Premier contact validé (%1 à %2)", tool_name, timestamp_str))
+        if hasattr(self, "lbl_handshake_icon"):
+            self.lbl_handshake_icon.setPixmap(load_phosphor_icon("ph.handshake", color=DesignTokens.COLOR_GREEN).pixmap(16, 16))
+
+    def _reset_handshake_indicator(self) -> None:
+        """Réinitialise l'indicateur de premier contact en attente d'un appel client."""
+        self._handshake_received = False
+        if hasattr(self, "badge_handshake"):
+            self.badge_handshake.setText(self.tr("En attente"))
+            self.badge_handshake.set_variant("neutral")
+        if hasattr(self, "lbl_handshake_status"):
+            self.lbl_handshake_status.setText(self.tr("En attente du premier appel d'un agent externe…"))
+        if hasattr(self, "lbl_handshake_icon"):
+            self.lbl_handshake_icon.setPixmap(load_phosphor_icon("ph.handshake", color=DesignTokens.TEXT_MUTED).pixmap(16, 16))
 
     def _on_client_tab_changed(self, index: int) -> None:
-        mapping = {0: "claude", 1: "agy", 2: "cursor", 3: "curl"}
+        mapping = {0: "claude", 1: "agy", 2: "cursor", 3: "curl", 4: "claude_code", 5: "windsurf"}
         self._active_snippet_key = mapping.get(index, "claude")
         self._refresh_snippet_view()
 
     def _get_client_config_path(self, client: str) -> Path | None:
-        if client == "claude":
-            if sys.platform == "darwin":
-                return Path.home() / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
-            elif sys.platform == "win32":
-                appdata = os.environ.get("APPDATA")
-                return Path(appdata) / "Claude" / "claude_desktop_config.json" if appdata else None
+        return get_client_config_path(client)
+
+    def _refresh_client_detection_badge(self) -> None:
+        """Actualise le badge d'état de détection et de synchronisation du client actif."""
+        if not hasattr(self, "badge_client_status"):
+            return
+        client = self._active_snippet_key
+        if client == "curl":
+            self.badge_client_status.setVisible(False)
+            return
+
+        self.badge_client_status.setVisible(True)
+        try:
+            statuses = detect_mcp_clients(active_token=self._token)
+        except Exception as exc:
+            logger.debug("Détection clients MCP impossible : %s", exc)
+            self.badge_client_status.setText(self.tr("Manuel"))
+            self.badge_client_status.set_variant("neutral")
+            return
+
+        info = statuses.get(client)
+        if info is None:
+            self.badge_client_status.setText(self.tr("Manuel"))
+            self.badge_client_status.set_variant("neutral")
+            return
+
+        state_map = {
+            "configured": (self.tr("Configuré"), "success"),
+            "token_mismatch": (self.tr("Jeton obsolète"), "warning"),
+            "unconfigured": (self.tr("Non configuré"), "info"),
+            "invalid_json": (self.tr("JSON invalide"), "danger"),
+            "not_detected": (self.tr("Non détecté"), "neutral"),
+        }
+        label, variant = state_map.get(info.status, (self.tr("Manuel"), "neutral"))
+        self.badge_client_status.setText(label)
+        self.badge_client_status.set_variant(variant)
+        self.badge_client_status.setToolTip(info.detail)
+
+    def auto_configure_current_client(self) -> bool:
+        """Configure automatiquement en 1 clic le client MCP sélectionné (fusion JSON + .bak)."""
+        client = self._active_snippet_key
+        if client == "curl":
+            show_toast(self, self.tr("Le mode cURL s'exécute directement dans un terminal."))
+            return False
+
+        target_path = self._get_client_config_path(client)
+        if target_path is None:
+            show_toast(self, self.tr("Chemin de configuration introuvable pour ce client sur cet OS."), is_error=True)
+            return False
+
+        token = self._token or ""
+        if not token:
+            self._load_token_from_disk()
+            token = self._token or ""
+        if not token:
+            show_toast(self, self.tr("Démarrez le serveur MCP afin de générer un jeton Bearer actif."), is_error=True)
+            return False
+
+        try:
+            result = configure_client_mcp(
+                client,
+                url=self.url,
+                token=token,
+                config_path=target_path,
+            )
+            self._refresh_client_detection_badge()
+            if result.backup_path is not None:
+                show_toast(
+                    self,
+                    tr(
+                        "Configuration fusionnée dans %1 (sauvegarde : %2)",
+                        result.config_path.name,
+                        result.backup_path.name,
+                    ),
+                )
             else:
-                return Path.home() / ".config" / "claude" / "claude_desktop_config.json"
-        elif client == "agy":
-            return Path.home() / ".gemini" / "antigravity-cli" / "mcp" / "ankidraft.json"
-        elif client == "cursor":
-            project_cursor = Path.cwd() / ".cursor" / "mcp.json"
-            if project_cursor.parent.exists():
-                return project_cursor
-            return Path.home() / ".cursor" / "mcp.json"
-        return None
+                show_toast(self, tr("Configuration créée dans %1", result.config_path.name))
+            return True
+        except Exception as exc:
+            logger.warning("Échec de configuration automatique MCP (%s) : %s", client, exc)
+            show_toast(self, tr("Configuration automatique impossible : %1", str(exc)), is_error=True)
+            return False
 
     def open_client_config(self) -> None:
         """Ouvre le fichier de configuration correspondant au client sélectionné dans l'éditeur système."""
@@ -926,7 +1078,11 @@ class MCPSupervisionWidget(QWidget):
         try:
             if not target_path.exists():
                 target_path.parent.mkdir(parents=True, exist_ok=True)
-                target_path.write_text(self.get_snippet_config(self._active_snippet_key), encoding="utf-8")
+                target_path.write_text(
+                    render_client_file_template(self._active_snippet_key, url=self.url, token=self._token),
+                    encoding="utf-8",
+                )
+                self._refresh_client_detection_badge()
                 show_toast(self, tr("Fichier de configuration créé : %1", target_path.name))
 
             opened = QDesktopServices.openUrl(QUrl.fromLocalFile(str(target_path)))
@@ -941,69 +1097,33 @@ class MCPSupervisionWidget(QWidget):
 
     def get_snippet_config(self, client: str) -> str:
         """Génère le texte de configuration formaté pour le client spécifié."""
-        token = self._token or "VOTRE_JETON_BEARER"
-        if client == "claude":
-            claude_cfg: dict[str, Any] = {
-                "mcpServers": {
-                    "ankidraft": {
-                        "url": self.url,
-                        "headers": {
-                            "Authorization": f"Bearer {token}",
-                        },
-                    }
-                }
-            }
-            return json.dumps(claude_cfg, indent=2, ensure_ascii=False)
-        elif client == "agy":
-            agy_cfg: dict[str, Any] = {
-                "name": "ankidraft",
-                "url": self.url,
-                "headers": {
-                    "Authorization": f"Bearer {token}",
-                },
-            }
-            return json.dumps(agy_cfg, indent=2, ensure_ascii=False)
-        elif client == "cursor":
-            cursor_cfg: dict[str, Any] = {
-                "mcpServers": {
-                    "ankidraft": {
-                        "url": self.url,
-                        "headers": {
-                            "Authorization": f"Bearer {token}",
-                        },
-                    }
-                }
-            }
-            return json.dumps(cursor_cfg, indent=2, ensure_ascii=False)
-        elif client == "curl":
-            return (
-                f'curl -X POST "{self.url}" \\\n'
-                f'  -H "Authorization: Bearer {token}" \\\n'
-                '  -H "Content-Type: application/json" \\\n'
-                '  -d \'{"jsonrpc": "2.0", "method": "tools/list", "params": {}, "id": 1}\''
-            )
-        return ""
+        return render_client_snippet(client, url=self.url, token=self._token)
 
     def _refresh_snippet_view(self) -> None:
         hints = {
             "claude": self.tr("Collez ce bloc dans votre fichier claude_desktop_config.json :"),
-            "agy": self.tr("Collez ce bloc dans ~/.gemini/antigravity-cli/mcp/ankidraft.json :"),
+            "agy": self.tr("Ajoutez ce serveur dans ~/.gemini/config/mcp_config.json :"),
             "cursor": self.tr("Ajoutez ce serveur dans les paramètres MCP de Cursor (.cursor/mcp.json) :"),
             "curl": self.tr("Commande cURL de test d'interrogation du serveur MCP :"),
+            "claude_code": self.tr("Exécutez cette commande CLI ou configurez automatiquement ~/.claude.json :"),
+            "windsurf": self.tr("Ajoutez ce serveur dans les paramètres MCP de Windsurf (~/.codeium/windsurf/mcp_config.json) :"),
         }
         self.lbl_snippet_hint.setText(hints.get(self._active_snippet_key, ""))
         self.edit_snippet_code.setPlainText(self.get_snippet_config(self._active_snippet_key))
 
-        # Afficher ou masquer le bouton 'Ouvrir le fichier' pour le mode cURL (pas de fichier)
+        # Afficher ou masquer les boutons de fichier pour le mode cURL (pas de fichier)
         has_file = self._active_snippet_key != "curl"
         self.btn_open_client_config.setVisible(has_file)
+        if hasattr(self, "btn_auto_configure_client"):
+            self.btn_auto_configure_client.setVisible(has_file)
+        self._refresh_client_detection_badge()
 
     def copy_current_snippet(self) -> None:
         text = self.get_snippet_config(self._active_snippet_key)
         clipboard = QGuiApplication.clipboard()
         if clipboard is not None:
             clipboard.setText(text)
-            self._flash_button(self.btn_copy_snippet, self.tr("Copier la configuration"), "ph.copy")
+            self._flash_button(self.btn_copy_snippet, self.tr("Copier"), "ph.copy")
             show_toast(self, self.tr("Configuration client MCP copiée dans le presse-papiers."))
 
     def set_pending_request(self, context_item: Any, initial_prompt: str) -> None:
@@ -1182,6 +1302,17 @@ class MCPSupervisionWidget(QWidget):
             self.lbl_uptime.setStyleSheet(f"color: {text_muted}; font-size: 12px; background: transparent; border: none;")
         if hasattr(self, "lbl_snippet_hint"):
             self.lbl_snippet_hint.setStyleSheet(f"color: {text_secondary}; font-size: 12px; background: transparent; border: none;")
+        if hasattr(self, "handshake_box"):
+            self.handshake_box.setStyleSheet(
+                f"QFrame#mcp_handshake_box {{ background-color: {bg_input}; border: 1px solid {border_color}; border-radius: {DesignTokens.RADIUS_SM}px; }} "
+                f"QFrame#mcp_handshake_box QLabel {{ border: none; background: transparent; }}"
+            )
+        if hasattr(self, "lbl_handshake_status"):
+            self.lbl_handshake_status.setStyleSheet(f"color: {text_secondary}; font-size: 11.5px; background: transparent; border: none;")
+        if hasattr(self, "badge_handshake") and hasattr(self.badge_handshake, "refresh_theme"):
+            self.badge_handshake.refresh_theme(profile)
+        if hasattr(self, "badge_client_status") and hasattr(self.badge_client_status, "refresh_theme"):
+            self.badge_client_status.refresh_theme(profile)
 
         if hasattr(self, "tab_bar_clients") and hasattr(self.tab_bar_clients, "refresh_theme"):
             self.tab_bar_clients.refresh_theme(profile)

@@ -1232,3 +1232,99 @@ def test_settings_modal_tabs_no_horizontal_scrollbar(qtbot: Any, size: tuple[int
                 for lid, card in selector.cards.items():
                     assert card.info_container.isVisible(), f"Le conteneur d'informations du layout {lid} doit être visible."
                     assert card.lbl_name.isVisible(), f"Le titre du layout {lid} doit être visible."
+
+
+def test_ai_engines_tab_ollama_guided_diagnostics(qtbot):
+    """Vérifie le bouton Tester la connexion Ollama et les diagnostics guidés FR (0 modèle, arrêté, absent)."""
+    import urllib.error
+
+    tab = AIEnginesTab()
+    qtbot.addWidget(tab)
+
+    # 1. En ligne mais 0 modèle -> recommandation qwen2.5:7b + commande copiable
+    empty_resp = json.dumps({"models": []}).encode("utf-8")
+    with patch("urllib.request.urlopen") as mock_urlopen:
+        mock_cm = MagicMock()
+        mock_cm.read.return_value = empty_resp
+        mock_cm.__enter__.return_value = mock_cm
+        mock_urlopen.return_value = mock_cm
+
+        tab.btn_test_ollama.click()
+        assert tab.badge_ollama_status.text() == tab.tr("En ligne (0 modèle)")
+        assert not tab.ollama_diag_banner.isHidden()
+        assert "qwen2.5:7b" in tab.lbl_ollama_diag.text()
+        assert not tab.btn_copy_ollama_cmd.isHidden()
+
+        tab.btn_copy_ollama_cmd.click()
+        clipboard = QApplication.clipboard()
+        assert clipboard is not None
+        assert "ollama pull qwen2.5:7b" in clipboard.text()
+
+    # 2. Ollama installé mais service arrêté
+    with (
+        patch("urllib.request.urlopen", side_effect=urllib.error.URLError("Connection refused")),
+        patch("shutil.which", return_value="/usr/local/bin/ollama"),
+    ):
+        tab.btn_test_ollama.click()
+        assert tab.badge_ollama_status.text() == tab.tr("Service arrêté")
+        assert not tab.ollama_diag_banner.isHidden()
+        assert "ollama serve" in tab.lbl_ollama_diag.text()
+
+    # 3. Ollama non installé + conservation bordure rouge au refresh_theme
+    from ankidraft.ui.style_engine import JETBRAINS_LIGHT
+
+    with (
+        patch("urllib.request.urlopen", side_effect=urllib.error.URLError("Connection refused")),
+        patch("shutil.which", return_value=None),
+        patch("ankidraft.services.ai.mcp_client_config_service._default_ollama_binary_paths", return_value=[]),
+    ):
+        tab.btn_test_ollama.click()
+        assert tab.badge_ollama_status.text() == tab.tr("Non installé")
+        assert not tab.ollama_diag_banner.isHidden()
+        assert "ollama.com" in tab.lbl_ollama_diag.text()
+        tab.refresh_theme(JETBRAINS_LIGHT)
+        assert JETBRAINS_LIGHT.color_red in tab.ollama_diag_banner.styleSheet()
+
+
+def test_ai_engines_tab_cloud_key_ping_diagnostics(qtbot):
+    """Vérifie les messages diagnostiques FR des pings de clés API Cloud (401, 429, hors ligne)."""
+    import urllib.error
+    from email.message import Message
+
+    from ankidraft.ui.widgets.settings_modal.tabs.ai_engines_tab import CloudKeyPingWorker
+
+    # 401 -> rejetée
+    worker_401 = CloudKeyPingWorker("openai", "sk-invalid")
+    received_401: list[tuple[str, bool, str]] = []
+    worker_401.signals.result_ready.connect(lambda p, ok, txt: received_401.append((p, ok, txt)))
+    with (
+        patch("ankidraft.ui.widgets.settings_modal.tabs.ai_engines_tab._is_pytest_env", return_value=False),
+        patch("urllib.request.urlopen", side_effect=urllib.error.HTTPError("https://api.openai.com/v1/models", 401, "Unauthorized", Message(), None)),
+    ):
+        worker_401.run()
+    assert received_401 and received_401[0][1] is False
+    assert "401" in received_401[0][2]
+
+    # 429 -> quota épuisé
+    worker_429 = CloudKeyPingWorker("openai", "sk-quota")
+    received_429: list[tuple[str, bool, str]] = []
+    worker_429.signals.result_ready.connect(lambda p, ok, txt: received_429.append((p, ok, txt)))
+    with (
+        patch("ankidraft.ui.widgets.settings_modal.tabs.ai_engines_tab._is_pytest_env", return_value=False),
+        patch("urllib.request.urlopen", side_effect=urllib.error.HTTPError("https://api.openai.com/v1/models", 429, "Too Many Requests", Message(), None)),
+    ):
+        worker_429.run()
+    assert received_429 and received_429[0][1] is True
+    assert "Quota" in received_429[0][2] or "429" in received_429[0][2]
+
+    # Erreur réseau -> Hors ligne (format valide)
+    worker_net = CloudKeyPingWorker("openai", "sk-offline")
+    received_net: list[tuple[str, bool, str]] = []
+    worker_net.signals.result_ready.connect(lambda p, ok, txt: received_net.append((p, ok, txt)))
+    with (
+        patch("ankidraft.ui.widgets.settings_modal.tabs.ai_engines_tab._is_pytest_env", return_value=False),
+        patch("urllib.request.urlopen", side_effect=urllib.error.URLError("Network unreachable")),
+    ):
+        worker_net.run()
+    assert received_net and received_net[0][1] is True
+    assert "Hors ligne" in received_net[0][2]

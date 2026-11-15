@@ -343,8 +343,12 @@ class MCPServerDashboardWidget(QWidget):
         return self.supervision_widget.edit_snippet_code
 
     @property
-    def btn_copy_snippet(self) -> PrimaryButton:
+    def btn_copy_snippet(self) -> SecondaryButton:
         return self.supervision_widget.btn_copy_snippet
+
+    @property
+    def btn_auto_configure_client(self) -> PrimaryButton:
+        return self.supervision_widget.btn_auto_configure_client
 
     @property
     def btn_toggle_token(self) -> IconButton:
