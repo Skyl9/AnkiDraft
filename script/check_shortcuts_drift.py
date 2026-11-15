@@ -84,7 +84,7 @@ def generate_shortcuts_markdown(catalog: dict[ShortcutId, ShortcutDefinition] | 
         "<!-- Exécutez 'uv run python script/check_shortcuts_drift.py --fix' pour régénérer -->",
         "",
         (
-            "Cette page constitue la **référence officielle et exhaustive** de l'ensemble des raccourcis clavier d'AnkiForge, "
+            "Cette page constitue la **référence officielle et exhaustive** de l'ensemble des raccourcis clavier d'AnkiDraft, "
             "issue du registre central déclaratif (`src/ankidraft/ui/shortcuts/`) conformément à l'**ADR 0032**."
         ),
         "",

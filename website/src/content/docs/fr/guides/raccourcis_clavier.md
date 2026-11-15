@@ -6,7 +6,7 @@ description: Consultez la liste officielle des raccourcis clavier d'AnkiDraft pa
 <!-- ⚠️ DOCUMENT AUTO-GÉNÉRÉ DEPUIS src/ankidraft/ui/shortcuts/catalog.py - NE PAS MODIFIER MANUELLEMENT -->
 <!-- Exécutez 'uv run python script/check_shortcuts_drift.py --fix' pour régénérer -->
 
-Cette page constitue la **référence officielle et exhaustive** de l'ensemble des raccourcis clavier d'AnkiForge, issue du registre central déclaratif (`src/ankidraft/ui/shortcuts/`) conformément à l'**ADR 0032**.
+Cette page constitue la **référence officielle et exhaustive** de l'ensemble des raccourcis clavier d'AnkiDraft, issue du registre central déclaratif (`src/ankidraft/ui/shortcuts/`) conformément à l'**ADR 0032**.
 
 :::note
 Tous les raccourcis listés ci-dessous peuvent être visualisés, recherchés et personnalisés dans l'application via les **Paramètres (Ctrl+,) > onglet Clavier**.
