@@ -120,11 +120,14 @@ class DashboardLayout(BaseLayout):
         logo.setPixmap(load_logo_icon(DesignTokens.ACCENT_PRIMARY).pixmap(24, 24))
         logo.setStyleSheet("border: none; background: transparent;")
 
+        from ankidraft.database.seeds.demo_seed import get_profile_display_name
+
+        display_name = get_profile_display_name(self.profile_name)
         title_box = QVBoxLayout()
         title_box.setSpacing(0)
         title_lbl = QLabel(self.tr("AnkiDraft Portal"))
         title_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 15px; font-weight: bold;")
-        self.profile_lbl = QLabel(tr("Espace de travail : %1", self.profile_name))
+        self.profile_lbl = QLabel(tr("Espace de travail : %1", display_name))
         self.profile_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED}; font-size: 11px;")
         self.profile_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
         self.profile_lbl.setToolTip(self.tr("Cliquez pour changer d'espace de travail"))
@@ -156,7 +159,7 @@ class DashboardLayout(BaseLayout):
         self.search_btn.clicked.connect(self.search_clicked.emit)
         header_layout.addWidget(self.search_btn)
 
-        self.profile_btn = IconButton("user-circle", tooltip=f"Espace : {self.profile_name}", size=24)
+        self.profile_btn = IconButton("user-circle", tooltip=tr("Espace : %1", display_name), size=24)
         self.profile_btn.clicked.connect(self.profile_switch_requested.emit)
         header_layout.addWidget(self.profile_btn)
 
@@ -242,8 +245,11 @@ class DashboardLayout(BaseLayout):
         self.token_lbl.setText(tr("🪙 %1 $", clean_cost))
 
     def set_profile_name(self, profile_name: str) -> None:
+        from ankidraft.database.seeds.demo_seed import get_profile_display_name
+
         super().set_profile_name(profile_name)
+        display_name = get_profile_display_name(profile_name)
         if hasattr(self, "profile_lbl") and self.profile_lbl:
-            self.profile_lbl.setText(tr("Espace de travail : %1", profile_name))
+            self.profile_lbl.setText(tr("Espace de travail : %1", display_name))
         if hasattr(self, "profile_btn") and self.profile_btn:
-            self.profile_btn.setToolTip(tr("Espace : %1", profile_name))
+            self.profile_btn.setToolTip(tr("Espace : %1", display_name))

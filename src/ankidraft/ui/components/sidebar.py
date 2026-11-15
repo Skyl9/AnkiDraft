@@ -100,11 +100,14 @@ class SidebarProfileItem(QPushButton):
         self._update_text()
 
     def _update_text(self) -> None:
+        from ankidraft.database.seeds.demo_seed import get_profile_display_name
+
+        display_name = get_profile_display_name(self.profile_name)
         if self._collapsed:
             self.setText("")
-            self.setToolTip(tr("Profil : %1 (Changer de profil)", self.profile_name))
+            self.setToolTip(tr("Profil : %1 (Changer de profil)", display_name))
         else:
-            self.setText(tr("  Profil : %1", self.profile_name))
+            self.setText(tr("  Profil : %1", display_name))
             self.setToolTip(self.tr("Changer d'espace de travail / profil"))
 
     def set_collapsed(self, collapsed: bool) -> None:

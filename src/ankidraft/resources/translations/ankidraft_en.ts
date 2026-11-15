@@ -4,7 +4,7 @@
 <context>
     <name></name>
     <message>
-        <location filename="../../__main__.py" line="+301"/>
+        <location filename="../../__main__.py" line="+335"/>
         <source>Espace de travail en cours d&apos;utilisation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -652,7 +652,7 @@ Cliquer pour tronquer la saisie à ce niveau</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+41"/>
         <source>Profil : %1 (Changer de profil)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1781,37 +1781,40 @@ Voulez-vous mettre à jour les documents existants (contenu rafraîchi) ?</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+91"/>
-        <location line="+120"/>
-        <location filename="../../ui/layouts/glass_layout.py" line="+212"/>
-        <location filename="../../ui/layouts/macos_layout.py" line="+230"/>
+        <location line="+94"/>
+        <location line="+123"/>
+        <location filename="../../ui/layouts/glass_layout.py" line="+143"/>
+        <location line="+74"/>
+        <location filename="../../ui/layouts/macos_layout.py" line="+165"/>
+        <location line="+71"/>
         <source>Espace de travail : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-5"/>
-        <source>🪙 %1 $</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
+        <location line="-91"/>
+        <location line="+93"/>
         <source>Espace : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/layouts/glass_layout.py" line="-5"/>
-        <location filename="../../ui/layouts/macos_layout.py" line="-6"/>
+        <location line="-10"/>
+        <source>🪙 %1 $</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ui/layouts/glass_layout.py" line="-8"/>
+        <location filename="../../ui/layouts/macos_layout.py" line="-9"/>
         <source>%1 $</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../ui/layouts/macos_layout.py" line="-124"/>
-        <location line="+132"/>
+        <location line="+135"/>
         <source>• %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-7"/>
+        <location line="-10"/>
         <source>Dépenses : %1 $ (%2 jetons)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1865,7 +1868,7 @@ Voulez-vous mettre à jour les documents existants (contenu rafraîchi) ?</sourc
     <message>
         <location line="+4"/>
         <location line="+6"/>
-        <location filename="../../ui/views/dashboard_view.py" line="+862"/>
+        <location filename="../../ui/views/dashboard_view.py" line="+946"/>
         <location filename="../../ui/widget_gallery/families/layouts.py" line="+1"/>
         <source>Bibliothèque</source>
         <translation type="unfinished"></translation>
@@ -1904,12 +1907,7 @@ Voulez-vous mettre à jour les documents existants (contenu rafraîchi) ?</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+27"/>
-        <source>AnkiDraft%1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+150"/>
+        <location line="+180"/>
         <source>Espace Serveur MCP &amp; Agents actif.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1946,7 +1944,7 @@ Souhaitez-vous reprendre l&apos;exécution de ce pipeline ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+352"/>
+        <location line="+358"/>
         <source>Vous avez du travail non enregistré dans :
 %1
 
@@ -1954,14 +1952,24 @@ Voulez-vous vraiment %2 ? Ce travail sera perdu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+246"/>
+        <location line="+234"/>
+        <source>AnkiDraft%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>basculer vers l&apos;espace « %1 »</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Impossible de basculer vers l&apos;espace « %1 » : il est actuellement ouvert par une autre instance%2.
 
 L&apos;accès simultané au même profil est bloqué pour protéger vos données contre les corruptions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+59"/>
         <source>Espace de travail actif : « %1 »</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2338,7 +2346,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
     <message>
         <location line="+7"/>
         <location filename="../../ui/widget_gallery/families/components.py" line="+62"/>
-        <location filename="../../ui/widget_gallery/families/dialogs.py" line="+335"/>
+        <location filename="../../ui/widget_gallery/families/dialogs.py" line="+344"/>
         <source>Gras</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5370,8 +5378,8 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="-778"/>
-        <location line="+89"/>
+        <location filename="../../ui/views/dashboard_view.py" line="-799"/>
+        <location line="+100"/>
         <source>%1/4 terminées</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5382,8 +5390,8 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+542"/>
-        <location line="+78"/>
+        <location line="+544"/>
+        <location line="+86"/>
         <source>Forger des cartes (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7100,7 +7108,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/widget_gallery/families/dialogs.py" line="-214"/>
+        <location filename="../../ui/widget_gallery/families/dialogs.py" line="-222"/>
         <source>[Galerie Dev] Transfert entre espaces de travail</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7136,7 +7144,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+48"/>
         <source>Modèles à exporter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7161,7 +7169,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+63"/>
         <source>Gestionnaire d&apos;extensions</source>
         <extracomment>Correspondance classe de dialogue → factory, source unique de la couverture.</extracomment>
         <translation type="unfinished"></translation>
@@ -7223,6 +7231,11 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
     </message>
     <message>
         <location line="+1"/>
+        <source>Accueil premier lancement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Historique d&apos;une carte</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7239,6 +7252,11 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
     <message>
         <location line="+1"/>
         <source>Import Anki (.apkg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Quitter l&apos;Exemple d&apos;introduction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8526,7 +8544,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/widgets/profile_selector.py" line="+236"/>
+        <location filename="../../ui/widgets/profile_selector.py" line="+238"/>
         <location line="+245"/>
         <source>%1 profil%2</source>
         <translation type="unfinished"></translation>
@@ -8545,7 +8563,7 @@ Veuillez fermer l&apos;autre instance ou sélectionner un autre espace de travai
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+97"/>
         <source>L&apos;espace de travail « %1 » existe déjà.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13788,7 +13806,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DashboardDropZone</name>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="-224"/>
+        <location filename="../../ui/views/dashboard_view.py" line="-234"/>
         <source>Glissez un PDF, Document ou Paquet Anki ici</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13809,7 +13827,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DashboardLayout</name>
     <message>
-        <location filename="../../ui/layouts/dashboard_layout.py" line="-124"/>
+        <location filename="../../ui/layouts/dashboard_layout.py" line="-117"/>
         <source>AnkiDraft Portal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13842,7 +13860,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DashboardView</name>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="+635"/>
+        <location filename="../../ui/views/dashboard_view.py" line="+645"/>
         <source>Actions Rapides</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13872,7 +13890,12 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="+75"/>
+        <source>Exemple d&apos;introduction réinitialisé.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+47"/>
         <source>Aucune activité récente</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16840,6 +16863,70 @@ exact → section → page → lexical</source>
     </message>
 </context>
 <context>
+    <name>FirstLaunchWelcomeDialog</name>
+    <message>
+        <location filename="../../ui/dialogs/first_launch_welcome_dialog.py" line="+50"/>
+        <location line="+22"/>
+        <source>Bienvenue dans AnkiDraft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Choisissez comment démarrer votre premier espace de travail :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>RECOMMANDÉ · SANS CLÉ API</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Explorez immédiatement un mini-cours complet (Smart Coverage, Hôpital Wozniak, KaTeX/Cloze, Garde-Fou MCP et revue Batch) sans configuration préalable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Explorer avec l&apos;Exemple d&apos;introduction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Nom du profil personnel :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Importer ma collection Anki (.apkg / .colpkg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Passe la présentation guidée et ouvre directement l&apos;import Anki.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Passe la présentation guidée et ouvre directement la boîte d&apos;importation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Démarrer un espace vierge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Passe la présentation guidée et démarre un profil vierge.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Passe la présentation guidée et crée un espace prêt à accueillir vos documents.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FlashcardPreview</name>
     <message>
         <location filename="../../ui/views/creation_view/widgets/flashcard_preview.py" line="-2"/>
@@ -17284,7 +17371,7 @@ exact → section → page → lexical</source>
 <context>
     <name>GlassmorphismLayout</name>
     <message>
-        <location filename="../../ui/layouts/glass_layout.py" line="-110"/>
+        <location filename="../../ui/layouts/glass_layout.py" line="-112"/>
         <source>AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17299,7 +17386,7 @@ exact → section → page → lexical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+10"/>
         <source>Aide &amp; Retours</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17991,6 +18078,29 @@ exact → section → page → lexical</source>
     </message>
 </context>
 <context>
+    <name>IntroSandboxBanner</name>
+    <message>
+        <location filename="../../ui/views/dashboard_view.py" line="-1095"/>
+        <source>Mode Découverte · Exemple d&apos;introduction (sans clé API)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Données pré-indexées locales pour tester Smart Coverage, l&apos;Hôpital Wozniak, KaTeX, Batch et le Garde-Fou MCP.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Réinitialiser l&apos;exemple</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Passer à mon espace de travail</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>IsolatedBatchSliceComposerDialog</name>
     <message>
         <location filename="../../ui/dialogs/dialog_gallery_dialog.py" line="-86"/>
@@ -18187,6 +18297,39 @@ exact → section → page → lexical</source>
     <message>
         <location filename="../../ui/widgets/settings_modal/components/layout_grid_selector.py" line="+158"/>
         <source>Aperçu indisponible</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LeaveDemoProfileDialog</name>
+    <message>
+        <location filename="../../ui/dialogs/first_launch_welcome_dialog.py" line="+51"/>
+        <source>Passer à mon espace de travail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Choisissez ou nommez votre espace de travail personnel. Vous pourrez toujours retrouver l&apos;Exemple d&apos;introduction plus tard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Nom de l&apos;espace :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Supprimer le profil Exemple d&apos;introduction après bascule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Annuler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Basculer maintenant</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19550,7 +19693,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../ui/main_window.py" line="-888"/>
+        <location filename="../../ui/main_window.py" line="-936"/>
         <source>Nouveau jeton d&apos;authentification MCP généré.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19560,17 +19703,17 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+518"/>
+        <location line="+524"/>
         <source>Modifications non sauvegardées</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+165"/>
+        <location line="+169"/>
         <source>Aucun incident n&apos;est enregistré dans crash.log.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+115"/>
         <source>Profil en cours d&apos;utilisation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20553,18 +20696,18 @@ Aucune anomalie détectée dans votre collection.</source>
 <context>
     <name>OnboardingChecklistWidget</name>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="-973"/>
+        <location filename="../../ui/views/dashboard_view.py" line="+46"/>
         <source>Premiers pas avec AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+67"/>
+        <location line="+78"/>
         <source>Replier la checklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-63"/>
+        <location line="-74"/>
         <source>Masquer définitivement la checklist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20609,7 +20752,12 @@ Aucune anomalie détectée dans votre collection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+24"/>
+        <source>Explorer l&apos;Exemple d&apos;introduction →</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Déplier la checklist</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21176,7 +21324,7 @@ Utilisez {{ text_source }}.</source>
 <context>
     <name>ProfileItemWidget</name>
     <message>
-        <location filename="../../ui/widgets/profile_selector.py" line="-459"/>
+        <location filename="../../ui/widgets/profile_selector.py" line="-461"/>
         <source>ACTIF</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21234,7 +21382,7 @@ Utilisez {{ text_source }}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+97"/>
+        <location line="+99"/>
         <source>Profil existant</source>
         <translation type="unfinished"></translation>
     </message>

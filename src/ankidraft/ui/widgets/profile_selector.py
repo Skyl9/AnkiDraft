@@ -23,6 +23,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ankidraft.database.seeds.demo_seed import INTRO_PROFILE_ID, get_profile_display_name
 from ankidraft.services.profile_manager import ProfileManager
 from ankidraft.ui.components.buttons import DangerButton, PrimaryButton, SecondaryButton, apply_compact_style
 from ankidraft.ui.components.inputs import GlowLineEdit, StyledLineEdit
@@ -47,6 +48,7 @@ class ProfileItemWidget(QFrame):
     ) -> None:
         super().__init__(parent)
         self.name = name
+        self.display_name = get_profile_display_name(name)
         self.is_current = is_current
         self.is_selected = is_selected
         self.is_locked = is_locked
@@ -62,18 +64,18 @@ class ProfileItemWidget(QFrame):
 
         # 1. Icône Phosphor
         self.icon_lbl = QLabel()
-        icon_name = "cards" if is_current else "folder"
+        icon_name = "cards" if is_current else ("sparkle" if name == INTRO_PROFILE_ID else "folder")
         icon_color = DesignTokens.ACCENT_PRIMARY if is_current else DesignTokens.TEXT_SECONDARY
         self.icon_lbl.setPixmap(load_phosphor_icon(icon_name, color=icon_color).pixmap(22, 22))
         self.icon_lbl.setStyleSheet("border: none; background: transparent;")
         layout.addWidget(self.icon_lbl)
 
-        # 2. Textes (Nom + Chemin relatif)
+        # 2. Textes (Nom affiché + Chemin relatif)
         text_layout = QVBoxLayout()
         text_layout.setContentsMargins(0, 0, 0, 0)
         text_layout.setSpacing(2)
 
-        self.name_lbl = QLabel(name)
+        self.name_lbl = QLabel(self.display_name)
         self.name_lbl.setFont(QFont(DesignTokens.FONT_MAIN, 11, QFont.Weight.DemiBold))
         self.name_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; border: none; background: transparent;")
 
@@ -149,7 +151,7 @@ class ProfileItemWidget(QFrame):
             """)
 
     def refresh_theme(self, profile: Any) -> None:
-        icon_name = "cards" if self.is_current else "folder"
+        icon_name = "cards" if self.is_current else ("sparkle" if self.name == INTRO_PROFILE_ID else "folder")
         icon_color = profile.accent_primary if self.is_current else profile.text_secondary
         self.icon_lbl.setPixmap(load_phosphor_icon(icon_name, color=icon_color).pixmap(22, 22))
         self._update_style()
@@ -422,7 +424,7 @@ class ProfileSelectorDialog(QDialog):
                     tr(
                         "Le profil « %1 » est déjà ouvert par une autre instance%2.\n\nL'accès simultané au même profil est bloqué pour protéger vos données contre les "
                         "corruptions.\nVeuillez fermer l'autre instance ou sélectionner un autre espace de travail.",
-                        self.selected_profile,
+                        get_profile_display_name(self.selected_profile),
                         pid_hint,
                     ),
                 )
@@ -481,12 +483,14 @@ class ProfileSelectorDialog(QDialog):
             self.count_badge.setText(tr("%1 profil%2", len(self.profiles), "s" if len(self.profiles) > 1 else ""))
 
     def _filter_profiles(self, query: str) -> None:
-        """Filtre les profils selon la requête textuelle."""
+        """Filtre les profils selon l'identifiant ou le nom affiché."""
         q = query.strip().lower()
         for i in range(self.list_widget.count()):
             item = self.list_widget.item(i)
             raw_name = item.data(Qt.ItemDataRole.UserRole) or ""
-            item.setHidden(bool(q and q not in raw_name.lower()))
+            display_name = get_profile_display_name(raw_name)
+            matches = q in raw_name.lower() or q in display_name.lower()
+            item.setHidden(bool(q and not matches))
 
     def _on_selection_changed(self, current: QListWidgetItem | None, _previous: QListWidgetItem | None) -> None:
         if not current:
@@ -537,7 +541,7 @@ class ProfileSelectorDialog(QDialog):
             self.tr("Confirmation de suppression"),
             tr(
                 "Êtes-vous sûr de vouloir supprimer définitivement l'espace de travail « %1 » ?\n\nToutes les cartes, documents, personas et médias associés seront définitivement effacés.",
-                self.selected_profile,
+                get_profile_display_name(self.selected_profile),
             ),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No,

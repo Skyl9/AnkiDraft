@@ -160,16 +160,19 @@ class MainWindow(QMainWindow):
         "docs": ("documents",),
     }
 
-    def __init__(self, ai_manager: AIManager | None, profile_name: str = "default") -> None:
+    def __init__(
+        self,
+        ai_manager: AIManager | None,
+        profile_name: str = "default",
+        is_first_launch_session: bool = False,
+    ) -> None:
         super().__init__()
         self.ai_manager = ai_manager
         self.profile_name = profile_name
+        self._is_first_launch_session = is_first_launch_session
         self.mcp_daemon: Any | None = None
 
-        from ankidraft import __version__
-
-        title_suffix = f" [DEV] - profil: {profile_name} (v{__version__})" if is_development() else f" - {profile_name}"
-        self.setWindowTitle(tr("AnkiDraft%1", title_suffix))
+        self.setWindowTitle(self._format_window_title(profile_name))
         self.setMinimumSize(1200, 720)
 
         # Application & Window Icon
@@ -946,6 +949,12 @@ class MainWindow(QMainWindow):
                 if hasattr(real_widget, "dashboard_data_updated"):
                     real_widget.dashboard_data_updated.connect(self._on_dashboard_data_updated)
 
+                if hasattr(real_widget, "explore_intro_example_requested"):
+                    real_widget.explore_intro_example_requested.connect(self.switch_to_intro_example)
+
+                if hasattr(real_widget, "leave_intro_example_requested"):
+                    real_widget.leave_intro_example_requested.connect(self.leave_intro_example_profile)
+
                 if view_id == "consultant":
                     if hasattr(real_widget, "mcp_start_requested"):
                         real_widget.mcp_start_requested.connect(self.start_mcp_server)
@@ -1181,7 +1190,11 @@ class MainWindow(QMainWindow):
 
     def _check_startup_support_dialog(self) -> None:
         """Affiche l'invitation de soutien Ko-fi si la préférence utilisateur le permet."""
+        from ankidraft.database.seeds.demo_seed import is_intro_example_profile
         from ankidraft.utils.environment import get_app_qsettings
+
+        if self._is_first_launch_session or is_intro_example_profile():
+            return
 
         try:
             show_dialog = get_app_qsettings().value("app/show_startup_support_dialog", True, type=bool)
@@ -1281,19 +1294,54 @@ class MainWindow(QMainWindow):
             if new_profile and new_profile != self.profile_name:
                 self.switch_to_profile(new_profile)
 
+    @staticmethod
+    def _format_window_title(profile_name: str) -> str:
+        """Formate le titre de fenêtre principal avec le nom traduit du profil."""
+        from ankidraft import __version__
+        from ankidraft.database.seeds.demo_seed import get_profile_display_name
+
+        display_name = get_profile_display_name(profile_name)
+        title_suffix = f" [DEV] - profil: {display_name} (v{__version__})" if is_development() else f" - {display_name}"
+        return tr("AnkiDraft%1", title_suffix)
+
+    def switch_to_intro_example(self) -> None:
+        """Crée au besoin puis bascule vers le profil sandbox Exemple d'introduction."""
+        from ankidraft.database.seeds.demo_seed import INTRO_PROFILE_ID
+
+        if self.profile_name != INTRO_PROFILE_ID:
+            self.switch_to_profile(INTRO_PROFILE_ID)
+
+    def leave_intro_example_profile(self, target_profile: str = "default", delete_intro: bool = True) -> None:
+        """Bascule d'abord vers ``target_profile`` puis supprime ``intro-example`` si demandé."""
+        from ankidraft.database.seeds.demo_seed import INTRO_PROFILE_ID
+        from ankidraft.services.profile_manager import ProfileManager
+        from ankidraft.ui.dialogs.first_launch_welcome_dialog import sanitize_profile_name
+
+        safe_target = sanitize_profile_name(target_profile, fallback="default")
+        was_intro = self.profile_name == INTRO_PROFILE_ID
+        if was_intro:
+            self.switch_to_profile(safe_target)
+
+        pm = ProfileManager()
+        if delete_intro and self.profile_name == safe_target and INTRO_PROFILE_ID in pm.list_profiles():
+            pm.delete_profile(INTRO_PROFILE_ID)
+
     def switch_to_profile(self, new_profile: str) -> None:
         """Bascule l'application vers un autre profil utilisateur (BDD, thèmes, layouts, vues)."""
         from PySide6.QtWidgets import QMessageBox
 
+        from ankidraft.database.seeds.demo_seed import INTRO_PROFILE_ID, get_profile_display_name, seed_intro_example_data
         from ankidraft.services.profile_lock_service import ProfileLockService
         from ankidraft.services.profile_manager import ProfileManager
         from ankidraft.ui.layouts.layout_manager import LayoutManager
         from ankidraft.ui.widgets.profile_switch_overlay import ProfileSwitchOverlay
         from ankidraft.ui.widgets.toast import show_toast
 
+        display_name = get_profile_display_name(new_profile)
+
         # Action destructive : changer de profil détruit les instances de vues (donc la
         # file batch et les cartes générées) via `_reset_view_widgets`.
-        if not self._confirm_discard_unsaved_work(f"basculer vers l'espace « {new_profile} »"):
+        if not self._confirm_discard_unsaved_work(tr("basculer vers l'espace « %1 »", display_name)):
             logger.info("Bascule de profil annulée : travail non enregistré détecté.")
             return
 
@@ -1307,7 +1355,7 @@ class MainWindow(QMainWindow):
                 tr(
                     "Impossible de basculer vers l'espace « %1 » : il est actuellement ouvert par une autre instance%2.\n\nL'accès simultané au même profil est bloqué pour protéger vos "
                     "données contre les corruptions.",
-                    new_profile,
+                    display_name,
                     pid_hint,
                 ),
             )
@@ -1322,13 +1370,16 @@ class MainWindow(QMainWindow):
         # Feedback visuel immédiat non bloquant : overlay + spinner affichés AVANT les
         # opérations I/O, avec forçage du rafraîchissement de l'event loop Qt pour éviter
         # le gel visuel (roue multicolore / beachball) pendant le basculement.
-        overlay = ProfileSwitchOverlay(self, profile_name=new_profile)
+        overlay = ProfileSwitchOverlay(self, profile_name=display_name)
         QApplication.processEvents()
 
         # 1. Basculer la base de données Peewee et le répertoire média
         pm = ProfileManager()
         pm.switch_profile(new_profile)  # fast-path si déjà à jour (< 15 ms)
+        if new_profile == INTRO_PROFILE_ID:
+            seed_intro_example_data()
         self.profile_name = new_profile
+        self.setWindowTitle(self._format_window_title(new_profile))
 
         # 2. Mettre à jour le profil sur le layout actif
         if self.current_layout is not None:
@@ -1361,7 +1412,7 @@ class MainWindow(QMainWindow):
         overlay.close_overlay()
 
         event_bus.publish(ProfileSwitchedEvent(profile_name=new_profile))
-        show_toast(self, tr("Espace de travail actif : « %1 »", new_profile))
+        show_toast(self, tr("Espace de travail actif : « %1 »", display_name))
 
     def _reset_view_widgets(self) -> None:
         """Réinitialise les instances de vues pour nettoyer tout cache BDD lié au précédent profil.

@@ -174,7 +174,9 @@ class GlassmorphismLayout(BaseLayout):
         self.search_btn.clicked.connect(self.search_clicked.emit)
         header_layout.addWidget(self.search_btn)
 
-        self.profile_btn = IconButton("user-circle", tooltip=f"Espace de travail : {self.profile_name}", size=22)
+        from ankidraft.database.seeds.demo_seed import get_profile_display_name
+
+        self.profile_btn = IconButton("user-circle", tooltip=tr("Espace de travail : %1", get_profile_display_name(self.profile_name)), size=22)
         self.profile_btn.clicked.connect(self.profile_switch_requested.emit)
         header_layout.addWidget(self.profile_btn)
 
@@ -243,6 +245,9 @@ class GlassmorphismLayout(BaseLayout):
         self.token_lbl.setText(tr("%1 $", clean_cost))
 
     def set_profile_name(self, profile_name: str) -> None:
+        from ankidraft.database.seeds.demo_seed import get_profile_display_name
+
         super().set_profile_name(profile_name)
+        display_name = get_profile_display_name(profile_name)
         if hasattr(self, "profile_btn") and self.profile_btn:
-            self.profile_btn.setToolTip(tr("Espace de travail : %1", profile_name))
+            self.profile_btn.setToolTip(tr("Espace de travail : %1", display_name))

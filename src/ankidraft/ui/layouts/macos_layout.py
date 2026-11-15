@@ -130,10 +130,13 @@ class MacosLayout(BaseLayout):
         logo_label.setPixmap(load_logo_icon(DesignTokens.ACCENT_PRIMARY).pixmap(20, 20))
         logo_label.setStyleSheet("border: none; background: transparent;")
 
+        from ankidraft.database.seeds.demo_seed import get_profile_display_name
+
+        display_name = get_profile_display_name(self.profile_name)
         app_title = QLabel(self.tr("AnkiDraft"))
         app_title.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-weight: bold; font-size: 14px; border: none; background: transparent;")
 
-        self.profile_badge = QLabel(tr("• %1", self.profile_name))
+        self.profile_badge = QLabel(tr("• %1", display_name))
         self.profile_badge.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED}; font-size: 11px; border: none; background: transparent;")
 
         top_layout.addWidget(logo_label)
@@ -195,7 +198,7 @@ class MacosLayout(BaseLayout):
         top_layout.addWidget(self.token_lbl)
 
         # Profile Button
-        self.profile_btn = IconButton("user-circle", tooltip=f"Espace de travail : {self.profile_name}", size=22)
+        self.profile_btn = IconButton("user-circle", tooltip=tr("Espace de travail : %1", display_name), size=22)
         self.profile_btn.clicked.connect(self.profile_switch_requested.emit)
         top_layout.addWidget(self.profile_btn)
 
@@ -261,8 +264,11 @@ class MacosLayout(BaseLayout):
         self.token_lbl.setToolTip(tr("Dépenses : %1 $ (%2 jetons)", clean_cost, tokens))
 
     def set_profile_name(self, profile_name: str) -> None:
+        from ankidraft.database.seeds.demo_seed import get_profile_display_name
+
         super().set_profile_name(profile_name)
+        display_name = get_profile_display_name(profile_name)
         if hasattr(self, "profile_btn") and self.profile_btn:
-            self.profile_btn.setToolTip(tr("Espace de travail : %1", profile_name))
+            self.profile_btn.setToolTip(tr("Espace de travail : %1", display_name))
         if hasattr(self, "profile_badge") and self.profile_badge:
-            self.profile_badge.setText(tr("• %1", profile_name))
+            self.profile_badge.setText(tr("• %1", display_name))

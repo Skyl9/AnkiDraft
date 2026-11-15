@@ -52,11 +52,74 @@ class DashboardWorker(QThread):
 StatsWorker = DashboardWorker
 
 
+class IntroSandboxBanner(QFrame):
+    """Bandeau discret indiquant le mode Découverte (Exemple d'introduction sans clé API)."""
+
+    reset_requested = Signal()
+    leave_requested = Signal()
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setObjectName("IntroSandboxBanner")
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self._build_ui()
+        self._apply_style()
+
+    def _build_ui(self) -> None:
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(14, 10, 14, 10)
+        layout.setSpacing(10)
+
+        self.icon_lbl = QLabel()
+        self.icon_lbl.setPixmap(load_phosphor_icon("ph.compass", color=DesignTokens.ACCENT_PRIMARY).pixmap(20, 20))
+        self.icon_lbl.setStyleSheet("border: none; background: transparent;")
+        layout.addWidget(self.icon_lbl)
+
+        text_col = QVBoxLayout()
+        text_col.setContentsMargins(0, 0, 0, 0)
+        text_col.setSpacing(2)
+        self.title_lbl = QLabel(self.tr("Mode Découverte · Exemple d'introduction (sans clé API)"))
+        self.title_lbl.setFont(QFont(DesignTokens.FONT_MAIN, 11, QFont.Weight.Bold))
+        self.title_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; border: none; background: transparent;")
+        self.desc_lbl = QLabel(self.tr("Données pré-indexées locales pour tester Smart Coverage, l'Hôpital Wozniak, KaTeX, Batch et le Garde-Fou MCP."))
+        self.desc_lbl.setWordWrap(True)
+        self.desc_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_SECONDARY}; font-size: 11px; border: none; background: transparent;")
+        text_col.addWidget(self.title_lbl)
+        text_col.addWidget(self.desc_lbl)
+        layout.addLayout(text_col, 1)
+
+        self.btn_reset_demo = SecondaryButton(self.tr("Réinitialiser l'exemple"))
+        self.btn_reset_demo.setIcon(load_phosphor_icon("ph.arrow-counter-clockwise", color=DesignTokens.TEXT_PRIMARY))
+        self.btn_reset_demo.clicked.connect(self.reset_requested.emit)
+        layout.addWidget(self.btn_reset_demo)
+
+        self.btn_leave_demo = PrimaryButton(self.tr("Passer à mon espace de travail"))
+        self.btn_leave_demo.clicked.connect(self.leave_requested.emit)
+        layout.addWidget(self.btn_leave_demo)
+
+    def _apply_style(self) -> None:
+        self.setStyleSheet(f"""
+            QFrame#IntroSandboxBanner {{
+                background-color: {DesignTokens.ACCENT_BG};
+                border: 1px solid {DesignTokens.ACCENT_BORDER};
+                border-radius: {DesignTokens.RADIUS_MD}px;
+            }}
+        """)
+
+    def refresh_theme(self, profile: Any) -> None:
+        self._apply_style()
+        self.icon_lbl.setPixmap(load_phosphor_icon("ph.compass", color=profile.accent_primary).pixmap(20, 20))
+        self.btn_reset_demo.setIcon(load_phosphor_icon("ph.arrow-counter-clockwise", color=profile.text_primary))
+        self.title_lbl.setStyleSheet(f"color: {profile.text_primary}; border: none; background: transparent;")
+        self.desc_lbl.setStyleSheet(f"color: {profile.text_secondary}; font-size: 11px; border: none; background: transparent;")
+
+
 class OnboardingChecklistWidget(QFrame):
     """Checklist interactive 'Premiers pas' sur le tableau de bord."""
 
     step_action_requested = Signal(str)
     hidden_permanently = Signal()
+    explore_intro_requested = Signal()
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -145,6 +208,17 @@ class OnboardingChecklistWidget(QFrame):
             row.addWidget(btn)
             steps_layout.addLayout(row)
             self._step_rows[key] = (ico, lbl, btn)
+
+        footer_row = QHBoxLayout()
+        footer_row.setContentsMargins(0, 2, 0, 0)
+        footer_row.addStretch()
+        self.btn_explore_intro = QPushButton(self.tr("Explorer l'Exemple d'introduction →"))
+        self.btn_explore_intro.setFlat(True)
+        self.btn_explore_intro.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_explore_intro.setStyleSheet(f"color: {DesignTokens.TEXT_SECONDARY}; background: transparent; border: none; padding: 1px 4px; font-size: 11px;")
+        self.btn_explore_intro.clicked.connect(self.explore_intro_requested.emit)
+        footer_row.addWidget(self.btn_explore_intro)
+        steps_layout.addLayout(footer_row)
 
         layout.addWidget(self.steps_container)
 
@@ -748,6 +822,8 @@ class StatItem(QFrame):
 class DashboardView(QWidget):
     request_navigation = Signal(str, object)
     dashboard_data_updated = Signal(dict)
+    explore_intro_example_requested = Signal()
+    leave_intro_example_requested = Signal(str, bool)
 
     def __init__(
         self,
@@ -823,10 +899,18 @@ class DashboardView(QWidget):
         self.hero_banner = DashboardHeroBanner()
         content_layout.addWidget(self.hero_banner)
 
+        # 1a. Bandeau Mode Découverte (uniquement actif sur intro-example)
+        self.intro_banner = IntroSandboxBanner(self)
+        self.intro_banner.reset_requested.connect(self._on_reset_intro_example)
+        self.intro_banner.leave_requested.connect(self._on_leave_intro_example)
+        content_layout.addWidget(self.intro_banner)
+
         # 1b. Checklist interactive de premiers pas
         self.onboarding_checklist = OnboardingChecklistWidget(self)
         self.onboarding_checklist.step_action_requested.connect(self._on_onboarding_step_action)
         self.onboarding_checklist.hidden_permanently.connect(self._on_hide_onboarding_checklist)
+        self.onboarding_checklist.explore_intro_requested.connect(self.explore_intro_example_requested.emit)
+        self._sync_intro_sandbox_ui()
         try:
             from ankidraft.database.models import SettingModel
 
@@ -1014,9 +1098,49 @@ class DashboardView(QWidget):
         except Exception:
             logger.debug("Erreur rafraîchissement checklist premiers pas")
 
+    def _sync_intro_sandbox_ui(self) -> None:
+        """Synchronise l'affichage du bandeau Découverte et du lien sur la checklist."""
+        from ankidraft.database.seeds.demo_seed import is_intro_example_profile
+
+        is_demo = is_intro_example_profile()
+        if hasattr(self, "intro_banner"):
+            self.intro_banner.setVisible(is_demo)
+        if hasattr(self, "onboarding_checklist") and hasattr(self.onboarding_checklist, "btn_explore_intro"):
+            self.onboarding_checklist.btn_explore_intro.setVisible(not is_demo)
+
+    def _on_reset_intro_example(self) -> None:
+        """Réinitialise atomiquement le jeu de données Exemple d'introduction et rafraîchit la vue."""
+        from ankidraft.database.seeds.demo_seed import reset_intro_example_data
+        from ankidraft.ui.widgets.toast import ToastLevel, show_toast
+
+        reset_intro_example_data()
+        win = self.window()
+        if win is not None and win is not self and hasattr(win, "_purge_inactive_views"):
+            # Réinitialise les autres vues mises en cache (ex. BatchView, Garde-Fou MCP)
+            # sans détruire la vue Dashboard active ni relâcher ProfileLockService.
+            win._purge_inactive_views()
+        self.refresh_data()
+        show_toast(self, self.tr("Exemple d'introduction réinitialisé."), level=ToastLevel.INFO)
+
+    def _on_leave_intro_example(self) -> None:
+        """Invite l'utilisateur à nommer son vrai profil puis émet la bascule sécurisée."""
+        from ankidraft.database.seeds.demo_seed import INTRO_PROFILE_ID
+        from ankidraft.services.profile_manager import ProfileManager
+        from ankidraft.ui.dialogs.first_launch_welcome_dialog import LeaveDemoProfileDialog
+
+        existing_real = [p for p in ProfileManager().list_profiles() if p != INTRO_PROFILE_ID]
+        default_target = existing_real[0] if existing_real else "default"
+        dialog = LeaveDemoProfileDialog(default_target=default_target, parent=self)
+        if dialog.exec() == LeaveDemoProfileDialog.DialogCode.Accepted:
+            self.leave_intro_example_requested.emit(
+                dialog.target_profile_name(),
+                dialog.should_delete_intro(),
+            )
+
     def refresh_data(self):
         """Lance l'actualisation asynchrone des données du tableau de bord."""
         logger.debug("Actualisation asynchrone des métriques du tableau de bord…")
+        self._sync_intro_sandbox_ui()
         self.worker = DashboardWorker()
         self.worker.data_loaded.connect(self._on_data_loaded)
         self.worker.start()
@@ -1170,6 +1294,8 @@ class DashboardView(QWidget):
             self.actions_title.setStyleSheet(f"color: {profile.text_primary};")
         if hasattr(self, "hero_banner"):
             self.hero_banner.refresh_theme(profile)
+        if hasattr(self, "intro_banner"):
+            self.intro_banner.refresh_theme(profile)
         if hasattr(self, "btn_forge"):
             self.btn_forge.refresh_theme(profile)
         if hasattr(self, "btn_import"):
