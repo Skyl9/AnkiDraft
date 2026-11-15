@@ -3,8 +3,6 @@ title: "Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor"
 description: "Connectez Claude Desktop, Claude Code ou Cursor au serveur MCP d'AnkiDraft pour générer, enrichir et auditer vos cartes sans clé API via Garde-Fou."
 ---
 
-# Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor
-
 Vous utilisez déjà **Claude Desktop**, **Claude Code**, **Cursor** ou **Antigravity** ? Grâce au protocole standard **MCP (Model Context Protocol)** intégré à AnkiDraft, vous pouvez créer des cartes, analyser vos cours et assainir vos paquets **sans aucune clé API payante** et sous protection permanente du **Garde-Fou**.
 
 ![Garde-Fou MCP : Validation Humaine en Deux Temps](assets/mcp_two_phase_commit.svg)

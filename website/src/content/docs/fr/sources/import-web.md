@@ -1,9 +1,7 @@
 ---
 title: Importer des Pages Web et Articles
-description: Capturer le contenu utile d'un article en ligne ou d'une documentation web sans publicités.
+description: Capturez le contenu utile d'un article en ligne ou d'une documentation web en Markdown propre sans publicités ni menus superflus sur votre poste.
 ---
-
-# Importer des Pages Web et Articles
 
 Vous révisez à partir d'articles encyclopédiques, de blogs techniques ou de cours publiés en ligne ? L'importateur web d'AnkiDraft extrait uniquement le contenu pédagogique pertinent.
 

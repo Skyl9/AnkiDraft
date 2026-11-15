@@ -1,9 +1,7 @@
 ---
 title: Référence des Raccourcis Clavier
-description: Liste officielle et exhaustive des raccourcis clavier d'AnkiDraft par catégorie et portée.
+description: Consultez la liste officielle des raccourcis clavier d'AnkiDraft par catégorie et portée pour naviguer, éditer vos cartes et piloter l'IA rapidement.
 ---
-
-# Référence des Raccourcis Clavier ⌨️
 
 <!-- ⚠️ DOCUMENT AUTO-GÉNÉRÉ DEPUIS src/ankidraft/ui/shortcuts/catalog.py - NE PAS MODIFIER MANUELLEMENT -->
 <!-- Exécutez 'uv run python script/check_shortcuts_drift.py --fix' pour régénérer -->

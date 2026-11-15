@@ -1,9 +1,7 @@
 ---
 title: Synchronisation, Doublons et Fusion Intelligente (Smart Merge)
-description: Résoudre les conflits lors d'un import Anki et éliminer les cartes en doublon.
+description: Résolvez les conflits lors d'un import Anki avec le Smart Merge, préservez votre historique de révision et éliminez les cartes en doublon facilement.
 ---
-
-# Synchronisation, Doublons et Fusion Intelligente (Smart Merge)
 
 Lorsque vous travaillez à plusieurs sur un même paquet ou que vous modifiez une carte à la fois dans Anki et dans AnkiDraft, l'outil de **Fusion Intelligente (Smart Merge)** protège votre travail.
 

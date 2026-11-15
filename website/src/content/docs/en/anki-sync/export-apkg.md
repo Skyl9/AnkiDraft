@@ -1,9 +1,7 @@
 ---
 title: Exporting Your Decks to Anki (.apkg)
-description: Generate a ready-to-study .apkg file for Anki Desktop, AnkiWeb, and AnkiMobile without losing review history.
+description: Generate a clean, ready-to-study .apkg deck for Anki Desktop, AnkiWeb, and AnkiMobile with stable IDs and without losing your review history.
 ---
-
-# Exporting Your Decks to Anki (.apkg)
 
 Once your flashcards are created and reviewed in AnkiDraft, transfer them to Anki in seconds using the `.apkg` exporter.
 

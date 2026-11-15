@@ -3,8 +3,6 @@ title: "Parcours Cours Vidéo YouTube & Audio : Transcription et Cartes"
 description: "Transformez un cours magistral vidéo YouTube ou un enregistrement audio en flashcards Anki structurées grâce à la transcription locale et à l'IA."
 ---
 
-# Parcours Cours Vidéo YouTube & Audio : Transcription et Cartes
-
 Les vidéos de cours (YouTube, conférences enregistrées) et les mémos audio de travaux dirigés sont denses en explications orales difficiles à ficher manuellement. Ce parcours explique comment les convertir en fiches structurées.
 
 ## 1. Importer une vidéo YouTube ou un fichier audio local

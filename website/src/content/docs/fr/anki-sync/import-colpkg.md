@@ -1,9 +1,7 @@
 ---
 title: Importer un Paquet (.apkg) ou une Collection (.colpkg)
-description: Charger vos paquets Anki existants dans AnkiDraft pour les enrichir, les auditer ou suivre votre couverture.
+description: Chargez vos paquets Anki .apkg ou .colpkg existants dans AnkiDraft pour les enrichir, auditer leur qualité et suivre votre couverture de cours.
 ---
-
-# Importer un Paquet (.apkg) ou une Collection (.colpkg)
 
 Vous utilisez déjà Anki depuis des mois ou des années ? Vous pouvez importer vos cartes existantes dans AnkiDraft à tout moment.
 

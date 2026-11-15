@@ -1,9 +1,7 @@
 ---
 title: Importing YouTube Videos and Audio Lectures
-description: Turn a YouTube lecture or voice recording into Anki flashcards.
+description: Turn any YouTube lecture, podcast, or classroom voice recording into timestamped transcripts and atomic Anki flashcards locally on your device.
 ---
-
-# Importing YouTube Videos and Audio Lectures
 
 AnkiDraft lets you build flashcards directly from online video lectures or recorded classroom sessions.
 

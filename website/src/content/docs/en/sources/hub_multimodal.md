@@ -1,9 +1,7 @@
 ---
 title: Document Hub and Multimodal Formats
-description: Overview of supported study sources in AnkiDraft and source traceability.
+description: Overview of all supported study sources in AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) with local-first parsing and source traceability.
 ---
-
-# Document Hub and Multimodal Formats
 
 The **Document Hub** centralizes all your study materials in one place and preserves a direct link between every flashcard and the exact paragraph it came from.
 

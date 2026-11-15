@@ -1,9 +1,7 @@
 ---
 title: Générer des Flashcards avec l'IA
-description: Transformer automatiquement un chapitre de cours en cartes Questions/Réponses ou textes à trous validés.
+description: Transformez automatiquement un chapitre de cours en flashcards Questions/Réponses ou textes à trous atomiques avec validation humaine stricte.
 ---
-
-# Générer des Flashcards avec l'IA
 
 AnkiDraft vous aide à transformer rapidement un chapitre dense en flashcards atomiques, tout en vous laissant le dernier mot sur chaque carte grâce à la revue humaine.
 

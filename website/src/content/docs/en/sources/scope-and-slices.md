@@ -1,9 +1,7 @@
 ---
 title: Selecting Chapters and Tracking Coverage
-description: Choose which sections to study, exclude appendices, and monitor your course coverage bar.
+description: Choose which textbook sections or pages to study, exclude appendices non-destructively, and monitor your course coverage bar in real time today.
 ---
-
-# Selecting Chapters and Tracking Coverage
 
 Textbooks and handouts often include a table of contents, preface, or bibliography that you do not want to turn into flashcards. AnkiDraft gives you fine-grained control over your study scope.
 

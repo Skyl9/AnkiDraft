@@ -1,9 +1,7 @@
 ---
 title: Éditeur de Notes, Formules KaTeX et Textes à Trous
-description: Rédiger et mettre en forme vos cartes avec aperçu mathématique KaTeX en direct, occlusions Cloze et historique.
+description: Rédigez et mettez en forme vos flashcards avec aperçu mathématique KaTeX en direct, occlusions Cloze, médias et historique complet des révisions.
 ---
-
-# Éditeur de Notes, Formules KaTeX et Textes à Trous
 
 L'éditeur de notes d'AnkiDraft (<kbd>Ctrl+2</kbd>) vous offre un confort d'écriture immédiat avec prévisualisation en temps réel du rendu Anki.
 

@@ -1,9 +1,7 @@
 ---
 title: Pipelines de Génération et Couverture Intelligente
-description: Automatiser la création de cartes par étapes et combler les lacunes de vos paquets grâce à la couverture intelligente.
+description: Automatisez la création de cartes par étapes avec les pipelines DAG et comblez les lacunes de vos cours grâce au RAG local et Smart Coverage.
 ---
-
-# Pipelines de Génération et Couverture Intelligente
 
 Pour les cours volumineux, AnkiDraft combine deux moteurs complémentaires : les **Pipelines de génération** (workflows DAG) et la **Couverture intelligente** (RAG & Smart Coverage).
 

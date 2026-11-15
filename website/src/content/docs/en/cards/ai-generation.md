@@ -1,9 +1,7 @@
 ---
 title: Generating Flashcards with AI
-description: Automatically turn course chapters into atomic Q&A or cloze flashcards with human review.
+description: Automatically turn textbook chapters and lecture notes into atomic Q&A or cloze flashcards with structured AI pipelines and human validation.
 ---
-
-# Generating Flashcards with AI
 
 AnkiDraft helps you rapidly turn dense study chapters into atomic flashcards while keeping you in full control through human staging review.
 

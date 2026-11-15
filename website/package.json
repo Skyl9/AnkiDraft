@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "node scripts/check-i18n-parity.mjs && astro build",
+    "build": "node scripts/check-i18n-parity.mjs && node scripts/generate-llms-txt.mjs && astro build",
     "deploy": "wrangler deploy",
     "preview": "astro preview",
     "check:i18n": "node scripts/check-i18n-parity.mjs"

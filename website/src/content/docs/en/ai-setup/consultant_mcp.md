@@ -1,9 +1,7 @@
 ---
 title: AI Consultant and MCP Assistant Connection
-description: Chat with the built-in AI Consultant or connect Claude Desktop and Cursor to AnkiDraft.
+description: Chat with the built-in AI Consultant or connect Claude Desktop and Cursor to AnkiDraft via MCP to query, audit, and enrich your decks safely.
 ---
-
-# AI Consultant and MCP Assistant Connection
 
 The **AI Consultant** (<kbd>Ctrl+6</kbd>) is your interactive study assistant inside AnkiDraft. You can also control AnkiDraft from your favorite external AI client via the standard **MCP (Model Context Protocol)**.
 

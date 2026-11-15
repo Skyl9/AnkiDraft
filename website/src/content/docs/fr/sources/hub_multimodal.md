@@ -1,9 +1,7 @@
 ---
 title: Hub Documentaire et Formats Multimodaux
-description: Vue d'ensemble des sources acceptées dans AnkiDraft et bonnes pratiques d'organisation.
+description: Vue d'ensemble des sources supportées dans AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) avec extraction locale et traçabilité complète des cartes.
 ---
-
-# Hub Documentaire et Formats Multimodaux
 
 Le **Hub Documentaire** centralise tous vos supports d'étude au même endroit et conserve le lien entre chaque flashcard et le paragraphe exact dont elle est issue.
 

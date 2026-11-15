@@ -3,8 +3,6 @@ title: "Language Learning & Audio Workflow: Offline TTS Flashcards"
 description: "Build language vocabulary decks in AnkiDraft with offline neural text-to-speech audio (Kokoro or Piper), instant preview, and MCP batch enrichment."
 ---
 
-# Language Learning & Audio Workflow: Offline TTS Flashcards
-
 This workflow shows how to build language decks (Japanese, Spanish, French, German, Mandarin, and more) with contextual sentence examples, 100% offline neural pronunciation audio, and clean bilingual formatting.
 
 ## 1. Bring In Your Vocabulary List or Study Material

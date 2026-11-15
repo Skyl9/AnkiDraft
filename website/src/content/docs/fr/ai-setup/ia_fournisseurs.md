@@ -1,9 +1,7 @@
 ---
 title: Configurer vos Fournisseurs d'IA (OpenAI, Gemini, Claude)
-description: Connecter vos clés API en toute sécurité et maîtriser votre budget de jetons dans AnkiDraft.
+description: Connectez vos clés API OpenAI, Anthropic ou Gemini en toute sécurité, configurez vos modèles locaux et maîtrisez votre budget de tokens IA global.
 ---
-
-# Configurer vos Fournisseurs d'IA (OpenAI, Gemini, Claude)
 
 AnkiDraft est **agnostique du fournisseur d'IA** : vous êtes libre d'utiliser le service de votre choix ou d'alterner selon vos besoins.
 

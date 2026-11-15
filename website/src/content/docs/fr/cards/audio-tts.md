@@ -1,9 +1,7 @@
 ---
 title: Synthèse Vocale (TTS) et Cartes Audio
-description: Générer automatiquement la prononciation audio de vos cartes de langues et terminologies.
+description: Générez automatiquement une prononciation audio naturelle hors-ligne pour vos cartes de langues et terminologies avec les voix Kokoro ou Piper.
 ---
-
-# Synthèse Vocale (TTS) et Cartes Audio
 
 Pour l'apprentissage des langues étrangères, de la médecine ou de la musique, associer un extrait sonore à une flashcard renforce considérablement la mémorisation.
 

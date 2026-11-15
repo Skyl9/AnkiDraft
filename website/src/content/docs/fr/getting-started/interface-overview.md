@@ -1,9 +1,7 @@
 ---
 title: Découvrir l'Interface
-description: Tour d'horizon des vues principales, des 4 dispositions d'écran et des thèmes d'AnkiDraft.
+description: Tour d'horizon des espaces de travail d'AnkiDraft, des 4 dispositions d'écran (IDE, macOS, Dashboard, Glass) et des 12 thèmes visuels intégrés.
 ---
-
-# Découvrir l'Interface
 
 L'interface d'AnkiDraft est conçue pour rester claire et rapide, que vous travailliez sur un écran portable ou sur un grand moniteur.
 

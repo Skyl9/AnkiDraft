@@ -1,9 +1,7 @@
 ---
 title: Visual Guide to the Distributed Lifecycle (AnkiDraft & Anki)
-description: Understand how the AnkiDraft authoring studio and the Anki spaced-repetition engine work together (.apkg and .colpkg).
+description: Understand how the AnkiDraft authoring studio and the Anki spaced-repetition engine work together via .apkg and .colpkg without sync conflicts.
 ---
-
-# Visual Guide to the Distributed Lifecycle (AnkiDraft ↔ Anki) 🔄
 
 Welcome to the distributed workflow guide for AnkiDraft (formerly AnkiForge).
 

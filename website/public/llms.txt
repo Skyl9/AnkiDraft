@@ -1,0 +1,101 @@
+# AnkiDraft
+
+> AnkiDraft is a local-first, AI-assisted flashcard creation and quality-auditing studio for the Anki ecosystem (macOS, Windows, Linux).
+
+## Value Proposition & Use Cases
+- Turn PDF textbooks, YouTube videos, audio lectures, and web pages into atomic Anki flashcards.
+- Audit and improve existing decks against Piotr Wozniak’s 20 rules of formulating knowledge.
+- Run 100% locally with SQLite, local RAG, and Ollama, or connect cloud LLMs (OpenAI, Anthropic, Gemini) and MCP clients (Claude Desktop, Cursor).
+- Export clean `.apkg` packages with stable IDs for Anki Desktop, AnkiWeb, and AnkiMobile.
+
+## Documentation (English)
+
+### Getting Started
+- [Installing AnkiDraft](https://ankidraft.app/en/getting-started/installation/): Download, install, and update AnkiDraft on macOS, Windows, and Linux from the latest official GitHub release with Ed25519 signature verification.
+- [Interface Overview](https://ankidraft.app/en/getting-started/interface-overview/): Take a guided tour of AnkiDraft workspaces, 4 switchable window layouts (IDE, macOS, Dashboard, Glass), and 12 built-in visual themes for study.
+- [Managing Profiles and Your Collection](https://ankidraft.app/en/getting-started/profiles-and-workspaces/): Create isolated study profiles in AnkiDraft, manage per-profile SQLite databases and media folders, and protect your local data with backups.
+- [Quickstart Guide](https://ankidraft.app/en/getting-started/quickstart/): Create, review, and export your first Anki flashcard deck in 5 minutes with AnkiDraft, and pick the step-by-step workflow tailored to your subject.
+
+### Workflows & Use Cases
+- [YouTube Video & Audio Lectures: Transcription to Cards](https://ankidraft.app/en/workflows/cours-video-youtube-audio/): Turn YouTube video lectures or classroom audio recordings into structured, atomic Anki flashcards using local transcription, slicing, and AI tools.
+- [Language Learning & Audio Workflow: Offline TTS Flashcards](https://ankidraft.app/en/workflows/langues-et-audio-tts/): Build language vocabulary decks in AnkiDraft with offline neural text-to-speech audio (Kokoro or Piper), instant preview, and MCP batch enrichment.
+- [Medicine & STEM Workflow: Dense PDFs, Math, and Diagrams](https://ankidraft.app/en/workflows/medecine-sciences-pdf/): Step-by-step guide to turning dense medical or STEM textbook PDFs into atomic Anki flashcards complete with KaTeX math formulas, diagrams, and MCP.
+- [Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene](https://ankidraft.app/en/workflows/sauvetage-et-hygiene-anki-mcp/): Clean up an existing Anki collection (.colpkg): detect duplicates and leeches, run an MCP hygiene campaign, and split overloaded cards safely.
+- [Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](https://ankidraft.app/en/workflows/zero-cle-api-agent-mcp/): Connect Claude Desktop, Claude Code, or Cursor to AnkiDraft's local MCP server to generate, enrich, and audit flashcards with two-phase human review.
+
+### Sources & Import
+- [Document Hub and Multimodal Formats](https://ankidraft.app/en/sources/hub_multimodal/): Overview of all supported study sources in AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) with local-first parsing and source traceability.
+- [Importing PDFs, Slides, and Ebooks](https://ankidraft.app/en/sources/import-pdf/): Cleanly extract PDF textbooks, DOCX documents, PPTX slides, and EPUB books with Marker OCR, preserving diagrams, tables, and LaTeX formulas.
+- [Importing Web Pages and Online Articles](https://ankidraft.app/en/sources/import-web/): Capture the core educational content of any online article or web documentation page into clean Markdown without ads, menus, or visual clutter.
+- [Importing YouTube Videos and Audio Lectures](https://ankidraft.app/en/sources/import-youtube-audio/): Turn any YouTube lecture, podcast, or classroom voice recording into timestamped transcripts and atomic Anki flashcards locally on your device.
+- [Selecting Chapters and Tracking Coverage](https://ankidraft.app/en/sources/scope-and-slices/): Choose which textbook sections or pages to study, exclude appendices non-destructively, and monitor your course coverage bar in real time today.
+
+### Cards & Editing
+- [Generating Flashcards with AI](https://ankidraft.app/en/cards/ai-generation/): Automatically turn textbook chapters and lecture notes into atomic Q&A or cloze flashcards with structured AI pipelines and human validation.
+- [Text-to-Speech (TTS) and Audio Cards](https://ankidraft.app/en/cards/audio-tts/): Automatically generate natural offline audio pronunciation for language and terminology flashcards using Kokoro or Piper neural TTS voices locally.
+- [Generation Pipelines and Smart Coverage](https://ankidraft.app/en/cards/dag_et_rag/): Automate multi-step flashcard creation with DAG pipelines and fill knowledge gaps across your textbooks using local RAG and Smart Coverage tools.
+- [Note Editor, KaTeX Math, and Cloze Deletions](https://ankidraft.app/en/cards/editeur_notes_katex/): Write and format Anki flashcards with live KaTeX math preview, cloze deletions, rich media attachments, and full per-note revision history in AnkiDraft.
+- [Quality Audit and Wozniak's 20 Rules](https://ankidraft.app/en/cards/linter_wozniak/): Detect and split overloaded, vague, or hard-to-remember flashcards with the Wozniak 20-Rules Linter to boost long-term Anki retention daily.
+- [Note Types, Templates, and CSS Styling](https://ankidraft.app/en/cards/note-types-and-templates/): Customize Front/Back and Cloze note types, Jinja2 card templates, and responsive CSS visual styling for Anki Desktop, AnkiWeb, and AnkiMobile.
+
+### Anki Sync
+- [Exporting Your Decks to Anki (.apkg)](https://ankidraft.app/en/anki-sync/export-apkg/): Generate a clean, ready-to-study .apkg deck for Anki Desktop, AnkiWeb, and AnkiMobile with stable IDs and without losing your review history.
+- [Importing a Deck (.apkg) or Collection (.colpkg)](https://ankidraft.app/en/anki-sync/import-colpkg/): Load your existing Anki .apkg or .colpkg decks into AnkiDraft to enrich notes, audit card quality, and track textbook coverage across chapters.
+- [Synchronization, Duplicates, and Smart Merge](https://ankidraft.app/en/anki-sync/synchro_smart_merge/): Resolve conflicts during Anki imports with Smart Merge, preserve existing review schedules, and clean up duplicate flashcards automatically.
+
+### AI Setup
+- [AI Consultant and MCP Assistant Connection](https://ankidraft.app/en/ai-setup/consultant_mcp/): Chat with the built-in AI Consultant or connect Claude Desktop and Cursor to AnkiDraft via MCP to query, audit, and enrich your decks safely.
+- [Configuring AI Providers (OpenAI, Gemini, Claude)](https://ankidraft.app/en/ai-setup/ia_fournisseurs/): Securely connect your OpenAI, Anthropic, or Gemini API keys, configure local providers, and track your token budget per pipeline in AnkiDraft.
+- [Using a Free Local Model with Ollama](https://ankidraft.app/en/ai-setup/local-models-ollama/): Generate atomic Anki flashcards 100% offline and for free on your own computer using local Ollama models with full privacy and zero API fees.
+
+### Guides & Help
+- [Visual Guide to the Distributed Lifecycle (AnkiDraft & Anki)](https://ankidraft.app/en/guides/cycle_de_vie_distribue/): Understand how the AnkiDraft authoring studio and the Anki spaced-repetition engine work together via .apkg and .colpkg without sync conflicts.
+- [FAQ and Troubleshooting](https://ankidraft.app/en/guides/faq_depannage/): Find answers to frequently asked questions and step-by-step troubleshooting for AnkiDraft installation, Ollama, PDF OCR, and Anki .apkg exports.
+- [User Glossary: Key AnkiDraft Concepts Explained Simply](https://ankidraft.app/en/guides/glossaire/): Understand every core AnkiDraft concept (Wozniak rules, Cloze, Smart Coverage, DAG, RAG, MCP, Safeguard) with clear Before / After study examples.
+- [Keyboard Shortcuts Reference](https://ankidraft.app/en/guides/raccourcis_clavier/): Official reference of all keyboard shortcuts in AnkiDraft by category and scope to navigate workspaces, edit cards, and run AI pipelines fast.
+
+## Documentation (Français)
+
+### Premiers pas
+- [Installer AnkiDraft](https://ankidraft.app/fr/getting-started/installation/): Téléchargez, installez et mettez à jour AnkiDraft sur macOS, Windows et Linux depuis la dernière release officielle, avec vérification Ed25519.
+- [Découvrir l'Interface](https://ankidraft.app/fr/getting-started/interface-overview/): Tour d'horizon des espaces de travail d'AnkiDraft, des 4 dispositions d'écran (IDE, macOS, Dashboard, Glass) et des 12 thèmes visuels intégrés.
+- [Gérer ses Profils et sa Collection](https://ankidraft.app/fr/getting-started/profiles-and-workspaces/): Créez des profils d'étude isolés dans AnkiDraft, gérez vos bases SQLite et dossiers médias locaux et protégez vos données par sauvegarde locale.
+- [Prise en Main Rapide](https://ankidraft.app/fr/getting-started/quickstart/): Créez, vérifiez et exportez votre premier paquet de flashcards Anki en 5 minutes avec AnkiDraft et choisissez le parcours adapté à votre discipline.
+
+### Parcours & Cas d'Usage
+- [Parcours Cours Vidéo YouTube & Audio : Transcription et Cartes](https://ankidraft.app/fr/workflows/cours-video-youtube-audio/): Transformez un cours magistral vidéo YouTube ou un enregistrement audio en flashcards Anki structurées grâce à la transcription locale et à l'IA.
+- [Parcours Langues & Audio : Vocabulaire et Prononciation TTS](https://ankidraft.app/fr/workflows/langues-et-audio-tts/): Apprenez une langue avec AnkiDraft : générez des cartes de vocabulaire illustrées d'un audio naturel hors-ligne (Kokoro ou Piper) en Studio ou MCP.
+- [Parcours Médecine & Sciences : PDF, Formules et Schémas](https://ankidraft.app/fr/workflows/medecine-sciences-pdf/): Guide pas-à-pas pour transformer un cours PDF dense de médecine ou de sciences en flashcards Anki atomiques avec formules KaTeX, schémas et MCP.
+- [Parcours Sauvetage Anki : Doublons, Sangsues et Hygiène MCP](https://ankidraft.app/fr/workflows/sauvetage-et-hygiene-anki-mcp/): Assainissez une collection Anki existante (.colpkg) : détectez doublons et sangsues, lancez une campagne d'hygiène MCP et scindez vos cartes longues.
+- [Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor](https://ankidraft.app/fr/workflows/zero-cle-api-agent-mcp/): Connectez Claude Desktop, Claude Code ou Cursor au serveur MCP d'AnkiDraft pour générer, enrichir et auditer vos cartes sans clé API via Garde-Fou.
+
+### Sources & Import
+- [Hub Documentaire et Formats Multimodaux](https://ankidraft.app/fr/sources/hub_multimodal/): Vue d'ensemble des sources supportées dans AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) avec extraction locale et traçabilité complète des cartes.
+- [Importer des PDF, Diaporamas et Ebooks](https://ankidraft.app/fr/sources/import-pdf/): Extrayez proprement vos cours PDF, DOCX, PPTX et EPUB avec Marker OCR en préservant les schémas, tableaux et formules mathématiques LaTeX complexes.
+- [Importer des Pages Web et Articles](https://ankidraft.app/fr/sources/import-web/): Capturez le contenu utile d'un article en ligne ou d'une documentation web en Markdown propre sans publicités ni menus superflus sur votre poste.
+- [Importer des Vidéos YouTube et Cours Audio](https://ankidraft.app/fr/sources/import-youtube-audio/): Transformez une conférence YouTube, un podcast ou un enregistrement vocal en transcription horodatée et en flashcards Anki atomiques locales.
+- [Cibler les Chapitres et Suivre la Couverture](https://ankidraft.app/fr/sources/scope-and-slices/): Sélectionnez précisément les sections ou pages à étudier, écartez les annexes sans rien supprimer et suivez votre couverture de cours en temps réel.
+
+### Cartes & Édition
+- [Générer des Flashcards avec l'IA](https://ankidraft.app/fr/cards/ai-generation/): Transformez automatiquement un chapitre de cours en flashcards Questions/Réponses ou textes à trous atomiques avec validation humaine stricte.
+- [Synthèse Vocale (TTS) et Cartes Audio](https://ankidraft.app/fr/cards/audio-tts/): Générez automatiquement une prononciation audio naturelle hors-ligne pour vos cartes de langues et terminologies avec les voix Kokoro ou Piper.
+- [Pipelines de Génération et Couverture Intelligente](https://ankidraft.app/fr/cards/dag_et_rag/): Automatisez la création de cartes par étapes avec les pipelines DAG et comblez les lacunes de vos cours grâce au RAG local et Smart Coverage.
+- [Éditeur de Notes, Formules KaTeX et Textes à Trous](https://ankidraft.app/fr/cards/editeur_notes_katex/): Rédigez et mettez en forme vos flashcards avec aperçu mathématique KaTeX en direct, occlusions Cloze, médias et historique complet des révisions.
+- [Audit Qualité et les 20 Règles de Wozniak](https://ankidraft.app/fr/cards/linter_wozniak/): Détectez et scindez les cartes trop longues, floues ou difficiles à mémoriser grâce au Linter des 20 règles de Wozniak pour mieux retenir durablement.
+- [Modèles de Cartes, Gabarits et Styles CSS](https://ankidraft.app/fr/cards/note-types-and-templates/): Personnalisez vos types de notes Recto/Verso et Cloze, vos gabarits Jinja2 et votre mise en forme CSS pour Anki Desktop, AnkiWeb et AnkiMobile.
+
+### Synchronisation Anki
+- [Exporter vos Paquets vers Anki (.apkg)](https://ankidraft.app/fr/anki-sync/export-apkg/): Générez un fichier .apkg propre et prêt à réviser pour Anki Desktop, AnkiWeb et AnkiMobile avec IDs stables et sans perdre votre historique.
+- [Importer un Paquet (.apkg) ou une Collection (.colpkg)](https://ankidraft.app/fr/anki-sync/import-colpkg/): Chargez vos paquets Anki .apkg ou .colpkg existants dans AnkiDraft pour les enrichir, auditer leur qualité et suivre votre couverture de cours.
+- [Synchronisation, Doublons et Fusion Intelligente (Smart Merge)](https://ankidraft.app/fr/anki-sync/synchro_smart_merge/): Résolvez les conflits lors d'un import Anki avec le Smart Merge, préservez votre historique de révision et éliminez les cartes en doublon facilement.
+
+### Configuration IA
+- [Consultant IA et Connexion aux Assistants MCP](https://ankidraft.app/fr/ai-setup/consultant_mcp/): Discutez avec le Consultant IA intégré ou connectez Claude Desktop et Cursor à AnkiDraft via MCP pour auditer et enrichir vos paquets facilement.
+- [Configurer vos Fournisseurs d'IA (OpenAI, Gemini, Claude)](https://ankidraft.app/fr/ai-setup/ia_fournisseurs/): Connectez vos clés API OpenAI, Anthropic ou Gemini en toute sécurité, configurez vos modèles locaux et maîtrisez votre budget de tokens IA global.
+- [Utiliser un Modèle Local Gratuit avec Ollama](https://ankidraft.app/fr/ai-setup/local-models-ollama/): Générez des flashcards Anki atomiques 100 % hors-ligne et gratuitement sur votre ordinateur grâce aux modèles locaux Ollama sans aucune clé API.
+
+### Guides & Aide
+- [Guide Visuel du Cycle de Vie Distribué AnkiDraft et Anki](https://ankidraft.app/fr/guides/cycle_de_vie_distribue/): Comprendre la complémentarité entre le studio de création AnkiDraft et le moteur de révision Anki via .apkg et .colpkg sans aucun conflit de synchro.
+- [FAQ et Dépannage](https://ankidraft.app/fr/guides/faq_depannage/): Réponses aux questions fréquentes et solutions pas-à-pas pour l'installation d'AnkiDraft, Ollama, l'OCR PDF Marker et l'export vers Anki Desktop.
+- [Glossaire Utilisateur : Les Concepts Clés Expliqués Simplement](https://ankidraft.app/fr/guides/glossaire/): Comprenez facilement chaque concept clé d'AnkiDraft (Wozniak, Cloze, Smart Coverage, DAG, RAG, MCP, Garde-Fou) grâce à des exemples Avant / Après.
+- [Référence des Raccourcis Clavier](https://ankidraft.app/fr/guides/raccourcis_clavier/): Consultez la liste officielle des raccourcis clavier d'AnkiDraft par catégorie et portée pour naviguer, éditer vos cartes et piloter l'IA rapidement.

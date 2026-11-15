@@ -39,7 +39,31 @@ export default defineConfig({
             content: 'aoyROBDMk0qbvP7PuiHXrvPdCRpsJeLWc904iaDzvBc',
           },
         },
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image',
+            content: 'https://ankidraft.app/assets/og-banner.svg',
+          },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image:alt',
+            content: 'AnkiDraft — Studio de création et d’audit de flashcards Anki assisté par IA',
+          },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            name: 'twitter:image',
+            content: 'https://ankidraft.app/assets/og-banner.svg',
+          },
+        },
       ],
+      components: {
+        Head: './src/components/Head.astro',
+      },
       customCss: ['./src/styles/custom.css'],
       sidebar: [
         {

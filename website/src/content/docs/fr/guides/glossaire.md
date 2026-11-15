@@ -3,8 +3,6 @@ title: "Glossaire Utilisateur : Les Concepts Clés Expliqués Simplement"
 description: "Comprenez facilement chaque concept clé d'AnkiDraft (Wozniak, Cloze, Smart Coverage, DAG, RAG, MCP, Garde-Fou) grâce à des exemples Avant / Après."
 ---
 
-# Glossaire Utilisateur : Les Concepts Clés Expliqués Simplement
-
 AnkiDraft rassemble des outils puissants issus de l'ingénierie pédagogique et de l'IA locale. Ce glossaire traduit chaque terme technique en français simple, accompagné d'un exemple concret **Avant / Après**.
 
 ---

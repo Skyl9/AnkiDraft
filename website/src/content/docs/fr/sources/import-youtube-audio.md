@@ -1,9 +1,7 @@
 ---
 title: Importer des Vidéos YouTube et Cours Audio
-description: Transformer une conférence YouTube ou un enregistrement vocal en flashcards Anki.
+description: Transformez une conférence YouTube, un podcast ou un enregistrement vocal en transcription horodatée et en flashcards Anki atomiques locales.
 ---
-
-# Importer des Vidéos YouTube et Cours Audio
 
 AnkiDraft vous permet de créer des flashcards directement à partir de cours vidéo en ligne ou d'enregistrements d'amphithéâtre.
 

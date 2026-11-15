@@ -1,9 +1,7 @@
 ---
 title: Utiliser un Modèle Local Gratuit avec Ollama
-description: Générer vos flashcards 100 % hors ligne et gratuitement sur votre ordinateur avec Ollama.
+description: Générez des flashcards Anki atomiques 100 % hors-ligne et gratuitement sur votre ordinateur grâce aux modèles locaux Ollama sans aucune clé API.
 ---
-
-# Utiliser un Modèle Local Gratuit avec Ollama
 
 Vous ne souhaitez pas utiliser d'API payante ou vous étudiez des documents confidentiels sans connexion internet ? AnkiDraft s'intègre nativement avec **Ollama**.
 

@@ -1,9 +1,7 @@
 ---
 title: Generation Pipelines and Smart Coverage
-description: Automate multi-step flashcard creation and fill knowledge gaps across your textbooks.
+description: Automate multi-step flashcard creation with DAG pipelines and fill knowledge gaps across your textbooks using local RAG and Smart Coverage tools.
 ---
-
-# Generation Pipelines and Smart Coverage
 
 For large textbooks and courses, AnkiDraft combines two engines: **Generation Pipelines** (DAG workflows) and **Smart Coverage** (local RAG alignment).
 

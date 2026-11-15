@@ -1,9 +1,7 @@
 ---
 title: FAQ et Dépannage
-description: Réponses aux questions fréquentes et solutions aux problèmes courants dans AnkiDraft.
+description: Réponses aux questions fréquentes et solutions pas-à-pas pour l'installation d'AnkiDraft, Ollama, l'OCR PDF Marker et l'export vers Anki Desktop.
 ---
-
-# FAQ et Dépannage
 
 Retrouvez ici les réponses aux questions les plus fréquentes des utilisateurs d'AnkiDraft.
 

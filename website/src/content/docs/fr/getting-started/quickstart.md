@@ -3,8 +3,6 @@ title: Prise en Main Rapide
 description: "Créez, vérifiez et exportez votre premier paquet de flashcards Anki en 5 minutes avec AnkiDraft et choisissez le parcours adapté à votre discipline."
 ---
 
-# Prise en Main Rapide
-
 Ce guide vous permet de produire votre premier paquet de flashcards Anki en quelques minutes et de choisir le parcours exact correspondant à votre matière et à votre équipement IA.
 
 ## Quel parcours choisir selon votre besoin ?

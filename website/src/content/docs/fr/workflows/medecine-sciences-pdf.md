@@ -3,8 +3,6 @@ title: "Parcours Médecine & Sciences : PDF, Formules et Schémas"
 description: "Guide pas-à-pas pour transformer un cours PDF dense de médecine ou de sciences en flashcards Anki atomiques avec formules KaTeX, schémas et MCP."
 ---
 
-# Parcours Médecine & Sciences : PDF, Formules et Schémas
-
 Ce parcours montre comment transformer un polycopié universitaire dense (anatomie, physiologie, physique, mathématiques) en cartes atomiques fidèles à votre source, avec équations KaTeX et schémas annotés.
 
 ## 1. Importer le polycopié PDF avec extraction des figures et formules

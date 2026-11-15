@@ -3,8 +3,6 @@ title: "YouTube Video & Audio Lectures: Transcription to Cards"
 description: "Turn YouTube video lectures or classroom audio recordings into structured, atomic Anki flashcards using local transcription, slicing, and AI tools."
 ---
 
-# YouTube Video & Audio Lectures: Transcription to Cards
-
 Recorded university lectures, YouTube explainers, and seminar audio files pack hours of spoken insight that are slow to review manually. This workflow turns speech into structured, atomic flashcards.
 
 ## 1. Import a YouTube URL or Local Audio Recording

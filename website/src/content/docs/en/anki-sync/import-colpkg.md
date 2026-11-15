@@ -1,9 +1,7 @@
 ---
 title: Importing a Deck (.apkg) or Collection (.colpkg)
-description: Load your existing Anki decks into AnkiDraft to enrich, audit, or track course coverage.
+description: Load your existing Anki .apkg or .colpkg decks into AnkiDraft to enrich notes, audit card quality, and track textbook coverage across chapters.
 ---
-
-# Importing a Deck (.apkg) or Collection (.colpkg)
 
 Already using Anki for months or years? You can bring your existing flashcards into AnkiDraft anytime.
 

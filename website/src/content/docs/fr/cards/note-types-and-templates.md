@@ -1,9 +1,7 @@
 ---
 title: Modèles de Cartes, Gabarits et Styles CSS
-description: Personnaliser vos types de notes Recto/Verso, Cloze et leur mise en forme visuelle pour Anki.
+description: Personnalisez vos types de notes Recto/Verso et Cloze, vos gabarits Jinja2 et votre mise en forme CSS pour Anki Desktop, AnkiWeb et AnkiMobile.
 ---
-
-# Modèles de Cartes, Gabarits et Styles CSS
 
 AnkiDraft prend en charge tous les types de notes d'Anki et vous permet d'adapter leur présentation visuelle.
 

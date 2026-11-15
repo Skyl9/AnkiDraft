@@ -26,6 +26,36 @@ const linExt = `.${release.linux.name.split('.').pop() || 'AppImage'}`;
     <link rel="alternate" hreflang="fr" href="https://ankidraft.app/fr/" />
     <link rel="alternate" hreflang="en" href="https://ankidraft.app/en/" />
     <link rel="alternate" hreflang="x-default" href="https://ankidraft.app/en/" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:title" content="AnkiDraft — Turn Your Course Material into Anki Flashcards" />
+    <meta property="og:description" content="Drop your PDF lectures, YouTube videos, and study notes. AnkiDraft turns them into clear, focused flashcards ready to review in Anki on desktop and mobile." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ankidraft.app/en/" />
+    <meta property="og:site_name" content="AnkiDraft" />
+    <meta property="og:image" content="https://ankidraft.app/assets/og-banner.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AnkiDraft — Turn Your Course Material into Anki Flashcards" />
+    <meta name="twitter:description" content="Drop your PDF lectures, YouTube videos, and study notes. AnkiDraft turns them into clear, focused flashcards ready to review in Anki on desktop and mobile." />
+    <meta name="twitter:image" content="https://ankidraft.app/assets/og-banner.svg" />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: 'AnkiDraft',
+        applicationCategory: 'EducationalApplication',
+        operatingSystem: 'macOS 13+, Windows 10/11, Linux x86_64',
+        softwareVersion: release.version,
+        downloadUrl: 'https://ankidraft.app/en/#download',
+        url: 'https://ankidraft.app/en/',
+        inLanguage: 'en',
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'EUR',
+        },
+      })}
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

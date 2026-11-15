@@ -28,7 +28,7 @@ from ankidraft.ui.shortcuts.models import (
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DOCS_SHORTCUTS_PATH = REPO_ROOT / "docs" / "guides" / "raccourcis_clavier.md"
 USER_FR_SHORTCUTS_PATH = REPO_ROOT / "website" / "src" / "content" / "docs" / "fr" / "guides" / "raccourcis_clavier.md"
-STARLIGHT_FR_FRONTMATTER = "---\ntitle: Référence des Raccourcis Clavier\ndescription: Liste officielle et exhaustive des raccourcis clavier d'AnkiDraft par catégorie et portée.\n---\n\n"
+STARLIGHT_FR_FRONTMATTER = "---\ntitle: Référence des Raccourcis Clavier\ndescription: Consultez la liste officielle des raccourcis clavier d'AnkiDraft par catégorie et portée pour naviguer, éditer vos cartes et piloter l'IA rapidement.\n---\n\n"
 
 
 def _print(msg: str = "") -> None:
@@ -137,7 +137,11 @@ def generate_shortcuts_markdown(catalog: dict[ShortcutId, ShortcutDefinition] | 
 
 def generate_starlight_fr_shortcuts_markdown(catalog: dict[ShortcutId, ShortcutDefinition] | None = None) -> str:
     """Génère la page de référence des raccourcis clavier pour Starlight (avec frontmatter YAML)."""
-    return STARLIGHT_FR_FRONTMATTER + generate_shortcuts_markdown(catalog)
+    body = generate_shortcuts_markdown(catalog)
+    if body.startswith("# "):
+        _, _, rest = body.partition("\n")
+        body = rest.lstrip("\n")
+    return STARLIGHT_FR_FRONTMATTER + body
 
 
 def check_shortcuts_drift(

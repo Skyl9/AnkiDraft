@@ -3,8 +3,6 @@ title: Installer AnkiDraft
 description: "Téléchargez, installez et mettez à jour AnkiDraft sur macOS, Windows et Linux depuis la dernière release officielle, avec vérification Ed25519."
 ---
 
-# Installer AnkiDraft
-
 AnkiDraft est une application de bureau autonome. Vous n'avez pas besoin d'installer Python ni aucun outil de développement sur votre ordinateur.
 
 ## 1. Télécharger l'installateur (dernière version)

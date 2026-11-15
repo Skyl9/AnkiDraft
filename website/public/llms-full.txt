@@ -1,0 +1,2201 @@
+# AnkiDraft — Full Documentation Corpus (EN & FR)
+
+Source: https://ankidraft.app
+
+---
+
+# [EN] AI Consultant and MCP Assistant Connection
+URL: https://ankidraft.app/en/ai-setup/consultant_mcp/
+Description: Chat with the built-in AI Consultant or connect Claude Desktop and Cursor to AnkiDraft via MCP to query, audit, and enrich your decks safely.
+
+The **AI Consultant** (<kbd>Ctrl+6</kbd>) is your interactive study assistant inside AnkiDraft. You can also control AnkiDraft from your favorite external AI client via the standard **MCP (Model Context Protocol)**.
+
+## 1. What the AI Consultant Can Do
+
+Ask in plain English:
+- *"Find chapters in my cardiology textbook that don't have any flashcards yet"*
+- *"Search for duplicate cards in my Anatomy deck and propose a merge"*
+- *"Shorten the 10 longest flashcards in this deck following Wozniak's rules"*
+
+## 2. Safety Safeguard: Two-Phase Human Validation
+
+Neither the built-in AI Consultant nor an external MCP agent can modify or delete your cards without your explicit confirmation:
+1. The assistant prepares proposed changes inside a **Staged Bundle**.
+2. You inspect a clear before/after diff of every card added, edited, or deleted.
+3. Click **Apply** or **Reject**: you remain in complete control of your collection.
+
+## 3. Connecting External Clients (Claude Desktop, Cursor, etc.)
+
+In **AI Consultant** > **MCP Server**, enable the local server and copy the configuration snippet in one click to let your external assistant query your decks and study documents safely.
+
+---
+
+# [EN] Configuring AI Providers (OpenAI, Gemini, Claude)
+URL: https://ankidraft.app/en/ai-setup/ia_fournisseurs/
+Description: Securely connect your OpenAI, Anthropic, or Gemini API keys, configure local providers, and track your token budget per pipeline in AnkiDraft.
+
+AnkiDraft is **provider-agnostic**: you are free to use the AI service of your choice or switch models depending on the task.
+
+## 1. Supported Providers
+
+In **Settings** (<kbd>Ctrl+,</kbd>) > **AI Providers**, you can configure:
+- **OpenAI** (GPT-4o, GPT-4o-mini, etc.)
+- **Google Gemini** (Gemini 2.5 Flash, Gemini 2.5 Pro)
+- **Anthropic Claude** (Claude Sonnet, Claude Haiku)
+- **Any OpenAI-Compatible Endpoint** (Mistral, OpenRouter, university server)
+- **Ollama (100% Free & Offline)**: see [Using a Free Local Model with Ollama](/en/ai-setup/local-models-ollama/).
+
+## 2. API Key Security
+
+- Your API keys are stored in your **operating system's secure keychain** (macOS Keychain, Windows Credential Manager, Linux Secret Service).
+- Keys never pass through any middleman server: AnkiDraft connects directly from your computer to your chosen provider.
+- Application logs automatically redact any secret key (`sk-*`, `AIza*`).
+
+## 3. Token Budget Control
+
+Before running a batch generation across a large textbook, AnkiDraft estimates the required token count and lets you set a strict per-run token cap to prevent unexpected API bills.
+
+---
+
+# [EN] Using a Free Local Model with Ollama
+URL: https://ankidraft.app/en/ai-setup/local-models-ollama/
+Description: Generate atomic Anki flashcards 100% offline and for free on your own computer using local Ollama models with full privacy and zero API fees.
+
+Prefer not to use paid cloud APIs, or studying confidential documents offline? AnkiDraft integrates natively with **Ollama**.
+
+## 1. Install Ollama in 2 Minutes
+
+1. Download and install Ollama from [ollama.com](https://ollama.com).
+2. Open a terminal and pull a model suited to your computer's RAM:
+   - **8 GB RAM**: `ollama pull llama3.2:3b` or `ollama pull qwen2.5:3b`
+   - **16 GB+ RAM (e.g., Apple Silicon M1/M2/M3/M4)**: `ollama pull qwen2.5:7b` or `ollama pull mistral`
+
+## 2. Enable Ollama in AnkiDraft
+
+1. Open **Settings** (<kbd>Ctrl+,</kbd>) > **AI Providers**.
+2. Select **Ollama (Local)**: the default local endpoint `http://localhost:11434` is detected automatically.
+3. Click **Refresh Models** and choose the model you just downloaded.
+4. You can now generate and audit flashcards for free and completely offline!
+
+---
+
+# [EN] Exporting Your Decks to Anki (.apkg)
+URL: https://ankidraft.app/en/anki-sync/export-apkg/
+Description: Generate a clean, ready-to-study .apkg deck for Anki Desktop, AnkiWeb, and AnkiMobile with stable IDs and without losing your review history.
+
+Once your flashcards are created and reviewed in AnkiDraft, transfer them to Anki in seconds using the `.apkg` exporter.
+
+## 1. Exporting a Deck or Selection
+
+1. Press <kbd>Ctrl+Alt+E</kbd> or click **Export (.apkg)** in the toolbar.
+2. Pick the deck (or hierarchical sub-decks `Subject::Chapter`) to export.
+3. Keep **Include media files** checked if your flashcards contain diagrams, images, or TTS audio.
+4. Click **Export** and choose where to save the `.apkg` file.
+
+## 2. Opening in Anki Without Resetting Your Progress
+
+Double-click the generated `.apkg` file:
+- Every card carries a **stable unique identifier (GUID)**.
+- If you re-export a deck after fixing a typo in AnkiDraft, Anki updates the card text **while keeping your FSRS / SM-2 scheduling history completely intact** (intervals, due dates, ease factor).
+- Card color flags and suspended status are also preserved.
+
+---
+
+# [EN] Importing a Deck (.apkg) or Collection (.colpkg)
+URL: https://ankidraft.app/en/anki-sync/import-colpkg/
+Description: Load your existing Anki .apkg or .colpkg decks into AnkiDraft to enrich notes, audit card quality, and track textbook coverage across chapters.
+
+Already using Anki for months or years? You can bring your existing flashcards into AnkiDraft anytime.
+
+## 1. Opening the Import Wizard (<kbd>Ctrl+Shift+I</kbd>)
+
+Press <kbd>Ctrl+Shift+I</kbd> and drop your file: AnkiDraft automatically detects whether it is an `.apkg` deck package or a full `.colpkg` collection archive.
+
+## 2. Difference Between `.apkg` and `.colpkg`
+
+- **`.apkg` Deck Package (Incremental Merge)**: adds flashcards shared by a classmate or updates a specific deck without touching the rest of your collection.
+- **`.colpkg` Collection Archive (Full Sync from Anki)**: aligns all your decks, note types, and review counters with your current Anki collection while preserving your PDFs, settings, and AI assistants inside AnkiDraft.
+
+For a visual walkthrough of how AnkiDraft and Anki work together, read the [Visual Guide to the Distributed Lifecycle](/en/guides/cycle_de_vie_distribue/).
+
+---
+
+# [EN] Synchronization, Duplicates, and Smart Merge
+URL: https://ankidraft.app/en/anki-sync/synchro_smart_merge/
+Description: Resolve conflicts during Anki imports with Smart Merge, preserve existing review schedules, and clean up duplicate flashcards automatically.
+
+When collaborating on a shared deck or editing a flashcard in both Anki and AnkiDraft, **Smart Merge** protects your work.
+
+## 1. How Smart Merge Works on `.apkg` Import
+
+When an incoming flashcard shares the same identifier as an existing card in AnkiDraft:
+- **If only review statistics changed in Anki**: no conflict is raised and the update happens seamlessly.
+- **If the card text was edited on both sides**: a 3-pane comparison dialog (*Local Version*, *Common Base*, *Incoming Version*) lets you pick which wording to keep or combine both.
+
+## 2. Finding and Merging Duplicates
+
+From the Editor or through the AI Consultant, scan your decks for duplicates:
+- **Exact duplicates**: flashcards sharing the exact same front field.
+- **Near-duplicates**: flashcards phrased slightly differently that test the same definition, detected rapidly with built-in similarity matching.
+
+---
+
+# [EN] Generating Flashcards with AI
+URL: https://ankidraft.app/en/cards/ai-generation/
+Description: Automatically turn textbook chapters and lecture notes into atomic Q&A or cloze flashcards with structured AI pipelines and human validation.
+
+AnkiDraft helps you rapidly turn dense study chapters into atomic flashcards while keeping you in full control through human staging review.
+
+## 1. Starting a Batch Generation
+
+1. Open the **Generation** view (<kbd>Ctrl+4</kbd>) or click **Generate Cards** from any document.
+2. Select the course sections to process in the **Batch Slice Composer**:
+   - **Direct Mode**: each checked section creates one generation task.
+   - **Automatic Mode**: groups or splits sections automatically based on length.
+3. Choose the target note type (*Basic Front/Back*, *Cloze Deletion*) and destination Anki deck.
+4. Press <kbd>Ctrl+Enter</kbd> to start generation.
+
+## 2. Tailoring Card Style (Personas)
+
+Adapt the AI extraction style to your discipline:
+- **Sciences & Medicine**: precise definitions, physiological mechanisms, reference values.
+- **Law & Humanities**: core concepts, conceptual distinctions, dates, and case law.
+- **Languages & Vocabulary**: contextual examples, idioms, and pronunciation notes.
+
+## 3. Human Review Before Saving (Staging)
+
+No AI-generated card is ever added blindly to your collection: all proposals land in the **Staging Review** queue where you can accept, edit, or reject each card in one click.
+
+---
+
+# [EN] Text-to-Speech (TTS) and Audio Cards
+URL: https://ankidraft.app/en/cards/audio-tts/
+Description: Automatically generate natural offline audio pronunciation for language and terminology flashcards using Kokoro or Piper neural TTS voices locally.
+
+When studying foreign languages, medical terminology, or music, attaching an audio clip to a flashcard dramatically boosts retention.
+
+## 1. Generating Field Pronunciation in One Click
+
+1. In the Note Editor, place your cursor inside the field containing the word or sentence to pronounce.
+2. Click the **Text-to-Speech (TTS)** icon in the toolbar.
+3. Select the target language and natural voice (English, French, Spanish, German, Japanese, Mandarin, etc.).
+4. The audio file is generated, normalized, and attached automatically as `[sound:filename.mp3]`, ready for Anki Desktop, AnkiWeb, and AnkiMobile.
+
+## 2. Batch Audio Generation
+
+Have an entire vocabulary deck without audio? Select multiple cards in the editor table and run **Batch TTS Generation**: AnkiDraft generates audio for all selected cards in the background.
+
+---
+
+# [EN] Generation Pipelines and Smart Coverage
+URL: https://ankidraft.app/en/cards/dag_et_rag/
+Description: Automate multi-step flashcard creation with DAG pipelines and fill knowledge gaps across your textbooks using local RAG and Smart Coverage tools.
+
+For large textbooks and courses, AnkiDraft combines two engines: **Generation Pipelines** (DAG workflows) and **Smart Coverage** (local RAG alignment).
+
+## 1. Automating Multi-Step Workflows (DAG Pipelines)
+
+A pipeline chains multiple steps automatically across your selected chapters:
+1. **Retrieve key passages** from your course material.
+2. **Extract flashcards** matching your target note type.
+3. **Run automatic quality checks** (filtering overly long cards) and **TTS audio generation**.
+4. **Queue cards for human staging review** before saving.
+
+## 2. Spotting Uncovered Chapters (Smart Coverage)
+
+Using local semantic indexing and provenance links (`NoteChunkLinkModel`), AnkiDraft compares your existing flashcards against your entire course:
+- It highlights sections that have zero flashcards yet.
+- You can ask the AI to **generate only the missing cards** without duplicating concepts you have already covered.
+
+---
+
+# [EN] Note Editor, KaTeX Math, and Cloze Deletions
+URL: https://ankidraft.app/en/cards/editeur_notes_katex/
+Description: Write and format Anki flashcards with live KaTeX math preview, cloze deletions, rich media attachments, and full per-note revision history in AnkiDraft.
+
+The AnkiDraft Note Editor (<kbd>Ctrl+2</kbd>) provides a fast writing environment with real-time Anki card preview.
+
+## 1. Writing Math and Chemistry Formulas (KaTeX)
+
+AnkiDraft renders your LaTeX equations live without waiting for an Anki export:
+- **Inline formula**: wrap your expression in `\( ... \)` or `$ ... $` (e.g., `$E = mc^2$`).
+- **Centered block formula**: use `\[ ... \]` or `$$ ... $$`.
+- **LaTeX Autocompletion**: type `\` followed by the first letters of a symbol (`\alpha`, `\frac`, `\sum`) to open the completion popup.
+
+## 2. Creating Cloze Deletions
+
+Cloze cards are great for memorizing precise definitions or short lists:
+1. Highlight the word or phrase you want to hide.
+2. Click the **Cloze** toolbar button to wrap it in `{{c1::your text}}`.
+3. Add an optional hint using `{{c1::answer::hint}}`.
+
+## 3. Revision History (Time Machine)
+
+Edited a card by mistake? Every save (<kbd>Ctrl+S</kbd>) stores a local snapshot in the note history so you can compare and restore previous wording in one click.
+
+---
+
+# [EN] Quality Audit and Wozniak's 20 Rules
+URL: https://ankidraft.app/en/cards/linter_wozniak/
+Description: Detect and split overloaded, vague, or hard-to-remember flashcards with the Wozniak 20-Rules Linter to boost long-term Anki retention daily.
+
+A poorly formulated flashcard (too long, testing multiple facts at once, or lacking context) quickly turns into a "leech" that you repeatedly fail in Anki.
+
+AnkiDraft includes a built-in **Pedagogical Linter** based on **Piotr Wozniak's 20 rules of formulating knowledge** (creator of SuperMemo).
+
+## 1. What the Quality Audit Checks
+
+In the **Quality & Audit** view (<kbd>Ctrl+5</kbd>) or right inside the editor, AnkiDraft scores each card and highlights:
+- **Information overload (non-atomicity)**: answers exceeding the recommended word threshold or mixing several independent facts.
+- **Vague or ambiguous prompts**: open-ended questions like *"Describe..."* where the expected answer is unclear.
+- **Blind enumerations**: lists of more than 3 or 4 items that are difficult to recall in order.
+- **Overly broad cloze deletions**: cloze tags hiding an entire sentence instead of a single key concept.
+
+## 2. Splitting Complex Cards in One Click
+
+When a card is flagged as overloaded, click **Split into Atomic Cards**: the assistant proposes breaking it down into 2 or 3 short, focused flashcards that are much easier to retain long-term.
+
+---
+
+# [EN] Note Types, Templates, and CSS Styling
+URL: https://ankidraft.app/en/cards/note-types-and-templates/
+Description: Customize Front/Back and Cloze note types, Jinja2 card templates, and responsive CSS visual styling for Anki Desktop, AnkiWeb, and AnkiMobile.
+
+AnkiDraft supports all standard Anki note types and lets you customize their visual layout.
+
+## 1. Built-In Note Types
+
+- **Basic (Front / Back)**: a focused question on the front, the answer and optional lecture notes on the back.
+- **Basic (and reversed card)**: automatically generates cards in both directions (ideal for bilingual vocabulary).
+- **Cloze Deletion**: hides one or more key terms `{{c1::...}}` inside a context sentence.
+
+## 2. Customizing Fields and CSS
+
+Add custom fields (e.g., *Source*, *Mnemonic*, *Audio*, *Diagram*) and tweak the card CSS stylesheet with instant preview in both light and dark modes.
+
+## 3. Smart Note Type Reconciliation on Import
+
+When you import an `.apkg` deck whose note type already exists in your collection, AnkiDraft automatically matches it instead of cluttering your collection with duplicate note types (`Basic-12345`).
+
+---
+
+# [EN] Installing AnkiDraft
+URL: https://ankidraft.app/en/getting-started/installation/
+Description: Download, install, and update AnkiDraft on macOS, Windows, and Linux from the latest official GitHub release with Ed25519 signature verification.
+
+AnkiDraft is a standalone desktop application. You do not need to install Python or any developer tools on your computer.
+
+## 1. Download the Installer (Latest Release)
+
+Visit the [AnkiDraft homepage](https://ankidraft.app/en/#download) or go straight to the [latest GitHub release](https://github.com/Skyl9/AnkiDraft/releases/latest) to automatically fetch the package for your system:
+
+| Operating System | Published Formats (`releases/latest`) | System Requirements |
+| :--- | :--- | :--- |
+| **macOS** | Disk image `.dmg` (Apple Silicon) or `.zip` archive | macOS 13 (Ventura) or newer, Apple Silicon chip (M1/M2/M3/M4) |
+| **Windows** | Standalone `.exe` installer or portable `.zip` archive | Windows 10 or Windows 11 (64-bit) |
+| **Linux** | Portable `.AppImage` executable or `.tar.gz` archive | Modern 64-bit Linux distribution (Ubuntu 22.04+, Fedora, Arch) |
+
+## 2. Step-by-Step Setup
+
+### On macOS
+1. Double-click the `.dmg` disk image downloaded from the [latest release](https://github.com/Skyl9/AnkiDraft/releases/latest).
+2. Drag the application icon into your **Applications** folder.
+3. Launch the app from Launchpad or Spotlight.
+
+### On Windows
+1. If you download the `.exe` installer, double-click it and follow the wizard (no administrator rights required for a user-level installation).
+2. If you download the portable `.zip` archive, extract it and run the main executable.
+
+### On Linux (AppImage)
+1. Make the downloaded `.AppImage` file executable:
+   ```bash
+   chmod +x *.AppImage
+   ```
+2. Launch the application by double-clicking it or executing it in your terminal.
+
+## 3. Where Is Your Data Stored?
+
+All your study data stays locally on your drive inside `~/.ankidraft/profiles/<profile_name>/`:
+- `ankidraft.db`: your local SQLite database of cards, documents, and history.
+- `media/`: images and audio clips attached to your flashcards.
+
+## 4. Automatic Updates
+
+AnkiDraft automatically checks for official releases and verifies both the cryptographic signature (Ed25519) and SHA-256 checksum before installing any update.
+
+---
+
+# [EN] Interface Overview
+URL: https://ankidraft.app/en/getting-started/interface-overview/
+Description: Take a guided tour of AnkiDraft workspaces, 4 switchable window layouts (IDE, macOS, Dashboard, Glass), and 12 built-in visual themes for study.
+
+AnkiDraft is designed to stay clean and responsive whether you work on a laptop screen or an ultrawide monitor.
+
+## 1. Main Workspaces
+
+Switch between workspaces from the sidebar or with keyboard shortcuts <kbd>Ctrl+1</kbd> through <kbd>Ctrl+6</kbd>:
+
+- **Dashboard (<kbd>Ctrl+1</kbd>)**: overview of your decks, document coverage progress, and recent activity.
+- **Editor & Browser (<kbd>Ctrl+2</kbd>)**: manual creation, editing with live KaTeX math preview, cloze deletions, and card management.
+- **Documents & Sources (<kbd>Ctrl+3</kbd>)**: library of your PDFs, YouTube videos, audio recordings, and web articles with per-chapter coverage bars.
+- **Generation & Pipelines (<kbd>Ctrl+4</kbd>)**: batch flashcard creation across selected chapters.
+- **Quality & Wozniak Audit (<kbd>Ctrl+5</kbd>)**: detection of overloaded, vague, or hard-to-memorize flashcards.
+- **AI Consultant (<kbd>Ctrl+6</kbd>)**: conversational assistant that inspects your decks and prepares staged improvements for your approval.
+
+## 2. Command Palette (<kbd>Ctrl+K</kbd>)
+
+Press <kbd>Ctrl+K</kbd> anytime to open the global command palette: type a few letters to jump to a view, trigger an `.apkg` export, open a user guide, or change a setting without leaving the keyboard.
+
+## 3. Customizing Layouts and Themes
+
+In **Settings** (<kbd>Ctrl+,</kbd>) > **Appearance**:
+- Pick from **4 interchangeable layouts** (*IDE Studio*, *macOS Native*, *Dashboard*, *Glassmorphism*) using high-resolution preview cards.
+- Choose from **12 color themes** (light and dark) crafted for long study sessions.
+
+---
+
+# [EN] Managing Profiles and Your Collection
+URL: https://ankidraft.app/en/getting-started/profiles-and-workspaces/
+Description: Create isolated study profiles in AnkiDraft, manage per-profile SQLite databases and media folders, and protect your local data with backups.
+
+AnkiDraft lets you completely isolate multiple collections using **user profiles**.
+
+## 1. Why Use Multiple Profiles?
+
+Each profile has its own SQLite database and dedicated media folder (images, audio):
+- Create separate profiles for distinct fields of study (e.g., *Medical School*, *Bar Exam*, *Japanese*).
+- Share a computer between multiple people without ever mixing flashcards or documents.
+
+## 2. Creating or Switching Profiles
+
+1. Open the profile selector from the application header or at startup.
+2. Click **New Profile** and give it a clear name.
+3. Switch between profiles in one click: AnkiDraft automatically locks the active profile to prevent concurrent write conflicts.
+
+## 3. Automatic Backups
+
+Before any sensitive operation (such as replacing your collection from a `.colpkg` archive or applying an update), AnkiDraft automatically creates a timestamped backup of your local database inside your profile folder.
+
+---
+
+# [EN] Quickstart Guide
+URL: https://ankidraft.app/en/getting-started/quickstart/
+Description: Create, review, and export your first Anki flashcard deck in 5 minutes with AnkiDraft, and pick the step-by-step workflow tailored to your subject.
+
+This guide walks you through creating your first Anki flashcard deck in minutes and helps you pick the end-to-end workflow that matches your study material and AI setup.
+
+## Which workflow fits your goal?
+
+Jump straight to the recipe built for your use case:
+
+1. **[Medicine & STEM: Dense PDFs, KaTeX Math, and Diagrams](/en/workflows/medecine-sciences-pdf/)** — scope textbook chapters, extract formulas and figures, and audit against Wozniak rules (Studio or MCP).
+2. **[Languages & Audio: Vocabulary and Offline TTS Pronunciation](/en/workflows/langues-et-audio-tts/)** — add natural offline Kokoro or Piper voice audio and fix ambiguous cards via MCP.
+3. **[YouTube Video & Audio Lectures: Transcription and Extraction](/en/workflows/cours-video-youtube-audio/)** — transcribe recorded lectures with Whisper or subtitles and turn key segments into cards.
+4. **[Zero API Key Workflow with an External MCP Agent](/en/workflows/zero-cle-api-agent-mcp/)** — drive AnkiDraft directly from Claude Desktop, Claude Code, Cursor, or Antigravity without extra API costs.
+5. **[Anki Collection Rescue & Hygiene (Studio & MCP)](/en/workflows/sauvetage-et-hygiene-anki-mcp/)** — import your `.colpkg` safely, eliminate duplicates and leeches, run MCP audit campaigns, and export back without losing SRS history.
+
+## Built-in Creation Studio vs. External MCP Agent
+
+AnkiDraft works either standalone in the Creation Studio or connected to your existing AI assistant over MCP.
+
+| Dimension | Built-in Creation Studio | External Agent via MCP Server |
+| :--- | :--- | :--- |
+| **AI setup required** | Free local model (Ollama) or API key (OpenAI, Gemini, Claude) | Existing plan (Claude Desktop/Code, Cursor, Antigravity) — **zero API key** |
+| **Interaction style** | Visual chapter picker, prebuilt DAG pipelines, one-click tools | Natural conversation in your AI client connected on port `8765` |
+| **Best suited for** | Batch PDF extraction, bulk TTS generation, visual KaTeX editing | Cross-deck gap audits, multi-step hygiene campaigns, note-type refactoring |
+| **Human control** | **Staging Review** queue before saving | **Safeguard (Two-Phase Commit)**: nothing changes until you click **Apply** |
+
+## The 4-Step Core Flow (Studio)
+
+### Step 1: Select or Create Your Profile
+
+On first launch, AnkiDraft opens the `default` profile. To keep subjects isolated (e.g., *Medicine*, *Languages*), click the profile selector at the bottom of the sidebar to create a dedicated workspace.
+
+### Step 2: Configure an AI Provider (Optional)
+
+Open **Settings** (<kbd>Ctrl+,</kbd>) and switch to **AI Engines**:
+- **100% free & offline**: install [Ollama](/en/ai-setup/local-models-ollama/) locally and choose a model.
+- **Cloud API key**: enter your OpenAI, Google Gemini, or Anthropic Claude key (stored in your OS encrypted keychain).
+- **Zero API key**: enable the [Local MCP Server](/en/workflows/zero-cle-api-agent-mcp/) to work with Claude or Cursor.
+
+### Step 3: Import Your First Document
+
+1. Open the **My Documents** view (<kbd>Alt+7</kbd>) from the sidebar.
+2. Drag and drop a PDF, Word, PowerPoint, or EPUB file, or paste a YouTube lecture URL.
+3. Select the chapters you want to study, then switch to **Creation Studio** (<kbd>Alt+2</kbd>) and click **Generate** (or **Forge Section**).
+
+### Step 4: Validate and Export to Anki
+
+Review generated cards, run the [Wozniak Quality Audit](/en/cards/linter_wozniak/) (<kbd>Alt+4</kbd>), then press <kbd>Ctrl+Alt+E</kbd> (**Export Anki Cards (.apkg)**). Double-click the exported `.apkg` file to add your cards directly into Anki for daily spaced-repetition review.
+
+> Want plain-language definitions with concrete Before / After examples? Read the [User Glossary](/en/guides/glossaire/).
+
+---
+
+# [EN] Visual Guide to the Distributed Lifecycle (AnkiDraft & Anki)
+URL: https://ankidraft.app/en/guides/cycle_de_vie_distribue/
+Description: Understand how the AnkiDraft authoring studio and the Anki spaced-repetition engine work together via .apkg and .colpkg without sync conflicts.
+
+Welcome to the distributed workflow guide for AnkiDraft (formerly AnkiForge).
+
+AnkiDraft and Anki work hand in hand as complementary tools:
+- **AnkiDraft is your Authoring Studio**: your AI-assisted workspace where you organize textbooks, track chapter coverage (Smart Coverage / Cycle Global Distribué), design flashcards, and validate card quality.
+- **Anki is your Spaced Repetition Engine (SRS)**: the application dedicated to your daily reviews. Anki holds exclusive authority over your review intervals, due dates, and spaced repetition algorithms (FSRS or SM-2).
+
+Thanks to this strict boundary (**Sanctuarisation**), **you never risk losing your review progress in Anki or overwriting your study documents and AI models in AnkiDraft**.
+
+---
+
+## 1. The Global Workflow Cycle
+
+The diagram below illustrates the workflow between creating cards in AnkiDraft and reviewing them in Anki:
+
+1. **AnkiDraft Studio**: Import your study sources (PDF, articles, videos, audio lectures). The studio segments the text and tracks your chapter coverage.
+2. **Staging Review**: Every generated flashcard goes through human validation and receives a permanent unique identifier (GUID).
+3. **Export to Anki (.apkg)**: Export your new cards as an `.apkg` package and open it in Anki.
+4. **Periodic Refresh (.colpkg)**: Review daily in Anki. Periodically export your `.colpkg` collection from Anki and drop it into AnkiDraft to refresh your retention statistics and sync card deletions.
+
+---
+
+## 2. Data Boundary: Studio Scope vs. Anki Scope (Sanctuarisation)
+
+### 🛡️ Studio Scope (Strictly Preserved)
+Never overwritten when you import an Anki collection:
+- Original documents (PDFs, transcripts, Markdown files, image plates).
+- Local semantic indexes and coverage links.
+- AI personas, prompts, and generation pipelines.
+- Application settings, themes, and custom shortcuts.
+
+### 🗂️ Anki Collection Scope (Synchronized & Replaced)
+Reflects your exact Anki collection:
+- Decks and hierarchical sub-decks.
+- Note types, Front/Back templates, and CSS styles.
+- Notes, physical cards, flags, and SRS review counters.
+
+---
+
+## 3. Which Archive Format Should You Choose: .apkg or .colpkg?
+
+| Criterion | Deck Package (`.apkg`) | Collection Archive (`.colpkg`) |
+| :--- | :--- | :--- |
+| **Purpose** | Share or add new/updated flashcards | Full replacement for exact alignment with Anki |
+| **Behavior** | **Incremental merge**: adds or updates cards without touching other decks | **Full Anki scope replacement**: matches your Anki collection state |
+| **Deletions** | Never deletes existing local cards | **Purges cards deleted in Anki (prevents Zombies)** |
+| **Safety** | Smart Merge conflict dialog | **Automatic SQLite backup created before replacement** |
+
+---
+
+## 4. Typical Study Session Timeline
+
+---
+
+## 5. Preventing Zombie Cards (Zombies) and Empty Fronts
+
+### 🧟 1. Eradicating Zombie Cards (Zombies)
+When you delete an obsolete card in Anki and later import a `.colpkg` archive into AnkiDraft, the deleted card is permanently removed from AnkiDraft so it never reappears in future exports.
+
+### 📄 2. Official Anki Non-Empty Front Rule
+AnkiDraft evaluates conditional templates (`{{#Field}}...{{/Field}}` and `{{^Field}}...{{/Field}}`): if the rendered front of a card is empty, no physical card is created.
+
+---
+
+# [EN] FAQ and Troubleshooting
+URL: https://ankidraft.app/en/guides/faq_depannage/
+Description: Find answers to frequently asked questions and step-by-step troubleshooting for AnkiDraft installation, Ollama, PDF OCR, and Anki .apkg exports.
+
+Find answers to the most common questions about AnkiDraft.
+
+## 1. General Questions
+
+### Does AnkiDraft replace Anki?
+No—AnkiDraft and Anki complement each other. **AnkiDraft** is the authoring and quality-auditing studio where you turn textbooks and lectures into atomic flashcards, while **Anki** (Desktop, AnkiWeb, AnkiMobile, AnkiDroid) is the spaced-repetition engine where you do your daily reviews.
+
+### Can I use AnkiDraft for free and offline?
+Yes. AnkiDraft is free, runs offline on your computer, and supports free local AI models via [Ollama](/en/ai-setup/local-models-ollama/) without any paid API subscription.
+
+### Are my PDFs and flashcards uploaded to the cloud?
+No. Your PDFs, SQLite database, and media files stay locally on your drive (`~/.ankidraft/`). If you configure a cloud AI provider (OpenAI, Gemini, Claude), only the text passages you explicitly select for card generation are sent directly to your API account.
+
+## 2. Troubleshooting
+
+### macOS shows a security prompt on first launch
+Make sure you dragged **AnkiDraft** into your **Applications** folder from the `.dmg` disk image. If macOS asks for confirmation on first open, right-click the **AnkiDraft** icon and select **Open**.
+
+### My math formulas do not render in Anki
+Verify that your equations use standard MathJax/KaTeX delimiters (`\( ... \)` for inline math and `\[ ... \]` for centered block equations).
+
+### How do I report a bug or request a feature?
+Inside AnkiDraft, open **Settings** (<kbd>Ctrl+,</kbd>) > **Help** > **Report an Idea or Bug**, or open an issue on the [official GitHub repository](https://github.com/Skyl9/AnkiDraft/issues).
+
+---
+
+# [EN] User Glossary: Key AnkiDraft Concepts Explained Simply
+URL: https://ankidraft.app/en/guides/glossaire/
+Description: Understand every core AnkiDraft concept (Wozniak rules, Cloze, Smart Coverage, DAG, RAG, MCP, Safeguard) with clear Before / After study examples.
+
+AnkiDraft combines spaced-repetition best practices with local AI tools. This glossary explains every technical term in plain English, paired with a concrete **Before / After** example.
+
+---
+
+## 1. Atomic Knowledge & Wozniak's 20 Rules
+
+A core principle from Piotr Wozniak (creator of SuperMemo): a great flashcard tests **one short, unambiguous fact** at a time (minimum information principle). AnkiDraft's linter automatically spots bloated or vague prompts.
+
+- **Before**: *Front:* "Explain the Krebs cycle (steps, rate-limiting enzymes, ATP/NADH/FADH2 yield)." ➔ Too dense to grade honestly during reviews.
+- **After**: 3 crisp, independent cards: (1) "Which enzyme catalyzes the rate-limiting step of the Krebs cycle?", (2) "How many NADH molecules are produced per turn of the Krebs cycle?", (3) "Where in the cell does the Krebs cycle take place?".
+
+---
+
+## 2. Cloze Deletion
+
+A fill-in-the-blank card (`{{c1::hidden term}}`) that hides one key word or phrase inside a clear sentence so you recall it directly in context (<kbd>Ctrl+Shift+C</kbd>).
+
+- **Before**: "Define osmosis?" / "Movement of solvent across a semipermeable membrane from lower to higher solute concentration."
+- **After**: "During osmosis, solvent moves across a semipermeable membrane from a {{c1::hypotonic (lower solute)}} solution to a {{c2::hypertonic (higher solute)}} solution."
+
+---
+
+## 3. Smart Coverage
+
+A traceability tracker linking each generated card back to its exact source heading or page. It shows which chapters of your PDF already have flashcards and which sections are still uncovered.
+
+- **Before**: Manually flipping through a 180-page textbook wondering whether you forgot subsection 3.4.
+- **After**: The *Smart Coverage* gauge reports `Chapter 3: 82% covered — Section 3.4 (0 cards)` and lets you draft cards solely for that gap.
+
+---
+
+## 4. Scoping: Exclude vs. Neutralize
+
+Two non-destructive actions to filter a textbook without deleting pages ([Scope & Chapters](/en/sources/scope-and-slices/)):
+- **Exclude**: temporarily hides an off-syllabus chapter from AI generation.
+- **Neutralize**: removes structural boilerplate (cover, table of contents, acknowledgments) from the *Smart Coverage* denominator.
+
+- **Before**: A 300-page book with 30 pages of index and bibliography caps your coverage at 90% or generates useless cards about publisher copyrights.
+- **After**: Index neutralized, bibliography excluded ➔ coverage accurately reaches **100% of active chapters** with zero junk cards.
+
+---
+
+## 5. Generation Pipeline (DAG)
+
+An automated multi-step workflow (e.g., retrieve key passages ➔ synthesize clean Markdown ➔ draft cards ➔ add TTS audio ➔ stage for human review).
+
+- **Before**: Copying a chapter into a chat box, generating cards, fixing broken LaTeX manually, then creating audio one card at a time.
+- **After**: Clicking **Run Pipeline** executes the full workflow automatically and delivers clean drafts ready to review.
+
+---
+
+## 6. Local Semantic Search (RAG)
+
+100% local indexing on your computer that lets AI retrieve relevant sections of your textbooks by **meaning** (not just exact keywords) before drafting or auditing cards.
+
+- **Before**: Stuffing an entire textbook into a prompt (slow, expensive, and prone to hallucinations).
+- **After**: Local RAG pulls only the 3 paragraphs relevant to the concept and keeps exact page provenance.
+
+---
+
+## 7. MCP Server (Model Context Protocol)
+
+An open standard built into AnkiDraft that lets your external AI assistant (Claude Desktop, Claude Code, Cursor, Antigravity) read your courses and decks locally with zero extra API keys.
+
+- **Before**: Copy-pasting notes back and forth between Anki, PDFs, and a browser chat window.
+- **After**: Asking Claude directly *"Audit my Cardiology deck and draft missing cards for Chapter 4"* queries AnkiDraft live.
+
+---
+
+## 8. Safeguard & Staged Bundle (Two-Phase Human Approval)
+
+A mandatory safety buffer: no AI proposal (create, edit, split, or delete) ever modifies your database directly. Every change enters a **Staged Bundle** with a Before / After diff until you click **Apply**.
+
+- **Before**: Worrying that an automated prompt or script might accidentally overwrite 200 cards.
+- **After**: You inspect every proposed card change side-by-side in the Safeguard and stay in 100% control.
+
+---
+
+## 9. Domain Gap Diagnosis & the 3 Cognitive Pathologies
+
+A neuro-symbolic audit (`diagnose_domain_knowledge_gaps`) scanning all your decks together against a study topic to catch 3 pathologies:
+- **Type 1 (Missing concepts)**: textbook concepts with zero matching flashcards.
+- **Type 2 (Non-atomicity)**: bloated multi-fact cards needing splitting.
+- **Type 3 (Bilingual glue)**: two languages mixed awkwardly in one card or bare word translations lacking context.
+
+- **Before**: Realizing right before finals that 3 core topics are missing or scattered across unrelated decks.
+- **After**: The audit collects related orphan cards across decks and pinpoints exact gaps and splits needed.
+
+---
+
+## 10. Studio Scope vs. Anki Collection Scope (`.apkg` vs. `.colpkg`)
+
+AnkiDraft isolates authoring assets (**Studio Scope**: PDFs, transcripts, RAG indexes, prompts) from synced cards (**Anki Collection Scope**).
+- `.apkg`: adds or merges a targeted deck.
+- `.colpkg`: mirrors your complete Anki collection (removes cards deleted in Anki while keeping all PDFs intact).
+
+- **Before**: Importing a full Anki backup risked wiping study notes or resurrecting deleted cards ("zombie cards").
+- **After**: `.colpkg` sync updates your collection cleanly while keeping Studio sources safe and preventing zombie cards ([Distributed Lifecycle Guide](/en/guides/cycle_de_vie_distribue/)).
+
+---
+
+## 11. Smart Merge
+
+A 3-way visual diff (**Local**, **Common Base**, **Incoming**) inspired by developer merge tools: when importing an updated `.apkg` from a classmate, only true text conflicts require your decision.
+
+- **Before**: Blindly overwriting your personal edits or losing a teammate's additions when importing a shared deck.
+- **After**: Pick the exact version per field while preserving media and review scheduling.
+
+---
+
+## 12. Leech Card
+
+Anki's term for a card you repeatedly fail during reviews—almost always because it is too verbose, poorly phrased, or interferes with a sibling card.
+
+- **Before**: Seeing the same frustrating card fail 8 times a month without sticking.
+- **After**: AnkiDraft spots leeches from synced lapse counters and suggests splitting or clarifying them with distinctive cues.
+
+---
+
+# [EN] Keyboard Shortcuts Reference
+URL: https://ankidraft.app/en/guides/raccourcis_clavier/
+Description: Official reference of all keyboard shortcuts in AnkiDraft by category and scope to navigate workspaces, edit cards, and run AI pipelines fast.
+
+This page lists the default keyboard shortcuts in AnkiDraft. You can customize any shortcut in **Settings** (<kbd>Ctrl+,</kbd>) > **Keyboard**.
+
+> On macOS, <kbd>Ctrl</kbd> maps automatically to <kbd>Cmd ⌘</kbd>.
+
+## 1. Global Application Actions
+
+| Action | Default Shortcut | Scope | Description |
+| :--- | :--- | :--- | :--- |
+| **Command Palette** | <kbd>Ctrl+K</kbd> | `Application` | Open the global command palette omnibox |
+| **Settings** | <kbd>Ctrl+,</kbd> | `Application` | Open the Settings dialog |
+| **Save** | <kbd>Ctrl+S</kbd> | `Application` | Save changes in the active view |
+| **Run Primary Action** | <kbd>Ctrl+Return</kbd> | `Application` | Trigger the main action in the active view (generate, run) |
+| **Find / Search** | <kbd>Ctrl+F</kbd> | `Application` | Focus the search field in the active view |
+| **Import Anki Package (.apkg / .colpkg)** | <kbd>Ctrl+Shift+I</kbd> | `Application` | Open the collection or deck import wizard |
+| **Export Anki Cards (.apkg)** | <kbd>Ctrl+Alt+E</kbd> | `Application` | Open the `.apkg` card export dialog |
+| **Interactive Guided Tour** | <kbd>F1</kbd> | `Application` | Launch the interactive feature tour |
+
+## 2. Workspace Navigation
+
+| Action | Default Shortcut | Scope | Description |
+| :--- | :--- | :--- | :--- |
+| **Dashboard** | <kbd>Ctrl+1</kbd> | `Application` | Switch to the Dashboard view |
+| **Editor & Browser** | <kbd>Ctrl+2</kbd> | `Application` | Switch to the Note Editor and Card Browser |
+| **Documents & Sources** | <kbd>Ctrl+3</kbd> | `Application` | Switch to the Document Hub |
+| **Generation & Pipelines** | <kbd>Ctrl+4</kbd> | `Application` | Switch to Batch AI Generation |
+| **Quality & Wozniak Audit** | <kbd>Ctrl+5</kbd> | `Application` | Switch to the Wozniak Quality Linter |
+| **AI Consultant** | <kbd>Ctrl+6</kbd> | `Application` | Switch to the interactive AI Consultant |
+
+## 3. Note Editor & Formatting
+
+| Action | Default Shortcut | Scope | Description |
+| :--- | :--- | :--- | :--- |
+| **New Note** | <kbd>Ctrl+N</kbd> | `View` | Create a new flashcard note |
+| **Duplicate Note** | <kbd>Ctrl+D</kbd> | `View` | Duplicate the selected note |
+| **Delete Note** | <kbd>Delete</kbd> | `View` | Delete the selected note(s) |
+| **Bold** | <kbd>Ctrl+B</kbd> | `Widget` | Toggle bold text formatting |
+| **Italic** | <kbd>Ctrl+I</kbd> | `Widget` | Toggle italic text formatting |
+| **Underline** | <kbd>Ctrl+U</kbd> | `Widget` | Toggle underline formatting |
+| **Insert Cloze Deletion** | <kbd>Ctrl+Shift+C</kbd> | `Widget` | Wrap selection in `{{c1::...}}` |
+| **Undo / Redo** | <kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd> | `Widget` | Undo or redo the last edit |
+
+---
+
+# [EN] Document Hub and Multimodal Formats
+URL: https://ankidraft.app/en/sources/hub_multimodal/
+Description: Overview of all supported study sources in AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) with local-first parsing and source traceability.
+
+The **Document Hub** centralizes all your study materials in one place and preserves a direct link between every flashcard and the exact paragraph it came from.
+
+## 1. Supported Study Sources
+
+| Source Type | Formats | What AnkiDraft Extracts |
+| :--- | :--- | :--- |
+| **PDF Textbooks & Handouts** | `.pdf` | Chapter outline, text, tables, figures, and LaTeX math |
+| **Online Videos** | YouTube URLs | Timestamped subtitles or local speech-to-text transcription |
+| **Audio Recordings** | `.mp3`, `.wav`, `.m4a` | Paragraph-segmented transcript |
+| **Web Articles** | `https://` URLs | Clean article body without ads or navigation clutter |
+| **Office & Ebooks** | `.docx`, `.pptx`, `.epub`, `.md` | Heading hierarchy, lists, and slide notes |
+
+## 2. Jump Back to the Source in One Click
+
+While reviewing or editing any flashcard in the editor, click **View Source** to jump straight back to the corresponding chapter and paragraph in your original document.
+
+---
+
+# [EN] Importing PDFs, Slides, and Ebooks
+URL: https://ankidraft.app/en/sources/import-pdf/
+Description: Cleanly extract PDF textbooks, DOCX documents, PPTX slides, and EPUB books with Marker OCR, preserving diagrams, tables, and LaTeX formulas.
+
+The AnkiDraft **Document Hub** turns static study files into structured chapters ready for flashcard generation.
+
+## 1. Supported File Formats
+
+Drag and drop directly into the **Documents** view:
+- **PDF Documents (`.pdf`)**: lecture handouts, academic papers, and textbooks, preserving tables, figures, and LaTeX math equations.
+- **Word Documents (`.docx`) and Slides (`.pptx`)**: extracts headings, bullet points, and speaker notes.
+- **Ebooks (`.epub`) and Markdown / Plain Text (`.md`, `.txt`)**.
+
+## 2. Choosing the PDF Extraction Mode
+
+When importing a PDF, two extraction modes are available depending on your file:
+- **Fast Standard Extraction**: best for clean digital PDFs where text is already selectable.
+- **Advanced OCR & Math Recognition**: recommended for scanned handouts, multi-column layouts, or math-heavy courses.
+
+## 3. Keeping Diagrams and Figures
+
+Figures and diagrams extracted from your documents are automatically saved to your local media library so you can attach them to the front or back of any flashcard in one click.
+
+---
+
+# [EN] Importing Web Pages and Online Articles
+URL: https://ankidraft.app/en/sources/import-web/
+Description: Capture the core educational content of any online article or web documentation page into clean Markdown without ads, menus, or visual clutter.
+
+Studying from online encyclopedias, technical blogs, or web courses? The AnkiDraft Web Importer extracts only the relevant study content.
+
+## 1. Capturing a Web Page
+
+1. In the **Documents** view, click **Import Web Page**.
+2. Paste the article URL (`https://...`).
+3. AnkiDraft automatically strips navigation menus, banners, and ads, keeping only headings, paragraphs, tables, code blocks, and illustrations.
+
+## 2. Dynamic Web Pages
+
+If a page requires JavaScript to render its content (single-page apps or interactive courses), enable **Full Browser Rendering** during import so AnkiDraft waits for the complete page text before extracting it.
+
+---
+
+# [EN] Importing YouTube Videos and Audio Lectures
+URL: https://ankidraft.app/en/sources/import-youtube-audio/
+Description: Turn any YouTube lecture, podcast, or classroom voice recording into timestamped transcripts and atomic Anki flashcards locally on your device.
+
+AnkiDraft lets you build flashcards directly from online video lectures or recorded classroom sessions.
+
+## 1. Importing a YouTube Video
+
+1. Open the **Documents** view and click **Import from URL / YouTube**.
+2. Paste the YouTube video link.
+3. AnkiDraft immediately retrieves official or auto-generated subtitles and reconstructs a clean, timestamped transcript organized by topic.
+4. If the video has no subtitles available, AnkiDraft can transcribe the audio stream locally.
+
+## 2. Transcribing Audio Files (`.mp3`, `.wav`, `.m4a`)
+
+Recorded a lecture or voice memo?
+1. Drop your audio file into the **Documents** view.
+2. Automatic transcription splits the recording into timestamped paragraphs.
+3. Generate flashcards from the entire recording or pick only the key segments.
+
+---
+
+# [EN] Selecting Chapters and Tracking Coverage
+URL: https://ankidraft.app/en/sources/scope-and-slices/
+Description: Choose which textbook sections or pages to study, exclude appendices non-destructively, and monitor your course coverage bar in real time today.
+
+Textbooks and handouts often include a table of contents, preface, or bibliography that you do not want to turn into flashcards. AnkiDraft gives you fine-grained control over your study scope.
+
+## 1. Three Exclusive Scope Modes
+
+When preparing a flashcard generation batch, slice your document using one of three modes:
+- **By Sections**: check specific sub-sections from the document outline.
+- **By Pages**: specify a page range (e.g., pages 12 to 28).
+- **By Chapters**: select whole chapters in a single click.
+
+## 2. Excluding Out-of-Scope Sections
+
+You can **exclude** non-essential sections such as prefaces or acknowledgments:
+- Excluded sections are never deleted from your source document (you can re-enable them anytime).
+- They are skipped during AI card generation and removed from your coverage denominator.
+
+## 3. Monitoring Smart Coverage
+
+Every flashcard generated from a course passage stays linked to its source section. In the **Documents** view, a visual progress bar shows which chapters are already covered by flashcards and which ones still need attention.
+
+---
+
+# [EN] YouTube Video & Audio Lectures: Transcription to Cards
+URL: https://ankidraft.app/en/workflows/cours-video-youtube-audio/
+Description: Turn YouTube video lectures or classroom audio recordings into structured, atomic Anki flashcards using local transcription, slicing, and AI tools.
+
+Recorded university lectures, YouTube explainers, and seminar audio files pack hours of spoken insight that are slow to review manually. This workflow turns speech into structured, atomic flashcards.
+
+## 1. Import a YouTube URL or Local Audio Recording
+
+1. Open **My Documents** (<kbd>Alt+7</kbd>).
+2. Choose your source type ([Import YouTube & Audio](/en/sources/import-youtube-audio/)):
+   - **YouTube lecture**: click **Import from Web** and paste the video URL. AnkiDraft downloads official captions when present or falls back to local speech-to-text transcription.
+   - **Recorded lecture or voice memo** (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.ogg`): drag and drop the file into **My Documents**. Local **Whisper** transcription runs on your machine without uploading your recordings to third-party servers.
+
+## 2. Turn Raw Transcripts into Structured Study Sections
+
+Spoken transcripts naturally contain filler words, tangents, and broken sentences. Clean and outline the transcript before drafting flashcards:
+
+- **In Creation Studio**: run a [DAG Pipeline](/en/cards/dag_et_rag/) with an upstream Markdown synthesis step before card extraction.
+- **Via an MCP Agent**: ask Claude or Cursor to call `structure_transcript_for_ai` followed by `structure_document_sections` so timestamped speech becomes a crisp, hierarchical outline.
+
+## 3. Slice by Topic and Generate Cards
+
+1. Switch to **Creation Studio** (<kbd>Alt+2</kbd>) or the **Batch Slice Composer** to process one thematic segment at a time.
+2. Pick your note type (*Basic* or *Cloze*) and domain persona ([AI Card Generation](/en/cards/ai-generation/)).
+3. Review every draft in **Staging** to catch spoken ambiguities or misheard technical terms before saving.
+
+## 4. Automate Structuring and Drafting via MCP
+
+When driving AnkiDraft from Claude Code, Claude Desktop, or Cursor on port `8765` with zero extra API key:
+
+- **MCP tools used**: `structure_transcript_for_ai`, `get_document_outline`, `create_notes_batch`, `begin_staged_bundle`, `commit_staged_bundle`.
+- **Sample prompt**: *"Clean up raw transcript document #9 using `structure_transcript_for_ai` (didactic profile, keep timestamps), then stage atomic definitions and causal questions via `create_notes_batch` into deck `Lectures::Neuroscience` for Safeguard review."*
+
+---
+
+# [EN] Language Learning & Audio Workflow: Offline TTS Flashcards
+URL: https://ankidraft.app/en/workflows/langues-et-audio-tts/
+Description: Build language vocabulary decks in AnkiDraft with offline neural text-to-speech audio (Kokoro or Piper), instant preview, and MCP batch enrichment.
+
+This workflow shows how to build language decks (Japanese, Spanish, French, German, Mandarin, and more) with contextual sentence examples, 100% offline neural pronunciation audio, and clean bilingual formatting.
+
+## 1. Bring In Your Vocabulary List or Study Material
+
+You can start from any of three sources:
+- A **source document** (grammar handout, vocabulary sheet, article, or subtitle file dropped into **My Documents**).
+- An **existing Anki deck** imported with <kbd>Ctrl+Shift+I</kbd> ([Import .apkg / .colpkg](/en/anki-sync/import-colpkg/)).
+- **Direct entry** inside **Editor & Browser** (<kbd>Alt+3</kbd>).
+
+For higher long-term retention, prefer a **short contextual sentence** on the front card highlighting the target word rather than an isolated one-word translation.
+
+## 2. Generate Offline Pronunciation Audio (Kokoro / Piper)
+
+AnkiDraft supports local neural TTS engines that create standard `[sound:tts_xxx.mp3]` audio clips without internet access or cloud quotas ([Text-to-Speech & Audio](/en/cards/audio-tts/)):
+
+1. Open **Settings** (<kbd>Ctrl+,</kbd>) > **Audio & TTS** and select a local engine (**Kokoro-82M** or **Piper ONNX**) along with the voice matching your target language.
+2. **Single-card audio**: in **Editor & Browser** (<kbd>Alt+3</kbd>), click inside the target-language field and press the speaker/microphone button to synthesize and preview audio immediately.
+3. **Batch deck audio**: select multiple notes in the browser and trigger **Batch TTS Generation** to synthesize missing audio clips in the background.
+
+## 3. Enrich and Clean Up Language Decks via MCP
+
+A frequent failure mode in language decks is **Type 3 Pathology (Bilingual Glue)**: cards mixing two languages in one prompt or pairing literal glosses with zero natural context. Your MCP agent can audit and fix this safely:
+
+- **Add audio across an entire language deck**:
+  - Tools used: `get_cards_by_deck_or_tag`, `generate_card_audio`, `generate_cards_batch_audio`.
+  - Sample prompt: *"Fetch notes in deck `Languages::Japanese` (with `recursive=True`) missing `[sound:...]` tags and run `generate_cards_batch_audio` on the Expression field using a Japanese voice."*
+- **Fix bilingual glue and add natural example sentences**:
+  - Tools used: `diagnose_domain_knowledge_gaps`, `propose_card_refactor`.
+  - Sample prompt: *"Inspect `Languages::Spanish` with `diagnose_domain_knowledge_gaps`, find cards with Type 3 bilingual glue or overloaded synonyms, and stage clean contextual rewrites via `propose_card_refactor`."*
+
+## 4. Export with Deduplicated Audio Media
+
+Press <kbd>Ctrl+Alt+E</kbd> to export your `.apkg`: AnkiDraft packages MD5-deduplicated audio files automatically so playback works smoothly on Anki Desktop, AnkiWeb, and AnkiMobile.
+
+---
+
+# [EN] Medicine & STEM Workflow: Dense PDFs, Math, and Diagrams
+URL: https://ankidraft.app/en/workflows/medecine-sciences-pdf/
+Description: Step-by-step guide to turning dense medical or STEM textbook PDFs into atomic Anki flashcards complete with KaTeX math formulas, diagrams, and MCP.
+
+This workflow shows how to turn dense university handouts or STEM textbooks (anatomy, physiology, physics, calculus) into atomic flashcards faithful to your source material, complete with KaTeX equations and labeled diagrams.
+
+## 1. Import the PDF with Figure and Equation Extraction
+
+1. Open **My Documents** (<kbd>Alt+7</kbd>) and click **Import File** (or drag and drop your `.pdf`).
+2. Pick the extraction engine matching your file:
+   - **Fast standard extraction** for clean digital PDFs without complex mathematical notation.
+   - **Advanced OCR (Marker)** for scanned handouts, multi-column layouts, tables, and formulas converted into native LaTeX (`\(...\)` and `\[...\]`).
+3. Extracted figures and anatomical plates are saved automatically to your local media library. See [Import PDFs, Slides, and Ebooks](/en/sources/import-pdf/) for details.
+
+## 2. Scope Useful Chapters Without Deleting Source Pages
+
+A 200-page course pack usually contains a preface, table of contents, and bibliography that distort generation and coverage tracking.
+
+In the [Scope & Chapter Selector](/en/sources/scope-and-slices/):
+- **Exclude** appendices, acknowledgments, and bibliographies: AI generation skips them while the original text remains intact.
+- **Neutralize** the table of contents or cover pages: they are removed from your *Smart Coverage* denominator so your progress gauge stays accurate.
+
+## 3. Generate Atomic Cards and Edit Math or Occlusions
+
+1. Switch to **Creation Studio** (<kbd>Alt+2</kbd>) or open the **Batch Slice Composer** to split your selection by chapter.
+2. Pick the target note type (*Basic*, *Cloze*, or *Image Occlusion*) and destination deck (e.g., `Medicine::Cardiology`).
+3. In **Editor & Browser** (<kbd>Alt+3</kbd>), verify live KaTeX math rendering, turn key terms into cloze deletions with <kbd>Ctrl+Shift+C</kbd> (<kbd>Cmd+Shift+C</kbd> on macOS), or mask diagram labels ([Notes Editor & KaTeX](/en/cards/editeur_notes_katex/)).
+
+## 4. Run a Wozniak Quality Check Before Export
+
+Open **Analysis & AI Audit** (<kbd>Alt+4</kbd>) to run the [Wozniak Quality Linter](/en/cards/linter_wozniak/): overloaded cards or multi-concept prompts are flagged for one-click splitting before exporting via <kbd>Ctrl+Alt+E</kbd> ([Export .apkg](/en/anki-sync/export-apkg/)).
+
+## 5. Drive This Workflow via MCP (Claude, Cursor, Antigravity)
+
+Prefer steering your exam preparation from Claude Desktop, Claude Code, or Cursor with zero extra API keys? Enable the local MCP server under **MCP Server & Agents** (<kbd>Alt+5</kbd>) and use these patterns:
+
+- **Clean document scope before drafting**:
+  - Tools used: `get_document_outline`, `exclude_document_region`, `neutralize_document_region`.
+  - Sample prompt: *"Read the outline of document #4, neutralize the table of contents and exclude the bibliography, then list the active chapters."*
+- **Find coverage gaps across decks and draft missing cards**:
+  - Tools used: `diagnose_domain_knowledge_gaps`, `search_document`, `create_notes_batch`.
+  - Sample prompt: *"Run `diagnose_domain_knowledge_gaps` on the Action Potential chapter of my Physiology course across all decks, list Type 1 missing concepts, and stage atomic KaTeX flashcards `\( ... \)` for Safeguard review."*
+
+> Every mutation proposed by an external MCP agent lands in the **Safeguard** review queue before touching your collection.
+
+---
+
+# [EN] Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene
+URL: https://ankidraft.app/en/workflows/sauvetage-et-hygiene-anki-mcp/
+Description: Clean up an existing Anki collection (.colpkg): detect duplicates and leeches, run an MCP hygiene campaign, and split overloaded cards safely.
+
+Stuck with an older Anki deck full of stubborn leeches, near-duplicate cards, messy tags, or bloated paragraphs? This workflow helps you rescue and normalize your collection without ever losing your spaced-repetition scheduling history (FSRS / SM-2).
+
+## 1. Safely Import Your Anki Collection (`.colpkg`)
+
+1. From Anki Desktop, export a full archive: **File > Export > Anki Collection Package (`.colpkg`)** including media and scheduling info.
+2. In AnkiDraft, press <kbd>Ctrl+Shift+I</kbd> and drop your `.colpkg` file ([Import .apkg or .colpkg](/en/anki-sync/import-colpkg/)).
+3. AnkiDraft automatically creates a backup SQLite snapshot and isolates your **Anki Collection Scope** from your **Studio Scope** (your PDFs, RAG indexes, and app settings remain untouched).
+
+## 2. Spot Duplicates and Overloaded Cards in the Audit Hospital
+
+1. Open **Analysis & AI Audit** (<kbd>Alt+4</kbd>).
+2. Under **Audit & Wozniak Linter**, pick a deck and click **Run Audit**: verbose, ambiguous, or multi-concept cards receive targeted cognitive diagnostics ([Wozniak Linter](/en/cards/linter_wozniak/)).
+3. Open **Merges & Duplicates** to detect near-identical notes with the native C Levenshtein matcher and resolve duplicates cleanly.
+
+## 3. Run an Assisted Collection Hygiene Campaign via MCP
+
+To clean hundreds of cards across multiple decks systematically, connect your MCP client (**Claude**, **Cursor**, **Antigravity**) on port `8765` and follow these four stages:
+
+### Stage A — Fix Cards Flagged During Daily Reviews
+While reviewing in Anki, flag painful cards (Red = split needed, Orange = fact-check), then re-import your `.colpkg` into AnkiDraft:
+- **MCP tools**: `get_flagged_cards`, `get_note_full_profile_360`, `set_card_flag`.
+- **Prompt**: *"Fetch all my red-flagged cards using `get_flagged_cards`, diagnose why they keep failing with `audit_card_wozniak`, and stage atomic rewrites for each."*
+
+### Stage B — Break Down Deck Silos and Diagnose 3 Pathologies
+- **MCP tools**: `diagnose_domain_knowledge_gaps`, `diagnose_deck_weaknesses`, `audit_deck_wozniak`, `find_duplicate_cards`.
+- **Prompt**: *"Run `diagnose_domain_knowledge_gaps` on Renal Physiology across every deck: surface related orphan cards, Type 1 missing concepts, Type 2 non-atomic cards, and Type 3 bilingual glue."*
+
+### Stage C — Clean Up Tags and Empty Cards
+- **MCP tools**: `audit_tag_hygiene`, `merge_tag_clusters`, `list_empty_cards`, `delete_empty_cards`.
+- **Prompt**: *"Audit tag consistency with `audit_tag_hygiene`, merge typo/plural clusters via `merge_tag_clusters`, and check for empty front cards via `list_empty_cards`."*
+
+### Stage D — Batch Split and Refactor Behind the Safeguard
+- **MCP tools**: `begin_staged_bundle`, `propose_card_split`, `propose_card_refactor`, `propose_cards_batch_refactor`, `commit_staged_bundle`.
+- **Prompt**: *"Start a bundle (`begin_staged_bundle`), split the 8 cards exceeding 40 words into 2–3 atomic notes using `propose_card_split`, tighten vague wording with `propose_card_refactor`, and finalize via `commit_staged_bundle`."*
+
+## 4. Approve in Safeguard and Export Back Without Losing SRS
+
+1. Open **MCP Server & Agents** (<kbd>Alt+5</kbd>) > **Safeguard & Validation** and review every Before / After split and rewrite visually.
+2. Click **Apply** to commit the bundle atomically into AnkiDraft.
+3. Export the cleaned deck via <kbd>Ctrl+Alt+E</kbd> (or MCP tool `export_deck_apkg`) and open the `.apkg` in Anki: thanks to stable note GUIDs and [Smart Merge](/en/anki-sync/synchro_smart_merge/), updated wording lands cleanly while preserving your FSRS intervals.
+
+---
+
+# [EN] Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor
+URL: https://ankidraft.app/en/workflows/zero-cle-api-agent-mcp/
+Description: Connect Claude Desktop, Claude Code, or Cursor to AnkiDraft's local MCP server to generate, enrich, and audit flashcards with two-phase human review.
+
+Already using **Claude Desktop**, **Claude Code**, **Cursor**, or **Antigravity**? Through AnkiDraft's built-in **MCP (Model Context Protocol)** server, you can draft flashcards, audit coverage gaps, and clean up decks with **zero additional API keys** while keeping every edit behind the **Safeguard**.
+
+## 1. Start the Local MCP Server and Copy Client Config
+
+1. Open **MCP Server & Agents** (<kbd>Alt+5</kbd>) from the sidebar.
+2. Confirm the local server shows **Active** on port `8765` (or click **Start**).
+3. Under **Ready-to-Use Client Configurations** on the right, pick your client (**Claude**, **Antigravity**, **Cursor**, or **cURL**) and click **Copy Configuration** (or **Open File**).
+4. Paste the JSON snippet (`http://127.0.0.1:8765/mcp` plus your Bearer token) into your AI client config and restart it.
+
+## 2. Five Concrete MCP Use Cases (Copy-Paste Prompts)
+
+### Case A — Generate Course-Grounded Flashcards by Chapter
+- **MCP tools**: `search_document`, `get_document_outline`, `begin_staged_bundle`, `create_notes_batch`, `commit_staged_bundle`.
+- **Prompt**: *"Inspect the outline of document #3, read the sections on glycemic regulation with `search_document`, then stage a grouped bundle (`begin_staged_bundle` + `create_notes_batch` + `commit_staged_bundle`) of 12 atomic KaTeX flashcards in deck `Biochemistry::Metabolism`."*
+
+### Case B — Store an External Summary as an Authoritative Source
+- **MCP tools**: `write_mcp_artifact`, `ingest_authority_source`, `reindex_document`.
+- **Prompt**: *"Write a clean Markdown synthesis of adaptive immunity from my lecture notes, save it with `write_mcp_artifact`, and ingest it with `ingest_authority_source` so newly generated cards keep section-level provenance links."*
+
+### Case C — Create or Modernize Note Types and Card CSS
+- **MCP tools**: `list_note_types`, `get_note_type_details`, `propose_note_type_refactor`, `propose_css_tune`, `preview_card_render`.
+- **Prompt**: *"Inspect the `Medical Cloze` note type via `get_note_type_details`, improve hint contrast in dark mode with `propose_css_tune`, check the output using `preview_card_render`, and stage `propose_note_type_refactor` for Safeguard approval."*
+
+### Case D — Run a DAG Pipeline in Delegated MCP Mode
+- **MCP tools**: `list_pipelines`, `trigger_pipeline_run`, `provide_pipeline_step_content`.
+- **Prompt**: *"List my pipelines via `list_pipelines`, start pipeline #2 in delegated mode with `trigger_pipeline_run`, supply each paused step output via `provide_pipeline_step_content`, and send the resulting cards to the Safeguard."*
+
+### Case E — Clean Up and Refactor Existing Decks
+- **MCP tools**: `get_flagged_cards`, `diagnose_domain_knowledge_gaps`, `propose_card_split`, `propose_card_refactor`.
+- **Prompt**: *"Fetch my red-flagged cards with `get_flagged_cards` and split dense cards into atomic prompts with `propose_card_split`."* (See [Anki Collection Rescue & MCP Hygiene](/en/workflows/sauvetage-et-hygiene-anki-mcp/)).
+
+## 3. Review and Approve in the Safeguard (Two-Phase Commit)
+
+Nothing is written behind your back:
+1. Open the **Safeguard & Validation** sub-tab under **MCP Server & Agents** (<kbd>Alt+5</kbd>).
+2. Review the **Before / After semantic diff**, live HTML/KaTeX card preview, and deletion or split impact.
+3. Click **Apply** to commit the bundle atomically into SQLite, or **Reject** to discard every change cleanly.
+
+---
+
+# [FR] Consultant IA et Connexion aux Assistants MCP
+URL: https://ankidraft.app/fr/ai-setup/consultant_mcp/
+Description: Discutez avec le Consultant IA intégré ou connectez Claude Desktop et Cursor à AnkiDraft via MCP pour auditer et enrichir vos paquets facilement.
+
+Le **Consultant IA** (<kbd>Ctrl+6</kbd>) est votre assistant pédagogique au sein d'AnkiDraft. Vous pouvez également piloter AnkiDraft depuis votre client IA externe favori grâce au protocole standard **MCP (Model Context Protocol)**.
+
+## 1. Ce que le Consultant IA peut faire pour vous
+
+Posez-lui vos demandes en langage naturel :
+- *« Trouve les chapitres de mon cours de cardiologie qui n'ont pas encore de cartes »*
+- *« Cherche les doublons dans mon paquet Anatomie et propose une fusion »*
+- *« Raccourcis les 10 cartes les plus longues de ce paquet selon les règles de Wozniak »*
+
+## 2. Garde-fou de sécurité : validation humaine en deux temps
+
+Ni le Consultant IA intégré ni un agent externe connecté via MCP ne peut modifier ou supprimer vos cartes sans votre accord :
+1. L'assistant prépare ses modifications dans un **lot en attente (Staged Bundle)**.
+2. Vous visualisez clairement l'avant/après de chaque carte ajoutée, modifiée ou supprimée.
+3. Vous cliquez sur **Appliquer** ou **Rejeter** : vous gardez toujours le contrôle absolu sur votre collection.
+
+## 3. Connecter un client externe (Claude Desktop, Cursor, etc.)
+
+Dans la vue **Consultant IA** > **Serveur MCP**, activez le serveur local et copiez la configuration en un clic pour permettre à votre assistant externe d'interroger vos paquets et vos cours en toute sécurité.
+
+---
+
+# [FR] Configurer vos Fournisseurs d'IA (OpenAI, Gemini, Claude)
+URL: https://ankidraft.app/fr/ai-setup/ia_fournisseurs/
+Description: Connectez vos clés API OpenAI, Anthropic ou Gemini en toute sécurité, configurez vos modèles locaux et maîtrisez votre budget de tokens IA global.
+
+AnkiDraft est **agnostique du fournisseur d'IA** : vous êtes libre d'utiliser le service de votre choix ou d'alterner selon vos besoins.
+
+## 1. Fournisseurs compatibles
+
+Dans **Paramètres** (<kbd>Ctrl+,</kbd>) > **Fournisseurs IA**, vous pouvez configurer :
+- **OpenAI** (GPT-4o, GPT-4o-mini, etc.)
+- **Google Gemini** (Gemini 2.5 Flash, Gemini 2.5 Pro)
+- **Anthropic Claude** (Claude Sonnet, Claude Haiku)
+- **Tout serveur compatible OpenAI** (Mistral, OpenRouter, serveur universitaire local)
+- **Ollama (100 % gratuit et hors ligne)** : voir le guide [Utiliser un Modèle Local avec Ollama](/fr/ai-setup/local-models-ollama/).
+
+## 2. Sécurité de vos clés API
+
+- Vos clés API sont enregistrées dans le **trousseau sécurisé de votre système d'exploitation** (macOS Keychain, Windows Credential Manager, Secret Service Linux).
+- Elles ne transitent par aucun serveur intermédiaire : AnkiDraft communique directement depuis votre ordinateur vers l'API du fournisseur sélectionné.
+- Les journaux techniques masquent automatiquement toute clé (`sk-*`, `AIza*`).
+
+## 3. Contrôle du budget
+
+Avant de lancer une génération importante sur un livre entier, AnkiDraft estime le nombre de jetons (*tokens*) nécessaires et vous permet de fixer un plafond par exécution pour éviter toute surprise de facturation.
+
+---
+
+# [FR] Utiliser un Modèle Local Gratuit avec Ollama
+URL: https://ankidraft.app/fr/ai-setup/local-models-ollama/
+Description: Générez des flashcards Anki atomiques 100 % hors-ligne et gratuitement sur votre ordinateur grâce aux modèles locaux Ollama sans aucune clé API.
+
+Vous ne souhaitez pas utiliser d'API payante ou vous étudiez des documents confidentiels sans connexion internet ? AnkiDraft s'intègre nativement avec **Ollama**.
+
+## 1. Installer Ollama en 2 minutes
+
+1. Téléchargez et installez Ollama depuis [ollama.com](https://ollama.com).
+2. Ouvrez un terminal et téléchargez un modèle adapté à la configuration de votre ordinateur :
+   - **Ordinateur avec 8 Go de RAM** : `ollama pull llama3.2:3b` ou `ollama pull qwen2.5:3b`
+   - **Ordinateur avec 16 Go+ de RAM (ex. Mac M1/M2/M3/M4)** : `ollama pull qwen2.5:7b` ou `ollama pull mistral`
+
+## 2. Activer Ollama dans AnkiDraft
+
+1. Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) > **Fournisseurs IA**.
+2. Sélectionnez **Ollama (Local)** : l'adresse par défaut `http://localhost:11434` est détectée automatiquement.
+3. Cliquez sur **Rafraîchir les modèles** et choisissez le modèle que vous venez de télécharger.
+4. Vous pouvez désormais générer et auditer vos flashcards gratuitement et 100 % hors ligne !
+
+---
+
+# [FR] Exporter vos Paquets vers Anki (.apkg)
+URL: https://ankidraft.app/fr/anki-sync/export-apkg/
+Description: Générez un fichier .apkg propre et prêt à réviser pour Anki Desktop, AnkiWeb et AnkiMobile avec IDs stables et sans perdre votre historique.
+
+Une fois vos cartes créées et relues dans AnkiDraft, vous pouvez les transférer vers Anki en quelques secondes grâce à l'export `.apkg`.
+
+## 1. Exporter un paquet ou une sélection
+
+1. Appuyez sur <kbd>Ctrl+Alt+E</kbd> ou cliquez sur **Exporter (.apkg)** dans la barre d'outils.
+2. Choisissez le paquet (ou les sous-paquets hiérarchiques `Matière::Chapitre`) à exporter.
+3. Cochez **Inclure les fichiers médias** si vos cartes contiennent des schémas, des images ou de l'audio TTS.
+4. Cliquez sur **Exporter** et choisissez l'emplacement du fichier `.apkg`.
+
+## 2. Ouvrir le paquet dans Anki sans écraser vos révisions
+
+Double-cliquez sur le fichier `.apkg` généré :
+- Chaque carte possède un **identifiant unique durable (GUID)**.
+- Si vous réexportez un paquet après avoir corrigé une faute d'orthographe dans AnkiDraft, Anki met à jour le texte de la carte **tout en conservant intact votre historique de révision FSRS / SM-2** (intervalles, échéances, facteur de facilité).
+- Les drapeaux de couleur (*flags*) et l'état suspendu de vos cartes sont également respectés.
+
+---
+
+# [FR] Importer un Paquet (.apkg) ou une Collection (.colpkg)
+URL: https://ankidraft.app/fr/anki-sync/import-colpkg/
+Description: Chargez vos paquets Anki .apkg ou .colpkg existants dans AnkiDraft pour les enrichir, auditer leur qualité et suivre votre couverture de cours.
+
+Vous utilisez déjà Anki depuis des mois ou des années ? Vous pouvez importer vos cartes existantes dans AnkiDraft à tout moment.
+
+## 1. Ouvrir l'assistant d'importation (<kbd>Ctrl+Shift+I</kbd>)
+
+Appuyez sur <kbd>Ctrl+Shift+I</kbd> et glissez votre fichier : AnkiDraft reconnaît automatiquement s'il s'agit d'un paquet `.apkg` ou d'une collection complète `.colpkg`.
+
+## 2. Différence entre `.apkg` et `.colpkg`
+
+- **Paquet `.apkg` (ajout ou fusion ciblée)** : ajoute les cartes d'un cours partagé par un camarade ou met à jour un paquet spécifique sans toucher au reste de votre collection.
+- **Archive `.colpkg` (synchronisation complète depuis Anki)** : aligne l'intégralité de vos paquets, types de notes et compteurs de révision sur votre collection Anki actuelle, tout en préservant vos PDF, vos réglages et vos assistants IA dans AnkiDraft.
+
+Pour visualiser en détail l'articulation entre AnkiDraft et Anki, consultez le [Guide Visuel du Cycle de Vie Distribué](/fr/guides/cycle_de_vie_distribue/).
+
+---
+
+# [FR] Synchronisation, Doublons et Fusion Intelligente (Smart Merge)
+URL: https://ankidraft.app/fr/anki-sync/synchro_smart_merge/
+Description: Résolvez les conflits lors d'un import Anki avec le Smart Merge, préservez votre historique de révision et éliminez les cartes en doublon facilement.
+
+Lorsque vous travaillez à plusieurs sur un même paquet ou que vous modifiez une carte à la fois dans Anki et dans AnkiDraft, l'outil de **Fusion Intelligente (Smart Merge)** protège votre travail.
+
+## 1. Comment fonctionne Smart Merge lors d'un import `.apkg` ?
+
+Si une carte entrante possède le même identifiant qu'une carte déjà présente dans AnkiDraft :
+- **Si seules les statistiques de révision ont changé dans Anki** : aucun conflit n'est déclenché, la mise à jour est transparente.
+- **Si le texte de la carte a été modifié des deux côtés** : la fenêtre de comparaison à 3 panneaux (*Version locale*, *Base commune*, *Version importée*) s'ouvre pour vous permettre de choisir la formulation à conserver ou de combiner les deux.
+
+## 2. Détecter et fusionner les doublons
+
+Depuis l'éditeur ou via le Consultant IA, vous pouvez lancer une recherche de doublons sur vos paquets :
+- **Doublons exacts** : cartes ayant le même recto.
+- **Doublons proches** : cartes formulées légèrement différemment mais portant sur la même définition, détectées rapidement grâce au calcul de similarité intégré.
+
+---
+
+# [FR] Générer des Flashcards avec l'IA
+URL: https://ankidraft.app/fr/cards/ai-generation/
+Description: Transformez automatiquement un chapitre de cours en flashcards Questions/Réponses ou textes à trous atomiques avec validation humaine stricte.
+
+AnkiDraft vous aide à transformer rapidement un chapitre dense en flashcards atomiques, tout en vous laissant le dernier mot sur chaque carte grâce à la revue humaine.
+
+## 1. Lancer une génération par lot
+
+1. Ouvrez la vue **Génération** (<kbd>Ctrl+4</kbd>) ou cliquez sur **Générer des cartes** depuis un document.
+2. Choisissez les sections du cours à traiter dans le compositeur de lots (**Batch Slice Composer**) :
+   - **Mode Direct** : chaque section cochée produit un lot de cartes dédié.
+   - **Mode Automatique** : regroupe ou divise les sections selon leur longueur.
+3. Sélectionnez le type de carte souhaité (*Basique Recto/Verso*, *Texte à trous / Cloze*) ainsi que le paquet Anki de destination.
+4. Appuyez sur <kbd>Ctrl+Entrée</kbd> pour démarrer la génération.
+
+## 2. Personnaliser le style des cartes (Personas)
+
+Vous pouvez adapter le ton et l'exigence de l'IA selon votre domaine d'étude :
+- **Sciences & Médecine** : définitions précises, mécanismes physiopathologiques, valeurs de référence.
+- **Droit & Sciences humaines** : notions clés, distinctions conceptuelles, dates et arrêts.
+- **Langues & Vocabulaire** : exemples contextualisés, expressions idiomatiques et prononciation.
+
+## 3. Revue humaine avant enregistrement (Staging)
+
+Aucune carte générée par l'IA n'est ajoutée aveuglément à votre collection : toutes les propositions arrivent dans la file de **Revue (Staging)** où vous pouvez les accepter, les modifier ou les rejeter en un clic.
+
+---
+
+# [FR] Synthèse Vocale (TTS) et Cartes Audio
+URL: https://ankidraft.app/fr/cards/audio-tts/
+Description: Générez automatiquement une prononciation audio naturelle hors-ligne pour vos cartes de langues et terminologies avec les voix Kokoro ou Piper.
+
+Pour l'apprentissage des langues étrangères, de la médecine ou de la musique, associer un extrait sonore à une flashcard renforce considérablement la mémorisation.
+
+## 1. Générer la prononciation d'un champ en un clic
+
+1. Dans l'éditeur de notes, placez votre curseur dans le champ contenant le mot ou la phrase à prononcer.
+2. Cliquez sur l'icône **Synthèse vocale (TTS)** dans la barre d'outils.
+3. Choisissez la langue et la voix naturelle souhaitée (français, anglais, espagnol, allemand, japonais, mandarin, etc.).
+4. Le fichier audio est généré, normalisé et attaché automatiquement à votre carte sous la forme `[sound:fichier.mp3]` compatible avec Anki Desktop, AnkiWeb et AnkiMobile.
+
+## 2. Génération audio en lot
+
+Vous avez un paquet entier de vocabulaire sans audio ? Sélectionnez plusieurs cartes dans la table d'édition et lancez la **Génération TTS par lot** : AnkiDraft sonorise toutes les cartes sélectionnées en arrière-plan.
+
+---
+
+# [FR] Pipelines de Génération et Couverture Intelligente
+URL: https://ankidraft.app/fr/cards/dag_et_rag/
+Description: Automatisez la création de cartes par étapes avec les pipelines DAG et comblez les lacunes de vos cours grâce au RAG local et Smart Coverage.
+
+Pour les cours volumineux, AnkiDraft combine deux moteurs complémentaires : les **Pipelines de génération** (workflows DAG) et la **Couverture intelligente** (RAG & Smart Coverage).
+
+## 1. Enchaîner plusieurs étapes automatiquement (Pipeline DAG)
+
+Un pipeline vous permet d'enchaîner automatiquement plusieurs actions sur vos chapitres :
+1. **Recherche des passages clés** dans votre cours.
+2. **Extraction des flashcards** selon le modèle de carte choisi.
+3. **Vérification qualité automatique** (filtrage des cartes trop longues) et **génération audio TTS**.
+4. **Passage en revue humaine** avant validation finale.
+
+## 2. Détecter les chapitres oubliés (Smart Coverage)
+
+Grâce à l'indexation sémantique locale de vos documents et aux liens de provenance (`NoteChunkLinkModel`), AnkiDraft compare vos cartes existantes à l'intégralité de votre cours :
+- Il met en évidence les sections qui ne possèdent encore aucune flashcard.
+- Vous pouvez demander à l'IA de **générer uniquement les cartes manquantes** sans dupliquer celles que vous avez déjà créées.
+
+---
+
+# [FR] Éditeur de Notes, Formules KaTeX et Textes à Trous
+URL: https://ankidraft.app/fr/cards/editeur_notes_katex/
+Description: Rédigez et mettez en forme vos flashcards avec aperçu mathématique KaTeX en direct, occlusions Cloze, médias et historique complet des révisions.
+
+L'éditeur de notes d'AnkiDraft (<kbd>Ctrl+2</kbd>) vous offre un confort d'écriture immédiat avec prévisualisation en temps réel du rendu Anki.
+
+## 1. Écrire des formules mathématiques et chimiques (KaTeX)
+
+AnkiDraft affiche instantanément vos équations LaTeX sans attendre l'export vers Anki :
+- **Formule en ligne** : entourez votre expression de `\( ... \)` ou `$ ... $` (ex. `$E = mc^2$`).
+- **Formule en bloc centré** : utilisez `\[ ... \]` ou `$$ ... $$`.
+- **Autocomplétion LaTeX** : tapez `\` suivi des premières lettres d'un symbole (`\alpha`, `\frac`, `\sum`) pour afficher la liste des commandes disponibles.
+
+## 2. Créer des textes à trous (Cloze)
+
+Les cartes à trous sont idéales pour mémoriser une définition précise ou une énumération courte :
+1. Sélectionnez le mot ou l'expression à masquer dans votre texte.
+2. Appuyez sur le bouton **Cloze** de la barre d'outils pour insérer automatiquement `{{c1::votre texte}}`.
+3. Vous pouvez ajouter un indice optionnel avec la syntaxe `{{c1::réponse::indice}}`.
+
+## 3. Historique de révision (Time Machine)
+
+Vous avez modifié une carte par erreur ? Chaque enregistrement (<kbd>Ctrl+S</kbd>) conserve une version dans l'historique local de la note : vous pouvez comparer et restaurer une formulation antérieure en un clic.
+
+---
+
+# [FR] Audit Qualité et les 20 Règles de Wozniak
+URL: https://ankidraft.app/fr/cards/linter_wozniak/
+Description: Détectez et scindez les cartes trop longues, floues ou difficiles à mémoriser grâce au Linter des 20 règles de Wozniak pour mieux retenir durablement.
+
+Une mauvaise flashcard (trop longue, contenant plusieurs questions à la fois ou dépourvue de contexte) finit par devenir une « sangsue » (*leech*) que vous oubliez sans cesse dans Anki.
+
+AnkiDraft intègre un **Linter pédagogique** inspiré des **20 règles de formulation des connaissances de Piotr Wozniak** (créateur de SuperMemo).
+
+## 1. Ce que vérifie l'audit qualité
+
+Dans la vue **Qualité & Audit** (<kbd>Ctrl+5</kbd>) ou directement dans l'éditeur, AnkiDraft attribue un score de santé à chaque carte et signale :
+- **La surcharge d'information (non-atomicité)** : une réponse qui dépasse le seuil recommandé ou qui mélange plusieurs idées distinctes.
+- **Les questions vagues ou ambiguës** : questions ouvertes du type *« Parlez de… »* qui ne permettent pas de savoir quelle réponse précise est attendue.
+- **Les énumérations aveugles** : listes de plus de 3 ou 4 éléments difficiles à restituer dans l'ordre.
+- **Les cartes à trous trop larges** : clozes qui masquent une phrase entière au lieu d'un concept précis.
+
+## 2. Scinder une carte complexe en un clic
+
+Lorsqu'une carte est signalée comme trop dense, cliquez sur **Scinder en cartes atomiques** : l'assistant vous propose de la découper en 2 ou 3 cartes courtes et indépendantes, beaucoup plus faciles à mémoriser sur le long terme.
+
+---
+
+# [FR] Modèles de Cartes, Gabarits et Styles CSS
+URL: https://ankidraft.app/fr/cards/note-types-and-templates/
+Description: Personnalisez vos types de notes Recto/Verso et Cloze, vos gabarits Jinja2 et votre mise en forme CSS pour Anki Desktop, AnkiWeb et AnkiMobile.
+
+AnkiDraft prend en charge tous les types de notes d'Anki et vous permet d'adapter leur présentation visuelle.
+
+## 1. Les types de notes prêts à l'emploi
+
+- **Basique (Recto / Verso)** : une question ciblée au recto, la réponse et un mémo de cours optionnel au verso.
+- **Basique (et carte inversée)** : génère automatiquement la carte dans les deux sens (idéal pour le vocabulaire bilingue).
+- **Texte à trous (Cloze)** : masque un ou plusieurs termes clés `{{c1::...}}` au sein d'une phrase de contexte.
+
+## 2. Personnaliser les champs et le style CSS
+
+Vous pouvez ajouter des champs personnalisés (ex. *Source*, *Moyen mnémotechnique*, *Audio*, *Illustration*) et ajuster la feuille de style CSS de vos cartes avec un aperçu immédiat en mode clair et en mode sombre.
+
+## 3. Réconciliation intelligente à l'import
+
+Lorsque vous importez un paquet `.apkg` contenant un type de note déjà présent dans votre collection, AnkiDraft le reconnaît automatiquement sans créer de doublon de modèle (`Basique-12345`).
+
+---
+
+# [FR] Installer AnkiDraft
+URL: https://ankidraft.app/fr/getting-started/installation/
+Description: Téléchargez, installez et mettez à jour AnkiDraft sur macOS, Windows et Linux depuis la dernière release officielle, avec vérification Ed25519.
+
+AnkiDraft est une application de bureau autonome. Vous n'avez pas besoin d'installer Python ni aucun outil de développement sur votre ordinateur.
+
+## 1. Télécharger l'installateur (dernière version)
+
+Rendez-vous sur la [page d'accueil d'AnkiDraft](https://ankidraft.app/fr/#telecharger) ou directement sur la [dernière release GitHub](https://github.com/Skyl9/AnkiDraft/releases/latest) pour télécharger automatiquement le paquet correspondant à votre système :
+
+| Système | Formats publiés (`releases/latest`) | Configuration requise |
+| :--- | :--- | :--- |
+| **macOS** | Image disque `.dmg` (Apple Silicon) ou archive `.zip` | macOS 13 (Ventura) ou supérieur, puce Apple Silicon (M1/M2/M3/M4) |
+| **Windows** | Installateur `.exe` ou archive portable `.zip` | Windows 10 ou Windows 11 (64 bits) |
+| **Linux** | Exécutable portable `.AppImage` ou archive `.tar.gz` | Distribution Linux 64 bits moderne (Ubuntu 22.04+, Fedora, Arch) |
+
+## 2. Procédure par système d'exploitation
+
+### Sur macOS
+1. Double-cliquez sur l'image disque `.dmg` téléchargée depuis la [dernière release](https://github.com/Skyl9/AnkiDraft/releases/latest).
+2. Faites glisser l'icône de l'application vers le dossier **Applications**.
+3. Lancez l'application depuis le Launchpad ou Spotlight.
+
+### Sur Windows
+1. Si vous téléchargez l'installateur `.exe`, double-cliquez dessus et suivez l'assistant (aucun droit administrateur n'est requis pour une installation dans votre session).
+2. Si vous téléchargez l'archive portable `.zip`, décompressez-la puis lancez l'exécutable principal.
+
+### Sur Linux (AppImage)
+1. Rendez le fichier `.AppImage` téléchargé exécutable :
+   ```bash
+   chmod +x *.AppImage
+   ```
+2. Lancez l'application en double-cliquant dessus ou en l'exécutant dans votre terminal.
+
+## 3. Où sont stockées vos données ?
+
+Toutes vos données restent localement sur votre disque dur dans le dossier `~/.ankidraft/profiles/<nom_du_profil>/` :
+- `ankidraft.db` : votre base de cartes, documents et historiques.
+- `media/` : les images et fichiers audio attachés à vos flashcards.
+
+## 4. Mises à jour automatiques
+
+AnkiDraft vérifie automatiquement la disponibilité d'une nouvelle version officielle et vérifie la signature cryptographique (Ed25519) ainsi que l'empreinte SHA-256 avant toute mise à jour.
+
+---
+
+# [FR] Découvrir l'Interface
+URL: https://ankidraft.app/fr/getting-started/interface-overview/
+Description: Tour d'horizon des espaces de travail d'AnkiDraft, des 4 dispositions d'écran (IDE, macOS, Dashboard, Glass) et des 12 thèmes visuels intégrés.
+
+L'interface d'AnkiDraft est conçue pour rester claire et rapide, que vous travailliez sur un écran portable ou sur un grand moniteur.
+
+## 1. Les espaces de travail principaux
+
+Vous pouvez passer d'un espace à l'autre via la barre latérale ou avec les raccourcis <kbd>Ctrl+1</kbd> à <kbd>Ctrl+6</kbd> :
+
+- **Tableau de bord (<kbd>Ctrl+1</kbd>)** : vue d'ensemble de vos paquets, de votre avancement documentaire et accès rapide aux dernières actions.
+- **Éditeur & Exploration (<kbd>Ctrl+2</kbd>)** : création manuelle, édition avec aperçu mathématique KaTeX en direct, textes à trous et gestion de vos cartes.
+- **Documents & Sources (<kbd>Ctrl+3</kbd>)** : bibliothèque de vos PDF, vidéos YouTube, enregistrements audio et pages web, avec indicateur de couverture par chapitre.
+- **Génération & Pipelines (<kbd>Ctrl+4</kbd>)** : lancement de la création de flashcards par lots sur une sélection de chapitres.
+- **Qualité & Audit Wozniak (<kbd>Ctrl+5</kbd>)** : détection des cartes trop longues, redondantes ou difficiles à mémoriser.
+- **Consultant IA (<kbd>Ctrl+6</kbd>)** : assistant conversationnel capable d'analyser vos paquets et de vous proposer des améliorations soumises à votre validation.
+
+## 2. La Palette de commandes (<kbd>Ctrl+K</kbd>)
+
+À tout moment, appuyez sur <kbd>Ctrl+K</kbd> pour ouvrir la palette de commandes : tapez quelques lettres pour changer de vue, lancer un export `.apkg`, ouvrir un guide d'aide ou modifier un réglage sans quitter le clavier.
+
+## 3. Personnaliser la disposition et le thème
+
+Dans **Paramètres** (<kbd>Ctrl+,</kbd>) > **Apparence** :
+- Choisissez parmi **4 dispositions d'interface** (*IDE Studio*, *macOS Natif*, *Tableau de bord*, *Glassmorphism*) grâce aux miniatures d'aperçu.
+- Sélectionnez votre thème parmi **12 palettes de couleurs** (claires et sombres) adaptées aux longues sessions de révision.
+
+---
+
+# [FR] Gérer ses Profils et sa Collection
+URL: https://ankidraft.app/fr/getting-started/profiles-and-workspaces/
+Description: Créez des profils d'étude isolés dans AnkiDraft, gérez vos bases SQLite et dossiers médias locaux et protégez vos données par sauvegarde locale.
+
+AnkiDraft vous permet d'isoler complètement plusieurs collections grâce aux **profils utilisateurs**.
+
+## 1. Pourquoi utiliser plusieurs profils ?
+
+Chaque profil possède sa propre base de données et son propre dossier de médias (images, sons) :
+- Vous pouvez créer un profil par grande discipline (ex. *Études de santé*, *Préparation concours*, *Japonais*).
+- Plusieurs personnes utilisant le même ordinateur disposent chacune de leur espace sans jamais mélanger leurs cartes ni leurs documents.
+
+## 2. Créer ou changer de profil
+
+1. Ouvrez le menu des profils depuis l'en-tête de l'application ou au démarrage.
+2. Cliquez sur **Nouveau profil** et donnez-lui un nom explicite.
+3. Basculez d'un profil à l'autre en un clic : AnkiDraft verrouille automatiquement le profil actif pour éviter toute corruption si deux fenêtres sont ouvertes.
+
+## 3. Sauvegardes automatiques
+
+Avant chaque opération sensible (comme le remplacement de la collection par une archive `.colpkg` ou une mise à jour), AnkiDraft réalise automatiquement une sauvegarde horodatée de votre base locale dans votre dossier de profil.
+
+---
+
+# [FR] Prise en Main Rapide
+URL: https://ankidraft.app/fr/getting-started/quickstart/
+Description: Créez, vérifiez et exportez votre premier paquet de flashcards Anki en 5 minutes avec AnkiDraft et choisissez le parcours adapté à votre discipline.
+
+Ce guide vous permet de produire votre premier paquet de flashcards Anki en quelques minutes et de choisir le parcours exact correspondant à votre matière et à votre équipement IA.
+
+## Quel parcours choisir selon votre besoin ?
+
+Accédez directement à la recette complète adaptée à votre situation :
+
+1. **[Médecine & Sciences : PDF dense, formules KaTeX et schémas](/fr/workflows/medecine-sciences-pdf/)** — cibler les chapitres utiles d'un polycopié, extraire équations et images, valider selon Wozniak (Studio ou MCP).
+2. **[Langues & Audio : vocabulaire et prononciation TTS hors-ligne](/fr/workflows/langues-et-audio-tts/)** — sonoriser vos cartes avec Kokoro ou Piper et corriger les cartes ambiguës via MCP.
+3. **[Cours magistral vidéo YouTube & Audio](/fr/workflows/cours-video-youtube-audio/)** — transcrire un cours filmé ou enregistré, structurer la transcription et générer vos cartes.
+4. **[Workflow « Zéro Clé API » avec Agent MCP externe](/fr/workflows/zero-cle-api-agent-mcp/)** — piloter AnkiDraft depuis Claude Desktop, Claude Code, Cursor ou Antigravity sans payer de clé API supplémentaire.
+5. **[Sauvetage & Hygiène d'une collection Anki existante](/fr/workflows/sauvetage-et-hygiene-anki-mcp/)** — importer votre `.colpkg`, éliminer doublons et sangsues, lancer une campagne d'audit MCP et ré-exporter sans perdre votre historique SRS.
+
+## Studio de Création intégré vs Agent MCP externe
+
+AnkiDraft fonctionne aussi bien de façon autonome (Studio intégré) que connecté à votre assistant IA habituel via le protocole MCP.
+
+| Critère | Studio de Création Intégré | Agent Externe via Serveur MCP |
+| :--- | :--- | :--- |
+| **Équipement IA requis** | Modèle local gratuit (Ollama) ou clé API (OpenAI, Gemini, Claude) | Abonnement existant (Claude Desktop/Code, Cursor, Antigravity) — **zéro clé API** |
+| **Prise en main** | Boutons visuels guidés, pipelines préconfigurés, sélecteur de chapitres | Conversation naturelle dans votre client IA connecté sur le port `8765` |
+| **Cas d'usage idéaux** | Extraction systématique par lots de PDF, génération TTS en série, édition KaTeX | Audits transversaux de lacunes, campagnes d'hygiène multi-paquets, refonte de modèles |
+| **Contrôle humain** | File de **Revue (Staging)** avant ajout | **Garde-Fou (Two-Phase Commit)** : rien n'est écrit sans votre clic sur **Appliquer** |
+
+## Le flux de base en 4 étapes (Studio)
+
+### Étape 1 : Choisir ou créer votre profil
+
+Au premier lancement, AnkiDraft ouvre le profil `default`. Si vous souhaitez séparer vos matières (ex. *Médecine*, *Langues*), cliquez sur le sélecteur de profil en bas de la barre latérale pour créer un espace totalement isolé.
+
+### Étape 2 : Configurer un modèle d'IA (optionnel)
+
+Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>), puis l'onglet **Moteurs IA** :
+- **100 % gratuit et hors-ligne** : installez [Ollama](/fr/ai-setup/local-models-ollama/) sur votre ordinateur et choisissez un modèle local.
+- **Via une clé API cloud** : renseignez votre clé OpenAI, Google Gemini ou Anthropic Claude (stockée dans le trousseau chiffré du système).
+- **Sans clé API** : activez le [Serveur MCP](/fr/workflows/zero-cle-api-agent-mcp/) pour utiliser votre abonnement Claude ou Cursor.
+
+### Étape 3 : Importer votre premier document
+
+1. Ouvrez la vue **My Documents** (<kbd>Alt+7</kbd>) dans la barre latérale.
+2. Glissez-déposez un fichier PDF, Word, PowerPoint, EPUB ou collez l'URL d'une vidéo YouTube.
+3. Cochez les chapitres à étudier puis ouvrez **Studio de Création** (<kbd>Alt+2</kbd>) et cliquez sur **Générer** (ou **Forger la section**).
+
+### Étape 4 : Valider et exporter dans Anki
+
+Relisez les cartes proposées, passez le [Linter Wozniak](/fr/cards/linter_wozniak/) (<kbd>Alt+4</kbd>), puis appuyez sur <kbd>Ctrl+Alt+E</kbd> (**Exporter des cartes Anki (.apkg)**). Double-cliquez sur le fichier `.apkg` généré : vos cartes sont immédiatement prêtes pour vos révisions quotidiennes dans Anki.
+
+> Pour comprendre chaque terme métier avec des exemples concrets Avant / Après, consultez le [Glossaire Utilisateur](/fr/guides/glossaire/).
+
+---
+
+# [FR] Guide Visuel du Cycle de Vie Distribué AnkiDraft et Anki
+URL: https://ankidraft.app/fr/guides/cycle_de_vie_distribue/
+Description: Comprendre la complémentarité entre le studio de création AnkiDraft et le moteur de révision Anki via .apkg et .colpkg sans aucun conflit de synchro.
+
+Bienvenue dans le guide d'utilisation du système distribué d'AnkiDraft (anciennement AnkiForge).
+
+AnkiDraft et Anki fonctionnent main dans la main comme un duo complémentaire :
+- **AnkiDraft est votre Studio d'Authoring** : c'est votre atelier de création intellectuelle assisté par intelligence artificielle. Vous y organisez vos cours, vos livres, vos découpages RAG, vos personas d'extraction et vous y concevez des flashcards fidèles à vos sources avec une validation humaine rigoureuse.
+- **Anki est votre Moteur de Mémorisation (SRS)** : c'est le logiciel dédié à vos répétitions quotidiennes. Anki détient l'autorité exclusive sur vos intervalles de révision, vos dates d'échéance et les algorithmes de mémoire espacée (FSRS ou SM-2).
+
+Grâce à cette séparation étanche, **vous ne risquez jamais de perdre vos progrès de révision dans Anki, ni d'altérer vos cours et vos modèles d'IA dans AnkiDraft**.
+
+---
+
+## 1. Le Cycle Global de Travail
+
+Le schéma ci-dessous illustre la boucle vertueuse de travail entre la conception dans AnkiDraft et la mémorisation dans Anki :
+
+Le cycle s'articule en quatre temps :
+1. **Studio AnkiDraft** : Importez vos documents sources (PDF, articles, vidéos, cours audio). L'application segmente les textes et mesure en continu votre taux de couverture documentaire. L'IA extrait des propositions de cartes ciblées.
+2. **Revue en Staging** : Chaque carte générée passe par une étape de relecture humaine obligatoire. Vous ajustez la formulation, appliquez les principes de concision atomique de Piotr Wozniak et validez. Chaque carte validée reçoit un identifiant durable immuable (GUID).
+3. **Export vers Anki (.apkg)** : Exportez vos nouvelles cartes au format `.apkg` et ouvrez le paquet dans Anki. Anki intègre les cartes, charge les médias associés et planifie vos premières révisions.
+4. **Révision & Rafraîchissement (.colpkg)** : Vous révisez quotidiennement dans Anki. Régulièrement (par exemple une fois par mois ou après une session d'apprentissage intensive), exportez votre collection `.colpkg` depuis Anki et déposez-la dans AnkiDraft pour actualiser vos statistiques de rétention et synchroniser vos suppressions.
+
+---
+
+## 2. Sanctuarisation des Données : Périmètre Studio vs Périmètre Anki
+
+Pour garantir une sérénité totale, AnkiDraft sépare formellement vos données en deux périmètres distincts au sein de votre profil :
+
+### 🛡️ Le Périmètre Studio (Strictement Préservé)
+Ce périmètre vous appartient exclusivement et n'est **jamais** écrasé par vos imports de collection Anki :
+- **Vos documents originaux** : PDF, transcriptions audio, fichiers Markdown, planches d'albums.
+- **Vos index RAG** : découpages sémantiques, fragments de texte et représentations vectorielles locales.
+- **Vos agents IA & Personas** : modèles de prompts personnalisés, configurations Ollama / cloud.
+- **Vos pipelines DAG & usine de lots (Batch)** : règles d'automatisation, historique de génération.
+- **Vos réglages d'application** : thèmes graphiques, dispositions d'écran, raccourcis personnalisés.
+
+### 🗂️ Le Périmètre Collection Anki (Synchronisé & Remplacé)
+Ce périmètre est le reflet exact de votre collection Anki :
+- Vos paquets de cartes (`Decks`) et sous-paquets hiérarchiques.
+- Vos types de notes (`Note Types`), gabarits Recto/Verso et styles CSS.
+- Vos notes et vos cartes physiques d'apprentissage.
+- Vos compteurs d'observation SRS (historique d'échecs, drapeaux de couleur, cartes suspendues).
+
+---
+
+## 3. Quel Format d'Échange Choisir : .apkg ou .colpkg ?
+
+AnkiDraft distingue nettement les deux formats d'archive de l'écosystème Anki :
+
+| Critère | Export / Import de Paquet (`.apkg`) | Import de Collection (`.colpkg`) |
+| :--- | :--- | :--- |
+| **Finalité** | Échange ciblé de cartes nouvelles ou d'appoint | Remplacement intégral pour alignement parfait |
+| **Comportement** | **Fusion collaborative incrémentale** : ajoute les nouvelles fiches sans toucher aux autres | **Remplacement complet du périmètre Anki** : votre profil adopte l'exact état d'Anki |
+| **Gestion des suppressions** | Ne supprime aucune carte locale | **Purge définitive des cartes supprimées dans Anki** |
+| **Gestion des conflits** | Boîte de dialogue *Smart Merge* en cas de modification concurrente | L'archive Anki entrante fait foi (remplacement fidèle) |
+| **Protection de sécurité** | Détection d'isomorphisme de types de notes (zéro clone inutile) | **Sauvegarde SQLite de secours créée automatiquement** |
+
+---
+
+## 4. Chronologie d'une Session Type
+
+1. **Jalon 1 (0 min)** : Déposez votre support de cours dans le Hub Documentaire.
+2. **Jalon 2 (+5 min)** : Découpez le document en sections clés avec le Batch Slice Composer et lancez l'extraction IA.
+3. **Jalon 3 (+15 min)** : Relisez les cartes en Staging, validez les meilleures formulations.
+4. **Jalon 4 (+20 min)** : Exportez le paquet `.apkg` généré et ouvrez-le dans Anki.
+5. **Jalon 5 (Semaines suivantes)** : Étudiez chaque jour dans Anki selon le rythme fixé par l'algorithme SRS.
+6. **Jalon 6 (Périodique)** : Exportez une sauvegarde `.colpkg` depuis Anki et glissez-la dans AnkiDraft pour mettre à jour vos indicateurs de maîtrise et nettoyer les cartes obsolètes.
+
+---
+
+## 5. Prévention des Cartes Zombies et Rendu Fidèle
+
+### 🧟 1. Éradication des Cartes Zombies
+Dans un système d'importation incrémentale classique, si vous supprimez une carte obsolète ou ratée directement dans Anki, le logiciel d'authoring n'en a pas connaissance. Au prochain export, il réinjecte la carte fantôme dans votre deck Anki.
+
+Dans AnkiDraft, l'importation de collection (`.colpkg`) procède par **remplacement atomique exact**. Toute carte supprimée dans Anki est immédiatement retirée d'AnkiDraft. Vous gardez une collection saine et synchronisée, sans résidu fantôme.
+
+### 📄 2. Règle Officielle Anki du Recto Non-Vide
+AnkiDraft intègre le **moteur de rendu conditionnel conforme d'Anki** : si le recto généré d'une carte ne contient aucun texte visible, la carte physique n'est jamais créée.
+
+---
+
+# [FR] FAQ et Dépannage
+URL: https://ankidraft.app/fr/guides/faq_depannage/
+Description: Réponses aux questions fréquentes et solutions pas-à-pas pour l'installation d'AnkiDraft, Ollama, l'OCR PDF Marker et l'export vers Anki Desktop.
+
+Retrouvez ici les réponses aux questions les plus fréquentes des utilisateurs d'AnkiDraft.
+
+## 1. Questions générales
+
+### AnkiDraft remplace-t-il Anki ?
+Non : AnkiDraft et Anki sont complémentaires. **AnkiDraft** est l'atelier de création et d'audit de vos flashcards à partir de vos cours, tandis qu'**Anki** (Desktop, AnkiWeb, AnkiMobile, AnkiDroid) reste l'application dans laquelle vous effectuez vos révisions espacées quotidiennes.
+
+### Puis-je utiliser AnkiDraft gratuitement et sans connexion internet ?
+Oui. L'application est gratuite, fonctionne hors ligne, et vous pouvez utiliser des modèles d'IA locaux gratuits grâce à [Ollama](/fr/ai-setup/local-models-ollama/) sans aucune clé API payante.
+
+### Mes cours PDF et mes cartes sont-ils envoyés dans le cloud ?
+Non. Vos fichiers PDF, votre base de données et vos médias restent stockés localement sur votre ordinateur (`~/.ankidraft/`). Si vous utilisez un fournisseur cloud (OpenAI, Gemini, Claude), seuls les passages sélectionnés pour une génération sont transmis directement à votre compte API.
+
+## 2. Résolution des problèmes courants
+
+### macOS affiche un avertissement à la première ouverture
+Assurez-vous d'avoir bien glissé **AnkiDraft** dans votre dossier **Applications** depuis le fichier `.dmg`. Si macOS demande une confirmation au premier lancement, faites un clic droit sur l'icône d'AnkiDraft > **Ouvrir**.
+
+### Mes formules mathématiques ne s'affichent pas dans Anki
+Vérifiez que vous utilisez bien les délimiteurs compatibles MathJax/KaTeX (`\( ... \)` pour une formule en ligne et `\[ ... \]` pour un bloc centré).
+
+### Comment signaler un bug ou suggérer une amélioration ?
+Dans AnkiDraft, ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) > **Aide** > **Signaler une idée ou un bug**, ou ouvrez un ticket sur le [dépôt GitHub officiel](https://github.com/Skyl9/AnkiDraft/issues).
+
+---
+
+# [FR] Glossaire Utilisateur : Les Concepts Clés Expliqués Simplement
+URL: https://ankidraft.app/fr/guides/glossaire/
+Description: Comprenez facilement chaque concept clé d'AnkiDraft (Wozniak, Cloze, Smart Coverage, DAG, RAG, MCP, Garde-Fou) grâce à des exemples Avant / Après.
+
+AnkiDraft rassemble des outils puissants issus de l'ingénierie pédagogique et de l'IA locale. Ce glossaire traduit chaque terme technique en français simple, accompagné d'un exemple concret **Avant / Après**.
+
+---
+
+## 1. Atome de connaissance & 20 règles de Wozniak
+
+Principe issu des travaux de Piotr Wozniak (créateur de SuperMemo) : une flashcard efficace ne teste **qu'une seule idée courte et sans ambiguïté** (règle d'information minimale). Le Linter d'AnkiDraft détecte automatiquement les cartes trop longues ou floues.
+
+- **Avant** : *Recto :* « Expliquez le cycle de Krebs (étapes, enzymes limitantes, bilan énergétique en ATP/NADH/FADH2). » ➔ Trop long, impossible à noter sereinement en révision.
+- **Après** : 3 cartes courtes et indépendantes : (1) « Quelle enzyme catalyse l'étape limitante du cycle de Krebs ? », (2) « Combien de NADH produit 1 tour du cycle de Krebs ? », (3) « Où se déroule le cycle de Krebs dans la cellule ? ».
+
+---
+
+## 2. Texte à trous (Cloze Deletion)
+
+Format de carte (`{{c1::mot caché}}`) où l'on masque un terme clé au cœur d'une phrase pour le mémoriser directement en contexte (<kbd>Ctrl+Shift+C</kbd>).
+
+- **Avant** : « Définition de l'osmose ? » / « Passage d'un solvant à travers une membrane semi-perméable du milieu le moins concentré vers le plus concentré. »
+- **Après** : « Lors de l'osmose, le solvant traverse une membrane semi-perméable du milieu {{c1::hypotonique (moins concentré)}} vers le milieu {{c2::hypertonique (plus concentré)}}. »
+
+---
+
+## 3. Couverture documentaire intelligente (Smart Coverage)
+
+Indicateur qui relie chaque carte générée à la section exacte du cours dont elle provient. Il mesure en temps réel quels chapitres de votre PDF sont déjà couverts par des cartes et lesquels restent à ficher.
+
+- **Avant** : Relire 180 pages de cours en se demandant si l'on n'a pas oublié le sous-chapitre 3.4 lors de la création manuelle de cartes.
+- **Après** : La jauge *Smart Coverage* affiche `Chapitre 3 : 82 % couvert — Section 3.4 (0 carte)` et propose de générer uniquement ce passage manquant.
+
+---
+
+## 4. Délimitation de portée : Écarter vs Neutraliser
+
+Deux actions non destructives pour filtrer un document sans jamais supprimer ses pages ([Cibler les chapitres](/fr/sources/scope-and-slices/)) :
+- **Écarter** : exclut temporairement un chapitre hors-programme de la génération IA.
+- **Neutraliser** : retire un élément purement structurel (couverture, sommaire, remerciements) du dénominateur de la jauge *Smart Coverage*.
+
+- **Avant** : Un livre de 300 pages incluant 30 pages d'index et de bibliographie bloque votre couverture à 90 % maximum, ou l'IA génère des cartes absurdes sur les noms d'éditeurs.
+- **Après** : Index neutralisé, bibliographie écartée ➔ votre couverture reflète **100 % des chapitres utiles** et zéro carte parasite n'est créée.
+
+---
+
+## 5. Pipeline de génération (DAG)
+
+Enchaînement automatisé d'étapes configurables (ex. : extraire les passages clés ➔ synthétiser en Markdown propre ➔ rédiger des cartes ➔ ajouter l'audio TTS ➔ afficher pour revue humaine).
+
+- **Avant** : Copier un chapitre dans un chat, demander des cartes, reformater manuellement les formules LaTeX, puis générer le son carte par carte.
+- **Après** : Un clic sur **Lancer le Pipeline** exécute toute la chaîne automatiquement et soumet les cartes prêtes à relire.
+
+---
+
+## 6. Recherche sémantique locale (RAG)
+
+Indexation 100 % locale sur votre ordinateur permettant à l'IA de retrouver les passages pertinents d'un cours par leur **sens** (et pas seulement par mot-clé exact) avant de rédiger ou vérifier une carte.
+
+- **Avant** : Envoyer un polycopié entier dans un prompt (lent, coûteux, et source d'erreurs ou d'hallucinations).
+- **Après** : Le RAG local extrait uniquement les 3 paragraphes qui parlent réellement de la question posée et cite la page exacte.
+
+---
+
+## 7. Serveur MCP (Model Context Protocol)
+
+Protocole ouvert intégré à AnkiDraft qui permet à votre assistant externe (Claude Desktop, Claude Code, Cursor, Antigravity) de lire vos cours et vos paquets localement sans clé API supplémentaire.
+
+- **Avant** : Copier-coller des paquets texte entre Anki, votre PDF et Claude dans le navigateur.
+- **Après** : Vous écrivez directement dans Claude *« Audite mon paquet Cardiologie et prépare les cartes manquantes sur le chapitre 4 »* : Claude interroge AnkiDraft en direct.
+
+---
+
+## 8. Garde-Fou & Lot en attente (Staged Bundle / Validation en 2 temps)
+
+Sas de sécurité obligatoire : aucune proposition IA (création, modification, scission ou suppression) n'est écrite directement dans votre base. Tout arrive sous forme de **lot en attente** avec aperçu Avant / Après jusqu'à votre clic sur **Appliquer**.
+
+- **Avant** : Crainte qu'un script ou une IA n'écrase accidentellement 200 cartes de votre collection.
+- **Après** : Chaque proposition est inspectée visuellement ligne par ligne dans le Garde-Fou ; vous gardez le contrôle total en un clic.
+
+---
+
+## 9. Diagnostic de lacunes & les 3 pathologies cognitives
+
+Analyse intelligente (`diagnose_domain_knowledge_gaps`) qui compare l'ensemble de vos paquets (tous decks confondus) à un sujet d'étude pour déceler 3 défauts :
+- **Type 1 (Absence)** : notion clé présente dans le cours mais absente de vos cartes.
+- **Type 2 (Non-atomicité)** : carte fourre-tout contenant plusieurs faits à scinder.
+- **Type 3 (Liant bilingue)** : mélange confus de deux langues dans le même énoncé ou paire sans contexte.
+
+- **Avant** : Découvrir la veille de l'examen que 3 notions majeures manquent ou que des cartes de médecine sont réparties dans deux paquets séparés.
+- **Après** : Le diagnostic rassemble toutes les cartes liées au domaine et dresse la liste exacte des notions à ajouter ou scinder.
+
+---
+
+## 10. Périmètre Studio vs Périmètre Collection Anki (`.apkg` vs `.colpkg`)
+
+AnkiDraft sépare vos ressources d'atelier (**Périmètre Studio** : PDF, transcriptions, index RAG, prompts) de vos cartes synchronisées (**Périmètre Collection Anki**).
+- `.apkg` : ajoute ou met à jour un paquet ciblé.
+- `.colpkg` : aligne toute la collection sur l'état exact d'Anki (supprime les cartes effacées dans Anki tout en gardant vos PDF intactes).
+
+- **Avant** : Importer une sauvegarde Anki complète écrasait vos notes de travail ou recréait d'anciennes cartes supprimées (« cartes zombies »).
+- **Après** : Le ré-import `.colpkg` synchronise votre historique Anki sans toucher à vos cours, et élimine les cartes zombies ([Cycle de Vie Distribué](/fr/guides/cycle_de_vie_distribue/)).
+
+---
+
+## 11. Fusion intelligente (Smart Merge)
+
+Comparateur visuel à 3 colonnes (**Local**, **Base commune**, **Distant**) inspiré des outils de développement : lors de l'import d'un `.apkg` modifié par quelqu'un d'autre, seuls les conflits réels de texte sont soumis à votre choix.
+
+- **Avant** : Écraser à l'aveugle vos corrections personnelles ou perdre les ajouts d'un camarade lors de l'import d'un paquet partagé.
+- **Après** : Vous choisissez champ par champ quelle version conserver, en préservant les médias et le planning de révision.
+
+---
+
+## 12. Carte sangsue (Leech)
+
+Terme Anki désignant une carte sur laquelle vous échouez de façon répétée lors des révisions (généralement parce qu'elle est trop longue, mal formulée ou ressemble à une autre carte).
+
+- **Avant** : Revoir la même carte frustrante 8 fois par mois sans jamais la retenir.
+- **Après** : AnkiDraft repère automatiquement la sangsue grâce aux compteurs d'échecs synchronisés et vous propose de la scinder ou de la reformuler avec un indice distinctif.
+
+---
+
+# [FR] Référence des Raccourcis Clavier
+URL: https://ankidraft.app/fr/guides/raccourcis_clavier/
+Description: Consultez la liste officielle des raccourcis clavier d'AnkiDraft par catégorie et portée pour naviguer, éditer vos cartes et piloter l'IA rapidement.
+
+<!-- ⚠️ DOCUMENT AUTO-GÉNÉRÉ DEPUIS src/ankidraft/ui/shortcuts/catalog.py - NE PAS MODIFIER MANUELLEMENT -->
+<!-- Exécutez 'uv run python script/check_shortcuts_drift.py --fix' pour régénérer -->
+
+Cette page constitue la **référence officielle et exhaustive** de l'ensemble des raccourcis clavier d'AnkiForge, issue du registre central déclaratif (`src/ankidraft/ui/shortcuts/`) conformément à l'**ADR 0032**.
+
+> [!NOTE]
+> Tous les raccourcis listés ci-dessous peuvent être visualisés, recherchés et personnalisés dans l'application via les **Paramètres (Ctrl+,) > onglet Clavier**.
+
+---
+
+## 🏛️ Architecture & Règles Clavier
+
+1. **Hiérarchie stricte des portées (4 paliers)** :
+    - **Dialogue** : priorité absolue lors d'une boîte de dialogue modale ouverte.
+    - **Widget** : actif uniquement lorsque le composant spécifique (table, liste, canvas) a le focus.
+    - **Vue** : actif dans la vue courante affichée du classeur principal.
+    - **Application** : global à l'ensemble du logiciel (palette de commandes, navigation, paramètres).
+2. **Priorité absolue à la saisie de texte** : lorsqu'un champ de saisie (`QLineEdit`, `QTextEdit`, KaTeX) a le focus, les touches nues et commandes d'édition ne déclenchent jamais d'action de carte intempestive.
+3. **Séquences protégées** : les raccourcis système indispensables (`Ctrl+C`, `Ctrl+V`, `Ctrl+Z`, `Ctrl+A`, `Ctrl+W`, `Ctrl+Q`) ne sont pas réassignables pour prévenir toute corruption ergonomique.
+
+---
+
+## 📋 Inventaire des Raccourcis (98 actions)
+
+### Application
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Palette de commandes** | <kbd>Ctrl+K</kbd> | `Application` | Ouvre la palette de commandes globale omnibox | `app.command_palette` |
+| **Paramètres** | <kbd>Ctrl+,</kbd> | `Application` | Ouvre la boîte de dialogue des paramètres | `app.settings` |
+| **Enregistrer** | <kbd>Ctrl+S</kbd> | `Application` | Routeur unique d'enregistrement dans la vue active | `app.save` |
+| **Action primaire de la vue** | <kbd>Ctrl+Return</kbd> | `Application` | Déclenche l'action principale de la vue active (génération, exécution) | `app.run_primary` |
+| **Rechercher** | <kbd>Ctrl+F</kbd> | `Application` | Active le champ de recherche de la vue active | `app.find` |
+| **Importer un paquet Anki (.apkg)** | <kbd>Ctrl+Shift+I</kbd> | `Application` | Ouvre l'assistant d'importation de collection ou de paquet | `app.import` |
+| **Exporter des cartes Anki (.apkg)** | <kbd>Ctrl+Alt+E</kbd> | `Application` | Ouvre la boîte de dialogue d'export de cartes | `app.export` |
+| **Visite guidée d'AnkiForge** | <kbd>F1</kbd> | `Application` | Lance la visite interactive des fonctionnalités | `app.tour` |
+| **Historique des versions** | <kbd>Ctrl+H</kbd> | `Vue` | Affiche la machine à remonter le temps et les versions antérieures | `view.history` |
+
+### Navigation
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Aller à la vue 1** | <kbd>Alt+1</kbd> | `Application` | — | `nav.view_1` |
+| **Aller à la vue 2** | <kbd>Alt+2</kbd> | `Application` | — | `nav.view_2` |
+| **Aller à la vue 3** | <kbd>Alt+3</kbd> | `Application` | — | `nav.view_3` |
+| **Aller à la vue 4** | <kbd>Alt+4</kbd> | `Application` | — | `nav.view_4` |
+| **Aller à la vue 5** | <kbd>Alt+5</kbd> | `Application` | — | `nav.view_5` |
+| **Aller à la vue 6** | <kbd>Alt+6</kbd> | `Application` | — | `nav.view_6` |
+| **Aller à la vue 7** | <kbd>Alt+7</kbd> | `Application` | — | `nav.view_7` |
+| **Aller à la vue 8** | <kbd>Alt+8</kbd> | `Application` | — | `nav.view_8` |
+| **Aller à la vue 9** | <kbd>Alt+9</kbd> | `Application` | — | `nav.view_9` |
+| **Vue suivante** | <kbd>Ctrl+Tab</kbd> | `Application` | — | `nav.next_view` |
+| **Vue précédente** | <kbd>Ctrl+Shift+Tab</kbd> | `Application` | — | `nav.prev_view` |
+
+### Édition
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Déplacer vers un paquet…** | <kbd>Ctrl+D</kbd> | `Vue` | Déplace les cartes ou notes sélectionnées vers un autre paquet | `edition.move_to_deck` |
+| **Nouveau paquet…** | <kbd>Ctrl+N</kbd> | `Vue` | Crée un nouveau paquet de cartes | `edition.new_deck` |
+| **Tout décocher** | <kbd>Ctrl+Shift+A</kbd> | `Vue` | Décoche et désélectionne toutes les cartes de la vue | `edition.deselect_all` |
+| **Éditer la note ciblée** | <kbd>Ctrl+E</kbd> | `Vue` | Active l'éditeur de champs pour la note sélectionnée | `edition.edit_note` |
+| **Éditer la note ciblée (touche rapide)** | <kbd>E</kbd> *(touche nue)* | `Widget` | Active l'éditeur depuis la table des cartes | `edition.edit_note_bare` |
+| **Changer le type de note…** | <kbd>Ctrl+Shift+M</kbd> | `Vue` | Modifie le type de note du lot sélectionné | `edition.change_model` |
+| **Basculer Cartes / Notes** | <kbd>Ctrl+Alt+T</kbd> | `Vue` | Alterne l'affichage entre les cartes unitaires et les notes parentes | `edition.toggle_display_mode` |
+| **Rechercher / remplacer ciblé…** | <kbd>Ctrl+Alt+F</kbd> | `Vue` | Ouvre l'édition groupée pré-armée sur Rechercher et Remplacer | `edition.find_replace` |
+| **Supprimer la sélection** | <kbd>Ctrl+Delete</kbd> | `Vue` | Supprime définitivement les cartes ou notes sélectionnées | `edition.delete` |
+| **Suspendre / réactiver** | <kbd>Ctrl+J</kbd> | `Vue` | Bascule l'état suspendu des cartes ou notes sélectionnées | `edition.suspend` |
+| **Suspendre / réactiver (table)** | <kbd>!</kbd> *(touche nue)* | `Widget` | Bascule l'état suspendu depuis la table focalisée | `edition.suspend_bare` |
+| **Édition groupée…** | <kbd>Ctrl+Shift+E</kbd> | `Vue` | Ouvre la boîte de dialogue d'édition groupée de cartes | `edition.group_edit` |
+| **Afficher / Masquer l'aperçu** | <kbd>Ctrl+P</kbd> | `Vue` | Bascule le volet latéral d'aperçu de la carte | `edition.toggle_preview` |
+| **Replier / déplier la liste des cartes** | <kbd>Ctrl+Shift+T</kbd> | `Vue` | Replie ou déplie le panneau tabulaire des cartes | `edition.toggle_table` |
+| **Carte précédente** | <kbd>Alt+Up</kbd> | `Vue` | Sélectionne la carte précédente dans la table | `edition.prev_card` |
+| **Carte suivante** | <kbd>Alt+Down</kbd> | `Vue` | Sélectionne la carte suivante dans la table | `edition.next_card` |
+| **Aucun drapeau** | <kbd>Ctrl+0</kbd> | `Vue` | Retire tout drapeau des cartes sélectionnées | `edition.flag_0` |
+| **Drapeau 1 (Rouge)** | <kbd>Ctrl+1</kbd> | `Vue` | — | `edition.flag_1` |
+| **Drapeau 2 (Orange)** | <kbd>Ctrl+2</kbd> | `Vue` | — | `edition.flag_2` |
+| **Drapeau 3 (Vert)** | <kbd>Ctrl+3</kbd> | `Vue` | — | `edition.flag_3` |
+| **Drapeau 4 (Bleu)** | <kbd>Ctrl+4</kbd> | `Vue` | — | `edition.flag_4` |
+| **Drapeau 5 (Rose)** | <kbd>Ctrl+5</kbd> | `Vue` | — | `edition.flag_5` |
+| **Drapeau 6 (Turquoise)** | <kbd>Ctrl+6</kbd> | `Vue` | — | `edition.flag_6` |
+| **Drapeau 7 (Violet)** | <kbd>Ctrl+7</kbd> | `Vue` | — | `edition.flag_7` |
+| **Gras** | <kbd>Ctrl+B</kbd> | `Vue` | Applique la mise en gras au texte sélectionné | `edition.format_bold` |
+| **Italique** | <kbd>Ctrl+I</kbd> | `Vue` | Applique l'italique au texte sélectionné | `edition.format_italic` |
+| **Souligné** | <kbd>Ctrl+U</kbd> | `Vue` | Applique le soulignement au texte sélectionné | `edition.format_underline` |
+| **Trou Cloze** | <kbd>Ctrl+Shift+C</kbd> | `Vue` | Insère une suppression masquée Anki | `edition.format_cloze` |
+| **Formule KaTeX** | <kbd>Ctrl+M</kbd> | `Vue` | Insère un bloc ou une formule mathématique KaTeX | `edition.format_math` |
+| **Code inline** | <kbd>Ctrl+K</kbd> | `Vue` | Enveloppe le texte sélectionné dans des balises de code | `edition.format_code` |
+
+### Studio & Batch
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Nouvelle saisie** | <kbd>Ctrl+N</kbd> | `Vue` | Ouvre un nouvel onglet de saisie libre dans le Studio de Création | `creation.new_input` |
+| **Composer le lot…** | <kbd>Ctrl+N</kbd> | `Vue` | Ouvre le dialogue de composition et de découpage de lot | `batch.compose` |
+| **Valider la carte (Espace)** | <kbd>Space</kbd> *(touche nue)* | `Widget` | Marque la carte ciblée comme validée | `review.validate_space` |
+| **Valider la carte (V)** | <kbd>V</kbd> *(touche nue)* | `Widget` | Marque la carte ciblée comme validée | `review.validate_v` |
+| **Rejeter la carte (Suppr)** | <kbd>Delete</kbd> *(touche nue)* | `Widget` | Rejette la carte ciblée | `review.reject_delete` |
+| **Rejeter la carte (Retour)** | <kbd>Backspace</kbd> *(touche nue)* | `Widget` | Rejette la carte ciblée | `review.reject_backspace` |
+| **Rejeter la carte (R)** | <kbd>R</kbd> *(touche nue)* | `Widget` | Rejette la carte ciblée | `review.reject_r` |
+| **Éditer la carte** | <kbd>E</kbd> *(touche nue)* | `Widget` | Active l'édition de la carte ciblée | `review.edit` |
+| **Carte précédente** | <kbd>Alt+Left</kbd> | `Widget` | Sélectionne la carte précédente dans la table de revue | `review.prev_card` |
+| **Carte suivante** | <kbd>Alt+Right</kbd> | `Widget` | Sélectionne la carte suivante dans la table de revue | `review.next_card` |
+| **Tranche précédente** | <kbd>Alt+Up</kbd> | `Widget` | Bascule vers la tâche ou tranche précédente dans la revue du lot | `review.prev_task` |
+| **Tranche suivante** | <kbd>Alt+Down</kbd> | `Widget` | Bascule vers la tâche ou tranche suivante dans la revue du lot | `review.next_task` |
+
+### Documents
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Importer un document** | <kbd>Ctrl+O</kbd> | `Vue` | Ouvre l'explorateur pour importer un fichier ou cours | `documents.import_file` |
+| **Nouvel album…** | <kbd>Ctrl+N</kbd> | `Vue` | Crée un nouvel album documentaire d'images | `documents.new_album` |
+| **Délimiter la portée…** | <kbd>Ctrl+Alt+P</kbd> | `Vue` | Ouvre la boîte de délimitation de portée du document | `documents.delimit_scope` |
+| **Vectoriser dans le RAG** | <kbd>Ctrl+Alt+R</kbd> | `Vue` | Lance l'indexation vectorielle du document actif pour la recherche sémantique | `documents.vectorize` |
+| **Afficher / masquer la couverture** | <kbd>Ctrl+Alt+C</kbd> | `Vue` | Bascule l'affichage du panneau d'inspection de couverture et de structure | `documents.toggle_coverage` |
+
+### Analyse & Audit
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Réindexer les sources** | <kbd>Ctrl+Alt+R</kbd> | `Vue` | Réindexe la matière ou le document ciblé dans l'analyse | `analysis.reindex` |
+| **Aligner les sources** | <kbd>Ctrl+Alt+A</kbd> | `Vue` | Synchronise et aligne les cartes Anki aux sections sources | `analysis.align_sources` |
+| **Forger le fragment ciblé** | <kbd>Ctrl+Alt+F</kbd> | `Vue` | Ouvre le Studio de Création sur la section orpheline ciblée | `analysis.forge_fragment` |
+
+### Types de Note
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Nouveau type de note** | <kbd>Ctrl+N</kbd> | `Vue` | Crée un nouveau modèle de carte | `models.new_type` |
+| **Dupliquer le type de note** | <kbd>Ctrl+Shift+D</kbd> | `Vue` | Duplique le modèle de carte actuellement sélectionné | `models.duplicate` |
+| **Importer un type de note (JSON)…** | <kbd>Ctrl+Alt+O</kbd> | `Vue` | Importe une définition de type de note depuis un fichier JSON | `models.import_json` |
+| **Exporter le type de note (JSON)…** | <kbd>Ctrl+Alt+E</kbd> | `Vue` | Exporte le modèle de carte sélectionné au format JSON | `models.export_json` |
+| **Formater le document** | <kbd>Ctrl+Alt+L</kbd> | `Widget` | Réindente et nettoie le code HTML ou CSS dans l'éditeur | `code.format` |
+
+### Pipelines & Agents
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Nouvel agent** | <kbd>Ctrl+N</kbd> | `Vue` | Crée un nouvel agent IA dans l'atelier | `agents.new` |
+| **Dupliquer l'agent** | <kbd>Ctrl+Shift+D</kbd> | `Vue` | Clone l'agent IA sélectionné | `agents.duplicate` |
+| **Nouveau pipeline** | <kbd>Ctrl+N</kbd> | `Vue` | Crée un nouveau pipeline DAG | `pipelines.new` |
+| **Monter l'étape** | <kbd>Ctrl+Up</kbd> | `Vue` | Déplace l'étape sélectionnée vers le haut dans le DAG | `pipelines.move_step_up` |
+| **Descendre l'étape** | <kbd>Ctrl+Down</kbd> | `Vue` | Déplace l'étape sélectionnée vers le bas dans le DAG | `pipelines.move_step_down` |
+| **Supprimer l'étape ciblée** | <kbd>Delete</kbd> *(touche nue)* | `Widget` | Supprime l'étape actuellement sélectionnée dans le workflow | `pipelines.delete_step` |
+
+### Laboratoire A/B
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Échantillon A précédent** | <kbd>Alt+Up</kbd> | `Vue` | Affiche la carte précédente générée par la branche A | `ab.sample_a_prev` |
+| **Échantillon A suivant** | <kbd>Alt+Down</kbd> | `Vue` | Affiche la carte suivante générée par la branche A | `ab.sample_a_next` |
+| **Échantillon B précédent** | <kbd>Alt+Left</kbd> | `Vue` | Affiche la carte précédente générée par la branche B | `ab.sample_b_prev` |
+| **Échantillon B suivant** | <kbd>Alt+Right</kbd> | `Vue` | Affiche la carte suivante générée par la branche B | `ab.sample_b_next` |
+
+### Smart Merge
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Conflit précédent** | <kbd>Alt+Left</kbd> | `Dialogue` | Navigue vers le conflit d'importation précédent | `merge.prev_conflict` |
+| **Conflit suivant** | <kbd>Alt+Right</kbd> | `Dialogue` | Navigue vers le conflit d'importation suivant | `merge.next_conflict` |
+| **Tout garder Local** | <kbd>Ctrl+Alt+Left</kbd> | `Dialogue` | Conserve toutes les valeurs locales de la carte en conflit | `merge.keep_all_local` |
+| **Tout garder Entrant** | <kbd>Ctrl+Alt+Right</kbd> | `Dialogue` | Remplace toutes les valeurs par la version entrante | `merge.keep_all_incoming` |
+| **Valider la fusion** | <kbd>Ctrl+Return</kbd> | `Dialogue` | Valide les arbitrages et applique la fusion | `merge.confirm` |
+
+### Outillage & Debug
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Capture d'écran debug** | <kbd>Ctrl+F12</kbd> | `Application` | Enregistre un instantané de l'interface pour diagnostic | `app.debug_screenshot` |
+| **Galerie des dialogues (Dev)** | <kbd>Ctrl+Alt+D</kbd> | `Application` | Affiche la vitrine des boîtes de dialogue en mode développement | `app.debug_gallery` |
+
+### Dialogues
+
+| Action | Séquence par défaut | Portée | Description | Identifiant |
+| :--- | :--- | :--- | :--- | :--- |
+| **Fermer la boîte de dialogue** | <kbd>Escape</kbd> | `Dialogue` | Ferme la boîte de dialogue active sans valider | `dialog.close` |
+| **Valider la boîte de dialogue** | <kbd>Return</kbd> | `Dialogue` | Confirme et valide la sélection de la boîte de dialogue | `dialog.confirm` |
+| **Appliquer les modifications** | <kbd>Ctrl+Return</kbd> | `Dialogue` | Valide ou applique les modifications sans fermer la boîte de dialogue | `dialog.apply` |
+| **Nouveau paquet** | <kbd>Ctrl+N</kbd> | `Dialogue` | Ouvre la création d'un nouveau paquet dans le sélecteur | `dialog.new_deck` |
+| **Élément précédent** | <kbd>Up</kbd> *(touche nue)* | `Widget` | Sélectionne l'élément précédent dans la liste du dialogue | `dialog.prev_item` |
+| **Élément suivant** | <kbd>Down</kbd> *(touche nue)* | `Widget` | Sélectionne l'élément suivant dans la liste du dialogue | `dialog.next_item` |
+
+---
+
+# [FR] Hub Documentaire et Formats Multimodaux
+URL: https://ankidraft.app/fr/sources/hub_multimodal/
+Description: Vue d'ensemble des sources supportées dans AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) avec extraction locale et traçabilité complète des cartes.
+
+Le **Hub Documentaire** centralise tous vos supports d'étude au même endroit et conserve le lien entre chaque flashcard et le paragraphe exact dont elle est issue.
+
+## 1. Tous vos supports au même endroit
+
+| Type de support | Formats | Ce qu'AnkiDraft extrait |
+| :--- | :--- | :--- |
+| **Cours et livres PDF** | `.pdf` | Plan des chapitres, texte, tableaux, figures et formules LaTeX |
+| **Vidéos en ligne** | Liens YouTube | Sous-titres horodatés ou transcription vocale automatique |
+| **Enregistrements audio** | `.mp3`, `.wav`, `.m4a` | Transcription segmentée par paragraphes |
+| **Pages web** | URLs `https://` | Corps de l'article épuré des menus et publicités |
+| **Bureautique & Ebooks** | `.docx`, `.pptx`, `.epub`, `.md` | Structure hiérarchique des titres et listes |
+
+## 2. Retrouver la source d'une carte en un clic
+
+Lorsque vous relisez ou modifiez une carte dans l'éditeur, un bouton **Voir la source** vous ramène immédiatement au chapitre et au paragraphe correspondants dans votre document d'origine.
+
+---
+
+# [FR] Importer des PDF, Diaporamas et Ebooks
+URL: https://ankidraft.app/fr/sources/import-pdf/
+Description: Extrayez proprement vos cours PDF, DOCX, PPTX et EPUB avec Marker OCR en préservant les schémas, tableaux et formules mathématiques LaTeX complexes.
+
+Le **Hub Documentaire** d'AnkiDraft transforme vos supports de cours statiques en chapitres structurés prêts pour la création de flashcards.
+
+## 1. Formats de fichiers pris en charge
+
+Vous pouvez glisser-déposer directement dans la vue **Documents** :
+- **Documents PDF (`.pdf`)** : polycopiés de cours, articles scientifiques et livres, avec extraction des tableaux, images et formules mathématiques en syntaxe LaTeX.
+- **Documents Word (`.docx`) et Présentations (`.pptx`)** : récupération des titres, listes à puces et notes de diapositives.
+- **Livres numériques (`.epub`) et fichiers Markdown / Texte (`.md`, `.txt`)**.
+
+## 2. Choisir la méthode d'extraction PDF
+
+Lors de l'import d'un PDF, deux modes sont disponibles selon la nature de votre document :
+- **Extraction standard rapide** : idéale pour les PDF numériques propres dont le texte est sélectionnable.
+- **Reconnaissance avancée (OCR & Formules)** : recommandée pour les polycopiés scannés, les mises en page sur plusieurs colonnes ou les cours riches en équations mathématiques.
+
+## 3. Conserver les schémas et illustrations
+
+Les figures et schémas extraits de vos documents sont automatiquement enregistrés dans votre bibliothèque média : vous pouvez les insérer en un clic sur le recto ou le verso de vos cartes, ou créer des cartes d'occlusion d'image.
+
+---
+
+# [FR] Importer des Pages Web et Articles
+URL: https://ankidraft.app/fr/sources/import-web/
+Description: Capturez le contenu utile d'un article en ligne ou d'une documentation web en Markdown propre sans publicités ni menus superflus sur votre poste.
+
+Vous révisez à partir d'articles encyclopédiques, de blogs techniques ou de cours publiés en ligne ? L'importateur web d'AnkiDraft extrait uniquement le contenu pédagogique pertinent.
+
+## 1. Capturer une page web
+
+1. Dans la vue **Documents**, cliquez sur **Importer une page Web**.
+2. Collez l'adresse (`https://...`) de l'article souhaité.
+3. AnkiDraft nettoie automatiquement les menus de navigation, bannières et publicités pour ne conserver que les titres, paragraphes, tableaux, blocs de code et illustrations de l'article.
+
+## 2. Pages web dynamiques
+
+Si la page nécessite l'exécution de JavaScript pour afficher son contenu (sites modernes ou cours interactifs), activez l'option **Rendu navigateur complet** lors de l'import : AnkiDraft attendra le chargement complet du texte avant de l'extraire.
+
+---
+
+# [FR] Importer des Vidéos YouTube et Cours Audio
+URL: https://ankidraft.app/fr/sources/import-youtube-audio/
+Description: Transformez une conférence YouTube, un podcast ou un enregistrement vocal en transcription horodatée et en flashcards Anki atomiques locales.
+
+AnkiDraft vous permet de créer des flashcards directement à partir de cours vidéo en ligne ou d'enregistrements d'amphithéâtre.
+
+## 1. Importer une vidéo YouTube
+
+1. Ouvrez la vue **Documents** et cliquez sur **Importer depuis une URL / YouTube**.
+2. Collez le lien de la vidéo YouTube.
+3. AnkiDraft récupère instantanément les sous-titres disponibles (manuels ou automatiques) et reconstitue un texte fluide découpé par thématiques avec ses repères temporels.
+4. Si la vidéo ne possède aucun sous-titre, AnkiDraft peut transcrire la piste audio localement.
+
+## 2. Transcrire un fichier audio (`.mp3`, `.wav`, `.m4a`)
+
+Vous avez enregistré un cours magistral ou un mémo vocal ?
+1. Glissez votre fichier audio dans la vue **Documents**.
+2. La transcription automatique découpe l'enregistrement en paragraphes horodatés.
+3. Vous pouvez ensuite générer des cartes sur l'ensemble de l'enregistrement ou uniquement sur les passages clés.
+
+---
+
+# [FR] Cibler les Chapitres et Suivre la Couverture
+URL: https://ankidraft.app/fr/sources/scope-and-slices/
+Description: Sélectionnez précisément les sections ou pages à étudier, écartez les annexes sans rien supprimer et suivez votre couverture de cours en temps réel.
+
+Un livre ou un polycopié contient souvent un sommaire, une préface ou une bibliographie sur lesquels vous ne souhaitez pas créer de flashcards. AnkiDraft vous donne un contrôle total sur le périmètre de votre cours.
+
+## 1. Trois modes de sélection du périmètre
+
+Lors de la préparation d'une génération de cartes, vous pouvez découper votre document selon trois modes exclusifs :
+- **Par sections** : cochez précisément les sous-parties du plan du document.
+- **Par pages** : indiquez une plage de pages (ex. pages 12 à 28).
+- **Par chapitres** : sélectionnez des chapitres entiers d'un seul clic.
+
+## 2. Écarter les parties hors programme
+
+Vous pouvez **écarter** (exclure) une section comme l'avant-propos ou les remerciements :
+- La section n'est jamais supprimée de votre document original (vous pouvez la réactiver à tout moment).
+- Elle est simplement ignorée par le générateur IA et retirée du calcul de votre pourcentage de couverture.
+
+## 3. Suivre votre jauge de couverture (Smart Coverage)
+
+Chaque carte créée à partir d'un passage du cours reste liée à sa section d'origine. Dans la vue **Documents**, une jauge visuelle vous montre immédiatement quels chapitres sont déjà couverts par des flashcards et lesquels restent à ficher.
+
+---
+
+# [FR] Parcours Cours Vidéo YouTube & Audio : Transcription et Cartes
+URL: https://ankidraft.app/fr/workflows/cours-video-youtube-audio/
+Description: Transformez un cours magistral vidéo YouTube ou un enregistrement audio en flashcards Anki structurées grâce à la transcription locale et à l'IA.
+
+Les vidéos de cours (YouTube, conférences enregistrées) et les mémos audio de travaux dirigés sont denses en explications orales difficiles à ficher manuellement. Ce parcours explique comment les convertir en fiches structurées.
+
+## 1. Importer une vidéo YouTube ou un fichier audio local
+
+1. Ouvrez **My Documents** (<kbd>Alt+7</kbd>).
+2. Selon votre support ([Importer Vidéo & Audio](/fr/sources/import-youtube-audio/)) :
+   - **Vidéo YouTube** : cliquez sur **Importer depuis le Web** et collez l'URL de la vidéo. AnkiDraft récupère automatiquement les sous-titres officiels ou lance la transcription vocale locale.
+   - **Enregistrement audio ou cours local** (`.mp3`, `.wav`, `.m4a`, `.mp4`, `.ogg`) : cliquez sur **Importer un fichier** ou glissez-déposez l'enregistrement. Le moteur local **Whisper** transcrit l'audio sans envoyer vos fichiers sur un serveur tiers.
+
+## 2. Transformer la transcription brute en chapitres lisibles
+
+Une transcription orale brute contient souvent des hésitations, digressions ou phrases inachevées. Avant de générer vos cartes, structurez le texte :
+
+- **Dans le Studio** : sélectionnez le document transcrit et lancez un [Pipeline de génération](/fr/cards/dag_et_rag/) comportant une étape amont de synthèse Markdown suivie de l'extraction de cartes.
+- **Via Agent MCP** : demandez à Claude ou Cursor d'appeler `structure_transcript_for_ai` puis `structure_document_sections` pour transformer le monologue horodaté en sections thématiques claires, sans perdre les repères temporels.
+
+## 3. Découper par séquences et générer vos flashcards
+
+1. Ouvrez **Studio de Création** (<kbd>Alt+2</kbd>) ou **Composer le lot…** (*Batch Slice Composer*) pour traiter chaque partie du cours une par une.
+2. Ajustez le modèle (*Basique* ou *Texte à trous*) et la persona disciplinaire ([Génération IA](/fr/cards/ai-generation/)).
+3. Relisez chaque carte dans la file **Staging** afin de vérifier l'exactitude des formules ou des notions dictées à l'oral.
+
+## 4. Automatiser la synthèse et la génération via MCP
+
+Si vous travaillez sans clé API avec Claude Code, Claude Desktop ou Cursor connecté sur le port `8765`, utilisez cet enchaînement en deux temps :
+
+- **Outils MCP mobilisés** : `structure_transcript_for_ai`, `get_document_outline`, `create_notes_batch`, `begin_staged_bundle`, `commit_staged_bundle`.
+- **Prompt type** : *« Prends la transcription brute du document #9, restructure-la avec `structure_transcript_for_ai` (profil didactique en français, horodatages conservés), puis extrais les définitions et mécanismes clés dans un lot `create_notes_batch` vers le paquet `Cours::Neurosciences` pour validation dans le Garde-Fou. »*
+
+---
+
+# [FR] Parcours Langues & Audio : Vocabulaire et Prononciation TTS
+URL: https://ankidraft.app/fr/workflows/langues-et-audio-tts/
+Description: Apprenez une langue avec AnkiDraft : générez des cartes de vocabulaire illustrées d'un audio naturel hors-ligne (Kokoro ou Piper) en Studio ou MCP.
+
+Ce parcours montre comment constituer des paquets de langues vivantes (anglais, japonais, espagnol, allemand, mandarin...) avec des exemples contextualisés, une prononciation audio générée 100 % hors-ligne et une hygiène anti-liant bilingue.
+
+## 1. Préparer votre liste ou importer un support linguistique
+
+Vous pouvez démarrer depuis trois types d'entrées :
+- Un **document source** (fiche de grammaire, liste de vocabulaire, article ou sous-titres importés dans **My Documents**).
+- Un **paquet Anki existant** importé via <kbd>Ctrl+Shift+I</kbd> ([Importer .apkg / .colpkg](/fr/anki-sync/import-colpkg/)).
+- Une **saisie directe** dans **Édition & Navigateur** (<kbd>Alt+3</kbd>).
+
+Pour des cartes durables, privilégiez toujours une **phrase d'exemple courte** sur le recto accompagnée du mot cible plutôt qu'une traduction brute isolée.
+
+## 2. Ajouter la prononciation audio hors-ligne (Kokoro / Piper)
+
+AnkiDraft embarque des moteurs de synthèse vocale neuronale capables de générer des fichiers audio naturels `[sound:tts_xxx.mp3]` sans connexion Internet ni quota cloud ([Synthèse Vocale TTS](/fr/cards/audio-tts/)) :
+
+1. Dans **Paramètres** (<kbd>Ctrl+,</kbd>) > **Audio & TTS**, sélectionnez votre moteur local (**Kokoro-82M** ou **Piper ONNX**) et la voix correspondant à la langue étudiée.
+2. **En un clic sur une fiche** : dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), placez le curseur dans le champ contenant la phrase cible et cliquez sur l'icône microphone/haut-parleur pour générer et écouter immédiatement la piste audio.
+3. **Par lot sur un paquet entier** : sélectionnez plusieurs notes dans le navigateur et déclenchez la **Génération TTS par lot** pour sonoriser toutes les cartes manquantes en arrière-plan.
+
+## 3. Enrichir, sonoriser et corriger vos cartes de langues via MCP
+
+Un piège classique dans les paquets de langues est la **Pathologie Type 3 (Liant bilingue)** : des cartes qui mélangent deux langues dans le même énoncé ou juxtaposent des traductions littérales sans contexte d'usage. Vous pouvez confier la détection et le nettoyage à votre agent MCP :
+
+- **Sonoriser automatiquement toutes les cartes sans audio d'un paquet** :
+  - Outils utilisés : `get_cards_by_deck_or_tag`, `generate_card_audio`, `generate_cards_batch_audio`.
+  - Prompt type : *« Liste les notes du paquet `Langues::Japonais` (avec `recursive=True`) qui n'ont pas encore de balise `[sound:...]` et lance `generate_cards_batch_audio` sur le champ Expression avec une voix japonaise. »*
+- **Éliminer le liant bilingue et reformuler avec phrases d'exemple** :
+  - Outils utilisés : `diagnose_domain_knowledge_gaps`, `propose_card_refactor`.
+  - Prompt type : *« Audite le paquet `Langues::Espagnol` avec `diagnose_domain_knowledge_gaps`, repère les cartes présentant du liant bilingue (Type 3) ou une surcharge d'homonymes, et propose via `propose_card_refactor` des cartes courtes avec une phrase contextuelle naturelle. »*
+
+## 4. Exporter avec médias audio normalisés
+
+Appuyez sur <kbd>Ctrl+Alt+E</kbd> pour générer votre `.apkg` : AnkiDraft embarque automatiquement les fichiers audio dédupliqués par signature MD5 afin qu'ils jouent sans accroc sur Anki Desktop, AnkiWeb et AnkiMobile.
+
+---
+
+# [FR] Parcours Médecine & Sciences : PDF, Formules et Schémas
+URL: https://ankidraft.app/fr/workflows/medecine-sciences-pdf/
+Description: Guide pas-à-pas pour transformer un cours PDF dense de médecine ou de sciences en flashcards Anki atomiques avec formules KaTeX, schémas et MCP.
+
+Ce parcours montre comment transformer un polycopié universitaire dense (anatomie, physiologie, physique, mathématiques) en cartes atomiques fidèles à votre source, avec équations KaTeX et schémas annotés.
+
+## 1. Importer le polycopié PDF avec extraction des figures et formules
+
+1. Ouvrez **My Documents** (<kbd>Alt+7</kbd>) et cliquez sur **Importer un fichier** (ou glissez-déposez votre `.pdf`).
+2. Choisissez la méthode adaptée :
+   - **Extraction rapide** pour un PDF numérique propre sans formules complexes.
+   - **Reconnaissance avancée (OCR Marker)** pour les scans, polycopiés à deux colonnes, tableaux et équations mathématiques converties en LaTeX (`\(...\)` et `\[...\]`).
+3. AnkiDraft extrait automatiquement les schémas et figures dans votre bibliothèque média. Consultez [Importer des PDF](/fr/sources/import-pdf/) pour les réglages détaillés.
+
+## 2. Délimiter le périmètre utile (sans supprimer le cours)
+
+Un polycopié de 200 pages contient souvent un avant-propos, une table des matières et une bibliographie qui fausseraient la génération et le taux de couverture.
+
+Dans le sélecteur de portée ([Cibler les chapitres](/fr/sources/scope-and-slices/)) :
+- **Écarter** les annexes, remerciements et bibliographies : ces régions sont ignorées par l'IA tout en restant consultables dans votre document.
+- **Neutraliser** la table des matières ou les pages de garde : ces conteneurs sont retirés du dénominateur de votre jauge *Smart Coverage* pour afficher votre avancement réel.
+
+## 3. Générer des cartes atomiques et éditer équations ou occlusions
+
+1. Passez dans **Studio de Création** (<kbd>Alt+2</kbd>) ou lancez **Composer le lot…** (*Batch Slice Composer*) pour découper votre sélection par chapitres.
+2. Choisissez un modèle adapté (*Basique*, *Cloze / Texte à trous* ou *Image Occlusion*) et le paquet de destination (ex. `Médecine::Cardiologie`).
+3. Dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), vérifiez le rendu mathématique KaTeX en direct et créez des textes à trous sur les mots-clés via <kbd>Ctrl+Shift+C</kbd> (<kbd>Cmd+Shift+C</kbd> sur macOS) ou masquez les légendes d'un schéma anatomique ([Éditeur de Notes & KaTeX](/fr/cards/editeur_notes_katex/)).
+
+## 4. Auditer la densité cognitive avant l'export
+
+Ouvrez **Analyse & Audit IA** (<kbd>Alt+4</kbd>) pour exécuter le [Linter Wozniak](/fr/cards/linter_wozniak/) : toute carte dépassant les seuils d'atomicité ou mêlant plusieurs mécanismes physiopathologiques est signalée pour être scindée en un clic, puis exportée via <kbd>Ctrl+Alt+E</kbd> ([Exporter un paquet .apkg](/fr/anki-sync/export-apkg/)).
+
+## 5. Piloter ce parcours via MCP (Claude, Cursor, Antigravity)
+
+Vous préférez piloter la préparation de votre examen depuis Claude Desktop, Claude Code ou Cursor sans consommer de clé API ? Activez le serveur MCP dans **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) et utilisez ces enchaînements :
+
+- **Nettoyer le périmètre avant génération** :
+  - Outils utilisés : `get_document_outline`, `exclude_document_region`, `neutralize_document_region`.
+  - Prompt type : *« Lis le plan du document #4, neutralise le sommaire et écarte la bibliographie, puis vérifie les chapitres restants. »*
+- **Détecter les notions oubliées dans vos paquets et générer le complément** :
+  - Outils utilisés : `diagnose_domain_knowledge_gaps`, `search_document`, `create_notes_batch`.
+  - Prompt type : *« Lance `diagnose_domain_knowledge_gaps` sur le chapitre Potentiel d'Action de mon cours de Physiologie en croisant tous mes paquets, identifie les lacunes de Type 1 (absences) et crée des cartes atomiques avec formules KaTeX `\( ... \)` soumises au Garde-Fou. »*
+
+> Toutes les propositions d'un agent MCP passent obligatoirement par le **Garde-Fou** avant d'entrer dans votre collection.
+
+---
+
+# [FR] Parcours Sauvetage Anki : Doublons, Sangsues et Hygiène MCP
+URL: https://ankidraft.app/fr/workflows/sauvetage-et-hygiene-anki-mcp/
+Description: Assainissez une collection Anki existante (.colpkg) : détectez doublons et sangsues, lancez une campagne d'hygiène MCP et scindez vos cartes longues.
+
+Vous révisez un vieux paquet Anki qui accumule des cartes impossibles à mémoriser (« sangsues »), des doublons, des tags incohérents ou des pavés de texte ? Ce parcours vous permet d'assainir votre collection sans jamais perdre votre historique de répétition espacée (FSRS / SM-2).
+
+## 1. Importer votre collection Anki en sécurité (`.colpkg`)
+
+1. Depuis Anki Desktop, exportez une archive complète : **Fichier > Exporter > Collection Anki (`.colpkg`)** en incluant les médias et les données de planification.
+2. Dans AnkiDraft, appuyez sur <kbd>Ctrl+Shift+I</kbd> et importez votre `.colpkg` ([Importer .apkg ou .colpkg](/fr/anki-sync/import-colpkg/)).
+3. AnkiDraft crée automatiquement une sauvegarde SQLite de secours et sépare strictement votre **Périmètre Collection Anki** de votre **Périmètre Studio** (vos PDF, index RAG et réglages ne sont jamais écrasés).
+
+## 2. Diagnostiquer doublons et cartes surchargées dans l'Hôpital d'Audit
+
+1. Ouvrez **Analyse & Audit IA** (<kbd>Alt+4</kbd>).
+2. Dans l'onglet **Audit & Linter Wozniak**, choisissez un paquet et cliquez sur **Lancer l'audit** : les cartes trop longues, ambiguës ou multi-notions reçoivent un diagnostic détaillé ([Linter Wozniak](/fr/cards/linter_wozniak/)).
+3. Dans l'onglet **Fusions & Doublons**, repérez les cartes quasi-identiques grâce au moteur natif Levenshtein en C et fusionnez-les proprement.
+
+## 3. Mener une campagne d'hygiène de collection via MCP
+
+Pour traiter des centaines de cartes rapidement et transversalement entre plusieurs paquets, connectez votre client MCP (**Claude**, **Cursor**, **Antigravity**) sur le port `8765` et enchaînez ces quatre étapes :
+
+### Étape A — Traiter les cartes signalées en révision par un drapeau
+Pendant vos révisions quotidiennes dans Anki, marquez simplement les cartes pénibles d'un drapeau (Rouge = à scinder, Orange = à vérifier), puis réimportez votre `.colpkg` dans AnkiDraft :
+- **Outils MCP** : `get_flagged_cards`, `get_note_full_profile_360`, `set_card_flag`.
+- **Prompt** : *« Récupère toutes mes cartes marquées d'un drapeau rouge via `get_flagged_cards`, analyse pourquoi je les rate avec `audit_card_wozniak` et propose une refonte atomique pour chacune. »*
+
+### Étape B — Décloisonner et diagnostiquer les 3 pathologies d'un domaine
+- **Outils MCP** : `diagnose_domain_knowledge_gaps`, `diagnose_deck_weaknesses`, `audit_deck_wozniak`, `find_duplicate_cards`.
+- **Prompt** : *« Lance `diagnose_domain_knowledge_gaps` sur le thème Physiologie Rénale en incluant tous mes paquets : repère les cartes orphelines qui parlent déjà du sujet, les manques de couverture (Type 1), les cartes non atomiques (Type 2) et le liant bilingue (Type 3). »*
+
+### Étape C — Nettoyer les tags et supprimer les cartes vides
+- **Outils MCP** : `audit_tag_hygiene`, `merge_tag_clusters`, `list_empty_cards`, `delete_empty_cards`.
+- **Prompt** : *« Audite la cohérence de mes tags avec `audit_tag_hygiene`, propose la fusion des variantes quasi-identiques via `merge_tag_clusters` et liste les cartes au recto vide avec `list_empty_cards`. »*
+
+### Étape D — Scinder et reformuler par lots sous protection du Garde-Fou
+- **Outils MCP** : `begin_staged_bundle`, `propose_card_split`, `propose_card_refactor`, `propose_cards_batch_refactor`, `commit_staged_bundle`.
+- **Prompt** : *« Ouvre un lot groupé (`begin_staged_bundle`), scinde les 8 cartes dépassant 40 mots avec `propose_card_split` en 2 à 3 cartes atomiques chacune, reformule les énoncés flous via `propose_card_refactor` et clôture le lot avec `commit_staged_bundle`. »*
+
+## 4. Valider au Garde-Fou et ré-exporter sans perte SRS
+
+1. Ouvrez **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) > **Garde-Fou & Validation** et vérifiez visuellement chaque scission et reformulation Avant / Après.
+2. Cliquez sur **Appliquer** pour valider le lot dans AnkiDraft.
+3. Exportez le paquet assaini via <kbd>Ctrl+Alt+E</kbd> (ou l'outil MCP `export_deck_apkg`) puis importez le `.apkg` dans Anki : grâce aux identifiants GUID stables et au [Smart Merge](/fr/anki-sync/synchro_smart_merge/), vos nouvelles formulations remplacent les anciennes sans réinitialiser votre progression FSRS.
+
+---
+
+# [FR] Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor
+URL: https://ankidraft.app/fr/workflows/zero-cle-api-agent-mcp/
+Description: Connectez Claude Desktop, Claude Code ou Cursor au serveur MCP d'AnkiDraft pour générer, enrichir et auditer vos cartes sans clé API via Garde-Fou.
+
+Vous utilisez déjà **Claude Desktop**, **Claude Code**, **Cursor** ou **Antigravity** ? Grâce au protocole standard **MCP (Model Context Protocol)** intégré à AnkiDraft, vous pouvez créer des cartes, analyser vos cours et assainir vos paquets **sans aucune clé API payante** et sous protection permanente du **Garde-Fou**.
+
+## 1. Démarrer le serveur MCP et copier la configuration en 1 clic
+
+1. Ouvrez **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) dans la barre latérale.
+2. Vérifiez que le serveur local est **Actif** sur le port `8765` (sinon cliquez sur **Démarrer**).
+3. Dans le panneau de droite **Configurations Clients Prêtes à l'Emploi**, sélectionnez votre assistant (**Claude**, **Antigravity**, **Cursor** ou **cURL**) et cliquez sur **Copier la configuration** (ou **Ouvrir le fichier**).
+4. Collez le bloc JSON (avec l'endpoint `http://127.0.0.1:8765/mcp` et votre jeton Bearer) dans la configuration de votre client IA et redémarrez-le.
+
+## 2. Cinq cas d'usage MCP concrets (prompts prêts à l'emploi)
+
+### Cas A — Générer des cartes ancrées dans un chapitre de cours
+- **Outils MCP** : `search_document`, `get_document_outline`, `begin_staged_bundle`, `create_notes_batch`, `commit_staged_bundle`.
+- **Prompt** : *« Consulte le plan du document #3, lis les sections sur la régulation glycémique avec `search_document`, puis prépare un lot groupé (`begin_staged_bundle` + `create_notes_batch` + `commit_staged_bundle`) de 12 cartes atomiques en syntaxe KaTeX dans le paquet `Biochimie::Métabolisme`. »*
+
+### Cas B — Déposer une fiche de synthèse externe comme source d'autorité
+- **Outils MCP** : `write_mcp_artifact`, `ingest_authority_source`, `reindex_document`.
+- **Prompt** : *« Rédige une synthèse structurée en Markdown sur les mécanismes de défense immunitaire à partir de mes notes, enregistre-la via `write_mcp_artifact` puis indexe-la dans AnkiDraft avec `ingest_authority_source` pour que mes futures cartes y soient tracées. »*
+
+### Cas C — Créer ou moderniser un modèle de carte (Note Type & CSS)
+- **Outils MCP** : `list_note_types`, `get_note_type_details`, `propose_note_type_refactor`, `propose_css_tune`, `preview_card_render`.
+- **Prompt** : *« Inspecte le modèle `Médecine Cloze` avec `get_note_type_details`, améliore le contraste des indices en mode sombre via `propose_css_tune`, vérifie le rendu HTML avec `preview_card_render` et soumets `propose_note_type_refactor` au Garde-Fou. »*
+
+### Cas D — Piloter un pipeline DAG en mode délégué MCP
+- **Outils MCP** : `list_pipelines`, `trigger_pipeline_run`, `provide_pipeline_step_content`.
+- **Prompt** : *« Liste mes pipelines avec `list_pipelines`, lance le pipeline d'extraction #2 en mode délégué via `trigger_pipeline_run`, produis le contenu de chaque étape suspendue via `provide_pipeline_step_content` et envoie les cartes finales au Garde-Fou. »*
+
+### Cas E — Assainir et restructurer un paquet existant
+- **Outils MCP** : `get_flagged_cards`, `diagnose_domain_knowledge_gaps`, `propose_card_split`, `propose_card_refactor`.
+- **Prompt** : *« Récupère mes cartes marquées d'un drapeau rouge via `get_flagged_cards` et scinde les cartes trop denses avec `propose_card_split`. »* (Voir le guide dédié [Sauvetage & Hygiène Anki via MCP](/fr/workflows/sauvetage-et-hygiene-anki-mcp/)).
+
+## 3. Relire et appliquer dans le Garde-Fou (Two-Phase Commit)
+
+Aucune écriture n'est appliquée silencieusement :
+1. Ouvrez l'onglet **Garde-Fou & Validation** dans **Serveur MCP & Agents** (<kbd>Alt+5</kbd>).
+2. Inspectez le **Diff Avant / Après**, la prévisualisation HTML/KaTeX et l'impact des suppressions ou scissions.
+3. Cliquez sur **Appliquer** pour enregistrer le lot dans SQLite de manière atomique, ou sur **Rejeter** pour annuler sans trace.

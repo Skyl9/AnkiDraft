@@ -1,9 +1,7 @@
 ---
 title: Keyboard Shortcuts Reference
-description: Official reference of keyboard shortcuts in AnkiDraft by category and scope.
+description: Official reference of all keyboard shortcuts in AnkiDraft by category and scope to navigate workspaces, edit cards, and run AI pipelines fast.
 ---
-
-# Keyboard Shortcuts Reference ⌨️
 
 This page lists the default keyboard shortcuts in AnkiDraft. You can customize any shortcut in **Settings** (<kbd>Ctrl+,</kbd>) > **Keyboard**.
 

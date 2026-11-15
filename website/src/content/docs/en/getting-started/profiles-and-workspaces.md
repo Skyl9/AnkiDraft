@@ -1,9 +1,7 @@
 ---
 title: Managing Profiles and Your Collection
-description: Create separate study profiles and protect your local data in AnkiDraft.
+description: Create isolated study profiles in AnkiDraft, manage per-profile SQLite databases and media folders, and protect your local data with backups.
 ---
-
-# Managing Profiles and Your Collection
 
 AnkiDraft lets you completely isolate multiple collections using **user profiles**.
 

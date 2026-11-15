@@ -1,9 +1,7 @@
 ---
 title: Using a Free Local Model with Ollama
-description: Generate flashcards 100% offline and for free on your computer using Ollama.
+description: Generate atomic Anki flashcards 100% offline and for free on your own computer using local Ollama models with full privacy and zero API fees.
 ---
-
-# Using a Free Local Model with Ollama
 
 Prefer not to use paid cloud APIs, or studying confidential documents offline? AnkiDraft integrates natively with **Ollama**.
 

@@ -3,8 +3,6 @@ title: "Medicine & STEM Workflow: Dense PDFs, Math, and Diagrams"
 description: "Step-by-step guide to turning dense medical or STEM textbook PDFs into atomic Anki flashcards complete with KaTeX math formulas, diagrams, and MCP."
 ---
 
-# Medicine & STEM Workflow: Dense PDFs, Math, and Diagrams
-
 This workflow shows how to turn dense university handouts or STEM textbooks (anatomy, physiology, physics, calculus) into atomic flashcards faithful to your source material, complete with KaTeX equations and labeled diagrams.
 
 ## 1. Import the PDF with Figure and Equation Extraction

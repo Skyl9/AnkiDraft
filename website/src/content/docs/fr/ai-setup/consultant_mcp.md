@@ -1,9 +1,7 @@
 ---
 title: Consultant IA et Connexion aux Assistants MCP
-description: Dialoguer avec le Consultant IA intégré ou connecter Claude Desktop et Cursor à AnkiDraft.
+description: Discutez avec le Consultant IA intégré ou connectez Claude Desktop et Cursor à AnkiDraft via MCP pour auditer et enrichir vos paquets facilement.
 ---
-
-# Consultant IA et Connexion aux Assistants MCP
 
 Le **Consultant IA** (<kbd>Ctrl+6</kbd>) est votre assistant pédagogique au sein d'AnkiDraft. Vous pouvez également piloter AnkiDraft depuis votre client IA externe favori grâce au protocole standard **MCP (Model Context Protocol)**.
 

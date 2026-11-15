@@ -1,9 +1,7 @@
 ---
 title: Importing PDFs, Slides, and Ebooks
-description: Cleanly extract PDF textbooks, DOCX documents, PPTX slides, and EPUB books with diagrams and LaTeX formulas.
+description: Cleanly extract PDF textbooks, DOCX documents, PPTX slides, and EPUB books with Marker OCR, preserving diagrams, tables, and LaTeX formulas.
 ---
-
-# Importing PDFs, Slides, and Ebooks
 
 The AnkiDraft **Document Hub** turns static study files into structured chapters ready for flashcard generation.
 

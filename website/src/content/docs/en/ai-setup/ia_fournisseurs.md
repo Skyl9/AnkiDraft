@@ -1,9 +1,7 @@
 ---
 title: Configuring AI Providers (OpenAI, Gemini, Claude)
-description: Securely connect your API keys and manage your token budget in AnkiDraft.
+description: Securely connect your OpenAI, Anthropic, or Gemini API keys, configure local providers, and track your token budget per pipeline in AnkiDraft.
 ---
-
-# Configuring AI Providers (OpenAI, Gemini, Claude)
 
 AnkiDraft is **provider-agnostic**: you are free to use the AI service of your choice or switch models depending on the task.
 

@@ -3,8 +3,6 @@ title: "Parcours Langues & Audio : Vocabulaire et Prononciation TTS"
 description: "Apprenez une langue avec AnkiDraft : générez des cartes de vocabulaire illustrées d'un audio naturel hors-ligne (Kokoro ou Piper) en Studio ou MCP."
 ---
 
-# Parcours Langues & Audio : Vocabulaire et Prononciation TTS
-
 Ce parcours montre comment constituer des paquets de langues vivantes (anglais, japonais, espagnol, allemand, mandarin...) avec des exemples contextualisés, une prononciation audio générée 100 % hors-ligne et une hygiène anti-liant bilingue.
 
 ## 1. Préparer votre liste ou importer un support linguistique

@@ -3,8 +3,6 @@ title: "Parcours Sauvetage Anki : Doublons, Sangsues et Hygiène MCP"
 description: "Assainissez une collection Anki existante (.colpkg) : détectez doublons et sangsues, lancez une campagne d'hygiène MCP et scindez vos cartes longues."
 ---
 
-# Parcours Sauvetage Anki : Doublons, Sangsues et Hygiène MCP
-
 Vous révisez un vieux paquet Anki qui accumule des cartes impossibles à mémoriser (« sangsues »), des doublons, des tags incohérents ou des pavés de texte ? Ce parcours vous permet d'assainir votre collection sans jamais perdre votre historique de répétition espacée (FSRS / SM-2).
 
 ## 1. Importer votre collection Anki en sécurité (`.colpkg`)

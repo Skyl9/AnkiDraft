@@ -1,9 +1,7 @@
 ---
 title: Guide Visuel du Cycle de Vie Distribué AnkiDraft et Anki
-description: Comprendre la complémentarité entre le studio de création AnkiDraft et le moteur de révision Anki (.apkg et .colpkg).
+description: Comprendre la complémentarité entre le studio de création AnkiDraft et le moteur de révision Anki via .apkg et .colpkg sans aucun conflit de synchro.
 ---
-
-# Guide Visuel du Cycle de Vie Distribué AnkiForge ↔ Anki 🔄
 
 Bienvenue dans le guide d'utilisation du système distribué d'AnkiDraft (anciennement AnkiForge).
 

@@ -3,8 +3,6 @@ title: "Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene"
 description: "Clean up an existing Anki collection (.colpkg): detect duplicates and leeches, run an MCP hygiene campaign, and split overloaded cards safely."
 ---
 
-# Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene
-
 Stuck with an older Anki deck full of stubborn leeches, near-duplicate cards, messy tags, or bloated paragraphs? This workflow helps you rescue and normalize your collection without ever losing your spaced-repetition scheduling history (FSRS / SM-2).
 
 ## 1. Safely Import Your Anki Collection (`.colpkg`)

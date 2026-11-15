@@ -1,9 +1,7 @@
 ---
 title: Gérer ses Profils et sa Collection
-description: Créer des profils d'étude séparés et protéger vos données locales dans AnkiDraft.
+description: Créez des profils d'étude isolés dans AnkiDraft, gérez vos bases SQLite et dossiers médias locaux et protégez vos données par sauvegarde locale.
 ---
-
-# Gérer ses Profils et sa Collection
 
 AnkiDraft vous permet d'isoler complètement plusieurs collections grâce aux **profils utilisateurs**.
 

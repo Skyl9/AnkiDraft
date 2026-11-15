@@ -1,9 +1,7 @@
 ---
 title: FAQ and Troubleshooting
-description: Answers to frequently asked questions and common troubleshooting steps for AnkiDraft.
+description: Find answers to frequently asked questions and step-by-step troubleshooting for AnkiDraft installation, Ollama, PDF OCR, and Anki .apkg exports.
 ---
-
-# FAQ and Troubleshooting
 
 Find answers to the most common questions about AnkiDraft.
 

@@ -1,0 +1,129 @@
+---
+import Default from '@astrojs/starlight/components/Head.astro';
+
+const { entry, lang } = Astro.locals.starlightRoute;
+const { data } = entry;
+const slug = entry.id.replace(/\.(md|mdx)$/, '');
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://ankidraft.app').href;
+
+let jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: data.title,
+  description: data.description,
+  inLanguage: lang,
+  url: canonicalUrl,
+  author: {
+    '@type': 'Organization',
+    name: 'AnkiDraft',
+    url: 'https://ankidraft.app',
+  },
+};
+
+if (slug.endsWith('getting-started/installation')) {
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: data.title,
+    description: data.description,
+    inLanguage: lang,
+    step:
+      lang === 'fr'
+        ? [
+            { '@type': 'HowToStep', name: 'Télécharger l’installateur', text: 'Téléchargez le paquet AnkiDraft (.dmg sur macOS, .exe sur Windows, .AppImage sur Linux) depuis ankidraft.app.' },
+            { '@type': 'HowToStep', name: 'Installer l’application', text: 'Glissez AnkiDraft dans Applications (macOS), lancez l’assistant Windows ou rendez l’AppImage exécutable sous Linux.' },
+            { '@type': 'HowToStep', name: 'Ouvrir votre profil local', text: 'Lancez AnkiDraft : votre base SQLite et vos médias sont initialisés localement dans ~/.ankidraft/.' },
+          ]
+        : [
+            { '@type': 'HowToStep', name: 'Download the installer', text: 'Download the AnkiDraft package (.dmg on macOS, .exe on Windows, .AppImage on Linux) from ankidraft.app.' },
+            { '@type': 'HowToStep', name: 'Install the application', text: 'Drag AnkiDraft to Applications (macOS), run the Windows setup wizard, or mark the AppImage executable on Linux.' },
+            { '@type': 'HowToStep', name: 'Open your local profile', text: 'Launch AnkiDraft: your SQLite database and media folder are initialized locally in ~/.ankidraft/.' },
+          ],
+  };
+} else if (slug.endsWith('getting-started/quickstart')) {
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: data.title,
+    description: data.description,
+    inLanguage: lang,
+    step:
+      lang === 'fr'
+        ? [
+            { '@type': 'HowToStep', name: 'Importer un cours', text: 'Ajoutez un fichier PDF, une vidéo YouTube, un audio ou une page web dans la vue Documents.' },
+            { '@type': 'HowToStep', name: 'Cibler les chapitres', text: 'Sélectionnez les sections ou pages pertinentes et écartez les annexes.' },
+            { '@type': 'HowToStep', name: 'Générer et auditer les cartes', text: 'Extrayez des cartes atomiques avec l’IA et vérifiez-les avec le Linter des 20 règles de Wozniak.' },
+            { '@type': 'HowToStep', name: 'Exporter vers Anki (.apkg)', text: 'Exportez votre paquet .apkg en un clic vers Anki Desktop, AnkiWeb ou AnkiMobile.' },
+          ]
+        : [
+            { '@type': 'HowToStep', name: 'Import study material', text: 'Drop a PDF textbook, YouTube video, audio lecture, or web page into the Documents view.' },
+            { '@type': 'HowToStep', name: 'Select chapters', text: 'Pick the relevant sections or pages and exclude appendices.' },
+            { '@type': 'HowToStep', name: 'Generate and audit cards', text: 'Extract atomic flashcards with AI and validate them against Wozniak’s 20 rules.' },
+            { '@type': 'HowToStep', name: 'Export to Anki (.apkg)', text: 'Export your .apkg deck in one click to Anki Desktop, AnkiWeb, or AnkiMobile.' },
+          ],
+  };
+} else if (slug.endsWith('guides/faq_depannage')) {
+  jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: lang,
+    mainEntity:
+      lang === 'fr'
+        ? [
+            {
+              '@type': 'Question',
+              name: 'AnkiDraft remplace-t-il Anki ?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Non : AnkiDraft est l’atelier de création et d’audit de flashcards à partir de vos cours, tandis qu’Anki reste le moteur de révision espacée quotidienne.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Puis-je utiliser AnkiDraft gratuitement et sans connexion internet ?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Oui. L’application est gratuite, fonctionne hors ligne et s’intègre nativement avec des modèles d’IA locaux gratuits via Ollama.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Mes cours PDF et mes cartes sont-ils envoyés dans le cloud ?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Non. Vos fichiers PDF, votre base SQLite et vos médias restent stockés localement sur votre ordinateur dans ~/.ankidraft/.',
+              },
+            },
+          ]
+        : [
+            {
+              '@type': 'Question',
+              name: 'Does AnkiDraft replace Anki?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'No—AnkiDraft is the authoring and quality-auditing studio where you turn textbooks and lectures into atomic flashcards, while Anki is the spaced-repetition engine for daily reviews.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Can I use AnkiDraft for free and offline?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Yes. AnkiDraft is free, runs offline on your computer, and supports free local AI models via Ollama.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Are my PDFs and flashcards uploaded to the cloud?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'No. Your PDFs, SQLite database, and media files stay locally on your drive in ~/.ankidraft/.',
+              },
+            },
+          ],
+  };
+}
+---
+
+<Default><slot /></Default>
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

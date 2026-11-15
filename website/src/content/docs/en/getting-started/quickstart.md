@@ -3,8 +3,6 @@ title: Quickstart Guide
 description: "Create, review, and export your first Anki flashcard deck in 5 minutes with AnkiDraft, and pick the step-by-step workflow tailored to your subject."
 ---
 
-# Quickstart Guide
-
 This guide walks you through creating your first Anki flashcard deck in minutes and helps you pick the end-to-end workflow that matches your study material and AI setup.
 
 ## Which workflow fits your goal?

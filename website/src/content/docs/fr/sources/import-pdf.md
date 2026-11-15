@@ -1,9 +1,7 @@
 ---
 title: Importer des PDF, Diaporamas et Ebooks
-description: Extraire proprement vos cours PDF, DOCX, PPTX et EPUB avec schémas et formules mathématiques.
+description: Extrayez proprement vos cours PDF, DOCX, PPTX et EPUB avec Marker OCR en préservant les schémas, tableaux et formules mathématiques LaTeX complexes.
 ---
-
-# Importer des PDF, Diaporamas et Ebooks
 
 Le **Hub Documentaire** d'AnkiDraft transforme vos supports de cours statiques en chapitres structurés prêts pour la création de flashcards.
 

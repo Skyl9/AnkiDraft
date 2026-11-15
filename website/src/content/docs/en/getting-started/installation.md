@@ -3,8 +3,6 @@ title: Installing AnkiDraft
 description: "Download, install, and update AnkiDraft on macOS, Windows, and Linux from the latest official GitHub release with Ed25519 signature verification."
 ---
 
-# Installing AnkiDraft
-
 AnkiDraft is a standalone desktop application. You do not need to install Python or any developer tools on your computer.
 
 ## 1. Download the Installer (Latest Release)

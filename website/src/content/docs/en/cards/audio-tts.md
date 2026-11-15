@@ -1,9 +1,7 @@
 ---
 title: Text-to-Speech (TTS) and Audio Cards
-description: Automatically generate natural audio pronunciation for language and terminology flashcards.
+description: Automatically generate natural offline audio pronunciation for language and terminology flashcards using Kokoro or Piper neural TTS voices locally.
 ---
-
-# Text-to-Speech (TTS) and Audio Cards
 
 When studying foreign languages, medical terminology, or music, attaching an audio clip to a flashcard dramatically boosts retention.
 

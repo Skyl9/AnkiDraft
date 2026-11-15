@@ -1,9 +1,7 @@
 ---
 title: Interface Overview
-description: Tour of the main workspaces, 4 window layouts, and visual themes in AnkiDraft.
+description: Take a guided tour of AnkiDraft workspaces, 4 switchable window layouts (IDE, macOS, Dashboard, Glass), and 12 built-in visual themes for study.
 ---
-
-# Interface Overview
 
 AnkiDraft is designed to stay clean and responsive whether you work on a laptop screen or an ultrawide monitor.
 

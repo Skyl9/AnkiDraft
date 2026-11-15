@@ -1,9 +1,7 @@
 ---
 title: Cibler les Chapitres et Suivre la Couverture
-description: Sélectionner précisément les sections à étudier, écarter les annexes et visualiser votre couverture de cours.
+description: Sélectionnez précisément les sections ou pages à étudier, écartez les annexes sans rien supprimer et suivez votre couverture de cours en temps réel.
 ---
-
-# Cibler les Chapitres et Suivre la Couverture
 
 Un livre ou un polycopié contient souvent un sommaire, une préface ou une bibliographie sur lesquels vous ne souhaitez pas créer de flashcards. AnkiDraft vous donne un contrôle total sur le périmètre de votre cours.
 

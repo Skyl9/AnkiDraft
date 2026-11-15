@@ -1,9 +1,7 @@
 ---
 title: Note Types, Templates, and CSS Styling
-description: Customize Front/Back, Cloze note types, and visual styling for Anki.
+description: Customize Front/Back and Cloze note types, Jinja2 card templates, and responsive CSS visual styling for Anki Desktop, AnkiWeb, and AnkiMobile.
 ---
-
-# Note Types, Templates, and CSS Styling
 
 AnkiDraft supports all standard Anki note types and lets you customize their visual layout.
 

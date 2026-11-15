@@ -1,9 +1,7 @@
 ---
 title: Importing Web Pages and Online Articles
-description: Capture the core educational content of an online article or documentation page without ads.
+description: Capture the core educational content of any online article or web documentation page into clean Markdown without ads, menus, or visual clutter.
 ---
-
-# Importing Web Pages and Online Articles
 
 Studying from online encyclopedias, technical blogs, or web courses? The AnkiDraft Web Importer extracts only the relevant study content.
 

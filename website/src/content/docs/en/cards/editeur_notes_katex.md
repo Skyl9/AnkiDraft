@@ -1,9 +1,7 @@
 ---
 title: Note Editor, KaTeX Math, and Cloze Deletions
-description: Write and format flashcards with live KaTeX math preview, cloze deletions, and revision history.
+description: Write and format Anki flashcards with live KaTeX math preview, cloze deletions, rich media attachments, and full per-note revision history in AnkiDraft.
 ---
-
-# Note Editor, KaTeX Math, and Cloze Deletions
 
 The AnkiDraft Note Editor (<kbd>Ctrl+2</kbd>) provides a fast writing environment with real-time Anki card preview.
 

@@ -3,8 +3,6 @@ title: "Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor"
 description: "Connect Claude Desktop, Claude Code, or Cursor to AnkiDraft's local MCP server to generate, enrich, and audit flashcards with two-phase human review."
 ---
 
-# Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor
-
 Already using **Claude Desktop**, **Claude Code**, **Cursor**, or **Antigravity**? Through AnkiDraft's built-in **MCP (Model Context Protocol)** server, you can draft flashcards, audit coverage gaps, and clean up decks with **zero additional API keys** while keeping every edit behind the **Safeguard**.
 
 ![MCP Safeguard: Two-Phase Human Approval](assets/mcp_two_phase_commit.svg)

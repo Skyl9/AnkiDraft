@@ -1,9 +1,7 @@
 ---
 title: Exporter vos Paquets vers Anki (.apkg)
-description: Générer un fichier .apkg prêt à l'emploi pour Anki Desktop, AnkiWeb et AnkiMobile sans perdre votre progression.
+description: Générez un fichier .apkg propre et prêt à réviser pour Anki Desktop, AnkiWeb et AnkiMobile avec IDs stables et sans perdre votre historique.
 ---
-
-# Exporter vos Paquets vers Anki (.apkg)
 
 Une fois vos cartes créées et relues dans AnkiDraft, vous pouvez les transférer vers Anki en quelques secondes grâce à l'export `.apkg`.
 

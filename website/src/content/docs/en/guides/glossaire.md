@@ -3,8 +3,6 @@ title: "User Glossary: Key AnkiDraft Concepts Explained Simply"
 description: "Understand every core AnkiDraft concept (Wozniak rules, Cloze, Smart Coverage, DAG, RAG, MCP, Safeguard) with clear Before / After study examples."
 ---
 
-# User Glossary: Key AnkiDraft Concepts Explained Simply
-
 AnkiDraft combines spaced-repetition best practices with local AI tools. This glossary explains every technical term in plain English, paired with a concrete **Before / After** example.
 
 ---

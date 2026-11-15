@@ -1,9 +1,7 @@
 ---
 title: Synchronization, Duplicates, and Smart Merge
-description: Resolve conflicts during Anki imports and clean up duplicate flashcards.
+description: Resolve conflicts during Anki imports with Smart Merge, preserve existing review schedules, and clean up duplicate flashcards automatically.
 ---
-
-# Synchronization, Duplicates, and Smart Merge
 
 When collaborating on a shared deck or editing a flashcard in both Anki and AnkiDraft, **Smart Merge** protects your work.
 

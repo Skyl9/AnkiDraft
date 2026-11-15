@@ -1,9 +1,7 @@
 ---
 title: Audit Qualité et les 20 Règles de Wozniak
-description: Détecter et corriger les cartes trop longues, floues ou difficiles à mémoriser grâce au Linter Wozniak.
+description: Détectez et scindez les cartes trop longues, floues ou difficiles à mémoriser grâce au Linter des 20 règles de Wozniak pour mieux retenir durablement.
 ---
-
-# Audit Qualité et les 20 Règles de Wozniak
 
 Une mauvaise flashcard (trop longue, contenant plusieurs questions à la fois ou dépourvue de contexte) finit par devenir une « sangsue » (*leech*) que vous oubliez sans cesse dans Anki.
 

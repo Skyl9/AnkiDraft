@@ -1,9 +1,7 @@
 ---
 title: Quality Audit and Wozniak's 20 Rules
-description: Detect and split overloaded, vague, or hard-to-remember flashcards with the Wozniak Linter.
+description: Detect and split overloaded, vague, or hard-to-remember flashcards with the Wozniak 20-Rules Linter to boost long-term Anki retention daily.
 ---
-
-# Quality Audit and Wozniak's 20 Rules
 
 A poorly formulated flashcard (too long, testing multiple facts at once, or lacking context) quickly turns into a "leech" that you repeatedly fail in Anki.
 
