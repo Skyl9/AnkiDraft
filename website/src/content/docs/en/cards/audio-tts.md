@@ -15,13 +15,15 @@ Open **Settings** (<kbd>Ctrl+,</kbd>) › **Audio & TTS** before generating offl
 
 Click **Test Selected Voice** to verify playback before running a batch job.
 
-## 2. Generating Field Pronunciation in One Click
+## 2. Generating and Playing Field Pronunciation in One Click
 
-1. In **Editor & Browser** (<kbd>Alt+3</kbd>), place your cursor inside the field containing the word or sentence to pronounce.
-2. Click the **Text-to-Speech (TTS)** icon in the toolbar.
-3. Select the target language and installed or online voice.
-4. The audio file is generated, normalized, and attached automatically as `[sound:filename.mp3]`, ready for Anki Desktop, AnkiWeb, and AnkiMobile.
+1. In **Editor & Browser** (<kbd>Alt+3</kbd>), open a note and click the **Generate Audio Pronunciation (TTS)** speaker icon in the target field's header. If text is highlighted, only the selection is synthesized; otherwise the full field is read (with Cloze tags `{{c1::word}}` cleanly expanded first).
+2. Audio is synthesized using the engine and voice configured in **Settings** (<kbd>Ctrl+,</kbd>) › **Audio & TTS**, cached in your media folder, and appended as an Anki sound tag ready for Anki Desktop, AnkiWeb, and AnkiMobile:
+   - **Edge-TTS**: generates an **`.mp3`** file (`[sound:tts_xxx.mp3]`);
+   - **Piper TTS** and **Kokoro-82M**: generate a **`.wav`** file (`[sound:tts_xxx.wav]`);
+   - **OS System Engine**: generates a **`.wav`** file (or **`.m4a`** on macOS).
+3. Whenever a field contains a `[sound:...]` tag, a **Play / Stop** button appears in its header for instant playback.
 
-## 3. Batch Audio Generation
+## 3. Batch Audio Generation via a DAG Pipeline
 
-Have an entire vocabulary deck without audio? Select multiple cards in the editor table and run **Batch TTS Generation**: AnkiDraft generates audio for all selected cards in the background.
+To attach audio automatically across a batch of newly generated cards, add an **`Audio Generation (TTS)`** (`AUDIO_TTS`) step at the end of your workflow in **Pipelines** (see [Generation Pipelines](/en/cards/dag_et_rag/)). You can configure the source field, target field (append or replace), TTS engine, and voice.

@@ -36,8 +36,9 @@
 - [Text-to-Speech (TTS) and Audio Cards](https://ankidraft.app/en/cards/audio-tts/): Automatically generate natural offline audio pronunciation for language and terminology flashcards using Kokoro or Piper neural TTS voices locally.
 - [Generation Pipelines and Smart Coverage](https://ankidraft.app/en/cards/dag_et_rag/): Automate multi-step flashcard creation with DAG pipelines and fill knowledge gaps across your textbooks using local RAG and Smart Coverage tools.
 - [Note Editor, KaTeX Math, and Cloze Deletions](https://ankidraft.app/en/cards/editeur_notes_katex/): Write and format Anki flashcards with live KaTeX math preview, cloze deletions, rich media attachments, and full per-note revision history in AnkiDraft.
+- [Smart Image Occlusion (Vision AI)](https://ankidraft.app/en/cards/image-occlusion/): Create Image Occlusion Enhanced flashcards from anatomy or course diagrams using manual masks, Vision AI label detection, and Hide All or Hide One.
 - [Quality Audit and Wozniak's 20 Rules](https://ankidraft.app/en/cards/linter_wozniak/): Detect and split overloaded, vague, or hard-to-remember flashcards with the Wozniak 20-Rules Linter to boost long-term Anki retention daily.
-- [Note Types, Templates, and CSS Styling](https://ankidraft.app/en/cards/note-types-and-templates/): Customize Front/Back and Cloze note types, Jinja2 card templates, and responsive CSS visual styling for Anki Desktop, AnkiWeb, and AnkiMobile.
+- [Note Types, Templates, and CSS Styling](https://ankidraft.app/en/cards/note-types-and-templates/): Customize note types, HTML/Mustache card templates, AI Role guides, LaTeX headers, CSS snippets, and light/dark styling for Anki Desktop and Web.
 
 ### Anki Sync
 - [Exporting Your Decks to Anki (.apkg)](https://ankidraft.app/en/anki-sync/export-apkg/): Generate a clean, ready-to-study .apkg deck for Anki Desktop, AnkiWeb, and AnkiMobile with stable IDs and without losing your review history.
@@ -83,8 +84,9 @@
 - [Synthèse Vocale (TTS) et Cartes Audio](https://ankidraft.app/fr/cards/audio-tts/): Générez automatiquement une prononciation audio naturelle hors-ligne pour vos cartes de langues et terminologies avec les voix Kokoro ou Piper.
 - [Pipelines de Génération et Couverture Intelligente](https://ankidraft.app/fr/cards/dag_et_rag/): Automatisez la création de cartes par étapes avec les pipelines DAG et comblez les lacunes de vos cours grâce au RAG local et Smart Coverage.
 - [Éditeur de Notes, Formules KaTeX et Textes à Trous](https://ankidraft.app/fr/cards/editeur_notes_katex/): Rédigez et mettez en forme vos flashcards avec aperçu mathématique KaTeX en direct, occlusions Cloze, médias et historique complet des révisions.
+- [Masquage d'Images Intelligent (Image Occlusion IA)](https://ankidraft.app/fr/cards/image-occlusion/): Créez des flashcards Image Occlusion Enhanced sur vos schémas et planches avec tracé manuel, détection Vision IA et modes Hide All ou Hide One.
 - [Audit Qualité et les 20 Règles de Wozniak](https://ankidraft.app/fr/cards/linter_wozniak/): Détectez et scindez les cartes trop longues, floues ou difficiles à mémoriser grâce au Linter des 20 règles de Wozniak pour mieux retenir durablement.
-- [Modèles de Cartes, Gabarits et Styles CSS](https://ankidraft.app/fr/cards/note-types-and-templates/): Personnalisez vos types de notes Recto/Verso et Cloze, vos gabarits Jinja2 et votre mise en forme CSS pour Anki Desktop, AnkiWeb et AnkiMobile.
+- [Modèles de Cartes, Gabarits et Styles CSS](https://ankidraft.app/fr/cards/note-types-and-templates/): Personnalisez vos types de notes, gabarits HTML/Mustache, directives Rôle IA, préambules LaTeX et styles CSS pour Anki Desktop, AnkiWeb et Mobile.
 
 ### Synchronisation Anki
 - [Exporter vos Paquets vers Anki (.apkg)](https://ankidraft.app/fr/anki-sync/export-apkg/): Générez un fichier .apkg propre et prêt à réviser pour Anki Desktop, AnkiWeb et AnkiMobile avec IDs stables et sans perdre votre historique.

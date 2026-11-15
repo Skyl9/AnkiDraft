@@ -7,14 +7,17 @@ Une mauvaise flashcard (trop longue, contenant plusieurs questions à la fois ou
 
 AnkiDraft intègre un **Linter pédagogique** inspiré des **20 règles de formulation des connaissances de Piotr Wozniak** (créateur de SuperMemo).
 
-## 1. Ce que vérifie l'audit qualité
+## 1. Audit Wozniak dans Analyse & Audit IA (<kbd>Alt+4</kbd>)
 
-Dans la vue **Qualité & Audit** (<kbd>Ctrl+5</kbd>) ou directement dans l'éditeur, AnkiDraft attribue un score de santé à chaque carte et signale :
-- **La surcharge d'information (non-atomicité)** : une réponse qui dépasse le seuil recommandé ou qui mélange plusieurs idées distinctes.
-- **Les questions vagues ou ambiguës** : questions ouvertes du type *« Parlez de… »* qui ne permettent pas de savoir quelle réponse précise est attendue.
-- **Les énumérations aveugles** : listes de plus de 3 ou 4 éléments difficiles à restituer dans l'ordre.
-- **Les cartes à trous trop larges** : clozes qui masquent une phrase entière au lieu d'un concept précis.
+Dans la vue **Analyse & Audit IA** (<kbd>Alt+4</kbd>) › onglet **Audit & Linter Wozniak**, sélectionnez un paquet puis lancez l'analyse (<kbd>Ctrl+Entrée</kbd>). AnkiDraft attribue un score sur 100 et regroupe les anomalies en **4 catégories** (dont les règles peuvent être activées ou ajustées via **Règles**) :
+- **Atomicité & Restructuration** : réponses surchargées ou mélangeant plusieurs faits distincts.
+- **Cloze & Univoque** : questions vagues ou textes à trous masquant trop d'éléments (avec un interrupteur dédié pour conserver ou convertir les Clozes).
+- **Désambiguïsation & Contexte** : cartes trop proches qui créent des interférences mnésiques.
+- **Formules & Clarté KaTeX** : expressions mathématiques ambiguës ou mal délimitées.
 
-## 2. Scinder une carte complexe en un clic
+Un linter rapide est également accessible directement depuis **Édition & Navigateur** (<kbd>Alt+3</kbd>) sur une sélection de notes.
 
-Lorsqu'une carte est signalée comme trop dense, cliquez sur **Scinder en cartes atomiques** : l'assistant vous propose de la découper en 2 ou 3 cartes courtes et indépendantes, beaucoup plus faciles à mémoriser sur le long terme.
+## 2. Scinder les cartes sangsues (Leeches) et fusionner les doublons
+
+- **Scinder en cartes atomiques** : dans **Analyse & Audit IA** (<kbd>Alt+4</kbd>) › onglet **Jetons & SRS** › **Diagnostic des Cartes Sangsues (Leeches)**, repérez vos cartes à fort taux d'échecs et cliquez sur **Scinder** pour générer puis appliquer (avec aperçu *Two-Phase Commit*) leur découpage en 2 ou 3 cartes atomiques.
+- **Détection & fusion des doublons** : l'onglet **Fusions & Doublons** (<kbd>Alt+4</kbd>, ainsi que le scan rapide depuis `Édition & Navigateur`) regroupe les quasi-doublons par similarité de Levenshtein afin de fusionner les notes redondantes sans perdre votre historique.

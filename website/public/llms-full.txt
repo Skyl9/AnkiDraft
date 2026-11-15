@@ -207,31 +207,37 @@ AnkiDraft helps you rapidly turn dense study chapters into atomic flashcards whi
 AnkiDraft separates **interactive card crafting** (one excerpt or free-form note) from **batch production** (an entire book split into queued jobs):
 
 ### Option A — Creation Studio (<kbd>Alt+2</kbd>): Focused & Interactive
-Best for working closely on **one section**, **a pasted excerpt**, or a **New Free Input** (<kbd>Ctrl+N</kbd>):
+Best for working closely on **one section**, **a pasted excerpt**, or a **New Input** (<kbd>Ctrl+N</kbd>):
 1. Open **Creation Studio** (<kbd>Alt+2</kbd>).
-2. Pick a document section on the left or click **New Free Input** (<kbd>Ctrl+N</kbd>).
-3. Select the note type (*Basic*, *Cloze Deletion*), destination deck, and AI agent/model, then press <kbd>Ctrl+Enter</kbd>.
-4. Review generated cards one by one with live preview (<kbd>Space</kbd> to approve, <kbd>Delete</kbd> to reject), then press <kbd>Ctrl+S</kbd> to save.
+2. Pick a document section on the left (with its scope) or click **New Input** (<kbd>Ctrl+N</kbd>).
+3. Under **Anki Targets** and **AI Orchestration**, select the deck, note type, **AI Engine**, and **Agent Pipeline**; optionally enable **Multimodal Vision** (`ON`/`OFF` badge based on engine capability) and **Advanced Settings** (*Temperature*, *Max Tokens*), then press <kbd>Ctrl+Enter</kbd>.
+4. Review cards with live preview (<kbd>Space</kbd> or <kbd>V</kbd> to approve, <kbd>Delete</kbd> / <kbd>Backspace</kbd> / <kbd>R</kbd> to reject, <kbd>E</kbd> to edit, <kbd>Alt+Left</kbd> / <kbd>Alt+Right</kbd> to navigate, or **Accept All** in 1 click), then press <kbd>Ctrl+S</kbd> to save.
 
 ### Option B — Batch Factory (<kbd>Alt+6</kbd>): Multi-Chapter Queue Processing
 Best for processing **multiple chapters or whole textbooks** through a resumable queue:
 1. Open **Batch Factory** (<kbd>Alt+6</kbd>).
-2. Click **Batch Slice Composer** (<kbd>Ctrl+N</kbd>) to slice your sources ([Scope & Chapters](/en/sources/scope-and-slices/)):
+2. Click **Compose Batch…** (<kbd>Ctrl+N</kbd>) to slice your sources ([Scope & Chapters](/en/sources/scope-and-slices/)):
    - **Direct Mode**: each checked section creates one generation task.
    - **Automatic Mode**: groups or splits sections automatically by length.
-3. Set the note type and destination Anki deck, then launch the queue (<kbd>Ctrl+Enter</kbd>). If a single task fails, use **Resume Batch** without restarting from scratch.
-4. Review all queued cards inside the **Staging** panel before saving to your collection.
+3. Configure targets and toggles (**Vision (PDF)**, **Auto Validation**, **Full Document by Chunks**, *Advanced Settings*), then launch the queue (<kbd>Ctrl+Enter</kbd>). If a single task fails, use **Resume Batch** without restarting from scratch.
+4. Review generated cards in the bottom **Review** tab (<kbd>Alt+Up</kbd> / <kbd>Alt+Down</kbd> to switch slices) before saving to your collection.
 
-## 2. Tailoring Card Style (Personas)
+## 2. Tailoring AI Behavior (Agents & Pipelines)
 
-Adapt the AI extraction style to your discipline:
-- **Sciences & Medicine**: precise definitions, physiological mechanisms, reference values.
-- **Law & Humanities**: core concepts, conceptual distinctions, dates, and case law.
-- **Languages & Vocabulary**: contextual examples, idioms, and pronunciation notes.
+Extraction style is driven by the **Agent Pipeline** chosen in Studio or Batch Factory and customized in **Agent Editor** (<kbd>Alt+9</kbd>). AnkiDraft includes built-in presets ready to clone and refine:
+- **Wozniak Atomic Generator** and **Auto-Cloze Generator** (focused cloze cards);
+- **Medical & Anatomy Specialist** (mechanisms, clinical concepts, anatomical relations);
+- **Scientific Formulas & KaTeX** (derivations and mathematical notation);
+- **Languages & Vocabulary Tutor** (contextual examples, idioms, pronunciation);
+- **Law, Standards & Case Law** (core concepts, distinctions, rulings).
+
+:::tip[Per-Note-Type AI Instructions]
+You can also define an **AI Role** (or structured table via **Prompt for AI**) directly on any note type under **Note Types** (<kbd>Alt+8</kbd>) to guide how AI populates each field.
+:::
 
 ## 3. Human Review Before Saving (Staging)
 
-No AI-generated card is ever added blindly to your collection: all proposals land in the **Staging Review** queue where you can accept, edit, or reject each card in one click.
+No AI-generated card is ever added blindly to your collection: all proposals land in the review queue (**Studio** or Batch Factory's **Review** tab) where you can accept, edit, or reject each card before saving (<kbd>Ctrl+S</kbd>).
 
 ---
 
@@ -251,16 +257,18 @@ Open **Settings** (<kbd>Ctrl+,</kbd>) › **Audio & TTS** before generating offl
 
 Click **Test Selected Voice** to verify playback before running a batch job.
 
-## 2. Generating Field Pronunciation in One Click
+## 2. Generating and Playing Field Pronunciation in One Click
 
-1. In **Editor & Browser** (<kbd>Alt+3</kbd>), place your cursor inside the field containing the word or sentence to pronounce.
-2. Click the **Text-to-Speech (TTS)** icon in the toolbar.
-3. Select the target language and installed or online voice.
-4. The audio file is generated, normalized, and attached automatically as `[sound:filename.mp3]`, ready for Anki Desktop, AnkiWeb, and AnkiMobile.
+1. In **Editor & Browser** (<kbd>Alt+3</kbd>), open a note and click the **Generate Audio Pronunciation (TTS)** speaker icon in the target field's header. If text is highlighted, only the selection is synthesized; otherwise the full field is read (with Cloze tags `{{c1::word}}` cleanly expanded first).
+2. Audio is synthesized using the engine and voice configured in **Settings** (<kbd>Ctrl+,</kbd>) › **Audio & TTS**, cached in your media folder, and appended as an Anki sound tag ready for Anki Desktop, AnkiWeb, and AnkiMobile:
+   - **Edge-TTS**: generates an **`.mp3`** file (`[sound:tts_xxx.mp3]`);
+   - **Piper TTS** and **Kokoro-82M**: generate a **`.wav`** file (`[sound:tts_xxx.wav]`);
+   - **OS System Engine**: generates a **`.wav`** file (or **`.m4a`** on macOS).
+3. Whenever a field contains a `[sound:...]` tag, a **Play / Stop** button appears in its header for instant playback.
 
-## 3. Batch Audio Generation
+## 3. Batch Audio Generation via a DAG Pipeline
 
-Have an entire vocabulary deck without audio? Select multiple cards in the editor table and run **Batch TTS Generation**: AnkiDraft generates audio for all selected cards in the background.
+To attach audio automatically across a batch of newly generated cards, add an **`Audio Generation (TTS)`** (`AUDIO_TTS`) step at the end of your workflow in **Pipelines** (see [Generation Pipelines](/en/cards/dag_et_rag/)). You can configure the source field, target field (append or replace), TTS engine, and voice.
 
 ---
 
@@ -268,21 +276,25 @@ Have an entire vocabulary deck without audio? Select multiple cards in the edito
 URL: https://ankidraft.app/en/cards/dag_et_rag/
 Description: Automate multi-step flashcard creation with DAG pipelines and fill knowledge gaps across your textbooks using local RAG and Smart Coverage tools.
 
-For large textbooks and courses, AnkiDraft combines two engines: **Generation Pipelines** (DAG workflows) and **Smart Coverage** (local RAG alignment).
+For large textbooks and courses, AnkiDraft combines the **DAG Pipelines** editor (directed acyclic workflows) and **Smart Coverage** (local RAG & alignment).
 
-## 1. Automating Multi-Step Workflows (DAG Pipelines)
+## 1. Chaining Up to 6 Step Types in a DAG Pipeline
 
-A pipeline chains multiple steps automatically across your selected chapters:
-1. **Retrieve key passages** from your course material.
-2. **Extract flashcards** matching your target note type.
-3. **Run automatic quality checks** (filtering overly long cards) and **TTS audio generation**.
-4. **Queue cards for human staging review** before saving.
+In the **Pipelines** view, each workflow chains reusable, inspectable steps with cycle safeguards and conditional jumps (`↳ step`):
+- **`RAG_RETRIEVAL` (Vector RAG Search)**: fetches top matching chunks (`top_k`) from an indexed course.
+- **`LLM_PROMPT` (AI Agent)**: generates or audits flashcards with an agent (plus optional **per-step prompt override** without altering the global agent).
+- **`MAP_REDUCE` (Parallel Batch Generation)**: splits and processes dense documents in parallel batches.
+- **`HUMAN_VALIDATION` (Copilot Pause)**: pauses execution so you can approve or refine an intermediate outline before card generation.
+- **`PYTHON_TOOL` (Deterministic Python Tool)**: runs non-LLM transforms (e.g., `clean_html_latex`, `validate_json_schema`, `deduplicate_cards_levenshtein`).
+- **`AUDIO_TTS` (TTS Audio Generation)**: automatically attaches `[sound:...]` pronunciation tags to generated cards.
+
+Three ready-to-use templates (*Standard Course Pipeline*, *Copilot Pipeline with Human Validation*, *High-Precision Map-Reduce & RAG*) are available under **Preset Templates…**, with **step-by-step simulation** (<kbd>Ctrl+Enter</kbd>) and JSON or cross-profile import/export.
 
 ## 2. Spotting Uncovered Chapters (Smart Coverage)
 
 Using local semantic indexing and provenance links (`NoteChunkLinkModel`), AnkiDraft compares your existing flashcards against your entire course:
-- It highlights sections that have zero flashcards yet.
-- You can ask the AI to **generate only the missing cards** without duplicating concepts you have already covered.
+- In **My Documents** (<kbd>Alt+7</kbd>) › **Coverage** or **Analysis & AI Audit** (<kbd>Alt+4</kbd>) › **Documents**, it highlights orphan sections that have zero flashcards yet.
+- Click **Forge Section** (or <kbd>Ctrl+Alt+F</kbd>) to generate only the missing cards without duplicating concepts you already covered.
 
 ---
 
@@ -290,25 +302,69 @@ Using local semantic indexing and provenance links (`NoteChunkLinkModel`), AnkiD
 URL: https://ankidraft.app/en/cards/editeur_notes_katex/
 Description: Write and format Anki flashcards with live KaTeX math preview, cloze deletions, rich media attachments, and full per-note revision history in AnkiDraft.
 
-The AnkiDraft Note Editor (<kbd>Ctrl+2</kbd>) provides a fast writing environment with real-time Anki card preview.
+The **Editor & Browser** view (<kbd>Alt+3</kbd>) combines deck browsing and full note editing with live Anki card preview (<kbd>Ctrl+P</kbd> to toggle preview, <kbd>Ctrl+Alt+T</kbd> to switch between **📝 Notes** and **🗂️ Cards**).
 
 ## 1. Writing Math and Chemistry Formulas (KaTeX)
 
 AnkiDraft renders your LaTeX equations live without waiting for an Anki export:
+- **Quick insert**: click the **KaTeX Formula** toolbar icon or press <kbd>Ctrl+M</kbd>.
 - **Inline formula**: wrap your expression in `\( ... \)` or `$ ... $` (e.g., `$E = mc^2$`).
 - **Centered block formula**: use `\[ ... \]` or `$$ ... $$`.
 - **LaTeX Autocompletion**: type `\` followed by the first letters of a symbol (`\alpha`, `\frac`, `\sum`) to open the completion popup.
 
-## 2. Creating Cloze Deletions
+## 2. Cloze Deletions, Media, and Customizable Toolbar
 
-Cloze cards are great for memorizing precise definitions or short lists:
+Cloze cards are ideal for memorizing precise definitions or key terms:
 1. Highlight the word or phrase you want to hide.
-2. Click the **Cloze** toolbar button to wrap it in `{{c1::your text}}`.
-3. Add an optional hint using `{{c1::answer::hint}}`.
+2. Click **Cloze** or press <kbd>Ctrl+Shift+C</kbd> to insert the next index `{{c1::your text}}` (or with a hint `{{c1::answer::hint}}`).
+3. The toolbar also includes HTML formatting, code blocks, links (<kbd>Ctrl+K</kbd>), image insertion (plus drag-and-drop directly into any field), and toolbar customization via `...`.
+4. Each field header provides a **TTS** speaker button for audio pronunciation, and course-linked notes display **View Course ➔** to jump straight back to the source passage.
 
-## 3. Revision History (Time Machine)
+:::tip[Interactive Diagrams and Charts]
+To mask labels directly on anatomy plates or technical diagrams, use [Smart Image Occlusion (Vision AI)](/en/cards/image-occlusion/).
+:::
 
-Edited a card by mistake? Every save (<kbd>Ctrl+S</kbd>) stores a local snapshot in the note history so you can compare and restore previous wording in one click.
+## 3. Group Editing, Flags, and Bulk Actions
+
+- **Atomic Group Edit** (<kbd>Ctrl+Shift+E</kbd>) & **Targeted Find / Replace** (<kbd>Ctrl+Alt+F</kbd>): add/remove tags (while preserving `source:`, `section:`, `page:` provenance tags) or edit a field across selected notes (*Replace*, *Append*, *Prepend*, *Find and replace*).
+- **Fast organization & AI bulk tools**: apply flags (<kbd>Ctrl+0</kbd> to <kbd>Ctrl+7</kbd>), suspend/unsuspend (<kbd>Ctrl+J</kbd> or <kbd>!</kbd>), move decks (<kbd>Ctrl+D</kbd>), change note type (<kbd>Ctrl+Shift+M</kbd>), clean up tags (**Tag Hygiene & Merge…**), or run **AI Batch Edit** / **Auto-Tagging** on a selection.
+
+## 4. Revision History (Time Machine)
+
+Edited a card by mistake? Every save (<kbd>Ctrl+S</kbd>) stores a local snapshot in the note history: click **History** or press <kbd>Ctrl+H</kbd> to open the **Time Machine**, compare snapshots, and restore previous wording in one click.
+
+---
+
+# [EN] Smart Image Occlusion (Vision AI)
+URL: https://ankidraft.app/en/cards/image-occlusion/
+Description: Create Image Occlusion Enhanced flashcards from anatomy or course diagrams using manual masks, Vision AI label detection, and Hide All or Hide One.
+
+**Smart Image Occlusion** (`Image Occlusion AI`) turns anatomy plates, maps, flowcharts, and scientific diagrams into visual flashcards using the **`Image Occlusion Enhanced`** standard directly inside AnkiDraft.
+
+## 1. Opening a Diagram in the Occlusion Studio
+
+Several direct entry points feed into the occlusion canvas:
+- From **My Documents** (<kbd>Alt+7</kbd>) › **Figures** tab on an imported PDF: launch image occlusion in one click on any extracted diagram.
+- From an **Image Album**: open any scanned plate directly in the occlusion tool ([Image Albums](/en/sources/albums-images/)).
+- Inside the occlusion dialog: click **Change Image…** (`.png`, `.jpg`, `.jpeg`, `.webp`, `.bmp`, `.svg`) or **Paste Image** straight from your clipboard.
+
+## 2. Manual Masking or Vision AI Auto-Detection
+
+1. **Detect with AI**: automatically scans the diagram with a Vision-capable model to place occlusion boxes over labels and fill the **Masks & Labels** table.
+2. **Manual Draw & Adjust**: switch between **Select / Move Mode** and **Draw Mode** to sketch, resize, or delete (<kbd>Delete</kbd>) mask rectangles freely.
+3. Refine **`Text / Answer`** and **`Hint`** entries in the right-hand table and use the zoom controls as needed.
+
+:::note[Vision AI Requirement]
+Automatic label detection requires a **Vision-capable AI engine** (Gemini/OpenAI/Anthropic API or local multimodal Ollama model) configured in **Settings** (<kbd>Ctrl+,</kbd>). Manual mask drawing works 100% offline with zero API keys.
+:::
+
+## 3. Occlusion Modes and Note Generation
+
+Before generating notes into your chosen **Target Deck** (with an optional card header and comma-separated tags such as `image-occlusion`), pick your study mode:
+- **`Hide All, Reveal One (Hide All)`**: best when neighboring labels would otherwise give away the answer. Keep **`Keep other masks hidden on back`** checked to prevent contextual leaks while reviewing.
+- **`Hide One, Reveal One (Hide One)`**: keeps surrounding labels visible when spatial context helps anchor a specific term.
+
+On first use, AnkiDraft automatically provisions the **`Image Occlusion Enhanced`** note type in your collection, ready for `.apkg` export to Anki Desktop, AnkiWeb, and AnkiMobile.
 
 ---
 
@@ -320,39 +376,46 @@ A poorly formulated flashcard (too long, testing multiple facts at once, or lack
 
 AnkiDraft includes a built-in **Pedagogical Linter** based on **Piotr Wozniak's 20 rules of formulating knowledge** (creator of SuperMemo).
 
-## 1. What the Quality Audit Checks
+## 1. Wozniak Audit in Analysis & AI Audit (<kbd>Alt+4</kbd>)
 
-In the **Quality & Audit** view (<kbd>Ctrl+5</kbd>) or right inside the editor, AnkiDraft scores each card and highlights:
-- **Information overload (non-atomicity)**: answers exceeding the recommended word threshold or mixing several independent facts.
-- **Vague or ambiguous prompts**: open-ended questions like *"Describe..."* where the expected answer is unclear.
-- **Blind enumerations**: lists of more than 3 or 4 items that are difficult to recall in order.
-- **Overly broad cloze deletions**: cloze tags hiding an entire sentence instead of a single key concept.
+Open **Analysis & AI Audit** (<kbd>Alt+4</kbd>) › **Wozniak Audit & Linter**, pick a deck, and run the audit (<kbd>Ctrl+Enter</kbd>). AnkiDraft scores the deck out of 100 across **4 weighted categories** (with customizable settings under **Rules**):
+- **Atomicity & Restructuring**: overloaded answers or cards testing multiple independent facts.
+- **Cloze & Unambiguity**: vague prompts or overly broad clozes (plus a dedicated toggle to keep or convert clozes into Q&A).
+- **Disambiguation & Context**: interfering cards that look too similar during recall.
+- **KaTeX Formulas & Clarity**: ambiguous or malformed math expressions.
 
-## 2. Splitting Complex Cards in One Click
+A quick linter dialog can also be launched directly on selected notes inside **Editor & Browser** (<kbd>Alt+3</kbd>).
 
-When a card is flagged as overloaded, click **Split into Atomic Cards**: the assistant proposes breaking it down into 2 or 3 short, focused flashcards that are much easier to retain long-term.
+## 2. Splitting Leeches and Merging Duplicates
+
+- **Split into Atomic Cards**: under **Analysis & AI Audit** (<kbd>Alt+4</kbd>) › **Tokens & SRS** › **Leech Cards Diagnostic**, locate high-lapse cards and click **Split** to generate and apply (via *Two-Phase Commit* preview) a breakdown into 2 or 3 atomic cards.
+- **Duplicate Detection & Merge**: the **Merges & Duplicates** tab (<kbd>Alt+4</kbd>, as well as the quick duplicate scan in `Editor & Browser`) clusters near-identical notes using Levenshtein similarity so you can merge redundant cards safely without losing review history.
 
 ---
 
 # [EN] Note Types, Templates, and CSS Styling
 URL: https://ankidraft.app/en/cards/note-types-and-templates/
-Description: Customize Front/Back and Cloze note types, Jinja2 card templates, and responsive CSS visual styling for Anki Desktop, AnkiWeb, and AnkiMobile.
+Description: Customize note types, HTML/Mustache card templates, AI Role guides, LaTeX headers, CSS snippets, and light/dark styling for Anki Desktop and Web.
 
-AnkiDraft supports all standard Anki note types and lets you customize their visual layout.
+The **Note Types** view (<kbd>Alt+8</kbd>) lets you design, style, preview, and share note types that remain 100% compatible with the Anki ecosystem.
 
-## 1. Built-In Note Types
+## 1. Initial Model, Starter Pack, and Image Occlusion
 
-- **Basic (Front / Back)**: a focused question on the front, the answer and optional lecture notes on the back.
-- **Basic (and reversed card)**: automatically generates cards in both directions (ideal for bilingual vocabulary).
-- **Cloze Deletion**: hides one or more key terms `{{c1::...}}` inside a context sentence.
+- **Clean initial profile**: a blank AnkiDraft profile ships only with a single **`Basic` (`Basique`)** note type (`Front`/`Back` or `Recto`/`Verso`) so your first `.apkg` import never collides with pre-seeded templates.
+- **On-demand Starter Pack**: open **Starter Pack** inside **Note Types** (<kbd>Alt+8</kbd>) to install **`Cloze Deletion`** (`{{cloze:Text}}`) and additional ready-made community models.
+- **`Image Occlusion Enhanced`**: provisioned automatically the first time you open [Smart Image Occlusion](/en/cards/image-occlusion/).
 
-## 2. Customizing Fields and CSS
+## 2. HTML/Mustache Templates, CSS, LaTeX, and Snippets
 
-Add custom fields (e.g., *Source*, *Mnemonic*, *Audio*, *Diagram*) and tweak the card CSS stylesheet with instant preview in both light and dark modes.
+Every note type features **4 sub-tabs** (*CSS Style*, *Front HTML*, *Back HTML*, and **LaTeX** preamble/footer for compilation) alongside a live preview (**light / dark mode** toggle using automatic sample values or a real witness note):
+- Use standard **Anki Mustache** syntax (`{{Front}}`, `{{FrontSide}}`, `{{cloze:Text}}`) and the **Insertion Helpers** drawer (fields, cloze, CSS classes, structure).
+- Browse the **Snippets** library (*Info*, *Warning*, *Error*, *Tip*, *Theorem* callouts, difficulty/exam badges, MCQ grids, code blocks, KaTeX boxes) with automatic CSS conflict detection.
+- Fill in **AI Role** (or the structured **Prompt for AI** table) to tell AI agents exactly how each field should be populated during generation.
 
-## 3. Smart Note Type Reconciliation on Import
+## 3. Import, Export, and Smart Reconciliation
 
-When you import an `.apkg` deck whose note type already exists in your collection, AnkiDraft automatically matches it instead of cluttering your collection with duplicate note types (`Basic-12345`).
+- Import or export note types as `.afmodel` / `.json` (<kbd>Ctrl+Alt+O</kbd> / <kbd>Ctrl+Alt+E</kbd>), or import a model directly from another AnkiDraft profile.
+- When importing an `.apkg` deck whose note type already exists in your collection, AnkiDraft reconciles it cleanly instead of creating duplicate `Basic-12345` models.
 
 ---
 
@@ -1439,9 +1502,9 @@ AnkiDraft sépare clairement la création **ciblée** (un extrait, une saisie li
 ### Option A — Studio de Création (<kbd>Alt+2</kbd>) : ciblé & interactif
 Idéal pour travailler sur **un passage précis**, **une section** ou **une Nouvelle Saisie Libre** (<kbd>Ctrl+N</kbd>) :
 1. Ouvrez **Studio de Création** (<kbd>Alt+2</kbd>).
-2. Dans l'explorateur à gauche, sélectionnez un document/chapitre ou cliquez sur **Nouvelle Saisie Libre** (<kbd>Ctrl+N</kbd>).
-3. Choisissez le modèle de carte (*Basique*, *Texte à trous / Cloze*), le paquet de destination et le moteur IA, puis appuyez sur <kbd>Ctrl+Entrée</kbd>.
-4. Relisez chaque carte une par une avec son aperçu en direct (<kbd>Espace</kbd> pour valider, <kbd>Suppr</kbd> pour rejeter), puis enregistrez (<kbd>Ctrl+S</kbd>).
+2. Dans l'explorateur à gauche, sélectionnez un document/chapitre (avec sa portée) ou cliquez sur **Nouvelle saisie** (<kbd>Ctrl+N</kbd>).
+3. Sous **Cibles Anki** et **Orchestration IA**, sélectionnez le paquet, le type de note, le **Moteur IA** et le **Pipeline d'Agents**, activez si besoin la carte **Vision Multimodale** (badge `ON`/`OFF` selon la compatibilité du moteur) et les **Paramètres Avancés** (*Température*, *Max Tokens*), puis appuyez sur <kbd>Ctrl+Entrée</kbd>.
+4. Relisez les propositions avec l'aperçu en direct (<kbd>Espace</kbd> ou <kbd>V</kbd> pour valider, <kbd>Suppr</kbd>, <kbd>Retour</kbd> ou <kbd>R</kbd> pour rejeter, <kbd>E</kbd> pour éditer, <kbd>Alt+Gauche</kbd> / <kbd>Alt+Droite</kbd> pour naviguer, ou **Tout accepter** en 1 clic), puis enregistrez (<kbd>Ctrl+S</kbd>).
 
 ### Option B — Batch Factory (<kbd>Alt+6</kbd>) : usine de production par lots
 Idéal pour traiter **plusieurs chapitres ou plusieurs documents** en file d'attente :
@@ -1449,19 +1512,25 @@ Idéal pour traiter **plusieurs chapitres ou plusieurs documents** en file d'att
 2. Cliquez sur **Composer le lot…** (<kbd>Ctrl+N</kbd>) pour découper vos documents ([Cibler les chapitres](/fr/sources/scope-and-slices/)) :
    - **Mode Direct** : chaque section cochée produit une tâche dédiée.
    - **Mode Automatique** : regroupe ou découpe les sections selon leur longueur.
-3. Choisissez le type de carte, le paquet Anki cible et lancez la file (<kbd>Ctrl+Entrée</kbd>). En cas d'incident sur une tranche, utilisez **Reprendre le lot** sans tout relancer.
-4. Validez l'ensemble des cartes produites dans le panneau **Staging** avant enregistrement.
+3. Réglez vos cibles et options (**Vision (PDF)**, **Validation auto**, **Document complet par chunks**, *Paramètres Avancés*), puis lancez la file (<kbd>Ctrl+Entrée</kbd>). En cas d'incident sur une tranche, utilisez **Reprendre le Lot** sans tout relancer.
+4. Contrôlez les cartes générées dans l'onglet **Revue** en bas de fenêtre (<kbd>Alt+Haut</kbd> / <kbd>Alt+Bas</kbd> pour changer de tranche) avant enregistrement.
 
-## 2. Personnaliser le style des cartes (Personas)
+## 2. Adapter le comportement de l'IA (Agents & Pipelines)
 
-Vous pouvez adapter le ton et l'exigence de l'IA selon votre domaine d'étude :
-- **Sciences & Médecine** : définitions précises, mécanismes physiopathologiques, valeurs de référence.
-- **Droit & Sciences humaines** : notions clés, distinctions conceptuelles, dates et arrêts.
-- **Langues & Vocabulaire** : exemples contextualisés, expressions idiomatiques et prononciation.
+Le comportement rédactionnel de l'IA dépend du **Pipeline d'Agents** sélectionné dans le Studio ou Batch Factory et configuré dans **Éditeur d'Agents** (<kbd>Alt+9</kbd>). AnkiDraft embarque des modèles spécialisés prêts à cloner et ajuster :
+- **Générateur Atomique Wozniak** et **Générateur Auto-Cloze** (textes à trous ciblés) ;
+- **Spécialiste Médical & Anatomie** (mécanismes physiopathologiques, clinique, anatomie) ;
+- **Formules Scientifiques & KaTeX** (dérivations et notations mathématiques) ;
+- **Professeur de Langues & Vocabulaire** (exemples contextualisés, nuances, prononciation) ;
+- **Droit, Normes & Jurisprudence** (notions clés, arrêts, distinctions conceptuelles).
+
+:::tip[Directives par type de note]
+Vous pouvez également renseigner un **Rôle IA** (ou un tableau sémantique via **Prompt pour l'IA**) directement sur un type de note dans **Types de note** (<kbd>Alt+8</kbd>) pour guider le remplissage exact de chaque champ.
+:::
 
 ## 3. Revue humaine avant enregistrement (Staging)
 
-Aucune carte générée par l'IA n'est ajoutée aveuglément à votre collection : toutes les propositions arrivent dans la file de **Revue (Staging)** où vous pouvez les accepter, les modifier ou les rejeter en un clic.
+Aucune carte générée par l'IA n'est ajoutée aveuglément à votre collection : toutes les propositions arrivent dans la file de revue (**Studio** ou onglet **Revue** du Batch Factory) où vous pouvez les valider, les modifier ou les rejeter avant l'enregistrement final (<kbd>Ctrl+S</kbd>).
 
 ---
 
@@ -1481,16 +1550,18 @@ Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) › **Audio & TTS** avant votre premi
 
 Testez le rendu avec **Tester la voix sélectionnée** avant de lancer un traitement par lot.
 
-## 2. Générer la prononciation d'un champ en un clic
+## 2. Générer et écouter la prononciation d'un champ en un clic
 
-1. Dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), placez votre curseur dans le champ contenant le mot ou la phrase à prononcer.
-2. Cliquez sur l'icône **Synthèse vocale (TTS)** dans la barre d'outils.
-3. Choisissez la langue et la voix naturelle souhaitée parmi les voix installées ou disponibles.
-4. Le fichier audio est généré, normalisé et attaché automatiquement à votre carte sous la forme `[sound:fichier.mp3]` compatible avec Anki Desktop, AnkiWeb et AnkiMobile.
+1. Dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), ouvrez une note et cliquez sur le bouton **Générer la prononciation audio (TTS)** (icône haut-parleur dans l'en-tête du champ concerné). Si vous avez surligné une portion de texte, seule la sélection est synthétisée ; sinon, tout le champ est lu (les balises Cloze `{{c1::mot}}` sont développées proprement avant synthèse).
+2. Le fichier audio est généré avec le moteur et la voix configurés dans **Paramètres** (<kbd>Ctrl+,</kbd>) › **Audio & TTS**, mis en cache dans vos médias et attaché au champ sous la forme d'une balise Anki compatible avec Anki Desktop, AnkiWeb et AnkiMobile :
+   - **Edge-TTS** : produit un fichier **`.mp3`** (`[sound:tts_xxx.mp3]`) ;
+   - **Piper TTS** et **Kokoro-82M** : produisent un fichier **`.wav`** (`[sound:tts_xxx.wav]`) ;
+   - **Moteur Système OS** : produit un fichier **`.wav`** (ou **`.m4a`** sous macOS).
+3. Dès qu'une balise `[sound:...]` est présente dans un champ, un bouton **Lecture / Stop** apparaît dans son en-tête pour réécouter immédiatement l'extrait.
 
-## 3. Génération audio en lot
+## 3. Génération audio en lot via un Pipeline DAG
 
-Vous avez un paquet entier de vocabulaire sans audio ? Sélectionnez plusieurs cartes dans la table d'édition et lancez la **Génération TTS par lot** : AnkiDraft sonorise toutes les cartes sélectionnées en arrière-plan.
+Pour sonoriser automatiquement tout un lot de cartes lors de leur création, ajoutez une étape **`Génération Audio (TTS)`** (`AUDIO_TTS`) à la suite de votre pipeline dans **Pipelines** (voir [Pipelines de génération](/fr/cards/dag_et_rag/)). Vous pouvez y préciser le champ source, le champ cible (ajout en fin de champ ou remplacement), le moteur et la voix souhaités.
 
 ---
 
@@ -1498,21 +1569,25 @@ Vous avez un paquet entier de vocabulaire sans audio ? Sélectionnez plusieurs c
 URL: https://ankidraft.app/fr/cards/dag_et_rag/
 Description: Automatisez la création de cartes par étapes avec les pipelines DAG et comblez les lacunes de vos cours grâce au RAG local et Smart Coverage.
 
-Pour les cours volumineux, AnkiDraft combine deux moteurs complémentaires : les **Pipelines de génération** (workflows DAG) et la **Couverture intelligente** (RAG & Smart Coverage).
+Pour les cours volumineux, AnkiDraft combine l'éditeur de **Pipelines DAG** (workflows en graphe dirigé acyclique) et la **Couverture intelligente** (RAG local & Smart Coverage).
 
-## 1. Enchaîner plusieurs étapes automatiquement (Pipeline DAG)
+## 1. Enchaîner jusqu'à 6 types d'étapes dans un Pipeline DAG
 
-Un pipeline vous permet d'enchaîner automatiquement plusieurs actions sur vos chapitres :
-1. **Recherche des passages clés** dans votre cours.
-2. **Extraction des flashcards** selon le modèle de carte choisi.
-3. **Vérification qualité automatique** (filtrage des cartes trop longues) et **génération audio TTS**.
-4. **Passage en revue humaine** avant validation finale.
+Dans la vue **Pipelines**, chaque workflow combine des étapes réutilisables et inspectables avec garde-fou anti-cycles et branchements conditionnels (`↳ étape`) :
+- **`RAG_RETRIEVAL` (Recherche RAG Vectorielle)** : extrait les passages pertinents d'un document indexé (`top_k`).
+- **`LLM_PROMPT` (Agent IA)** : génère ou audite des cartes avec un agent (et possibilité de **surcharge locale de prompt** propre à cette étape sans modifier l'agent global).
+- **`MAP_REDUCE` (Génération Parallèle par Lots)** : découpe et traite de longs contenus par tranches parallèles.
+- **`HUMAN_VALIDATION` (Pause Copilote)** : interrompt le pipeline pour vous faire valider ou ajuster un plan intermédiaire avant de forger les cartes.
+- **`PYTHON_TOOL` (Outil Python Déterministe)** : exécute un traitement sans LLM (ex. `clean_html_latex`, `validate_json_schema`, `deduplicate_cards_levenshtein`).
+- **`AUDIO_TTS` (Génération Audio TTS)** : ajoute automatiquement la prononciation audio `[sound:...]` sur chaque carte générée.
+
+Trois modèles prêts à l'emploi (*Pipeline Standard Cours*, *Pipeline Copilote avec Validation Humaine*, *Pipeline Haute Précision Map-Reduce & RAG*) sont proposés via **Modèles Prédéfinis…**, avec **simulation pas-à-pas** (<kbd>Ctrl+Entrée</kbd>) et import/export JSON ou inter-profils.
 
 ## 2. Détecter les chapitres oubliés (Smart Coverage)
 
 Grâce à l'indexation sémantique locale de vos documents et aux liens de provenance (`NoteChunkLinkModel`), AnkiDraft compare vos cartes existantes à l'intégralité de votre cours :
-- Il met en évidence les sections qui ne possèdent encore aucune flashcard.
-- Vous pouvez demander à l'IA de **générer uniquement les cartes manquantes** sans dupliquer celles que vous avez déjà créées.
+- Dans **My Documents** (<kbd>Alt+7</kbd>) › onglet **Couverture** ou dans **Analyse & Audit IA** (<kbd>Alt+4</kbd>) › **Documents**, il met en évidence les sections orphelines sans aucune flashcard.
+- Cliquez sur **Forger la section** (ou <kbd>Ctrl+Alt+F</kbd>) pour générer uniquement les cartes manquantes sur ces passages sans créer de doublons.
 
 ---
 
@@ -1520,25 +1595,69 @@ Grâce à l'indexation sémantique locale de vos documents et aux liens de prove
 URL: https://ankidraft.app/fr/cards/editeur_notes_katex/
 Description: Rédigez et mettez en forme vos flashcards avec aperçu mathématique KaTeX en direct, occlusions Cloze, médias et historique complet des révisions.
 
-L'éditeur de notes d'AnkiDraft (<kbd>Ctrl+2</kbd>) vous offre un confort d'écriture immédiat avec prévisualisation en temps réel du rendu Anki.
+La vue **Édition & Navigateur** (<kbd>Alt+3</kbd>) réunit la navigation dans vos paquets et l'édition complète de vos notes avec prévisualisation Anki en temps réel (<kbd>Ctrl+P</kbd> pour afficher/masquer l'aperçu, <kbd>Ctrl+Alt+T</kbd> pour basculer entre **📝 Notes** et **🗂️ Cartes**).
 
 ## 1. Écrire des formules mathématiques et chimiques (KaTeX)
 
 AnkiDraft affiche instantanément vos équations LaTeX sans attendre l'export vers Anki :
+- **Insertion rapide** : utilisez le bouton **Formule KaTeX** de la barre d'outils ou le raccourci <kbd>Ctrl+M</kbd>.
 - **Formule en ligne** : entourez votre expression de `\( ... \)` ou `$ ... $` (ex. `$E = mc^2$`).
 - **Formule en bloc centré** : utilisez `\[ ... \]` ou `$$ ... $$`.
 - **Autocomplétion LaTeX** : tapez `\` suivi des premières lettres d'un symbole (`\alpha`, `\frac`, `\sum`) pour afficher la liste des commandes disponibles.
 
-## 2. Créer des textes à trous (Cloze)
+## 2. Textes à trous (Cloze), médias et barre personnalisable
 
-Les cartes à trous sont idéales pour mémoriser une définition précise ou une énumération courte :
+Les cartes à trous sont idéales pour mémoriser une définition précise ou un terme clé :
 1. Sélectionnez le mot ou l'expression à masquer dans votre texte.
-2. Appuyez sur le bouton **Cloze** de la barre d'outils pour insérer automatiquement `{{c1::votre texte}}`.
-3. Vous pouvez ajouter un indice optionnel avec la syntaxe `{{c1::réponse::indice}}`.
+2. Cliquez sur **Trou Cloze** ou appuyez sur <kbd>Ctrl+Shift+C</kbd> pour insérer automatiquement l'indice suivant `{{c1::votre texte}}` (avec indice optionnel `{{c1::réponse::indice}}`).
+3. La barre d'outils propose aussi la mise en forme HTML, les blocs de code, les liens (<kbd>Ctrl+K</kbd>), l'insertion d'images (ou glisser-déposer direct dans un champ) et la personnalisation des boutons via `...`.
+4. Chaque champ possède également un bouton **TTS** pour générer sa prononciation audio, et les notes liées à un cours affichent le bouton **Voir le cours ➔** pour rouvrir le passage source exact.
 
-## 3. Historique de révision (Time Machine)
+:::tip[Schémas et diagrammes interactifs]
+Pour masquer directement les légendes d'une figure médicale ou technique, passez par le [Masquage d'Images Intelligent (Image Occlusion IA)](/fr/cards/image-occlusion/).
+:::
 
-Vous avez modifié une carte par erreur ? Chaque enregistrement (<kbd>Ctrl+S</kbd>) conserve une version dans l'historique local de la note : vous pouvez comparer et restaurer une formulation antérieure en un clic.
+## 3. Édition groupée, drapeaux et actions en masse
+
+- **Édition groupée atomique** (<kbd>Ctrl+Shift+E</kbd>) & **Rechercher / remplacer ciblé** (<kbd>Ctrl+Alt+F</kbd>) : ajoutez/retirez des tags (tout en préservant les tags de provenance `source:`, `section:`, `page:`) ou modifiez un champ sur tout un lot (*Remplacer par*, *Suffixer*, *Préfixer*, *Rechercher et remplacer*).
+- **Actions rapides de navigation & tri** : posez des drapeaux Anki (<kbd>Ctrl+0</kbd> à <kbd>Ctrl+7</kbd>), suspendez/réactivez (<kbd>Ctrl+J</kbd> ou <kbd>!</kbd>), déplacez vers un paquet (<kbd>Ctrl+D</kbd>), changez de type de note (<kbd>Ctrl+Shift+M</kbd>), nettoyez vos tags (**Hygiène et fusion des tags…**) ou lancez l'**Édition groupée IA** / **Auto-Tagging** sur une sélection.
+
+## 4. Historique de révision (Time Machine)
+
+Vous avez modifié une carte par erreur ? Chaque enregistrement (<kbd>Ctrl+S</kbd>) conserve une version dans l'historique local de la note : cliquez sur **Historique** ou appuyez sur <kbd>Ctrl+H</kbd> pour ouvrir la **Machine à Remonter le Temps**, comparer et restaurer une version antérieure en un clic.
+
+---
+
+# [FR] Masquage d'Images Intelligent (Image Occlusion IA)
+URL: https://ankidraft.app/fr/cards/image-occlusion/
+Description: Créez des flashcards Image Occlusion Enhanced sur vos schémas et planches avec tracé manuel, détection Vision IA et modes Hide All ou Hide One.
+
+Le **Masquage d'Images Intelligent** (`Image Occlusion IA`) transforme vos schémas d'anatomie, cartes de géographie, organigrammes ou graphiques en flashcards visuelles au standard **`Image Occlusion Enhanced`**, sans quitter AnkiDraft.
+
+## 1. Ouvrir une image dans l'atelier d'occlusion
+
+Plusieurs points d'entrée directs alimentent l'atelier :
+- Depuis **My Documents** (<kbd>Alt+7</kbd>) › onglet **Figures** d'un PDF importé : lancez l'occlusion en 1 clic sur n'importe quel schéma extrait.
+- Depuis un **Album d'images** : ouvrez directement une planche numérisée dans l'outil d'occlusion ([Albums d'images](/fr/sources/albums-images/)).
+- Depuis la fenêtre d'occlusion : utilisez **Changer d'image…** (`.png`, `.jpg`, `.jpeg`, `.webp`, `.bmp`, `.svg`) ou **Coller l'image** directement depuis le presse-papier.
+
+## 2. Masquage manuel ou détection par Vision IA
+
+1. **Détecter avec l'IA** : cliquez sur ce bouton pour laisser un modèle compatible Vision repérer automatiquement toutes les légendes et annotations de votre image et pré-remplir le tableau **Masques & Légendes**.
+2. **Tracé et ajustement manuel** : basculez entre l'outil **Mode Sélection / Déplacement** et **Mode Tracé** pour dessiner, redimensionner ou supprimer (<kbd>Suppr</kbd>) des rectangles de masquage.
+3. Affinez si besoin les colonnes **`Texte / Réponse`** et **`Indice`** dans le panneau latéral droit, puis ajustez le zoom.
+
+:::note[Prérequis Vision IA]
+La détection automatique des légendes nécessite un moteur IA compatible **Vision** (API Gemini/OpenAI/Anthropic ou modèle multimodal local via Ollama) configuré dans **Paramètres** (<kbd>Ctrl+,</kbd>). Le tracé manuel des masques fonctionne intégralement hors-ligne sans aucune clé API.
+:::
+
+## 3. Modes d'occlusion et création des notes
+
+Avant de générer vos notes dans le **Paquet cible** de votre choix (avec un titre d'en-tête et vos tags, ex. `image-occlusion`), choisissez la stratégie pédagogique adaptée :
+- **`Masquer tout, révéler un (Hide All)`** : idéal quand les autres étiquettes du schéma risquent de vous souffler la réponse. Cochez **`Garder les autres masques fermés au verso`** pour éviter toute fuite d'indice contextuel lors de la vérification.
+- **`Masquer un, révéler un (Hide One)`** : laisse le reste du schéma visible pour situer un élément précis dans son contexte global.
+
+Au premier usage, AnkiDraft initialise automatiquement le modèle de note **`Image Occlusion Enhanced`** dans votre collection, compatible avec l'export `.apkg` vers Anki Desktop, AnkiWeb et AnkiMobile.
 
 ---
 
@@ -1550,39 +1669,46 @@ Une mauvaise flashcard (trop longue, contenant plusieurs questions à la fois ou
 
 AnkiDraft intègre un **Linter pédagogique** inspiré des **20 règles de formulation des connaissances de Piotr Wozniak** (créateur de SuperMemo).
 
-## 1. Ce que vérifie l'audit qualité
+## 1. Audit Wozniak dans Analyse & Audit IA (<kbd>Alt+4</kbd>)
 
-Dans la vue **Qualité & Audit** (<kbd>Ctrl+5</kbd>) ou directement dans l'éditeur, AnkiDraft attribue un score de santé à chaque carte et signale :
-- **La surcharge d'information (non-atomicité)** : une réponse qui dépasse le seuil recommandé ou qui mélange plusieurs idées distinctes.
-- **Les questions vagues ou ambiguës** : questions ouvertes du type *« Parlez de… »* qui ne permettent pas de savoir quelle réponse précise est attendue.
-- **Les énumérations aveugles** : listes de plus de 3 ou 4 éléments difficiles à restituer dans l'ordre.
-- **Les cartes à trous trop larges** : clozes qui masquent une phrase entière au lieu d'un concept précis.
+Dans la vue **Analyse & Audit IA** (<kbd>Alt+4</kbd>) › onglet **Audit & Linter Wozniak**, sélectionnez un paquet puis lancez l'analyse (<kbd>Ctrl+Entrée</kbd>). AnkiDraft attribue un score sur 100 et regroupe les anomalies en **4 catégories** (dont les règles peuvent être activées ou ajustées via **Règles**) :
+- **Atomicité & Restructuration** : réponses surchargées ou mélangeant plusieurs faits distincts.
+- **Cloze & Univoque** : questions vagues ou textes à trous masquant trop d'éléments (avec un interrupteur dédié pour conserver ou convertir les Clozes).
+- **Désambiguïsation & Contexte** : cartes trop proches qui créent des interférences mnésiques.
+- **Formules & Clarté KaTeX** : expressions mathématiques ambiguës ou mal délimitées.
 
-## 2. Scinder une carte complexe en un clic
+Un linter rapide est également accessible directement depuis **Édition & Navigateur** (<kbd>Alt+3</kbd>) sur une sélection de notes.
 
-Lorsqu'une carte est signalée comme trop dense, cliquez sur **Scinder en cartes atomiques** : l'assistant vous propose de la découper en 2 ou 3 cartes courtes et indépendantes, beaucoup plus faciles à mémoriser sur le long terme.
+## 2. Scinder les cartes sangsues (Leeches) et fusionner les doublons
+
+- **Scinder en cartes atomiques** : dans **Analyse & Audit IA** (<kbd>Alt+4</kbd>) › onglet **Jetons & SRS** › **Diagnostic des Cartes Sangsues (Leeches)**, repérez vos cartes à fort taux d'échecs et cliquez sur **Scinder** pour générer puis appliquer (avec aperçu *Two-Phase Commit*) leur découpage en 2 ou 3 cartes atomiques.
+- **Détection & fusion des doublons** : l'onglet **Fusions & Doublons** (<kbd>Alt+4</kbd>, ainsi que le scan rapide depuis `Édition & Navigateur`) regroupe les quasi-doublons par similarité de Levenshtein afin de fusionner les notes redondantes sans perdre votre historique.
 
 ---
 
 # [FR] Modèles de Cartes, Gabarits et Styles CSS
 URL: https://ankidraft.app/fr/cards/note-types-and-templates/
-Description: Personnalisez vos types de notes Recto/Verso et Cloze, vos gabarits Jinja2 et votre mise en forme CSS pour Anki Desktop, AnkiWeb et AnkiMobile.
+Description: Personnalisez vos types de notes, gabarits HTML/Mustache, directives Rôle IA, préambules LaTeX et styles CSS pour Anki Desktop, AnkiWeb et Mobile.
 
-AnkiDraft prend en charge tous les types de notes d'Anki et vous permet d'adapter leur présentation visuelle.
+La vue **Types de note** (<kbd>Alt+8</kbd>) permet de concevoir, styliser et partager des modèles de cartes 100 % compatibles avec l'écosystème Anki.
 
-## 1. Les types de notes prêts à l'emploi
+## 1. Modèle initial, Starter Pack et Image Occlusion
 
-- **Basique (Recto / Verso)** : une question ciblée au recto, la réponse et un mémo de cours optionnel au verso.
-- **Basique (et carte inversée)** : génère automatiquement la carte dans les deux sens (idéal pour le vocabulaire bilingue).
-- **Texte à trous (Cloze)** : masque un ou plusieurs termes clés `{{c1::...}}` au sein d'une phrase de contexte.
+- **À la création d'un profil vierge** : AnkiDraft n'injecte volontairement qu'un unique modèle **`Basique`** (`Recto` / `Verso`) afin d'éviter tout conflit lors d'un premier import `.apkg`.
+- **Starter Pack à la demande** : ouvrez le **Starter Pack** dans **Types de note** (<kbd>Alt+8</kbd>) pour installer **`Texte à trous (Cloze)`** (`{{cloze:Texte}}`) et d'autres modèles communautaires prêts à l'emploi.
+- **`Image Occlusion Enhanced`** : créé automatiquement dès votre première session dans le [Masquage d'Images Intelligent](/fr/cards/image-occlusion/).
 
-## 2. Personnaliser les champs et le style CSS
+## 2. Gabarits HTML/Mustache, CSS, LaTeX et Snippets
 
-Vous pouvez ajouter des champs personnalisés (ex. *Source*, *Moyen mnémotechnique*, *Audio*, *Illustration*) et ajuster la feuille de style CSS de vos cartes avec un aperçu immédiat en mode clair et en mode sombre.
+Chaque type de note dispose de **4 sous-onglets** (*Style CSS*, *HTML Recto*, *HTML Verso*, et **LaTeX** pour les préambules/fins de compilation) accompagnés d'un aperçu en direct (bascule **mode clair / mode sombre** sur données d'exemple automatiques ou sur une note témoin réelle) :
+- Utilisez la syntaxe **Mustache d'Anki** (`{{Recto}}`, `{{FrontSide}}`, `{{cloze:Texte}}`) et le panneau **Aides d'insertion** (champs, Cloze, classes CSS, structure).
+- Piochez dans l'onglet **Snippets** (encadrés *Info*, *Attention*, *Erreur*, *Astuce*, *Théorème*, badges de difficulté/examen, grilles QCM, blocs de code, cadres KaTeX) avec détection automatique des conflits CSS.
+- Renseignez le **Rôle IA** (ou le tableau guidé **Prompt pour l'IA**) pour indiquer aux agents comment remplir chaque champ lors de la génération.
 
-## 3. Réconciliation intelligente à l'import
+## 3. Import, Export et Réconciliation intelligente
 
-Lorsque vous importez un paquet `.apkg` contenant un type de note déjà présent dans votre collection, AnkiDraft le reconnaît automatiquement sans créer de doublon de modèle (`Basique-12345`).
+- Importez ou exportez vos modèles au format `.afmodel` / `.json` (<kbd>Ctrl+Alt+O</kbd> / <kbd>Ctrl+Alt+E</kbd>) ou importez un type de note depuis un autre profil AnkiDraft.
+- Lors de l'import d'un paquet `.apkg`, AnkiDraft adopte ou réconcilie intelligemment les types de notes existants pour éviter de multiplier les doublons (`Basique-12345`).
 
 ---
 
