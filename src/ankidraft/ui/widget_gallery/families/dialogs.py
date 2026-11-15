@@ -48,6 +48,7 @@ from ankidraft.ui.dialogs.doc_reader_dialog import DocReaderDialog
 from ankidraft.ui.dialogs.document_scope_dialog import DocumentScopeDialog
 from ankidraft.ui.dialogs.export_dialog import ExportDialog
 from ankidraft.ui.dialogs.feedback_dialog import FeedbackDialog
+from ankidraft.ui.dialogs.first_launch_welcome_dialog import FirstLaunchWelcomeDialog, LeaveDemoProfileDialog
 from ankidraft.ui.dialogs.history_modal import HistoryModal
 from ankidraft.ui.dialogs.human_validation_dialog import HumanValidationDialog
 from ankidraft.ui.dialogs.image_occlusion_dialog import ImageOcclusionDialog
@@ -227,6 +228,14 @@ def _make_feedback() -> QWidget:
     )
 
 
+def _make_first_launch_welcome() -> QWidget:
+    return FirstLaunchWelcomeDialog()
+
+
+def _make_leave_demo_profile() -> QWidget:
+    return LeaveDemoProfileDialog()
+
+
 def _make_history_modal() -> QWidget:
     return _GalleryHistoryModal()
 
@@ -373,10 +382,12 @@ DIALOG_FACTORIES: dict[str, Callable[[], QWidget]] = {
     "DocumentScopeDialog": _make_document_scope,
     "ExportDialog": _make_export,
     "FeedbackDialog": _make_feedback,
+    "FirstLaunchWelcomeDialog": _make_first_launch_welcome,
     "HistoryModal": _make_history_modal,
     "HumanValidationDialog": _make_human_validation,
     "ImageOcclusionDialog": _make_image_occlusion,
     "ImportDialog": _make_import,
+    "LeaveDemoProfileDialog": _make_leave_demo_profile,
     "LeechWozniakSplitDialog": _make_leech_wozniak_split,
     "MarkerInstallDialog": _make_marker_install,
     "ModelExportDialog": _make_model_export,
@@ -415,10 +426,12 @@ def dialog_labels() -> dict[str, str]:
         "DocumentScopeDialog": tr("Délimitation de la portée"),
         "ExportDialog": tr("Export Anki (.apkg)"),
         "FeedbackDialog": tr("Retours et suggestions"),
+        "FirstLaunchWelcomeDialog": tr("Accueil premier lancement"),
         "HistoryModal": tr("Historique d'une carte"),
         "HumanValidationDialog": tr("Validation humaine du pipeline"),
         "ImageOcclusionDialog": tr("Masquage d'images"),
         "ImportDialog": tr("Import Anki (.apkg)"),
+        "LeaveDemoProfileDialog": tr("Quitter l'Exemple d'introduction"),
         "LeechWozniakSplitDialog": tr("Scission Wozniak d'une sangsue"),
         "MarkerInstallDialog": tr("Installation de Marker OCR"),
         "ModelExportDialog": tr("Export d'un type de note"),

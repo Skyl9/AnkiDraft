@@ -55,12 +55,14 @@ from ankidraft.utils.ssl_certificates import setup_ssl_certificates
 setup_ssl_certificates()
 
 from dotenv import load_dotenv
-from PySide6.QtCore import QCoreApplication, QTranslator
+from PySide6.QtCore import QCoreApplication, QTimer, QTranslator
 
 os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--disable-logging --log-level=3 --disable-skia-graphite"
 os.environ["QT_LOGGING_RULES"] = "qt.webenginecontext.*=false"
 # ruff : noqa: E402
 import argparse
+from collections.abc import Callable
+from typing import Any
 
 from PySide6.QtGui import QFont, QIcon
 from PySide6.QtWidgets import QApplication
@@ -69,6 +71,32 @@ from ankidraft.services.profile_manager import ProfileManager
 from ankidraft.ui.widgets.profile_selector import ProfileSelectorDialog
 
 _installed_translator: QTranslator | None = None
+
+
+def resolve_first_launch_action(
+    pm: ProfileManager,
+    dialog_factory: Callable[[], Any] | None = None,
+) -> tuple[str, bool] | None:
+    """Affiche l'accueil initial (3 portes) et crée le profil retenu.
+
+    Returns:
+        ``(profile_id, open_import_on_start)`` ou ``None`` si l'utilisateur annule.
+    """
+    from ankidraft.database.seeds.demo_seed import INTRO_PROFILE_ID
+    from ankidraft.ui.dialogs.first_launch_welcome_dialog import FirstLaunchWelcomeDialog
+
+    dialog = dialog_factory() if dialog_factory is not None else FirstLaunchWelcomeDialog()
+    if dialog.exec() != FirstLaunchWelcomeDialog.DialogCode.Accepted:
+        return None
+
+    choice, target_name = dialog.get_selection()
+    if choice == FirstLaunchWelcomeDialog.CHOICE_EXPLORE:
+        pm.create_profile(INTRO_PROFILE_ID)
+        return INTRO_PROFILE_ID, False
+
+    chosen_profile = target_name or "default"
+    pm.create_profile(chosen_profile)
+    return chosen_profile, (choice == FirstLaunchWelcomeDialog.CHOICE_IMPORT)
 
 
 def parse_cli_args(argv: list[str] | None = None) -> tuple[argparse.Namespace, list[str]]:
@@ -269,11 +297,17 @@ def main(argv: list[str] | None = None) -> None:
     default_profile = str(settings.value("profiles/default_startup_profile", "default"))
 
     selected_profile = "default"
+    open_import_on_start = False
+    is_first_launch_session = False
     if known_args.profile:
         selected_profile = known_args.profile
     elif not profiles:
-        pm.create_profile("default")
-        selected_profile = "default"
+        first_choice = resolve_first_launch_action(pm)
+        if first_choice is None:
+            shutdown_logging()
+            sys.exit(0)
+        selected_profile, open_import_on_start = first_choice
+        is_first_launch_session = True
     elif len(profiles) == 1:
         selected_profile = profiles[0]
     elif auto_open and default_profile in profiles:
@@ -332,6 +366,10 @@ def main(argv: list[str] | None = None) -> None:
     backup_database(keep_last=5)
     run_migrations()
     seed_initial_data()
+    from ankidraft.database.seeds.demo_seed import INTRO_PROFILE_ID, seed_intro_example_data
+
+    if selected_profile == INTRO_PROFILE_ID:
+        seed_intro_example_data()
     # Migrer les libellés de drapeaux legacy (SettingsService JSON) vers ProfileFlagLabelModel
     from ankidraft.services.cards.flag_service import FlagService
 
@@ -344,8 +382,10 @@ def main(argv: list[str] | None = None) -> None:
     plugin_mgr = get_plugin_manager()
     plugin_mgr.load_all_addons()
 
-    window = MainWindow(ai_manager, selected_profile)
+    window = MainWindow(ai_manager, selected_profile, is_first_launch_session=is_first_launch_session)
     window.show()
+    if open_import_on_start:
+        QTimer.singleShot(0, window._open_import_dialog)
 
     # Re-indexation migratoire en arrière-plan des documents indexés avec une ancienne
     # stratégie de structuration (nécessite chunk_strategy_version == 0 ou absent).
