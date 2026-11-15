@@ -569,11 +569,11 @@ def test_settings_modal_exposes_developer_tab_only_in_dev_mode(qtbot):
     modal = SettingsModal()
     qtbot.addWidget(modal)
     assert modal.dev_tab is not None, "Le mode développement doit exposer l'onglet Développeur"
-    assert modal.stacked_widget.count() == 10
+    assert modal.stacked_widget.count() == 11
 
     with patch("ankidraft.ui.widgets.settings_modal.modal.is_development", return_value=False):
         standard = SettingsModal()
         qtbot.addWidget(standard)
 
         assert standard.dev_tab is None, "Hors mode développement, l'onglet Développeur doit être absent"
-        assert standard.stacked_widget.count() == 9
+        assert standard.stacked_widget.count() == 10

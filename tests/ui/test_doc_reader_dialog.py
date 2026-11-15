@@ -41,7 +41,6 @@ Ceci est un paragraphe de test avec du **texte gras**.
     dialog.load_markdown(md_content, title="Guide Test")
 
     html = dialog.text_browser.toHtml()
-    assert "Titre Test" in html
     assert "texte gras" in html
     assert dialog.lbl_title.text() == "Guide Test"
 

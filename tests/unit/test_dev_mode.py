@@ -71,8 +71,9 @@ def test_fake_repositories_non_empty():
     assert len(FakeNoteRepository().list_all()) > 0
 
 
-def test_is_dev_mode_via_env_var_without_set_environment():
-    os.environ["ANKIFORGE_ENV"] = "development"
+def test_is_dev_mode_via_env_var_without_set_environment(monkeypatch):
+    monkeypatch.delenv("ANKIDRAFT_ENV", raising=False)
+    monkeypatch.setenv("ANKIFORGE_ENV", "development")
     import ankidraft.utils.environment as env_mod
 
     env_mod._current_env = None

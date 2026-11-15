@@ -1646,9 +1646,6 @@ def test_mcp_garde_fou_shortcuts_activation(qtbot, sample_note) -> None:
     qtbot.addWidget(widget)
     widget.show()
 
-    assert hasattr(widget, "_shortcut_apply")
-    assert hasattr(widget, "_shortcut_reject")
-
     patch = StagedPatchRegistry.create_patch(
         patch_type="card",
         target_id=sample_note.id,
@@ -1663,10 +1660,10 @@ def test_mcp_garde_fou_shortcuts_activation(qtbot, sample_note) -> None:
     widget.reload_pending_patches()
     assert widget.count() == 1
 
-    # Déclenchement de l'action de validation via le slot du raccourci
+    # Déclenchement de l'action de validation via Ctrl+Entrée (keyPressEvent)
     applied_signals: list[str] = []
     widget.patch_applied.connect(applied_signals.append)
-    widget._shortcut_apply.activated.emit()
+    qtbot.keyClick(widget, Qt.Key.Key_Return, Qt.KeyboardModifier.ControlModifier)
 
     assert len(applied_signals) == 1
     assert applied_signals[0] == patch.patch_id

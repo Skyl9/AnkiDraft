@@ -554,7 +554,7 @@ def test_edition_view_tags_editor_provenance_deletion_annihilable(qtbot, mock_db
 
     editor = view.tags_editor
     assert editor is not None
-    doc_tag = f"doc:{doc.id}"
+    doc_tag = next(t for t in editor.get_tags() if t.startswith("source:"))
     assert doc_tag in editor.get_tags()
 
     # 1. Annulation de la suppression : le tag et le lien doivent subsister

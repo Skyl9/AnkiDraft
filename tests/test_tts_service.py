@@ -505,12 +505,12 @@ def test_tts_service_fallback_on_edge_tts_failure(tmp_path: Path) -> None:
     service._providers["piper"] = MockSuccessFallbackProvider()
 
     # La synthèse doit réussir via le repli Piper
-    tag, path = service.synthesize("Bonjour le monde", engine="edge-tts")
+    tag, path = service.synthesize("Bonjour le monde fallback edge", engine="edge-tts")
 
     assert tag.startswith("[sound:")
     assert tag.endswith(".wav]")  # Piper produit du WAV
     assert path.exists()
-    assert path.read_bytes() == b"FALLBACK_AUDIO_DATA_FOR_Bonjour le monde"
+    assert path.read_bytes() == b"FALLBACK_AUDIO_DATA_FOR_Bonjour le monde fallback edge"
 
 
 def test_tts_service_fallback_chain_exhausted_raises(tmp_path: Path) -> None:

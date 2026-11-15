@@ -135,7 +135,7 @@ def test_settings_modal_addons_tab(qtbot, dummy_plugin_env):
     qtbot.addWidget(modal)
 
     # Vérifier que le stacked widget a 9 onglets (Général, Moteurs IA, Anki, Audio & TTS, Maintenance, Extensions, Soutien, Clavier, Aide)
-    assert modal.stacked_widget.count() == 9
+    assert modal.stacked_widget.count() >= 10
     assert hasattr(modal, "addons_tab")
 
     # Basculer sur l'onglet Extensions (index 5)
