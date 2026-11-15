@@ -3,21 +3,25 @@ title: Selecting Chapters and Tracking Coverage
 description: Choose which textbook sections or pages to study, exclude appendices non-destructively, and monitor your course coverage bar in real time today.
 ---
 
-Textbooks and handouts often include a table of contents, preface, or bibliography that you do not want to turn into flashcards. AnkiDraft gives you fine-grained control over your study scope.
+Textbooks and handouts often contain a preface, table of contents, or bibliography you do not want to memorize. AnkiDraft separates non-destructive document delimitation from your generation slicing mode.
 
-## 1. Three Exclusive Scope Modes
+## 1. Delimiting and Excluding Pages in `My Documents`
 
-When preparing a flashcard generation batch, slice your document using one of three modes:
-- **By Sections**: check specific sub-sections from the document outline.
-- **By Pages**: specify a page range (e.g., pages 12 to 28).
-- **By Chapters**: select whole chapters in a single click.
+From **My Documents** (`<kbd>Alt+7</kbd>`), click **Delimit Pages** (or toggle **Exclude this page** while reading):
+- Excluded regions (`node:`, `heading:`, `page:`) are **never deleted** from your source file and remain toggleable at any time.
+- They are skipped automatically during AI generation and removed from your coverage denominator.
 
-## 2. Excluding Out-of-Scope Sections
+## 2. Three Strictly Exclusive Generation Scope Modes
 
-You can **exclude** non-essential sections such as prefaces or acknowledgments:
-- Excluded sections are never deleted from your source document (you can re-enable them anytime).
-- They are skipped during AI card generation and removed from your coverage denominator.
+When launching a generation batch in **Creation Studio** (`<kbd>Alt+2</kbd>`) or **Batch Factory** (`<kbd>Alt+6</kbd>` › **Compose Batch…**), pick one of three mutually exclusive scope modes:
+- **Pages**: entire document or a custom page range (e.g., pages 12–28).
+- **Chapters**: select full top-level chapters.
+- **Sections**: target specific sub-sections from the outline.
 
-## 3. Monitoring Smart Coverage
+## 3. Inspector Tabs and Smart Coverage
 
-Every flashcard generated from a course passage stays linked to its source section. In the **Documents** view, a visual progress bar shows which chapters are already covered by flashcards and which ones still need attention.
+In **My Documents**, the right-hand Inspector gives you 4 live tabs — **Coverage**, **RAG**, **Outline**, and **Figures** — so you can track section-by-section coverage, click **Forge Section** on gaps, or run **Synchronize Cards** to re-align provenance links.
+
+:::tip[Neutralizing a Section in Knowledge Gaps Audit]
+During an audit in **Analysis & AI Audit** (`<kbd>Alt+4</kbd>`) › **Sources**, you can also click **Neutralize this section** to omit non-exam containers (such as administrative syllabi) from your domain coverage score without altering the document.
+:::

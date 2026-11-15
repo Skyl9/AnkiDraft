@@ -820,25 +820,65 @@ This page lists the default keyboard shortcuts in AnkiDraft. You can customize a
 
 ---
 
+# [EN] Image Albums, Photo Scans, and Vision OCR
+URL: https://ankidraft.app/en/sources/albums-images/
+Description: Combine whiteboard photos, scanned handouts, and diagrams in an Image Album, transcribe pages with Vision AI, index in RAG, and forge flashcards.
+
+Took photos of the lecture whiteboard, snapped handwritten study sheets, or collected loose anatomy plates? In **My Documents** (<kbd>Alt+7</kbd>), **Image Albums** keep your visuals organized page by page so you can clean, transcribe with Vision AI, and turn them into flashcards.
+
+## 1. Creating and Organizing an Image Album
+
+1. Open **My Documents** (<kbd>Alt+7</kbd>) and click **Create an Image Album** (or **Create album** on the empty view).
+2. Enter a title, select a target folder, and pick the initial sort order:
+   - **Natural alphanumeric sort** (`page_1`, `page_2`…)
+   - **EXIF capture date** (camera chronological order)
+   - **Raw import order**
+3. Inside the album viewer, each plate includes quick actions: reorder left/right, **rotate 90°**, **inspect / crop**, delete, or append new files (**Add images**).
+
+## 2. Transcribing the Album with Vision AI
+
+1. Click **Transcribe album…** in the album toolbar.
+2. Select a **multimodal Vision-capable engine** (such as `Google Gemini 3.5 Flash Lite` or a local Ollama vision model; AnkiDraft warns when a selected engine cannot read images).
+3. Target the exact plates to process:
+   - **Entire album**
+   - **Untranscribed plates only**
+   - **Stale plates** (modified or rotated since the last OCR pass)
+   - **Custom range** (e.g., `1-5, 8, 12-15`)
+4. Pick the **Image data type** and optional formatting guidance. If any page hits a network or quota limit, use **Retry failures** instead of re-running the whole album.
+
+## 3. Visual RAG, PDF Compilation, and Flashcards
+
+- **Visual RAG**: indexes your plates and diagrams in FAISS for multimodal semantic search.
+- **Compile to PDF**: merges all album pages (preserving rotations and crops) into a single readable PDF.
+- **Forge Cards**: opens the album directly in **Creation Studio** (<kbd>Alt+2</kbd>), or launch **Image Occlusion** from the inspector to mask diagram labels.
+
+:::tip
+Using Claude Code, Cursor, or Antigravity with zero API key? The `ingestion-albums-visuels` Skill in `~/ankiforge_agentique` can transcribe and structure album plates before staging flashcards in **Safeguard & Validation** (<kbd>Alt+5</kbd>).
+:::
+
+---
+
 # [EN] Document Hub and Multimodal Formats
 URL: https://ankidraft.app/en/sources/hub_multimodal/
-Description: Overview of all supported study sources in AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) with local-first parsing and source traceability.
+Description: Overview of supported sources in AnkiDraft — PDF, Web, YouTube, audio, DOCX, PPTX, EPUB, notebooks, code, and Image Albums with full source tracing.
 
-The **Document Hub** centralizes all your study materials in one place and preserves a direct link between every flashcard and the exact paragraph it came from.
+The **My Documents** view (`<kbd>Alt+7</kbd>`) centralizes all your study materials in one place, lets you organize them into folders (via drag-and-drop), import documents from another profile, and preserves a direct link between every flashcard and its exact source passage.
 
 ## 1. Supported Study Sources
 
 | Source Type | Formats | What AnkiDraft Extracts |
 | :--- | :--- | :--- |
-| **PDF Textbooks & Handouts** | `.pdf` | Chapter outline, text, tables, figures, and LaTeX math |
-| **Online Videos** | YouTube URLs | Timestamped subtitles or local speech-to-text transcription |
-| **Audio Recordings** | `.mp3`, `.wav`, `.m4a` | Paragraph-segmented transcript |
-| **Web Articles** | `https://` URLs | Clean article body without ads or navigation clutter |
-| **Office & Ebooks** | `.docx`, `.pptx`, `.epub`, `.md` | Heading hierarchy, lists, and slide notes |
+| **PDF Textbooks & Handouts** | `.pdf` | Chapter outline, text, tables, figures, and LaTeX math (PyMuPDF / pypdf, or Marker OCR on demand) |
+| **Image Albums & Scans** | `.png`, `.jpg`, `.jpeg`, `.webp`, `.bmp`, `.tiff`, `.gif` | Visual spreads, Vision AI transcription, and visual RAG — [see dedicated guide](/en/sources/albums-images/) |
+| **Online Videos** | YouTube URLs | Timestamped subtitles, or audio transcription (`yt-dlp` + Whisper) |
+| **Audio Recordings** | `.mp3`, `.wav`, `.m4a`, `.ogg`, `.flac`, `.aac`, `.wma`, `.webm` | Paragraph-segmented transcript (local Whisper or OpenAI/Groq API) + built-in player |
+| **Web Articles & Wikipedia** | `http://`, `https://` | Clean article body (multi-page merge, MathML → LaTeX, SPA JavaScript rendering) |
+| **Office, Ebooks & Text** | `.docx`, `.pptx`, `.epub`, `.md`, `.txt` | Heading hierarchy, lists, tables, and slide speaker notes |
+| **Notebooks & Source Code** | `.ipynb`, `.py` | Code cells, markdown explanations, docstrings, and structured blocks |
 
 ## 2. Jump Back to the Source in One Click
 
-While reviewing or editing any flashcard in the editor, click **View Source** to jump straight back to the corresponding chapter and paragraph in your original document.
+While reviewing or editing any flashcard in the editor, click **View Course ➔** (`DocumentSourceBadge`) to jump straight back to the corresponding chapter and paragraph in **My Documents**. From the **Coverage** inspector tab, you can also click **Synchronize Cards** to refresh source-to-card coverage alignment.
 
 ---
 
@@ -846,24 +886,33 @@ While reviewing or editing any flashcard in the editor, click **View Source** to
 URL: https://ankidraft.app/en/sources/import-pdf/
 Description: Cleanly extract PDF textbooks, DOCX documents, PPTX slides, and EPUB books with Marker OCR, preserving diagrams, tables, and LaTeX formulas.
 
-The AnkiDraft **Document Hub** turns static study files into structured chapters ready for flashcard generation.
+The **My Documents** view (`<kbd>Alt+7</kbd>`) turns your static files into structured courses ready for flashcard generation, with batch multi-file drag-and-drop and folder organization.
 
 ## 1. Supported File Formats
 
-Drag and drop directly into the **Documents** view:
+Drag and drop one or more files directly into **My Documents** (or click **Import**):
 - **PDF Documents (`.pdf`)**: lecture handouts, academic papers, and textbooks, preserving tables, figures, and LaTeX math equations.
-- **Word Documents (`.docx`) and Slides (`.pptx`)**: extracts headings, bullet points, and speaker notes.
+- **Word Documents (`.docx`) and Slides (`.pptx`)**: extracts headings, bullet points, tables, and speaker notes.
 - **Ebooks (`.epub`) and Markdown / Plain Text (`.md`, `.txt`)**.
+- **Jupyter Notebooks (`.ipynb`) and Python Code (`.py`)**: keeps code blocks and markdown annotations structured.
 
-## 2. Choosing the PDF Extraction Mode
+:::tip[Photos or Scans Without Selectable Text?]
+If your source consists of raw images (book pages, whiteboard photos, handwritten notes), use an **Image Album** directly rather than assembling a PDF manually — [see Image Albums & Vision OCR](/en/sources/albums-images/).
+:::
 
-When importing a PDF, two extraction modes are available depending on your file:
-- **Fast Standard Extraction**: best for clean digital PDFs where text is already selectable.
-- **Advanced OCR & Math Recognition**: recommended for scanned handouts, multi-column layouts, or math-heavy courses.
+## 2. PDF Extraction Modes (`PyMuPDF` / `pypdf` vs `Marker OCR`)
 
-## 3. Keeping Diagrams and Figures
+During import, AnkiDraft uses **Marker OCR** automatically if it is already installed on your machine; otherwise, it performs fast local extraction via **PyMuPDF** (with **pypdf** as fallback).
 
-Figures and diagrams extracted from your documents are automatically saved to your local media library so you can attach them to the front or back of any flashcard in one click.
+After import, the top toolbar lets you switch between **`PDF` / `MD` / `Logs`**, run **Format** or **AI Structure** to refine headings, or launch **Marker OCR** on demand for scanned or math-heavy handouts.
+
+:::note[Marker OCR Installation Prerequisite]
+Marker OCR is optional and installed on demand from the toolbar button. Its local models require approximately **5 GB of free disk space** and an active internet connection for the initial download.
+:::
+
+## 3. Diagrams, Figures, and 1-Click Image Occlusion
+
+Extracted figures and diagrams appear in the **Figures** tab of the right-hand Inspector, which automatically filters out tiny decorative icons. From there, you can attach any figure to a flashcard or launch **Image Occlusion** in a single click.
 
 ---
 
@@ -871,17 +920,25 @@ Figures and diagrams extracted from your documents are automatically saved to yo
 URL: https://ankidraft.app/en/sources/import-web/
 Description: Capture the core educational content of any online article or web documentation page into clean Markdown without ads, menus, or visual clutter.
 
-Studying from online encyclopedias, technical blogs, or web courses? The AnkiDraft Web Importer extracts only the relevant study content.
+Studying from online encyclopedias, Wikipedia, technical blogs, or web documentation? The AnkiDraft Web Importer extracts only the relevant study content into clean Markdown.
 
-## 1. Capturing a Web Page
+## 1. Single or Batch Web Capture
 
-1. In the **Documents** view, click **Import Web Page**.
-2. Paste the article URL (`https://...`).
-3. AnkiDraft automatically strips navigation menus, banners, and ads, keeping only headings, paragraphs, tables, code blocks, and illustrations.
+1. In **My Documents** (`<kbd>Alt+7</kbd>`), click **Import from Web / YouTube** (or paste URLs directly).
+2. Enter one or multiple `http://` / `https://` URLs (**one per line**) and choose a target folder if needed.
+3. Configure extraction options:
+   - **Download images**: locally stores article illustrations so flashcards work offline.
+   - **Merge multi-page articles**: automatically follows `rel="next"` pagination links (from **1 to 10 pages**, default **3**).
+4. AnkiDraft strips menus, banners, and ads, normalizes Wikipedia pages cleanly, and converts MathML equations into **LaTeX** formulas.
 
-## 2. Dynamic Web Pages
+## 2. Dynamic Pages (SPA) and Known Limits
 
-If a page requires JavaScript to render its content (single-page apps or interactive courses), enable **Full Browser Rendering** during import so AnkiDraft waits for the complete page text before extracting it.
+If a site relies on JavaScript to render its content (single-page applications or interactive docs), check **JavaScript rendering for dynamic pages (SPA)** so AnkiDraft loads the DOM via an isolated WebEngine view (with **no persistent cookies**).
+
+:::note[Technical Limits & Access Restrictions]
+- Web downloads are capped at **10 MB** per response.
+- Pages protected by a paywall, login screen, or anti-bot gate (HTTP **401**, **402**, **403**) cannot be fetched automatically; export or save them as PDF/Markdown locally first.
+:::
 
 ---
 
@@ -889,21 +946,26 @@ If a page requires JavaScript to render its content (single-page apps or interac
 URL: https://ankidraft.app/en/sources/import-youtube-audio/
 Description: Turn any YouTube lecture, podcast, or classroom voice recording into timestamped transcripts and atomic Anki flashcards locally on your device.
 
-AnkiDraft lets you build flashcards directly from online video lectures or recorded classroom sessions.
+AnkiDraft lets you turn online video lectures and recorded classroom audio directly into structured transcripts and flashcards.
 
 ## 1. Importing a YouTube Video
 
-1. Open the **Documents** view and click **Import from URL / YouTube**.
-2. Paste the YouTube video link.
-3. AnkiDraft immediately retrieves official or auto-generated subtitles and reconstructs a clean, timestamped transcript organized by topic.
-4. If the video has no subtitles available, AnkiDraft can transcribe the audio stream locally.
+1. Open **My Documents** (`<kbd>Alt+7</kbd>`) and click **Import from Web / YouTube**.
+2. Paste one or more YouTube links (supports batch URLs, one per line).
+3. AnkiDraft retrieves official or auto-generated subtitles first and builds a clean, timestamped transcript.
+4. If no subtitles exist, it can download the audio stream and run speech-to-text transcription.
 
-## 2. Transcribing Audio Files (`.mp3`, `.wav`, `.m4a`)
+## 2. Transcribing Local Audio Files
 
-Recorded a lecture or voice memo?
-1. Drop your audio file into the **Documents** view.
-2. Automatic transcription splits the recording into timestamped paragraphs.
-3. Generate flashcards from the entire recording or pick only the key segments.
+Recorded a lecture, seminar, or voice memo?
+1. Drop any supported audio file (`.mp3`, `.wav`, `.m4a`, `.ogg`, `.flac`, `.aac`, `.wma`, `.webm`) into **My Documents**.
+2. Listen back inside the built-in **Audio Player** directly above the transcript.
+3. Run **AI Structure** from the toolbar to reorganize raw speech into clear study sections before generating cards.
+
+:::note[Prerequisites for Audio & No-Subtitle YouTube Transcription]
+- **With YouTube subtitles**: works out of the box, no extra tool required.
+- **Audio files or YouTube videos without subtitles**: requires **either a local Whisper binary** (`whisper` / `whisper-cli`) **or an OpenAI / Groq API key** configured in **Settings (`Ctrl+,`) > AI Engines**. Downloading YouTube audio streams also requires **`yt-dlp`** on your system.
+:::
 
 ---
 
@@ -911,24 +973,28 @@ Recorded a lecture or voice memo?
 URL: https://ankidraft.app/en/sources/scope-and-slices/
 Description: Choose which textbook sections or pages to study, exclude appendices non-destructively, and monitor your course coverage bar in real time today.
 
-Textbooks and handouts often include a table of contents, preface, or bibliography that you do not want to turn into flashcards. AnkiDraft gives you fine-grained control over your study scope.
+Textbooks and handouts often contain a preface, table of contents, or bibliography you do not want to memorize. AnkiDraft separates non-destructive document delimitation from your generation slicing mode.
 
-## 1. Three Exclusive Scope Modes
+## 1. Delimiting and Excluding Pages in `My Documents`
 
-When preparing a flashcard generation batch, slice your document using one of three modes:
-- **By Sections**: check specific sub-sections from the document outline.
-- **By Pages**: specify a page range (e.g., pages 12 to 28).
-- **By Chapters**: select whole chapters in a single click.
+From **My Documents** (`<kbd>Alt+7</kbd>`), click **Delimit Pages** (or toggle **Exclude this page** while reading):
+- Excluded regions (`node:`, `heading:`, `page:`) are **never deleted** from your source file and remain toggleable at any time.
+- They are skipped automatically during AI generation and removed from your coverage denominator.
 
-## 2. Excluding Out-of-Scope Sections
+## 2. Three Strictly Exclusive Generation Scope Modes
 
-You can **exclude** non-essential sections such as prefaces or acknowledgments:
-- Excluded sections are never deleted from your source document (you can re-enable them anytime).
-- They are skipped during AI card generation and removed from your coverage denominator.
+When launching a generation batch in **Creation Studio** (`<kbd>Alt+2</kbd>`) or **Batch Factory** (`<kbd>Alt+6</kbd>` › **Compose Batch…**), pick one of three mutually exclusive scope modes:
+- **Pages**: entire document or a custom page range (e.g., pages 12–28).
+- **Chapters**: select full top-level chapters.
+- **Sections**: target specific sub-sections from the outline.
 
-## 3. Monitoring Smart Coverage
+## 3. Inspector Tabs and Smart Coverage
 
-Every flashcard generated from a course passage stays linked to its source section. In the **Documents** view, a visual progress bar shows which chapters are already covered by flashcards and which ones still need attention.
+In **My Documents**, the right-hand Inspector gives you 4 live tabs — **Coverage**, **RAG**, **Outline**, and **Figures** — so you can track section-by-section coverage, click **Forge Section** on gaps, or run **Synchronize Cards** to re-align provenance links.
+
+:::tip[Neutralizing a Section in Knowledge Gaps Audit]
+During an audit in **Analysis & AI Audit** (`<kbd>Alt+4</kbd>`) › **Sources**, you can also click **Neutralize this section** to omit non-exam containers (such as administrative syllabi) from your domain coverage score without altering the document.
+:::
 
 ---
 
@@ -2143,25 +2209,66 @@ Tous les raccourcis listés ci-dessous peuvent être visualisés, recherchés et
 
 ---
 
+# [FR] Albums d'Images, Scans Photo et OCR Vision
+URL: https://ankidraft.app/fr/sources/albums-images/
+Description: Rassemblez photos de tableaux, scans et schémas dans un Album d'Images, transcrivez-les en Markdown par IA vision, indexez en RAG et créez vos cartes.
+
+Vous avez pris en photo le tableau de l’amphithéâtre, photographié des fiches manuscrites ou récupéré des planches d’anatomie en vrac ? Dans **My Documents** (<kbd>Alt+7</kbd>), les **Albums d’images** regroupent vos visuels page par page pour les organiser, les transcrire par IA vision et en tirer des flashcards.
+
+## 1. Créer et organiser un Album d'images
+
+1. Ouvrez **My Documents** (<kbd>Alt+7</kbd>) et cliquez sur l’icône **Créer un Album d’images** (ou **Créer un album** dans l’état vide).
+2. Donnez un titre, choisissez le dossier de classement et l’ordre de tri initial :
+   - **Tri alphanumérique naturel** (`page_1`, `page_2`…)
+   - **Date de prise de vue EXIF** (ordre chronologique de votre appareil photo)
+   - **Ordre d’importation brut**
+3. Une fois l’album ouvert, chaque planche dispose d’actions rapides : déplacer à gauche/droite, **tourner de 90°**, **inspecter / recadrer**, supprimer ou ajouter de nouvelles images (**Ajouter des images**).
+
+## 2. Transcrire l'album en Markdown par IA vision
+
+1. Cliquez sur **Transcrire l’album…** dans la barre d’outils de l’album.
+2. Choisissez un moteur compatible **Vision multimodale** (ex. `Google Gemini 3.5 Flash Lite` ou un modèle local vision sous Ollama ; AnkiDraft bloque et signale les modèles texte seuls).
+3. Ciblez précisément les planches à traiter :
+   - **Tout l’album**
+   - **Planches non transcrites uniquement**
+   - **Planches périmées** (modifiées ou pivotées depuis la dernière transcription)
+   - **Intervalle personnalisé** (ex. `1-5, 8, 12-15`)
+4. Précisez le **Type de donnée d’image** (type de planches/documents) et vos consignes. Si certaines pages échouent (quota ou réseau), cliquez simplement sur **Relancer les échecs**.
+
+## 3. Exploiter vos planches : RAG visuel, PDF et Flashcards
+
+- **RAG Visuel** : indexe les planches et schémas dans FAISS pour interroger l’album via la recherche sémantique.
+- **Compiler en PDF** : assemble toutes les pages (avec leurs rotations et recadrages) en un document PDF de lecture unique.
+- **Forger des cartes** : envoie l’album directement vers le Studio de Création (<kbd>Alt+2</kbd>) ou lancez une **occlusion d’image** depuis l’inspecteur pour masquer des légendes de schémas.
+
+:::tip
+Vous travaillez sans clé API avec Claude Code, Cursor ou Antigravity ? Le Skill `ingestion-albums-visuels` de votre espace `~/ankiforge_agentique` sait inspecter et structurer vos planches avant de les soumettre au **Garde-Fou & Validation** (<kbd>Alt+5</kbd>).
+:::
+
+---
+
 # [FR] Hub Documentaire et Formats Multimodaux
 URL: https://ankidraft.app/fr/sources/hub_multimodal/
-Description: Vue d'ensemble des sources supportées dans AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) avec extraction locale et traçabilité complète des cartes.
+Description: Vue d'ensemble des sources dans AnkiDraft : PDF, Web, YouTube, audio, DOCX, PPTX, EPUB, notebooks, code et Albums d'images avec traçabilité complète.
 
-Le **Hub Documentaire** centralise tous vos supports d'étude au même endroit et conserve le lien entre chaque flashcard et le paragraphe exact dont elle est issue.
+La vue **My Documents** (<kbd>Alt+7</kbd>) centralise tous vos supports d'étude au même endroit, organisés en **dossiers** (avec glisser-déposer et **import depuis un autre profil**), et conserve le lien entre chaque flashcard et le passage exact dont elle est issue.
 
 ## 1. Tous vos supports au même endroit
 
 | Type de support | Formats | Ce qu'AnkiDraft extrait |
 | :--- | :--- | :--- |
 | **Cours et livres PDF** | `.pdf` | Plan des chapitres, texte, tableaux, figures et formules LaTeX |
-| **Vidéos en ligne** | Liens YouTube | Sous-titres horodatés ou transcription vocale automatique |
-| **Enregistrements audio** | `.mp3`, `.wav`, `.m4a` | Transcription segmentée par paragraphes |
-| **Pages web** | URLs `https://` | Corps de l'article épuré des menus et publicités |
-| **Bureautique & Ebooks** | `.docx`, `.pptx`, `.epub`, `.md` | Structure hiérarchique des titres et listes |
+| **Albums d'images** | Images groupées (`.png`, `.jpg`, `.webp`…) | Classement par planches, rotation/recadrage, transcription OCR par IA vision et RAG visuel ([Albums d'Images](/fr/sources/albums-images/)) |
+| **Vidéos en ligne** | Liens YouTube (`youtube.com`, `youtu.be`) | Sous-titres horodatés ou transcription vocale (via `yt-dlp` + Whisper) |
+| **Enregistrements audio** | `.mp3`, `.wav`, `.m4a`, `.ogg`, `.flac`, `.aac` (`.wma`, `.webm`) | Transcription segmentée par paragraphes + lecteur audio intégré |
+| **Pages web & Wikipédia** | URLs `http://` / `https://` | Corps de l'article épuré, formules MathML → LaTeX et images en option |
+| **Bureautique, Ebooks & Code** | `.docx`, `.pptx`, `.epub`, `.md`, `.txt`, `.ipynb`, `.py` | Structure hiérarchique des titres, listes, cellules de notebooks et code Python |
 
 ## 2. Retrouver la source d'une carte en un clic
 
-Lorsque vous relisez ou modifiez une carte dans l'éditeur, un bouton **Voir la source** vous ramène immédiatement au chapitre et au paragraphe correspondants dans votre document d'origine.
+Lorsque vous relisez ou modifiez une carte dans **Édition & Navigateur** (<kbd>Alt+3</kbd>), le bandeau de traçabilité affiche le document et le fil d'Ariane : cliquez sur **`Voir le cours ➔`** pour revenir immédiatement au passage correspondant dans **My Documents**.
+
+À l'inverse, dans l'Inspecteur droit de **My Documents** (onglet **Couverture**), le bouton **Synchroniser les cartes** permet de rattacher a posteriori vos fiches existantes portant des tags `source:`, `section:` ou `page:`.
 
 ---
 
@@ -2169,24 +2276,35 @@ Lorsque vous relisez ou modifiez une carte dans l'éditeur, un bouton **Voir la 
 URL: https://ankidraft.app/fr/sources/import-pdf/
 Description: Extrayez proprement vos cours PDF, DOCX, PPTX et EPUB avec Marker OCR en préservant les schémas, tableaux et formules mathématiques LaTeX complexes.
 
-Le **Hub Documentaire** d'AnkiDraft transforme vos supports de cours statiques en chapitres structurés prêts pour la création de flashcards.
+La vue **My Documents** (<kbd>Alt+7</kbd>) d'AnkiDraft transforme vos supports de cours statiques en chapitres structurés prêts pour la création de flashcards.
 
 ## 1. Formats de fichiers pris en charge
 
-Vous pouvez glisser-déposer directement dans la vue **Documents** :
+Cliquez sur **Importer** ou glissez-déposez un ou plusieurs fichiers directement dans **My Documents** (import multiple avec barre de progression et bouton d'annulation) :
 - **Documents PDF (`.pdf`)** : polycopiés de cours, articles scientifiques et livres, avec extraction des tableaux, images et formules mathématiques en syntaxe LaTeX.
 - **Documents Word (`.docx`) et Présentations (`.pptx`)** : récupération des titres, listes à puces et notes de diapositives.
-- **Livres numériques (`.epub`) et fichiers Markdown / Texte (`.md`, `.txt`)**.
+- **Livres numériques (`.epub`), Markdown / Texte (`.md`, `.txt`), Notebooks Jupyter (`.ipynb`) et code Python (`.py`)**.
 
-## 2. Choisir la méthode d'extraction PDF
+:::tip
+Vous avez plutôt des photos de tableau, de fiches manuscrites ou de planches ? Utilisez la vue dédiée [Albums d'Images & OCR Vision](/fr/sources/albums-images/).
+:::
 
-Lors de l'import d'un PDF, deux modes sont disponibles selon la nature de votre document :
-- **Extraction standard rapide** : idéale pour les PDF numériques propres dont le texte est sélectionnable.
-- **Reconnaissance avancée (OCR & Formules)** : recommandée pour les polycopiés scannés, les mises en page sur plusieurs colonnes ou les cours riches en équations mathématiques.
+## 2. Extraction standard vs Marker OCR (PDF)
 
-## 3. Conserver les schémas et illustrations
+À l'import d'un PDF, AnkiDraft adopte automatiquement la meilleure méthode disponible sur votre ordinateur :
+- **Extraction standard automatique** (**PyMuPDF** avec repli **pypdf**) : lancée immédiatement si Marker OCR n'est pas installé, idéale pour les PDF numériques dont le texte est déjà sélectionnable.
+- **Marker OCR (Deep Learning & LaTeX)** : si vous importez un polycopié scanné, une mise en page multi-colonnes ou un cours riche en formules mathématiques, cliquez ensuite sur le bouton **`Marker OCR`** dans la barre d'outils du document pour relancer l'extraction haute fidélité.
 
-Les figures et schémas extraits de vos documents sont automatiquement enregistrés dans votre bibliothèque média : vous pouvez les insérer en un clic sur le recto ou le verso de vos cartes, ou créer des cartes d'occlusion d'image.
+:::note
+Lors de la première utilisation de **Marker OCR**, AnkiDraft vous informe avant téléchargement : le moteur installe un environnement Python dédié avec PyTorch et ses modèles locaux, ce qui nécessite environ **5 Go d'espace disque disponible** et une connexion Internet active pour l'installation initiale (tout s'exécute ensuite 100 % hors-ligne).
+:::
+
+## 3. Lire, nettoyer et exploiter les schémas
+
+Dans l'espace central de **My Documents**, vous disposez :
+- De la bascule de vue **`PDF` / `MD` / `Logs`** (visualiseur PDF natif, éditeur Markdown/KaTeX et console d'extraction).
+- Des outils **`Formater`** (correction des césures OCR, KaTeX, tables GFM) et **`Structurer IA`** (réorganisation d'un texte brut en plan clair).
+- De l'onglet **Figures** dans l'Inspecteur droit : AnkiDraft filtre automatiquement les petites icônes décoratives et enregistre les vrais schémas et graphiques dans votre bibliothèque média pour les insérer dans une carte ou lancer directement une **occlusion d'image**.
 
 ---
 
@@ -2196,15 +2314,20 @@ Description: Capturez le contenu utile d'un article en ligne ou d'une documentat
 
 Vous révisez à partir d'articles encyclopédiques, de blogs techniques ou de cours publiés en ligne ? L'importateur web d'AnkiDraft extrait uniquement le contenu pédagogique pertinent.
 
-## 1. Capturer une page web
+## 1. Capturer une ou plusieurs pages web
 
-1. Dans la vue **Documents**, cliquez sur **Importer une page Web**.
-2. Collez l'adresse (`https://...`) de l'article souhaité.
-3. AnkiDraft nettoie automatiquement les menus de navigation, bannières et publicités pour ne conserver que les titres, paragraphes, tableaux, blocs de code et illustrations de l'article.
+1. Dans **My Documents** (<kbd>Alt+7</kbd>), cliquez sur l'icône **Importer depuis le Web / YouTube** (ou sur **Importer depuis le Web** dans l'état vide).
+2. Collez une ou plusieurs URLs (`https://...`, **une par ligne**) puis choisissez le dossier de destination.
+3. Ajustez les options selon l'article :
+   - **Télécharger les images** : enregistre les illustrations dans les médias du profil et les lie dans le Markdown.
+   - **Fusionner les articles multi-pages** : suit automatiquement les liens `page suivante` (`rel=next`, de 1 à 10 pages, 3 par défaut).
+   - **Rendu JavaScript si page dynamique (SPA)** : utilise le moteur Web intégré (sans cookies persistants) lorsque la page charge son texte en JavaScript.
+4. Prévisualisez le contenu nettoyé (menus, bandeaux et publicités supprimés, formules MathML converties en LaTeX, extraction dédiée pour Wikipédia) puis importez.
 
-## 2. Pages web dynamiques
+## 2. Sites protégés et limites techniques
 
-Si la page nécessite l'exécution de JavaScript pour afficher son contenu (sites modernes ou cours interactifs), activez l'option **Rendu navigateur complet** lors de l'import : AnkiDraft attendra le chargement complet du texte avant de l'extraire.
+- AnkiDraft applique une limite de **10 Mo** par page et signale clairement les blocages rencontrés (authentification `HTTP 401`, paywall `HTTP 402`, protection anti-bot / Cloudflare `HTTP 403`).
+- Les cours hébergés derrière un portail universitaire authentifié ou un paywall doivent être enregistrés localement (ex. *Imprimer en PDF* depuis votre navigateur) puis importés comme PDF dans **My Documents**.
 
 ---
 
@@ -2216,17 +2339,22 @@ AnkiDraft vous permet de créer des flashcards directement à partir de cours vi
 
 ## 1. Importer une vidéo YouTube
 
-1. Ouvrez la vue **Documents** et cliquez sur **Importer depuis une URL / YouTube**.
-2. Collez le lien de la vidéo YouTube.
-3. AnkiDraft récupère instantanément les sous-titres disponibles (manuels ou automatiques) et reconstitue un texte fluide découpé par thématiques avec ses repères temporels.
-4. Si la vidéo ne possède aucun sous-titre, AnkiDraft peut transcrire la piste audio localement.
+1. Ouvrez **My Documents** (<kbd>Alt+7</kbd>) et cliquez sur **Importer depuis le Web / YouTube**.
+2. Collez le lien de la vidéo YouTube (`youtube.com/watch...` ou `youtu.be/...`).
+3. Si la vidéo possède des sous-titres (manuels ou automatiques), AnkiDraft les récupère immédiatement et reconstitue un texte fluide découpé par thématiques avec ses repères temporels.
+4. **Si la vidéo n'a aucun sous-titre**, AnkiDraft peut télécharger la piste audio via **`yt-dlp`** et la transcrire avec **Whisper** (voir prérequis ci-dessous).
 
-## 2. Transcrire un fichier audio (`.mp3`, `.wav`, `.m4a`)
+## 2. Transcrire un fichier audio (`.mp3`, `.wav`, `.m4a`, `.ogg`, `.flac`, `.aac`…)
 
 Vous avez enregistré un cours magistral ou un mémo vocal ?
-1. Glissez votre fichier audio dans la vue **Documents**.
-2. La transcription automatique découpe l'enregistrement en paragraphes horodatés.
-3. Vous pouvez ensuite générer des cartes sur l'ensemble de l'enregistrement ou uniquement sur les passages clés.
+1. Glissez votre fichier audio dans **My Documents** (formats acceptés : `.mp3`, `.wav`, `.m4a`, `.ogg`, `.flac`, `.aac`, `.wma`, `.webm`).
+2. La transcription automatique découpe l'enregistrement en paragraphes horodatés, et un **lecteur audio intégré** s'affiche au-dessus de l'éditeur pour réécouter les passages.
+3. Au besoin, cliquez sur **Structurer IA** pour transformer la retranscription brute en véritable plan de cours hiérarchisé avant de générer vos cartes.
+
+:::note
+**Prérequis pour la transcription vocale (audio ou YouTube sans sous-titres) :**
+La récupération des sous-titres YouTube fonctionne sans outil externe. En revanche, pour transcrire un flux audio (fichier audio local ou vidéo sans sous-titres nécessitant `yt-dlp`), AnkiDraft utilise **soit** un binaire **Whisper local** installé sur votre poste (`whisper` ou `whisper-cli`), **soit** une clé API **OpenAI** ou **Groq** (même gratuite) renseignée dans **Paramètres (<kbd>Ctrl+,</kbd>) > Moteurs IA**.
+:::
 
 ---
 
@@ -2236,22 +2364,33 @@ Description: Sélectionnez précisément les sections ou pages à étudier, éca
 
 Un livre ou un polycopié contient souvent un sommaire, une préface ou une bibliographie sur lesquels vous ne souhaitez pas créer de flashcards. AnkiDraft vous donne un contrôle total sur le périmètre de votre cours.
 
-## 1. Trois modes de sélection du périmètre
+## 1. Délimiter en amont dans My Documents (exclusion réversible)
 
-Lors de la préparation d'une génération de cartes, vous pouvez découper votre document selon trois modes exclusifs :
-- **Par sections** : cochez précisément les sous-parties du plan du document.
-- **Par pages** : indiquez une plage de pages (ex. pages 12 à 28).
-- **Par chapitres** : sélectionnez des chapitres entiers d'un seul clic.
+Dans **My Documents** (<kbd>Alt+7</kbd>), cliquez sur **Délimiter les pages** dans la barre d'outils du document :
+- Vous pouvez écarter une préface, une bibliographie ou utiliser le bouton **Exclure cette page** sur les diapositives inutiles.
+- **Rien n'est jamais supprimé** de votre document d'origine : vous pouvez réactiver n'importe quelle page ou section à tout moment.
+- Les parties exclues sont automatiquement ignorées lors de l'indexation RAG et de la création de cartes, et retirées du dénominateur de couverture.
 
-## 2. Écarter les parties hors programme
+## 2. Cibler la portée au moment de générer
 
-Vous pouvez **écarter** (exclure) une section comme l'avant-propos ou les remerciements :
-- La section n'est jamais supprimée de votre document original (vous pouvez la réactiver à tout moment).
-- Elle est simplement ignorée par le générateur IA et retirée du calcul de votre pourcentage de couverture.
+Lorsque vous lancez une génération dans **Studio de Création** (<kbd>Alt+2</kbd>) ou que vous découpez un lot dans **Batch Factory** (<kbd>Alt+6</kbd> › *Composer le lot…*), vous travaillez selon trois modes **strictement exclusifs** :
+- **Pages** : tout le document utile ou une plage précise (ex. pages 12 à 28).
+- **Chapitres** : sélectionnez des chapitres entiers d'un seul clic.
+- **Sections** : cochez précisément les sous-parties de l'arborescence.
 
-## 3. Suivre votre jauge de couverture (Smart Coverage)
+Dès que vous cliquez sur un onglet ou cochez un élément d'une catégorie, AnkiDraft bascule dessus et neutralise les sélections des autres catégories pour éviter tout filtrage croisé involontaire.
 
-Chaque carte créée à partir d'un passage du cours reste liée à sa section d'origine. Dans la vue **Documents**, une jauge visuelle vous montre immédiatement quels chapitres sont déjà couverts par des flashcards et lesquels restent à ficher.
+## 3. Inspecteur droit, Neutralisation et Couverture (Smart Coverage)
+
+Chaque carte créée à partir d'un cours reste reliée à sa section d'origine. Dans **My Documents**, ouvrez l'**Inspecteur droit** (bouton d'en-tête) pour accéder à **4 onglets** :
+- **Couverture** : jauge en temps réel, filtre (*Toutes les sections*, *Couvertes*, *Non couvertes*), bouton **Synchroniser les cartes** et **Forger la section**.
+- **RAG** : bouton **Indexer (RAG)** dans la barre d'outils et recherche sémantique FAISS locale.
+- **Plan** : navigation rapide et insertion de table des matières.
+- **Figures** : galerie des schémas détectés pour lancer des occlusions d'image.
+
+:::tip
+Dans **Analyse & Audit IA** (<kbd>Alt+4</kbd>) > onglet **Sources**, le bouton **Neutraliser cette section** permet aussi de retirer une section du calcul de pourcentage de couverture sans sortir son contenu du document.
+:::
 
 ---
 

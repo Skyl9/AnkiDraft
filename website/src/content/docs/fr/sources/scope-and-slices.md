@@ -5,19 +5,30 @@ description: Sélectionnez précisément les sections ou pages à étudier, éca
 
 Un livre ou un polycopié contient souvent un sommaire, une préface ou une bibliographie sur lesquels vous ne souhaitez pas créer de flashcards. AnkiDraft vous donne un contrôle total sur le périmètre de votre cours.
 
-## 1. Trois modes de sélection du périmètre
+## 1. Délimiter en amont dans My Documents (exclusion réversible)
 
-Lors de la préparation d'une génération de cartes, vous pouvez découper votre document selon trois modes exclusifs :
-- **Par sections** : cochez précisément les sous-parties du plan du document.
-- **Par pages** : indiquez une plage de pages (ex. pages 12 à 28).
-- **Par chapitres** : sélectionnez des chapitres entiers d'un seul clic.
+Dans **My Documents** (<kbd>Alt+7</kbd>), cliquez sur **Délimiter les pages** dans la barre d'outils du document :
+- Vous pouvez écarter une préface, une bibliographie ou utiliser le bouton **Exclure cette page** sur les diapositives inutiles.
+- **Rien n'est jamais supprimé** de votre document d'origine : vous pouvez réactiver n'importe quelle page ou section à tout moment.
+- Les parties exclues sont automatiquement ignorées lors de l'indexation RAG et de la création de cartes, et retirées du dénominateur de couverture.
 
-## 2. Écarter les parties hors programme
+## 2. Cibler la portée au moment de générer
 
-Vous pouvez **écarter** (exclure) une section comme l'avant-propos ou les remerciements :
-- La section n'est jamais supprimée de votre document original (vous pouvez la réactiver à tout moment).
-- Elle est simplement ignorée par le générateur IA et retirée du calcul de votre pourcentage de couverture.
+Lorsque vous lancez une génération dans **Studio de Création** (<kbd>Alt+2</kbd>) ou que vous découpez un lot dans **Batch Factory** (<kbd>Alt+6</kbd> › *Composer le lot…*), vous travaillez selon trois modes **strictement exclusifs** :
+- **Pages** : tout le document utile ou une plage précise (ex. pages 12 à 28).
+- **Chapitres** : sélectionnez des chapitres entiers d'un seul clic.
+- **Sections** : cochez précisément les sous-parties de l'arborescence.
 
-## 3. Suivre votre jauge de couverture (Smart Coverage)
+Dès que vous cliquez sur un onglet ou cochez un élément d'une catégorie, AnkiDraft bascule dessus et neutralise les sélections des autres catégories pour éviter tout filtrage croisé involontaire.
 
-Chaque carte créée à partir d'un passage du cours reste liée à sa section d'origine. Dans la vue **Documents**, une jauge visuelle vous montre immédiatement quels chapitres sont déjà couverts par des flashcards et lesquels restent à ficher.
+## 3. Inspecteur droit, Neutralisation et Couverture (Smart Coverage)
+
+Chaque carte créée à partir d'un cours reste reliée à sa section d'origine. Dans **My Documents**, ouvrez l'**Inspecteur droit** (bouton d'en-tête) pour accéder à **4 onglets** :
+- **Couverture** : jauge en temps réel, filtre (*Toutes les sections*, *Couvertes*, *Non couvertes*), bouton **Synchroniser les cartes** et **Forger la section**.
+- **RAG** : bouton **Indexer (RAG)** dans la barre d'outils et recherche sémantique FAISS locale.
+- **Plan** : navigation rapide et insertion de table des matières.
+- **Figures** : galerie des schémas détectés pour lancer des occlusions d'image.
+
+:::tip
+Dans **Analyse & Audit IA** (<kbd>Alt+4</kbd>) > onglet **Sources**, le bouton **Neutraliser cette section** permet aussi de retirer une section du calcul de pourcentage de couverture sans sortir son contenu du document.
+:::

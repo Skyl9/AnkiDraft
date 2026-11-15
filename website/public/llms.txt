@@ -24,7 +24,8 @@
 - [Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](https://ankidraft.app/en/workflows/zero-cle-api-agent-mcp/): Connect Claude, Cursor, or Antigravity to AnkiDraft's local MCP server, load your Skills workspace, and review every flashcard batch in Safeguard.
 
 ### Sources & Import
-- [Document Hub and Multimodal Formats](https://ankidraft.app/en/sources/hub_multimodal/): Overview of all supported study sources in AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) with local-first parsing and source traceability.
+- [Image Albums, Photo Scans, and Vision OCR](https://ankidraft.app/en/sources/albums-images/): Combine whiteboard photos, scanned handouts, and diagrams in an Image Album, transcribe pages with Vision AI, index in RAG, and forge flashcards.
+- [Document Hub and Multimodal Formats](https://ankidraft.app/en/sources/hub_multimodal/): Overview of supported sources in AnkiDraft — PDF, Web, YouTube, audio, DOCX, PPTX, EPUB, notebooks, code, and Image Albums with full source tracing.
 - [Importing PDFs, Slides, and Ebooks](https://ankidraft.app/en/sources/import-pdf/): Cleanly extract PDF textbooks, DOCX documents, PPTX slides, and EPUB books with Marker OCR, preserving diagrams, tables, and LaTeX formulas.
 - [Importing Web Pages and Online Articles](https://ankidraft.app/en/sources/import-web/): Capture the core educational content of any online article or web documentation page into clean Markdown without ads, menus, or visual clutter.
 - [Importing YouTube Videos and Audio Lectures](https://ankidraft.app/en/sources/import-youtube-audio/): Turn any YouTube lecture, podcast, or classroom voice recording into timestamped transcripts and atomic Anki flashcards locally on your device.
@@ -70,7 +71,8 @@
 - [Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor](https://ankidraft.app/fr/workflows/zero-cle-api-agent-mcp/): Connectez Claude, Cursor ou Antigravity au serveur MCP d'AnkiDraft, chargez votre espace de Skills et validez vos cartes dans Garde-Fou sans clé API.
 
 ### Sources & Import
-- [Hub Documentaire et Formats Multimodaux](https://ankidraft.app/fr/sources/hub_multimodal/): Vue d'ensemble des sources supportées dans AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) avec extraction locale et traçabilité complète des cartes.
+- [Albums d'Images, Scans Photo et OCR Vision](https://ankidraft.app/fr/sources/albums-images/): Rassemblez photos de tableaux, scans et schémas dans un Album d'Images, transcrivez-les en Markdown par IA vision, indexez en RAG et créez vos cartes.
+- [Hub Documentaire et Formats Multimodaux](https://ankidraft.app/fr/sources/hub_multimodal/): Vue d'ensemble des sources dans AnkiDraft : PDF, Web, YouTube, audio, DOCX, PPTX, EPUB, notebooks, code et Albums d'images avec traçabilité complète.
 - [Importer des PDF, Diaporamas et Ebooks](https://ankidraft.app/fr/sources/import-pdf/): Extrayez proprement vos cours PDF, DOCX, PPTX et EPUB avec Marker OCR en préservant les schémas, tableaux et formules mathématiques LaTeX complexes.
 - [Importer des Pages Web et Articles](https://ankidraft.app/fr/sources/import-web/): Capturez le contenu utile d'un article en ligne ou d'une documentation web en Markdown propre sans publicités ni menus superflus sur votre poste.
 - [Importer des Vidéos YouTube et Cours Audio](https://ankidraft.app/fr/sources/import-youtube-audio/): Transformez une conférence YouTube, un podcast ou un enregistrement vocal en transcription horodatée et en flashcards Anki atomiques locales.
