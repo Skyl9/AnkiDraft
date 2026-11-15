@@ -26,6 +26,11 @@ L&apos;accès simultané au même profil est formellement bloqué pour éviter t
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../database/seeds/demo_seed.py" line="+74"/>
+        <source>Exemple d&apos;introduction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../services/ai/mcp_client_config_service.py" line="+221"/>
         <source>Fichier JSON existant invalide ou illisible</source>
         <translation type="unfinished"></translation>
@@ -3436,7 +3441,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/batch_view/view.py" line="+385"/>
+        <location filename="../../ui/views/batch_view/view.py" line="+386"/>
         <source>Vision (PDF)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3541,7 +3546,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+421"/>
+        <location line="+478"/>
         <source>Batch terminé : %1 réussis, %2 erreurs (%3 cartes créées%4)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12078,7 +12083,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>BatchView</name>
     <message>
-        <location filename="../../ui/views/batch_view/view.py" line="-1763"/>
+        <location filename="../../ui/views/batch_view/view.py" line="-1820"/>
         <source>CIBLES ANKI</source>
         <extracomment>Cartes enregistrées sans lien de couverture (fragment source non résolu), remonté au récapitulatif de fin de lot.</extracomment>
         <translation type="unfinished"></translation>
@@ -12219,7 +12224,12 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+230"/>
+        <location line="+66"/>
+        <source>Section 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+221"/>
         <source>Interrompu</source>
         <translation type="unfinished"></translation>
     </message>

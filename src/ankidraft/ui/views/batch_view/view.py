@@ -195,6 +195,7 @@ class BatchView(QWidget):
         self._connect_signals()
         self._setup_shortcuts()
         self.refresh_data()
+        self._hydrate_demo_batch_task()
 
     @property
     def shortcut_manager(self) -> ShortcutManager:
@@ -1862,6 +1863,7 @@ class BatchView(QWidget):
         self.queue_widget.sync_completed(task_idx, "Acceptée", len(accepted_cards))
 
         self._log_formatted_line("SUCCESS", f"Tâche #{task_idx + 1} validée : {len(accepted_cards)} carte(s) enregistrée(s).")
+        self._mark_demo_batch_reviewed_if_needed(task)
         self._advance_review()
         self._refresh_review_badge()
 
@@ -1879,8 +1881,64 @@ class BatchView(QWidget):
         self.queue_widget.sync_completed(task_idx, "Rejetée", 0)
 
         self._log_formatted_line("WARN", f"Tâche #{task_idx + 1} rejetée par l'utilisateur.")
+        self._mark_demo_batch_reviewed_if_needed(task)
         self._advance_review()
         self._refresh_review_badge()
+
+    def _hydrate_demo_batch_task(self) -> None:
+        """Injecte en file la tâche de revue pré-calculée en mode Exemple d'introduction."""
+        try:
+            from ankidraft.database.seeds.demo_seed import DEMO_BATCH_TASK_UID, build_demo_batch_snapshot
+
+            if any(self._task_uid(t) == DEMO_BATCH_TASK_UID for t in self.queue_tasks_data):
+                return
+            snapshot = build_demo_batch_snapshot()
+            if snapshot is None:
+                return
+
+            doc = DocumentModel.get_or_none(DocumentModel.id == snapshot.scope.document_id)
+            deck = DeckModel.get_or_none(DeckModel.id == snapshot.config.deck_id)
+            note_type = NoteTypeModel.get_or_none(NoteTypeModel.id == snapshot.config.model_id)
+            cards_copy = [dict(c) for c in snapshot.cards]
+            row: dict[str, Any] = {
+                "_queue_uid": DEMO_BATCH_TASK_UID,
+                "_batch_task_id": snapshot.task_id,
+                "_is_snapshot_task": True,
+                "_is_demo_task": True,
+                "status": "À réviser",
+                "progress_pct": 100,
+                "cards_count": len(cards_copy),
+                "doc": doc,
+                "doc_title": snapshot.scope.document_title,
+                "doc_content": snapshot.scope.content,
+                "chunk_label": self.tr("Section 3"),
+                "deck": deck,
+                "deck_name": snapshot.config.deck_name,
+                "note_type": note_type,
+                "model_name": snapshot.config.model_name,
+                "pipeline_name": snapshot.config.pipeline_name,
+                "_staging_notes": cards_copy,
+                "pending_cards": cards_copy,
+            }
+            self._prepared_notes_by_uid[DEMO_BATCH_TASK_UID] = cards_copy
+            self.batch_view_model.add_tasks([row])
+            self._update_estimates_summary()
+            self._update_queue_table()
+        except Exception as exc:
+            logger.debug("Hydratation de la tâche batch d'exemple ignorée : %s", exc)
+
+    @staticmethod
+    def _mark_demo_batch_reviewed_if_needed(task: dict[str, Any]) -> None:
+        """Mémorise la revue de la tâche batch d'exemple pour ne pas la réinjecter ensuite."""
+        if not task.get("_is_demo_task"):
+            return
+        try:
+            from ankidraft.database.models import SettingModel
+            from ankidraft.database.seeds.demo_seed import SETTING_DEMO_BATCH_REVIEWED
+
+            SettingModel.set_value(SETTING_DEMO_BATCH_REVIEWED, "true", category="app")
+        except Exception as exc:
+            logger.debug("Impossible d'enregistrer %s : %s", SETTING_DEMO_BATCH_REVIEWED, exc)
 
     def accept_batch_task(self, task_idx: int, accepted_cards: list[dict[str, Any]] | None = None) -> bool:
         """Persist the reviewed cards for one new scope-based queue row."""
