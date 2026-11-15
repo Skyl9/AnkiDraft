@@ -13,6 +13,6 @@ Si une carte entrante possède le même identifiant qu'une carte déjà présent
 
 ## 2. Détecter et fusionner les doublons
 
-Depuis l'éditeur ou via le Consultant IA, vous pouvez lancer une recherche de doublons sur vos paquets :
+Depuis **Analyse & Audit IA** (<kbd>Alt+4</kbd>) ou votre assistant connecté en [MCP](/fr/ai-setup/consultant_mcp/), vous pouvez lancer une recherche de doublons sur vos paquets :
 - **Doublons exacts** : cartes ayant le même recto.
 - **Doublons proches** : cartes formulées légèrement différemment mais portant sur la même définition, détectées rapidement grâce au calcul de similarité intégré.

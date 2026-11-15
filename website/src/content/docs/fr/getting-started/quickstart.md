@@ -9,46 +9,48 @@ Ce guide vous permet de produire votre premier paquet de flashcards Anki en quel
 
 ![Arbre de décision des parcours AnkiDraft](assets/arbre_decision_workflow.svg)
 
-Accédez directement à la recette complète adaptée à votre situation :
+Choisissez directement le guide qui correspond à votre situation :
 
-1. **[Médecine & Sciences : PDF dense, formules KaTeX et schémas](/fr/workflows/medecine-sciences-pdf/)** — cibler les chapitres utiles d'un polycopié, extraire équations et images, valider selon Wozniak (Studio ou MCP).
-2. **[Langues & Audio : vocabulaire et prononciation TTS hors-ligne](/fr/workflows/langues-et-audio-tts/)** — sonoriser vos cartes avec Kokoro ou Piper et corriger les cartes ambiguës via MCP.
-3. **[Cours magistral vidéo YouTube & Audio](/fr/workflows/cours-video-youtube-audio/)** — transcrire un cours filmé ou enregistré, structurer la transcription et générer vos cartes.
-4. **[Workflow « Zéro Clé API » avec Agent MCP externe](/fr/workflows/zero-cle-api-agent-mcp/)** — piloter AnkiDraft depuis Claude Desktop, Claude Code, Cursor ou Antigravity sans payer de clé API supplémentaire.
-5. **[Sauvetage & Hygiène d'une collection Anki existante](/fr/workflows/sauvetage-et-hygiene-anki-mcp/)** — importer votre `.colpkg`, éliminer doublons et sangsues, lancer une campagne d'audit MCP et ré-exporter sans perdre votre historique SRS.
+1. **[Cours écrits & Sciences : PDF, formules et schémas](/fr/workflows/medecine-sciences-pdf/)** — sélectionnez les chapitres utiles d'un polycopié, récupérez équations et schémas, puis vérifiez la clarté de vos cartes.
+2. **[Langues & Prononciation : vocabulaire et audio hors-ligne](/fr/workflows/langues-et-audio-tts/)** — ajoutez une prononciation audio naturelle hors-ligne sur vos cartes de vocabulaire et corrigez les cartes floues.
+3. **[Vidéo & Audio : cours YouTube et enregistrements](/fr/workflows/cours-video-youtube-audio/)** — transcrivez un cours filmé ou enregistré et transformez les passages clés en flashcards.
+4. **[Nettoyage & Hygiène d'un paquet ou d'une collection Anki](/fr/workflows/sauvetage-et-hygiene-anki-mcp/)** — importez un paquet `.apkg` ou votre collection `.colpkg`, supprimez les doublons, simplifiez les cartes trop longues et ré-exportez sans perdre votre progression.
+5. **[Combler les lacunes par rapport à un cours](/fr/cards/dag_et_rag/)** — reliez vos cartes existantes aux chapitres du cours pour repérer immédiatement les notions oubliées.
 
-## Studio de Création intégré vs Agent MCP externe
+- **[Mode transversal — Travailler sans clé API avec Claude ou Cursor](/fr/workflows/zero-cle-api-agent-mcp/)** — applicable à tous les parcours ci-dessus si vous préférez piloter AnkiDraft depuis votre abonnement IA habituel.
 
-AnkiDraft fonctionne aussi bien de façon autonome (Studio intégré) que connecté à votre assistant IA habituel via le protocole MCP.
+## Deux façons de travailler avec l'IA
 
-| Critère | Studio de Création Intégré | Agent Externe via Serveur MCP |
+AnkiDraft fonctionne aussi bien de manière autonome qu'avec votre assistant IA habituel (Claude, Cursor).
+
+| Critère | Studio intégré (dans l'application) | Avec votre assistant IA (Claude, Cursor) |
 | :--- | :--- | :--- |
-| **Équipement IA requis** | Modèle local gratuit (Ollama) ou clé API (OpenAI, Gemini, Claude) | Abonnement existant (Claude Desktop/Code, Cursor, Antigravity) — **zéro clé API** |
-| **Prise en main** | Boutons visuels guidés, pipelines préconfigurés, sélecteur de chapitres | Conversation naturelle dans votre client IA connecté sur le port `8765` |
-| **Cas d'usage idéaux** | Extraction systématique par lots de PDF, génération TTS en série, édition KaTeX | Audits transversaux de lacunes, campagnes d'hygiène multi-paquets, refonte de modèles |
-| **Contrôle humain** | File de **Revue (Staging)** avant ajout | **Garde-Fou (Two-Phase Commit)** : rien n'est écrit sans votre clic sur **Appliquer** |
+| **Ce qu'il vous faut** | Un modèle gratuit hors-ligne ([Ollama](/fr/ai-setup/local-models-ollama/)) ou une [clé API](/fr/ai-setup/ia_fournisseurs/) | Votre abonnement habituel (Claude Desktop/Code, Cursor) — **sans clé API** |
+| **Comment ça marche** | Boutons guidés, sélection des chapitres et génération par lots | Vous discutez normalement avec votre assistant connecté à AnkiDraft |
+| **Idéal pour** | Extraire des chapitres de PDF, ajouter de l'audio, éditer des formules | Repérer les oublis dans plusieurs paquets, nettoyer ou reformuler en série |
+| **Votre contrôle** | Vous relisez chaque carte avant de l'enregistrer | **Validation obligatoire** : rien n'est modifié sans votre clic sur **Appliquer** |
 
-## Le flux de base en 4 étapes (Studio)
+## Démarrer en 4 étapes simples
 
 ### Étape 1 : Choisir ou créer votre profil
 
-Au premier lancement, AnkiDraft ouvre le profil `default`. Si vous souhaitez séparer vos matières (ex. *Médecine*, *Langues*), cliquez sur le sélecteur de profil en bas de la barre latérale pour créer un espace totalement isolé.
+Au premier lancement, AnkiDraft ouvre le profil `default`. Pour éviter de mélanger vos cours volumineux et vos fiches personnelles, créez un profil séparé depuis le sélecteur en haut de l'écran ([Gérer vos profils](/fr/getting-started/profiles-and-workspaces/)).
 
-### Étape 2 : Configurer un modèle d'IA (optionnel)
+### Étape 2 : Choisir votre moteur d'IA (optionnel)
 
 Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>), puis l'onglet **Moteurs IA** :
-- **100 % gratuit et hors-ligne** : installez [Ollama](/fr/ai-setup/local-models-ollama/) sur votre ordinateur et choisissez un modèle local.
-- **Via une clé API cloud** : renseignez votre clé OpenAI, Google Gemini ou Anthropic Claude (stockée dans le trousseau chiffré du système).
-- **Sans clé API** : activez le [Serveur MCP](/fr/workflows/zero-cle-api-agent-mcp/) pour utiliser votre abonnement Claude ou Cursor.
+- **Gratuit et 100 % hors-ligne** : installez [Ollama](/fr/ai-setup/local-models-ollama/) sur votre ordinateur et choisissez un modèle local.
+- **Avec une clé API** : renseignez votre clé OpenAI, Google Gemini ou Anthropic Claude (chiffrée sur votre appareil).
+- **Sans clé API** : activez la connexion locale dans **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) pour utiliser votre abonnement [Claude ou Cursor](/fr/workflows/zero-cle-api-agent-mcp/).
 
-### Étape 3 : Importer votre premier document
+### Étape 3 : Importer votre premier cours
 
-1. Ouvrez la vue **My Documents** (<kbd>Alt+7</kbd>) dans la barre latérale.
-2. Glissez-déposez un fichier PDF, Word, PowerPoint, EPUB ou collez l'URL d'une vidéo YouTube.
-3. Cochez les chapitres à étudier puis ouvrez **Studio de Création** (<kbd>Alt+2</kbd>) et cliquez sur **Générer** (ou **Forger la section**).
+1. Ouvrez **My Documents** (<kbd>Alt+7</kbd>) dans la barre latérale.
+2. Glissez-déposez un fichier PDF, Word, PowerPoint, EPUB, ou collez le lien d'une vidéo YouTube.
+3. Pour un chapitre précis ou une saisie libre, passez dans **Studio de Création** (<kbd>Alt+2</kbd>) ; pour découper et traiter tout un livre par lots, ouvrez **Batch Factory** (<kbd>Alt+6</kbd>) › **Composer le lot…**.
 
-### Étape 4 : Valider et exporter dans Anki
+### Étape 4 : Relire, améliorer et exporter vers Anki
 
-Relisez les cartes proposées, passez le [Linter Wozniak](/fr/cards/linter_wozniak/) (<kbd>Alt+4</kbd>), puis appuyez sur <kbd>Ctrl+Alt+E</kbd> (**Exporter des cartes Anki (.apkg)**). Double-cliquez sur le fichier `.apkg` généré : vos cartes sont immédiatement prêtes pour vos révisions quotidiennes dans Anki.
+Relisez les cartes proposées, lancez une vérification dans **Analyse & Audit IA** (<kbd>Alt+4</kbd>) pour repérer les cartes trop longues ou floues, puis appuyez sur <kbd>Ctrl+Alt+E</kbd> (**Exporter des cartes Anki (.apkg)**). Double-cliquez sur le fichier `.apkg` généré pour l'ajouter directement dans Anki.
 
-> Pour comprendre chaque terme métier avec des exemples concrets Avant / Après, consultez le [Glossaire Utilisateur](/fr/guides/glossaire/).
+> Pour des exemples concrets Avant / Après et la définition simple de chaque terme, consultez le [Glossaire Utilisateur](/fr/guides/glossaire/).

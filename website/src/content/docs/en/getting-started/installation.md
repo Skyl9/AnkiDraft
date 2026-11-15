@@ -20,13 +20,15 @@ Visit the [AnkiDraft homepage](https://ankidraft.app/en/#download) or go straigh
 ### On macOS
 1. Double-click the `.dmg` disk image downloaded from the [latest release](https://github.com/Skyl9/AnkiDraft/releases/latest).
 2. Drag the application icon into your **Applications** folder.
-3. Launch the app from Launchpad or Spotlight.
+3. **First launch (unsigned Apple build):** macOS will show a Gatekeeper warning because the app is not notarized by Apple.
+   - Open **System Settings** → **Privacy & Security**, scroll to **Security**, and click **Open Anyway** for AnkiDraft (or **Right-click** → **Open** on the app in Applications).
+   - You only need to do this **once**: subsequent built-in updates are automatic and will not ask for this step again.
 
-### On Windows
+### On Windows *(not yet tested in production)*
 1. If you download the `.exe` installer, double-click it and follow the wizard (no administrator rights required for a user-level installation).
 2. If you download the portable `.zip` archive, extract it and run the main executable.
 
-### On Linux (AppImage)
+### On Linux (AppImage) *(not yet tested in production)*
 1. Make the downloaded `.AppImage` file executable:
    ```bash
    chmod +x *.AppImage
@@ -35,10 +37,19 @@ Visit the [AnkiDraft homepage](https://ankidraft.app/en/#download) or go straigh
 
 ## 3. Where Is Your Data Stored?
 
-All your study data stays locally on your drive inside `~/.ankidraft/profiles/<profile_name>/`:
+All your study data stays locally on your drive inside your user folder:
+- **macOS:** `/Users/<your-name>/.ankidraft/profiles/<profile_name>/`
+- **Windows:** `C:\Users\<YourName>\.ankidraft\profiles\<profile_name>\`
+- **Linux:** `/home/<your-name>/.ankidraft/profiles/<profile_name>/`
+
+Each profile contains:
 - `ankidraft.db`: your local SQLite database of cards, documents, and history.
 - `media/`: images and audio clips attached to your flashcards.
 
 ## 4. Automatic Updates
 
 AnkiDraft automatically checks for official releases and verifies both the cryptographic signature (Ed25519) and SHA-256 checksum before installing any update.
+
+## 5. Report an Issue or Suggest Improvements
+
+If you run into a bug, if your operating system is not yet available, or if you have ideas for improvements, please open an issue on [GitHub Issues](https://github.com/Skyl9/AnkiDraft/issues).

@@ -1,46 +1,52 @@
 ---
 title: "Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor"
-description: "Connectez Claude Desktop, Claude Code ou Cursor au serveur MCP d'AnkiDraft pour générer, enrichir et auditer vos cartes sans clé API via Garde-Fou."
+description: "Connectez Claude, Cursor ou Antigravity au serveur MCP d'AnkiDraft, chargez votre espace de Skills et validez vos cartes dans Garde-Fou sans clé API."
 ---
 
-Vous utilisez déjà **Claude Desktop**, **Claude Code**, **Cursor** ou **Antigravity** ? Grâce au protocole standard **MCP (Model Context Protocol)** intégré à AnkiDraft, vous pouvez créer des cartes, analyser vos cours et assainir vos paquets **sans aucune clé API payante** et sous protection permanente du **Garde-Fou**.
+Vous avez déjà un abonnement **Claude Desktop**, **Claude Code**, **Cursor** ou **Antigravity** ? AnkiDraft intègre un connecteur local et un **espace de travail de Skills** qui vous permettent de créer des cartes, analyser vos cours et nettoyer vos paquets **sans aucune clé API payante**. Chaque modification attend votre validation manuelle avant d'être enregistrée.
 
-![Garde-Fou MCP : Validation Humaine en Deux Temps](assets/mcp_two_phase_commit.svg)
+![Validation humaine en deux temps dans AnkiDraft](assets/mcp_two_phase_commit.svg)
 
-## 1. Démarrer le serveur MCP et copier la configuration en 1 clic
+## 1. Activer le serveur local et l'espace de Skills
 
 1. Ouvrez **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) dans la barre latérale.
-2. Vérifiez que le serveur local est **Actif** sur le port `8765` (sinon cliquez sur **Démarrer**).
-3. Dans le panneau de droite **Configurations Clients Prêtes à l'Emploi**, sélectionnez votre assistant (**Claude**, **Antigravity**, **Cursor** ou **cURL**) et cliquez sur **Copier la configuration** (ou **Ouvrir le fichier**).
-4. Collez le bloc JSON (avec l'endpoint `http://127.0.0.1:8765/mcp` et votre jeton Bearer) dans la configuration de votre client IA et redémarrez-le.
+2. Dans **Supervision & Configuration**, vérifiez que le serveur est **Actif** sur le port `8765` (sinon cliquez sur **Démarrer**), puis copiez la configuration JSON pour **Claude**, **Antigravity (agy)** ou **Cursor**.
+3. Dans l'onglet **Guides & Workspaces**, vérifiez votre dossier agentique (`~/ankiforge_agentique` par défaut) avec **Vérifier le drift** (ou créez-le avec **Amorcer le workspace**).
+4. Ouvrez ce dossier dans Claude Code, Cursor ou Antigravity : l'assistant détecte automatiquement votre profil actif et ses **Skills MCP dédiés** ([voir la liste complète des Skills](/fr/ai-setup/consultant_mcp/)).
 
 ![Supervision et configuration du Serveur MCP AnkiDraft](assets/screen_consultant.png)
 
-## 2. Cinq cas d'usage MCP concrets (prompts prêts à l'emploi)
+## 2. Cinq demandes types qui déclenchent vos Skills
 
-### Cas A — Générer des cartes ancrées dans un chapitre de cours
-- **Outils MCP** : `search_document`, `get_document_outline`, `begin_staged_bundle`, `create_notes_batch`, `commit_staged_bundle`.
-- **Prompt** : *« Consulte le plan du document #3, lis les sections sur la régulation glycémique avec `search_document`, puis prépare un lot groupé (`begin_staged_bundle` + `create_notes_batch` + `commit_staged_bundle`) de 12 cartes atomiques en syntaxe KaTeX dans le paquet `Biochimie::Métabolisme`. »*
+Une fois votre espace ouvert, parlez simplement à votre assistant en français — il charge lui-même le bon Skill et les bons outils MCP :
 
-### Cas B — Déposer une fiche de synthèse externe comme source d'autorité
-- **Outils MCP** : `write_mcp_artifact`, `ingest_authority_source`, `reindex_document`.
-- **Prompt** : *« Rédige une synthèse structurée en Markdown sur les mécanismes de défense immunitaire à partir de mes notes, enregistre-la via `write_mcp_artifact` puis indexe-la dans AnkiDraft avec `ingest_authority_source` pour que mes futures cartes y soient tracées. »*
+### Cas A — Synchroniser le contexte et faire le bilan du profil
+- **Skills activés** : `synchronisation-ankiforge`, `exploration-collection`.
+- **Demande** : *« Synchronise le workspace avec mon profil AnkiDraft actif et fais-moi un état des lieux 360° de mes paquets, cartes marquées d'un drapeau et documents importés. »*
 
-### Cas C — Créer ou moderniser un modèle de carte (Note Type & CSS)
-- **Outils MCP** : `list_note_types`, `get_note_type_details`, `propose_note_type_refactor`, `propose_css_tune`, `preview_card_render`.
-- **Prompt** : *« Inspecte le modèle `Médecine Cloze` avec `get_note_type_details`, améliore le contraste des indices en mode sombre via `propose_css_tune`, vérifie le rendu HTML avec `preview_card_render` et soumets `propose_note_type_refactor` au Garde-Fou. »*
+### Cas B — Créer des cartes à partir d'un cours ou d'un scan OCR
+- **Skills activés** : `generation-cours-markdown`, `ingestion-albums-visuels` (sauvegarde préalable, structuration Markdown, insertion groupée et prévisualisation).
+- **Demande** : *« À partir du chapitre sur la régulation glycémique dans mon document #3, prépare un lot de 12 cartes courtes en KaTeX dans le paquet `Biochimie::Métabolisme`, vérifie leur rendu et envoie le lot au Garde-Fou. »*
 
-### Cas D — Piloter un pipeline DAG en mode délégué MCP
-- **Outils MCP** : `list_pipelines`, `trigger_pipeline_run`, `provide_pipeline_step_content`.
-- **Prompt** : *« Liste mes pipelines avec `list_pipelines`, lance le pipeline d'extraction #2 en mode délégué via `trigger_pipeline_run`, produis le contenu de chaque étape suspendue via `provide_pipeline_step_content` et envoie les cartes finales au Garde-Fou. »*
+### Cas C — Vérifier les notions oubliées entre cours et paquet
+- **Skill activé** : `audit-couverture-rag` (et `diagnose_domain_knowledge_gaps`).
+- **Demande** : *« Compare mon cours d'Immunologie avec mon paquet actuel tous sous-paquets confondus, liste les notions manquantes et propose les cartes pour combler les trous. »*
 
-### Cas E — Assainir et restructurer un paquet existant
-- **Outils MCP** : `get_flagged_cards`, `diagnose_domain_knowledge_gaps`, `propose_card_split`, `propose_card_refactor`.
-- **Prompt** : *« Récupère mes cartes marquées d'un drapeau rouge via `get_flagged_cards` et scinde les cartes trop denses avec `propose_card_split`. »* (Voir le guide dédié [Sauvetage & Hygiène Anki via MCP](/fr/workflows/sauvetage-et-hygiene-anki-mcp/)).
+### Cas D — Moderniser vos modèles de cartes et votre mise en page CSS
+- **Skills activés** : `audit-pertinence-modele`, `refacto-modeles`.
+- **Demande** : *« Vérifie si tous les champs du modèle `Médecine Cloze` sont réellement utilisés, améliore la lisibilité des indices en mode sombre et soumets la refonte du gabarit à ma validation. »*
 
-## 3. Relire et appliquer dans le Garde-Fou (Two-Phase Commit)
+### Cas E — Nettoyer cartes ratées, doublons et tags
+- **Skills activés** : `refactorisation-cartes`, `chasse-sangsues`, `deduplication-consolidation`, `hygiene-taxonomie-tags`.
+- **Demande** : *« Récupère mes cartes marquées d'un drapeau rouge et mes sangsues récentes, découpe celles qui sont trop denses, fusionne les doublons évidents et propose un lot prêt à relire. »* (Voir le guide [Sauvetage & Hygiène d'une collection Anki](/fr/workflows/sauvetage-et-hygiene-anki-mcp/)).
 
-Aucune écriture n'est appliquée silencieusement :
+:::tip
+Pour automatiser une chaîne récurrente sans rester devant l'écran ou combiner plusieurs étapes IA, vous pouvez aussi demander à votre assistant de lancer vos [Pipelines DAG & RAG](/fr/cards/dag_et_rag/) (`list_pipelines`, `trigger_pipeline_run`).
+:::
+
+## 3. Relire et valider avant enregistrement
+
+Aucune carte n'est modifiée sans votre accord :
 1. Ouvrez l'onglet **Garde-Fou & Validation** dans **Serveur MCP & Agents** (<kbd>Alt+5</kbd>).
-2. Inspectez le **Diff Avant / Après**, la prévisualisation HTML/KaTeX et l'impact des suppressions ou scissions.
-3. Cliquez sur **Appliquer** pour enregistrer le lot dans SQLite de manière atomique, ou sur **Rejeter** pour annuler sans trace.
+2. Vérifiez le comparatif **Avant / Après**, la justification de chaque proposition et l'impact des scissions ou suppressions.
+3. Cliquez sur **Appliquer** pour enregistrer le lot dans AnkiDraft, ou sur **Rejeter** pour tout annuler proprement.

@@ -20,8 +20,8 @@
 - [YouTube Video & Audio Lectures: Transcription to Cards](https://ankidraft.app/en/workflows/cours-video-youtube-audio/): Turn YouTube video lectures or classroom audio recordings into structured, atomic Anki flashcards using local transcription, slicing, and AI tools.
 - [Language Learning & Audio Workflow: Offline TTS Flashcards](https://ankidraft.app/en/workflows/langues-et-audio-tts/): Build language vocabulary decks in AnkiDraft with offline neural text-to-speech audio (Kokoro or Piper), instant preview, and MCP batch enrichment.
 - [Medicine & STEM Workflow: Dense PDFs, Math, and Diagrams](https://ankidraft.app/en/workflows/medecine-sciences-pdf/): Step-by-step guide to turning dense medical or STEM textbook PDFs into atomic Anki flashcards complete with KaTeX math formulas, diagrams, and MCP.
-- [Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene](https://ankidraft.app/en/workflows/sauvetage-et-hygiene-anki-mcp/): Clean up an existing Anki collection (.colpkg): detect duplicates and leeches, run an MCP hygiene campaign, and split overloaded cards safely.
-- [Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](https://ankidraft.app/en/workflows/zero-cle-api-agent-mcp/): Connect Claude Desktop, Claude Code, or Cursor to AnkiDraft's local MCP server to generate, enrich, and audit flashcards with two-phase human review.
+- [Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene](https://ankidraft.app/en/workflows/sauvetage-et-hygiene-anki-mcp/): Clean up an Anki deck (.apkg) or full collection (.colpkg): spot duplicates and leeches, run an MCP hygiene campaign, and split overloaded cards safely.
+- [Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](https://ankidraft.app/en/workflows/zero-cle-api-agent-mcp/): Connect Claude, Cursor, or Antigravity to AnkiDraft's local MCP server, load your Skills workspace, and review every flashcard batch in Safeguard.
 
 ### Sources & Import
 - [Document Hub and Multimodal Formats](https://ankidraft.app/en/sources/hub_multimodal/): Overview of all supported study sources in AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) with local-first parsing and source traceability.
@@ -44,7 +44,7 @@
 - [Synchronization, Duplicates, and Smart Merge](https://ankidraft.app/en/anki-sync/synchro_smart_merge/): Resolve conflicts during Anki imports with Smart Merge, preserve existing review schedules, and clean up duplicate flashcards automatically.
 
 ### AI Setup
-- [AI Consultant and MCP Assistant Connection](https://ankidraft.app/en/ai-setup/consultant_mcp/): Chat with the built-in AI Consultant or connect Claude Desktop and Cursor to AnkiDraft via MCP to query, audit, and enrich your decks safely.
+- [MCP Server, External Agents & Skills](https://ankidraft.app/en/ai-setup/consultant_mcp/): Connect Claude, Cursor, or Antigravity to AnkiDraft via MCP, load dedicated Skills in your agent workspace, and review every batch in Safeguard.
 - [Configuring AI Providers (OpenAI, Gemini, Claude)](https://ankidraft.app/en/ai-setup/ia_fournisseurs/): Securely connect your OpenAI, Anthropic, or Gemini API keys, configure local providers, and track your token budget per pipeline in AnkiDraft.
 - [Using a Free Local Model with Ollama](https://ankidraft.app/en/ai-setup/local-models-ollama/): Generate atomic Anki flashcards 100% offline and for free on your own computer using local Ollama models with full privacy and zero API fees.
 
@@ -66,8 +66,8 @@
 - [Parcours Cours Vidéo YouTube & Audio : Transcription et Cartes](https://ankidraft.app/fr/workflows/cours-video-youtube-audio/): Transformez un cours magistral vidéo YouTube ou un enregistrement audio en flashcards Anki structurées grâce à la transcription locale et à l'IA.
 - [Parcours Langues & Audio : Vocabulaire et Prononciation TTS](https://ankidraft.app/fr/workflows/langues-et-audio-tts/): Apprenez une langue avec AnkiDraft : générez des cartes de vocabulaire illustrées d'un audio naturel hors-ligne (Kokoro ou Piper) en Studio ou MCP.
 - [Parcours Médecine & Sciences : PDF, Formules et Schémas](https://ankidraft.app/fr/workflows/medecine-sciences-pdf/): Guide pas-à-pas pour transformer un cours PDF dense de médecine ou de sciences en flashcards Anki atomiques avec formules KaTeX, schémas et MCP.
-- [Parcours Sauvetage Anki : Doublons, Sangsues et Hygiène MCP](https://ankidraft.app/fr/workflows/sauvetage-et-hygiene-anki-mcp/): Assainissez une collection Anki existante (.colpkg) : détectez doublons et sangsues, lancez une campagne d'hygiène MCP et scindez vos cartes longues.
-- [Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor](https://ankidraft.app/fr/workflows/zero-cle-api-agent-mcp/): Connectez Claude Desktop, Claude Code ou Cursor au serveur MCP d'AnkiDraft pour générer, enrichir et auditer vos cartes sans clé API via Garde-Fou.
+- [Parcours Sauvetage Anki : Doublons, Sangsues et Hygiène MCP](https://ankidraft.app/fr/workflows/sauvetage-et-hygiene-anki-mcp/): Assainissez un paquet (.apkg) ou une collection Anki (.colpkg) : repérez doublons et sangsues, lancez une hygiène MCP et scindez vos cartes longues.
+- [Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor](https://ankidraft.app/fr/workflows/zero-cle-api-agent-mcp/): Connectez Claude, Cursor ou Antigravity au serveur MCP d'AnkiDraft, chargez votre espace de Skills et validez vos cartes dans Garde-Fou sans clé API.
 
 ### Sources & Import
 - [Hub Documentaire et Formats Multimodaux](https://ankidraft.app/fr/sources/hub_multimodal/): Vue d'ensemble des sources supportées dans AnkiDraft (PDF, YouTube, audio, web, DOCX, EPUB) avec extraction locale et traçabilité complète des cartes.
@@ -90,7 +90,7 @@
 - [Synchronisation, Doublons et Fusion Intelligente (Smart Merge)](https://ankidraft.app/fr/anki-sync/synchro_smart_merge/): Résolvez les conflits lors d'un import Anki avec le Smart Merge, préservez votre historique de révision et éliminez les cartes en doublon facilement.
 
 ### Configuration IA
-- [Consultant IA et Connexion aux Assistants MCP](https://ankidraft.app/fr/ai-setup/consultant_mcp/): Discutez avec le Consultant IA intégré ou connectez Claude Desktop et Cursor à AnkiDraft via MCP pour auditer et enrichir vos paquets facilement.
+- [Serveur MCP, Agents Externes et Skills](https://ankidraft.app/fr/ai-setup/consultant_mcp/): Connectez Claude, Cursor ou Antigravity à AnkiDraft via MCP, utilisez les Skills dédiés dans votre espace agentique et validez chaque lot via Garde-Fou.
 - [Configurer vos Fournisseurs d'IA (OpenAI, Gemini, Claude)](https://ankidraft.app/fr/ai-setup/ia_fournisseurs/): Connectez vos clés API OpenAI, Anthropic ou Gemini en toute sécurité, configurez vos modèles locaux et maîtrisez votre budget de tokens IA global.
 - [Utiliser un Modèle Local Gratuit avec Ollama](https://ankidraft.app/fr/ai-setup/local-models-ollama/): Générez des flashcards Anki atomiques 100 % hors-ligne et gratuitement sur votre ordinateur grâce aux modèles locaux Ollama sans aucune clé API.
 

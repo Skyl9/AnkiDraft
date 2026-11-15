@@ -7,9 +7,9 @@ AnkiDraft lets you completely isolate multiple collections using **user profiles
 
 ## 1. Why Use Multiple Profiles?
 
-Each profile has its own SQLite database and dedicated media folder (images, audio):
-- Create separate profiles for distinct fields of study (e.g., *Medical School*, *Bar Exam*, *Japanese*).
-- Share a computer between multiple people without ever mixing flashcards or documents.
+Each profile has its own SQLite database and dedicated media folder (images, audio). This makes profiles ideal for **splitting your work into large, focused collections**:
+- **Separate your personal notes from your academic years** (e.g., *Personal Notes / Languages*, *Year 1 Med School*, *Year 2 Med School*, *Exam Prep*).
+- **Avoid getting lost in bulky documents**: imported study materials (PDF textbooks, lecture slides, video transcripts) can quickly become quite large. Isolating each major area in its own profile keeps your library clean, fast, and easy to navigate.
 
 ## 2. Creating or Switching Profiles
 

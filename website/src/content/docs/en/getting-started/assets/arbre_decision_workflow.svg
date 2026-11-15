@@ -1,111 +1,173 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 540" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" role="img" aria-label="AnkiDraft workflow decision tree">
+  <style>
+    .q-root { fill: #0F1117; stroke: #4F46E5; stroke-width: 1.5; }
+    .q-root-text { fill: #F6F5F0; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 16px; font-weight: 800; }
+    .q-sub { fill: #FFFFFF; stroke: #6366F1; stroke-width: 1.5; }
+    .q-sub-alt { fill: #FFFFFF; stroke: #64748B; stroke-width: 1.5; }
+    .q-sub-text { fill: #0F1117; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 13.5px; font-weight: 700; }
+    .pill-indigo { fill: #EEF2FF; stroke: #6366F1; stroke-width: 1.25; }
+    .pill-indigo-text { fill: #3730A3; font-family: Inter, system-ui, sans-serif; font-size: 11.5px; font-weight: 700; }
+    .pill-neutral { fill: #FFFFFF; stroke: #64748B; stroke-width: 1.25; }
+    .pill-neutral-text { fill: #1E293B; font-family: Inter, system-ui, sans-serif; font-size: 11.5px; font-weight: 700; }
+    .choice-box { fill: #FFFFFF; stroke: #CBD5E1; stroke-width: 1.25; }
+    .choice-text { fill: #334155; font-family: Inter, system-ui, sans-serif; font-size: 11px; font-weight: 600; }
+    .card { fill: #FFFFFF; stroke: #6366F1; stroke-width: 1.5; }
+    .card-alt { fill: #FFFFFF; stroke: #64748B; stroke-width: 1.5; }
+    .card-kicker { fill: #4F46E5; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; }
+    .card-kicker-alt { fill: #475569; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; }
+    .card-title { fill: #0F1117; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 14px; font-weight: 800; }
+    .card-desc { fill: #525663; font-family: Inter, system-ui, sans-serif; font-size: 11.5px; }
+    .footer-box { fill: #FFFFFF; stroke: #6366F1; stroke-width: 1.5; }
+    .footer-title { fill: #0F1117; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 13px; font-weight: 800; }
+    .footer-text { fill: #334155; font-family: Inter, system-ui, sans-serif; font-size: 12px; }
+    .footer-sub { fill: #64748B; font-family: Inter, system-ui, sans-serif; font-size: 11px; }
+    .line-indigo { stroke: #6366F1; stroke-width: 2; fill: none; }
+    .line-neutral { stroke: #64748B; stroke-width: 2; fill: none; }
+
+    @media (prefers-color-scheme: dark) {
+      .q-root { fill: #1E1B4B; stroke: #818CF8; }
+      .q-sub, .q-sub-alt, .choice-box, .card, .card-alt, .footer-box { fill: #161922; }
+      .q-sub, .card, .footer-box { stroke: #818CF8; }
+      .q-sub-alt, .card-alt, .pill-neutral { stroke: #64748B; }
+      .choice-box { stroke: #334155; }
+      .q-sub-text, .card-title, .footer-title { fill: #F8FAFC; }
+      .card-desc, .choice-text, .footer-text { fill: #CBD5E1; }
+      .footer-sub { fill: #94A3B8; }
+      .pill-indigo { fill: #1E1B4B; stroke: #818CF8; }
+      .pill-indigo-text, .card-kicker { fill: #A5B4FC; }
+      .pill-neutral { fill: #1E293B; }
+      .pill-neutral-text, .card-kicker-alt { fill: #E2E8F0; }
+      .line-indigo { stroke: #818CF8; }
+      .line-neutral { stroke: #94A3B8; }
+    }
+  </style>
+
   <defs>
-    <style>
-      .bg { fill: #181825; }
-      .node { fill: #1e1e2e; stroke: #45475a; stroke-width: 1.5; }
-      .root { fill: #1e1e2e; stroke: #89b4fa; stroke-width: 2; }
-      .leaf-blue { fill: #1e1e2e; stroke: #89b4fa; stroke-width: 1.8; }
-      .leaf-cyan { fill: #1e1e2e; stroke: #94e2d5; stroke-width: 1.8; }
-      .leaf-amber { fill: #1e1e2e; stroke: #fab387; stroke-width: 1.8; }
-      .leaf-purple { fill: #1e1e2e; stroke: #cba6f7; stroke-width: 1.8; }
-      .leaf-green { fill: #1e1e2e; stroke: #a6e3a1; stroke-width: 1.8; }
-      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 19px; font-weight: 700; fill: #cdd6f4; text-anchor: middle; }
-      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a6adc8; text-anchor: middle; }
-      .lbl-bold { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #cdd6f4; }
-      .lbl-desc { font-family: system-ui, -apple-system, sans-serif; font-size: 11.5px; fill: #bac2de; }
-      .badge-txt { font-family: system-ui, -apple-system, sans-serif; font-size: 10.5px; font-weight: 700; fill: #181825; text-anchor: middle; }
-      .line { stroke: #6c7086; stroke-width: 2; fill: none; }
-    </style>
-    <marker id="arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 1 L 9 5 L 0 9 z" fill="#89b4fa"/>
+    <marker id="arrow-indigo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#6366F1" />
+    </marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748B" />
     </marker>
   </defs>
 
-  <rect width="920" height="540" rx="16" class="bg"/>
-  <text x="460" y="36" class="title">Which AnkiDraft Workflow Fits Your Goal?</text>
-  <text x="460" y="56" class="subtitle">Pick your starting material and AI setup in under 15 seconds</text>
+  <!-- Question 1 -->
+  <rect class="q-root" x="290" y="16" width="380" height="48" rx="6" />
+  <text class="q-root-text" x="480" y="45" text-anchor="middle">Where are you starting from?</text>
 
-  <!-- Root -->
-  <rect x="260" y="74" width="400" height="52" rx="10" class="root"/>
-  <text x="460" y="96" class="lbl-bold" text-anchor="middle">What is your main goal today?</text>
-  <text x="460" y="114" class="lbl-desc" text-anchor="middle">New study sources, an existing Anki deck, or driving AnkiDraft from Claude/Cursor</text>
+  <!-- Level 1 branches -->
+  <path class="line-neutral" d="M480 64 V86" />
+  <path class="line-indigo" d="M480 86 H294 V98" />
+  <path class="line-indigo" d="M294 124 V138" marker-end="url(#arrow-indigo)" />
 
-  <!-- Main branches -->
-  <path d="M 350 126 L 350 154 L 180 154 L 180 180" class="line" marker-end="url(#arr)"/>
-  <path d="M 460 126 L 460 180" class="line" marker-end="url(#arr)"/>
-  <path d="M 570 126 L 570 154 L 740 154 L 740 180" class="line" marker-end="url(#arr)"/>
+  <path class="line-neutral" d="M480 86 H759 V98" />
+  <path class="line-neutral" d="M759 124 V138" marker-end="url(#arrow-neutral)" />
 
-  <!-- 3 intermediate nodes -->
-  <rect x="40" y="184" width="280" height="56" rx="10" class="node"/>
-  <text x="180" y="207" class="lbl-bold" text-anchor="middle">Create from new material</text>
-  <text x="180" y="226" class="lbl-desc" text-anchor="middle">PDFs, slides, YouTube lectures, or vocabulary</text>
+  <!-- Level 1 pills -->
+  <rect class="pill-indigo" x="189" y="98" width="210" height="26" rx="13" />
+  <text class="pill-indigo-text" x="294" y="115" text-anchor="middle">I have new study material</text>
 
-  <rect x="340" y="184" width="240" height="56" rx="10" class="node"/>
-  <text x="460" y="207" class="lbl-bold" text-anchor="middle">Use without an API key</text>
-  <text x="460" y="226" class="lbl-desc" text-anchor="middle">Existing Claude, Cursor, or Antigravity plan</text>
+  <rect class="pill-neutral" x="654" y="98" width="210" height="26" rx="13" />
+  <text class="pill-neutral-text" x="759" y="115" text-anchor="middle">I already have an Anki deck</text>
 
-  <rect x="600" y="184" width="280" height="56" rx="10" class="node"/>
-  <text x="740" y="207" class="lbl-bold" text-anchor="middle">Clean up an Anki deck</text>
-  <text x="740" y="226" class="lbl-desc" text-anchor="middle">.colpkg import, duplicates, and leeches</text>
+  <!-- Question 2A -->
+  <rect class="q-sub" x="154" y="144" width="280" height="44" rx="6" />
+  <text class="q-sub-text" x="294" y="171" text-anchor="middle">What are you studying?</text>
 
-  <!-- Connections to leaves -->
-  <path d="M 110 240 L 110 278" class="line" marker-end="url(#arr)"/>
-  <path d="M 180 240 L 180 374" class="line" marker-end="url(#arr)"/>
-  <path d="M 250 240 L 250 450 L 320 450" class="line" marker-end="url(#arr)"/>
-  <path d="M 460 240 L 460 278" class="line" marker-end="url(#arr)"/>
-  <path d="M 740 240 L 740 278" class="line" marker-end="url(#arr)"/>
+  <!-- Question 2B -->
+  <rect class="q-sub-alt" x="619" y="144" width="280" height="44" rx="6" />
+  <text class="q-sub-text" x="759" y="171" text-anchor="middle">What do you want to improve?</text>
 
-  <!-- Leaf 1: Medicine & STEM -->
-  <g transform="translate(30, 284)">
-    <rect width="270" height="76" rx="10" class="leaf-blue"/>
-    <rect x="12" y="10" width="96" height="18" rx="5" fill="#89b4fa"/>
-    <text x="60" y="23" class="badge-txt">WORKFLOW 1</text>
-    <text x="118" y="24" class="lbl-bold">Medicine &amp; STEM</text>
-    <text x="12" y="45" class="lbl-desc">Dense PDFs, chapter scoping, KaTeX math</text>
-    <text x="12" y="63" class="lbl-desc">and image occlusion • Studio or MCP</text>
+  <!-- Sub-branches 2A -->
+  <path class="line-indigo" d="M294 188 V210 H108 V224" />
+  <path class="line-indigo" d="M108 250 V276" marker-end="url(#arrow-indigo)" />
+
+  <path class="line-indigo" d="M294 188 V224" />
+  <path class="line-indigo" d="M294 250 V276" marker-end="url(#arrow-indigo)" />
+
+  <path class="line-indigo" d="M294 210 H480 V224" />
+  <path class="line-indigo" d="M480 250 V276" marker-end="url(#arrow-indigo)" />
+
+  <rect class="choice-box" x="34" y="224" width="148" height="26" rx="4" />
+  <text class="choice-text" x="108" y="241" text-anchor="middle">PDF, Word, Web page</text>
+
+  <rect class="choice-box" x="220" y="224" width="148" height="26" rx="4" />
+  <text class="choice-text" x="294" y="241" text-anchor="middle">Vocabulary / Languages</text>
+
+  <rect class="choice-box" x="406" y="224" width="148" height="26" rx="4" />
+  <text class="choice-text" x="480" y="241" text-anchor="middle">YouTube or Audio</text>
+
+  <!-- Sub-branches 2B -->
+  <path class="line-neutral" d="M759 188 V210 H666 V224" />
+  <path class="line-neutral" d="M666 250 V276" marker-end="url(#arrow-neutral)" />
+
+  <path class="line-neutral" d="M759 210 H852 V224" />
+  <path class="line-neutral" d="M852 250 V276" marker-end="url(#arrow-neutral)" />
+
+  <rect class="choice-box" x="590" y="224" width="152" height="26" rx="4" />
+  <text class="choice-text" x="666" y="241" text-anchor="middle">Unclear / duplicate cards</text>
+
+  <rect class="choice-box" x="776" y="224" width="152" height="26" rx="4" />
+  <text class="choice-text" x="852" y="241" text-anchor="middle">Missing textbook topics</text>
+
+  <!-- 5 Workflow Cards -->
+  <g transform="translate(24, 282)">
+    <rect class="card" width="168" height="132" rx="6" />
+    <rect x="16" y="14" width="32" height="4" rx="2" fill="#4F46E5" />
+    <text class="card-kicker" x="16" y="34">01 · WORKFLOW</text>
+    <text class="card-title" x="16" y="58">Written Docs</text>
+    <text class="card-title" x="16" y="76">&amp; STEM</text>
+    <text class="card-desc" x="16" y="100">Chapters, formulas,</text>
+    <text class="card-desc" x="16" y="116">and diagrams</text>
   </g>
 
-  <!-- Leaf 2: Languages & TTS -->
-  <g transform="translate(30, 380)">
-    <rect width="270" height="76" rx="10" class="leaf-cyan"/>
-    <rect x="12" y="10" width="96" height="18" rx="5" fill="#94e2d5"/>
-    <text x="60" y="23" class="badge-txt">WORKFLOW 2</text>
-    <text x="118" y="24" class="lbl-bold">Languages &amp; TTS</text>
-    <text x="12" y="45" class="lbl-desc">Vocabulary + offline Kokoro / Piper voices</text>
-    <text x="12" y="63" class="lbl-desc">Batch audio &amp; MCP bilingual cleanup</text>
+  <g transform="translate(210, 282)">
+    <rect class="card" width="168" height="132" rx="6" />
+    <rect x="16" y="14" width="32" height="4" rx="2" fill="#4F46E5" />
+    <text class="card-kicker" x="16" y="34">02 · WORKFLOW</text>
+    <text class="card-title" x="16" y="58">Languages &amp;</text>
+    <text class="card-title" x="16" y="76">Pronunciation</text>
+    <text class="card-desc" x="16" y="100">Spoken cards with</text>
+    <text class="card-desc" x="16" y="116">offline voice</text>
   </g>
 
-  <!-- Leaf 3: Video & Audio Lectures -->
-  <g transform="translate(325, 424)">
-    <rect width="270" height="86" rx="10" class="leaf-amber"/>
-    <rect x="12" y="10" width="96" height="18" rx="5" fill="#fab387"/>
-    <text x="60" y="23" class="badge-txt">WORKFLOW 3</text>
-    <text x="118" y="24" class="lbl-bold">YouTube &amp; Audio</text>
-    <text x="12" y="47" class="lbl-desc">Local Whisper / subtitle transcription,</text>
-    <text x="12" y="64" class="lbl-desc">didactic structuring, and AI card drafting</text>
+  <g transform="translate(396, 282)">
+    <rect class="card" width="168" height="132" rx="6" />
+    <rect x="16" y="14" width="32" height="4" rx="2" fill="#4F46E5" />
+    <text class="card-kicker" x="16" y="34">03 · WORKFLOW</text>
+    <text class="card-title" x="16" y="58">Video &amp;</text>
+    <text class="card-title" x="16" y="76">Audio</text>
+    <text class="card-desc" x="16" y="100">Local transcription</text>
+    <text class="card-desc" x="16" y="116">&amp; key cards</text>
   </g>
 
-  <!-- Leaf 4: Zero API Key MCP -->
-  <g transform="translate(325, 284)">
-    <rect width="270" height="114" rx="10" class="leaf-purple"/>
-    <rect x="12" y="10" width="96" height="18" rx="5" fill="#cba6f7"/>
-    <text x="60" y="23" class="badge-txt">WORKFLOW 4</text>
-    <text x="118" y="24" class="lbl-bold">Zero API Key (MCP)</text>
-    <text x="12" y="46" class="lbl-desc">Connect Claude Desktop, Code, or Cursor.</text>
-    <text x="12" y="64" class="lbl-desc">Your agent reads courses, drafts cards,</text>
-    <text x="12" y="82" class="lbl-desc">refactors templates, and stages every</text>
-    <text x="12" y="100" class="lbl-desc">change in the Safeguard for approval.</text>
+  <g transform="translate(582, 282)">
+    <rect class="card-alt" width="168" height="132" rx="6" />
+    <rect x="16" y="14" width="32" height="4" rx="2" fill="#64748B" />
+    <text class="card-kicker-alt" x="16" y="34">04 · WORKFLOW</text>
+    <text class="card-title" x="16" y="58">Collection</text>
+    <text class="card-title" x="16" y="76">Cleanup</text>
+    <text class="card-desc" x="16" y="100">Duplicates, clarity,</text>
+    <text class="card-desc" x="16" y="116">history preserved</text>
   </g>
 
-  <!-- Leaf 5: Anki Rescue & MCP Hygiene -->
-  <g transform="translate(620, 284)">
-    <rect width="270" height="114" rx="10" class="leaf-green"/>
-    <rect x="12" y="10" width="96" height="18" rx="5" fill="#a6e3a1"/>
-    <text x="60" y="23" class="badge-txt">WORKFLOW 5</text>
-    <text x="118" y="24" class="lbl-bold">Rescue &amp; MCP Hygiene</text>
-    <text x="12" y="46" class="lbl-desc">Import .colpkg without losing SRS state.</text>
-    <text x="12" y="64" class="lbl-desc">Find duplicates and leeches, run an MCP</text>
-    <text x="12" y="82" class="lbl-desc">audit campaign (flags, domain gaps),</text>
-    <text x="12" y="100" class="lbl-desc">and split heavy cards via Wozniak rules.</text>
+  <g transform="translate(768, 282)">
+    <rect class="card-alt" width="168" height="132" rx="6" />
+    <rect x="16" y="14" width="32" height="4" rx="2" fill="#64748B" />
+    <text class="card-kicker-alt" x="16" y="34">05 · COVERAGE</text>
+    <text class="card-title" x="16" y="58">Fill Knowledge</text>
+    <text class="card-title" x="16" y="76">Gaps</text>
+    <text class="card-desc" x="16" y="100">Match cards against</text>
+    <text class="card-desc" x="16" y="116">missed chapters</text>
   </g>
+
+  <!-- Cross-cutting mode bar -->
+  <rect class="footer-box" x="24" y="438" width="912" height="82" rx="6" />
+  <text class="footer-title" x="480" y="463" text-anchor="middle">Applies to all 5 workflows — choose how you want to run it:</text>
+  <text class="footer-text" x="480" y="486" text-anchor="middle">
+    <tspan font-weight="700" fill="#4F46E5">Built-in Studio</tspan> (free offline Ollama, API key, or manual editing)
+    <tspan dx="16" font-weight="700">•</tspan>
+    <tspan dx="16" font-weight="700" fill="#4F46E5">Zero API Key</tspan> (drive via Claude or Cursor)
+  </text>
+  <text class="footer-sub" x="480" y="506" text-anchor="middle">Either way, nothing is saved or exported to Anki without your explicit approval.</text>
 </svg>

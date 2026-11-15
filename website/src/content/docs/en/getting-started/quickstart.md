@@ -9,46 +9,48 @@ This guide walks you through creating your first Anki flashcard deck in minutes 
 
 ![AnkiDraft workflow decision tree](assets/arbre_decision_workflow.svg)
 
-Jump straight to the recipe built for your use case:
+Pick the step-by-step guide that matches your study material:
 
-1. **[Medicine & STEM: Dense PDFs, KaTeX Math, and Diagrams](/en/workflows/medecine-sciences-pdf/)** — scope textbook chapters, extract formulas and figures, and audit against Wozniak rules (Studio or MCP).
-2. **[Languages & Audio: Vocabulary and Offline TTS Pronunciation](/en/workflows/langues-et-audio-tts/)** — add natural offline Kokoro or Piper voice audio and fix ambiguous cards via MCP.
-3. **[YouTube Video & Audio Lectures: Transcription and Extraction](/en/workflows/cours-video-youtube-audio/)** — transcribe recorded lectures with Whisper or subtitles and turn key segments into cards.
-4. **[Zero API Key Workflow with an External MCP Agent](/en/workflows/zero-cle-api-agent-mcp/)** — drive AnkiDraft directly from Claude Desktop, Claude Code, Cursor, or Antigravity without extra API costs.
-5. **[Anki Collection Rescue & Hygiene (Studio & MCP)](/en/workflows/sauvetage-et-hygiene-anki-mcp/)** — import your `.colpkg` safely, eliminate duplicates and leeches, run MCP audit campaigns, and export back without losing SRS history.
+1. **[Written Docs & STEM: PDFs, formulas, and diagrams](/en/workflows/medecine-sciences-pdf/)** — pick the relevant chapters from a textbook, keep equations and figures, and check that every card is clear.
+2. **[Languages & Pronunciation: vocabulary and offline audio](/en/workflows/langues-et-audio-tts/)** — add natural offline voice pronunciation to your vocabulary cards and fix ambiguous wording.
+3. **[Video & Audio: YouTube lectures and recordings](/en/workflows/cours-video-youtube-audio/)** — transcribe recorded lectures and turn key explanations into flashcards.
+4. **[Collection Cleanup & Hygiene for an existing Anki deck](/en/workflows/sauvetage-et-hygiene-anki-mcp/)** — import an `.apkg` deck or `.colpkg` collection, remove duplicates, split overly long cards, and export back without losing your review progress.
+5. **[Fill knowledge gaps against a textbook](/en/cards/dag_et_rag/)** — link existing cards to textbook chapters to spot missed concepts right away.
 
-## Built-in Creation Studio vs. External MCP Agent
+- **[Cross-cutting mode — Work with zero API key using Claude or Cursor](/en/workflows/zero-cle-api-agent-mcp/)** — applies to any of the workflows above if you prefer driving AnkiDraft from your existing AI plan.
 
-AnkiDraft works either standalone in the Creation Studio or connected to your existing AI assistant over MCP.
+## Two Ways to Work with AI
 
-| Dimension | Built-in Creation Studio | External Agent via MCP Server |
+AnkiDraft works both on its own and connected to your existing AI assistant (Claude, Cursor).
+
+| Dimension | Built-in Studio (inside the app) | With Your AI Assistant (Claude, Cursor) |
 | :--- | :--- | :--- |
-| **AI setup required** | Free local model (Ollama) or API key (OpenAI, Gemini, Claude) | Existing plan (Claude Desktop/Code, Cursor, Antigravity) — **zero API key** |
-| **Interaction style** | Visual chapter picker, prebuilt DAG pipelines, one-click tools | Natural conversation in your AI client connected on port `8765` |
-| **Best suited for** | Batch PDF extraction, bulk TTS generation, visual KaTeX editing | Cross-deck gap audits, multi-step hygiene campaigns, note-type refactoring |
-| **Human control** | **Staging Review** queue before saving | **Safeguard (Two-Phase Commit)**: nothing changes until you click **Apply** |
+| **What you need** | Free offline model ([Ollama](/en/ai-setup/local-models-ollama/)) or an [API key](/en/ai-setup/ia_fournisseurs/) | Your existing plan (Claude Desktop/Code, Cursor) — **zero API key** |
+| **How it works** | Visual buttons, chapter selection, and batch generation | Chat naturally in your AI assistant connected to AnkiDraft |
+| **Best suited for** | Extracting PDF chapters, adding voice audio, editing formulas | Spotting gaps across decks, bulk cleanup, and card rewrites |
+| **Your control** | Review every card before saving | **Approval required**: nothing changes until you click **Apply** |
 
-## The 4-Step Core Flow (Studio)
+## Get Started in 4 Simple Steps
 
 ### Step 1: Select or Create Your Profile
 
-On first launch, AnkiDraft opens the `default` profile. To keep subjects isolated (e.g., *Medicine*, *Languages*), click the profile selector at the bottom of the sidebar to create a dedicated workspace.
+On first launch, AnkiDraft opens the `default` profile. To keep bulky course files separate from personal decks, create a dedicated profile from the selector at the top of the window ([Manage profiles](/en/getting-started/profiles-and-workspaces/)).
 
-### Step 2: Configure an AI Provider (Optional)
+### Step 2: Choose an AI Engine (Optional)
 
 Open **Settings** (<kbd>Ctrl+,</kbd>) and switch to **AI Engines**:
-- **100% free & offline**: install [Ollama](/en/ai-setup/local-models-ollama/) locally and choose a model.
-- **Cloud API key**: enter your OpenAI, Google Gemini, or Anthropic Claude key (stored in your OS encrypted keychain).
-- **Zero API key**: enable the [Local MCP Server](/en/workflows/zero-cle-api-agent-mcp/) to work with Claude or Cursor.
+- **Free & 100% offline**: install [Ollama](/en/ai-setup/local-models-ollama/) locally and pick a model.
+- **With an API key**: enter your OpenAI, Google Gemini, or Anthropic Claude key (encrypted on your device).
+- **Zero API key**: turn on the local connection in **MCP Server & Agents** (<kbd>Alt+5</kbd>) to use your [Claude or Cursor plan](/en/workflows/zero-cle-api-agent-mcp/).
 
-### Step 3: Import Your First Document
+### Step 3: Import Your First Study Material
 
-1. Open the **My Documents** view (<kbd>Alt+7</kbd>) from the sidebar.
-2. Drag and drop a PDF, Word, PowerPoint, or EPUB file, or paste a YouTube lecture URL.
-3. Select the chapters you want to study, then switch to **Creation Studio** (<kbd>Alt+2</kbd>) and click **Generate** (or **Forge Section**).
+1. Open **My Documents** (<kbd>Alt+7</kbd>) from the sidebar.
+2. Drag and drop a PDF, Word, PowerPoint, or EPUB file, or paste a YouTube video link.
+3. For a focused excerpt or free-form note, switch to **Creation Studio** (<kbd>Alt+2</kbd>); to split and queue an entire textbook by chapter, open **Batch Factory** (<kbd>Alt+6</kbd>) › **Batch Slice Composer**.
 
-### Step 4: Validate and Export to Anki
+### Step 4: Review, Improve, and Export to Anki
 
-Review generated cards, run the [Wozniak Quality Audit](/en/cards/linter_wozniak/) (<kbd>Alt+4</kbd>), then press <kbd>Ctrl+Alt+E</kbd> (**Export Anki Cards (.apkg)**). Double-click the exported `.apkg` file to add your cards directly into Anki for daily spaced-repetition review.
+Review the generated cards, run a quick check in **Analysis & AI Audit** (<kbd>Alt+4</kbd>) to catch overly long or vague cards, then press <kbd>Ctrl+Alt+E</kbd> (**Export Anki Cards (.apkg)**). Double-click the exported `.apkg` file to add your cards directly into Anki.
 
 > Want plain-language definitions with concrete Before / After examples? Read the [User Glossary](/en/guides/glossaire/).

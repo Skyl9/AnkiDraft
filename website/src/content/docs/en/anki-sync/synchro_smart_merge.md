@@ -13,6 +13,6 @@ When an incoming flashcard shares the same identifier as an existing card in Ank
 
 ## 2. Finding and Merging Duplicates
 
-From the Editor or through the AI Consultant, scan your decks for duplicates:
+From **Analysis & AI Audit** (<kbd>Alt+4</kbd>) or through your connected [MCP assistant](/en/ai-setup/consultant_mcp/), scan your decks for duplicates:
 - **Exact duplicates**: flashcards sharing the exact same front field.
 - **Near-duplicates**: flashcards phrased slightly differently that test the same definition, detected rapidly with built-in similarity matching.

@@ -7,18 +7,36 @@ L'interface d'AnkiDraft est conçue pour rester claire et rapide, que vous trava
 
 ## 1. Les espaces de travail principaux
 
-Vous pouvez passer d'un espace à l'autre via la barre latérale ou avec les raccourcis <kbd>Ctrl+1</kbd> à <kbd>Ctrl+6</kbd> :
+La barre latérale regroupe **11 ateliers** organisés en 4 sections :
 
-- **Tableau de bord (<kbd>Ctrl+1</kbd>)** : vue d'ensemble de vos paquets, de votre avancement documentaire et accès rapide aux dernières actions.
-- **Éditeur & Exploration (<kbd>Ctrl+2</kbd>)** : création manuelle, édition avec aperçu mathématique KaTeX en direct, textes à trous et gestion de vos cartes.
-- **Documents & Sources (<kbd>Ctrl+3</kbd>)** : bibliothèque de vos PDF, vidéos YouTube, enregistrements audio et pages web, avec indicateur de couverture par chapitre.
-- **Génération & Pipelines (<kbd>Ctrl+4</kbd>)** : lancement de la création de flashcards par lots sur une sélection de chapitres.
-- **Qualité & Audit Wozniak (<kbd>Ctrl+5</kbd>)** : détection des cartes trop longues, redondantes ou difficiles à mémoriser.
-- **Consultant IA (<kbd>Ctrl+6</kbd>)** : assistant conversationnel capable d'analyser vos paquets et de vous proposer des améliorations soumises à votre validation.
+### Général
+- **Tableau de bord** : vue d'ensemble de vos paquets, de votre avancement documentaire et accès rapide aux dernières actions ([Import .apkg / .colpkg](/fr/anki-sync/import-colpkg/) · [Export .apkg](/fr/anki-sync/export-apkg/)).
 
-## 2. La Palette de commandes (<kbd>Ctrl+K</kbd>)
+### Forge & Outils
+- **Studio de Création** (<kbd>Alt+2</kbd>) : génération interactive et ciblée sur un extrait de document ou une saisie libre (<kbd>Ctrl+N</kbd>), avec aperçu en direct et relecture carte par carte ([Génération IA](/fr/cards/ai-generation/)).
+- **Édition & Navigateur** : création manuelle, édition avec aperçu mathématique KaTeX en direct, textes à trous et gestion de vos cartes ([Éditeur de notes & KaTeX](/fr/cards/editeur_notes_katex/)).
+- **Analyse & Audit IA** : détection des cartes trop longues, redondantes ou difficiles à mémoriser et suivi de couverture ([Linter Wozniak](/fr/cards/linter_wozniak/)).
+- **Serveur MCP & Agents** : connexion d'agents externes (Claude Desktop, Cursor) à votre collection locale via MCP avec validation Garde-Fou ([Serveur MCP & Agents](/fr/ai-setup/consultant_mcp/)).
+- **Batch Factory** (<kbd>Alt+6</kbd>) : usine de production par lots (file d'attente multi-chapitres via *Composer le lot…*, reprise sur incident et validation Staging) ([Génération IA](/fr/cards/ai-generation/) · [Délimitation & tranches](/fr/sources/scope-and-slices/)).
 
-À tout moment, appuyez sur <kbd>Ctrl+K</kbd> pour ouvrir la palette de commandes : tapez quelques lettres pour changer de vue, lancer un export `.apkg`, ouvrir un guide d'aide ou modifier un réglage sans quitter le clavier.
+### Bibliothèque
+- **My Documents** : bibliothèque de vos PDF, vidéos YouTube, enregistrements audio et pages web, avec indicateur de couverture par chapitre ([Hub multimodal](/fr/sources/hub_multimodal/)).
+- **Types de note** : personnalisation des modèles Recto/Verso, Cloze, gabarits Jinja2 et styles CSS ([Types de notes & gabarits](/fr/cards/note-types-and-templates/)).
+
+### Laboratoire IA
+- **Éditeur d'Agents** : configuration et surcharge locale des prompts et personas IA ([Fournisseurs IA & Budget](/fr/ai-setup/ia_fournisseurs/) · [Modèles locaux Ollama](/fr/ai-setup/local-models-ollama/)).
+- **Pipelines** : création et exécution de chaînes DAG multi-étapes couplées au RAG local ([Pipelines DAG & RAG](/fr/cards/dag_et_rag/)).
+- **Tests A/B** : comparaison de prompts et de modèles IA côte à côte sur vos propres extraits de cours.
+
+## 2. Barre supérieure et menus principaux
+
+Directement accessibles en permanence depuis la barre supérieure de la fenêtre :
+
+- **Sélecteur de profil** : basculez d'un espace de travail isolé à un autre en un clic ([Profils & Espaces de travail](/fr/getting-started/profiles-and-workspaces/)).
+- **Compteur de dépenses IA (`0.00 $`)** : suivi en temps réel du coût cumulé de vos appels aux fournisseurs IA ([Fournisseurs IA & Budget](/fr/ai-setup/ia_fournisseurs/)).
+- **Rechercher / Palette de commandes (<kbd>Ctrl+K</kbd>)** : tapez quelques lettres pour changer de vue, lancer un [export `.apkg`](/fr/anki-sync/export-apkg/), ouvrir un guide d'aide ou modifier un réglage sans quitter le clavier. Consultez aussi la [référence des raccourcis clavier](/fr/guides/raccourcis_clavier/).
+- **Aide & Retours** : accès direct à la documentation, aux guides de dépannage ([FAQ & Dépannage](/fr/guides/faq_depannage/)) et au signalement de bugs.
+- **Paramètres (<kbd>Ctrl+,</kbd>)** : configuration des fournisseurs IA, des modèles locaux [Ollama](/fr/ai-setup/local-models-ollama/), du serveur [MCP](/fr/ai-setup/consultant_mcp/) et de l'apparence.
 
 ## 3. Personnaliser la disposition et le thème
 

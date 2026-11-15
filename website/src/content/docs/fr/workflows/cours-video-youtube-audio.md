@@ -14,24 +14,24 @@ Les vidéos de cours (YouTube, conférences enregistrées) et les mémos audio d
 
 ![Vue Documents d'AnkiDraft](assets/screen_documents.png)
 
-## 2. Transformer la transcription brute en chapitres lisibles
+## 2. Mettre la transcription en chapitres lisibles
 
-Une transcription orale brute contient souvent des hésitations, digressions ou phrases inachevées. Avant de générer vos cartes, structurez le texte :
+Une transcription orale brute contient souvent des hésitations ou des digressions. Avant de générer vos cartes, structurez le texte :
 
-- **Dans le Studio** : sélectionnez le document transcrit et lancez un [Pipeline de génération](/fr/cards/dag_et_rag/) comportant une étape amont de synthèse Markdown suivie de l'extraction de cartes.
-- **Via Agent MCP** : demandez à Claude ou Cursor d'appeler `structure_transcript_for_ai` puis `structure_document_sections` pour transformer le monologue horodaté en sections thématiques claires, sans perdre les repères temporels.
+- **Dans le Studio** : sélectionnez le document transcrit et lancez un [scénario de génération](/fr/cards/dag_et_rag/) qui commence par résumer et organiser le texte en chapitres avant de créer les cartes.
+- **Avec Claude ou Cursor** : demandez à votre assistant d'appeler `structure_transcript_for_ai` puis `structure_document_sections` pour transformer le texte horodaté en sections claires.
 
-## 3. Découper par séquences et générer vos flashcards
+## 3. Découper par thèmes et relire vos cartes
 
 ![Studio de Création d'AnkiDraft](assets/screen_creation.png)
 
-1. Ouvrez **Studio de Création** (<kbd>Alt+2</kbd>) ou **Composer le lot…** (*Batch Slice Composer*) pour traiter chaque partie du cours une par une.
-2. Ajustez le modèle (*Basique* ou *Texte à trous*) et la persona disciplinaire ([Génération IA](/fr/cards/ai-generation/)).
-3. Relisez chaque carte dans la file **Staging** afin de vérifier l'exactitude des formules ou des notions dictées à l'oral.
+1. Pour générer et relire sur un extrait précis, ouvrez **Studio de Création** (<kbd>Alt+2</kbd>). Pour découper un long cours en plusieurs tâches automatisées, ouvrez **Batch Factory** (<kbd>Alt+6</kbd>) › **Composer le lot…** (<kbd>Ctrl+N</kbd>).
+2. Choisissez le modèle (*Basique* ou *Texte à trous*) et le style de rédaction ([Génération IA](/fr/cards/ai-generation/)).
+3. Relisez chaque carte dans la file de relecture avant enregistrement pour vérifier les formules ou termes techniques dictés à l'oral.
 
-## 4. Automatiser la synthèse et la génération via MCP
+## 4. Automatiser le tri et la génération (sans clé API)
 
-Si vous travaillez sans clé API avec Claude Code, Claude Desktop ou Cursor connecté sur le port `8765`, utilisez cet enchaînement en deux temps :
+Si vous travaillez avec Claude Code, Claude Desktop ou Cursor en [mode sans clé API](/fr/workflows/zero-cle-api-agent-mcp/), utilisez cet enchaînement :
 
-- **Outils MCP mobilisés** : `structure_transcript_for_ai`, `get_document_outline`, `create_notes_batch`, `begin_staged_bundle`, `commit_staged_bundle`.
-- **Prompt type** : *« Prends la transcription brute du document #9, restructure-la avec `structure_transcript_for_ai` (profil didactique en français, horodatages conservés), puis extrais les définitions et mécanismes clés dans un lot `create_notes_batch` vers le paquet `Cours::Neurosciences` pour validation dans le Garde-Fou. »*
+- **Outils utilisés** : `structure_transcript_for_ai`, `get_document_outline`, `create_notes_batch`, `begin_staged_bundle`, `commit_staged_bundle`.
+- **Prompt type** : *« Prends la transcription brute du document #9, restructure-la avec `structure_transcript_for_ai` (profil didactique en français, horodatages conservés), puis extrais les définitions et mécanismes clés dans un lot `create_notes_batch` vers le paquet `Cours::Neurosciences` pour validation. »*

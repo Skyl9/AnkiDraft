@@ -7,9 +7,9 @@ AnkiDraft vous permet d'isoler complètement plusieurs collections grâce aux **
 
 ## 1. Pourquoi utiliser plusieurs profils ?
 
-Chaque profil possède sa propre base de données et son propre dossier de médias (images, sons) :
-- Vous pouvez créer un profil par grande discipline (ex. *Études de santé*, *Préparation concours*, *Japonais*).
-- Plusieurs personnes utilisant le même ordinateur disposent chacune de leur espace sans jamais mélanger leurs cartes ni leurs documents.
+Chaque profil possède sa propre base de données et son propre dossier de médias (images, sons). C'est l'outil idéal pour **découper votre travail par grand paquet ou par grande période** :
+- **Séparer vos fiches personnelles de vos années de cours** (ex. *Fiches personnelles / Langues*, *L1 Médecine*, *L2 Médecine*, *Préparation concours*).
+- **Éviter de vous perdre dans vos documents** : les supports importés (manuels PDF, polycopiés, transcriptions vidéo) sont souvent assez volumineux. Isoler chaque grand domaine dans son propre profil garde votre bibliothèque claire, légère et facile à parcourir.
 
 ## 2. Créer ou changer de profil
 

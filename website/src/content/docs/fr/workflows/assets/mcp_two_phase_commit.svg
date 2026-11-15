@@ -1,73 +1,205 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 412" width="960" height="412" role="img" aria-label="Fonctionnement du Parcours Zéro Clé API avec Workspace de Skills et Garde-Fou AnkiDraft">
+  <style>
+    .header-box { fill: #0F1117; stroke: #4F46E5; stroke-width: 1.5; }
+    .header-text { fill: #F6F5F0; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 15.5px; font-weight: 800; }
+
+    .card-prep { fill: #FFFFFF; stroke: #64748B; stroke-width: 1.5; }
+    .card-guard { fill: #FFFFFF; stroke: #4F46E5; stroke-width: 2; }
+    .card-done { fill: #FFFFFF; stroke: #047857; stroke-width: 1.5; }
+    .base-box { fill: #FFFFFF; stroke: #6366F1; stroke-width: 1.5; }
+
+    .divider { stroke: #E2E8F0; stroke-width: 1; }
+
+    .pill-prep { fill: #F1F5F9; stroke: #64748B; stroke-width: 1; }
+    .pill-prep-text { fill: #334155; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; }
+
+    .pill-guard { fill: #EEF2FF; stroke: #6366F1; stroke-width: 1; }
+    .pill-guard-text { fill: #3730A3; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; }
+
+    .pill-done { fill: #ECFDF5; stroke: #059669; stroke-width: 1; }
+    .pill-done-text { fill: #065F46; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; }
+
+    .card-title { fill: #0F1117; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 14.5px; font-weight: 800; }
+    .card-sub { fill: #475569; font-family: Inter, system-ui, sans-serif; font-size: 11.5px; font-weight: 600; }
+    .card-item { fill: #334155; font-family: Inter, system-ui, sans-serif; font-size: 11.5px; }
+
+    .dot-prep { fill: #64748B; }
+    .dot-guard { fill: #4F46E5; }
+    .dot-done { fill: #047857; }
+
+    .status-prep { fill: #F8FAFC; stroke: #CBD5E1; stroke-width: 1; }
+    .status-prep-text { fill: #334155; font-family: Inter, system-ui, sans-serif; font-size: 11px; font-weight: 700; }
+
+    .status-guard { fill: #EEF2FF; stroke: #A5B4FC; stroke-width: 1; }
+    .status-guard-text { fill: #3730A3; font-family: Inter, system-ui, sans-serif; font-size: 11px; font-weight: 700; }
+
+    .status-done { fill: #ECFDF5; stroke: #6EE7B7; stroke-width: 1; }
+    .status-done-text { fill: #065F46; font-family: Inter, system-ui, sans-serif; font-size: 11px; font-weight: 700; }
+
+    .arrow-line { stroke: #4F46E5; stroke-width: 2; fill: none; }
+    .arrow-done { stroke: #047857; stroke-width: 2; fill: none; }
+    .arrow-feed { stroke: #6366F1; stroke-width: 1.75; stroke-dasharray: 4 3; fill: none; }
+    .arrow-label { fill: #3730A3; font-family: Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .arrow-label-done { fill: #065F46; font-family: Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 700; }
+
+    .marker-indigo { fill: #4F46E5; }
+    .marker-done { fill: #047857; }
+
+    .base-kicker { fill: #4F46E5; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; }
+    .base-title { fill: #0F1117; font-family: Archivo, Inter, system-ui, sans-serif; font-size: 13px; font-weight: 800; }
+    .base-text { fill: #334155; font-family: Inter, system-ui, sans-serif; font-size: 11.5px; }
+    .base-muted { fill: #64748B; font-family: Inter, system-ui, sans-serif; font-size: 11px; }
+
+    @media (prefers-color-scheme: dark) {
+      .header-box { fill: #1E1B4B; stroke: #818CF8; }
+      .card-prep, .card-guard, .card-done, .base-box { fill: #161922; }
+      .card-prep { stroke: #64748B; }
+      .card-guard, .base-box { stroke: #818CF8; }
+      .card-done { stroke: #34D399; }
+      .divider { stroke: #262A36; }
+
+      .pill-prep { fill: #1E293B; stroke: #64748B; }
+      .pill-prep-text { fill: #E2E8F0; }
+      .pill-guard { fill: #1E1B4B; stroke: #818CF8; }
+      .pill-guard-text { fill: #C7D2FE; }
+      .pill-done { fill: #064E3B; stroke: #34D399; }
+      .pill-done-text { fill: #A7F3D0; }
+
+      .card-title, .base-title { fill: #F8FAFC; }
+      .card-sub, .card-item, .base-text { fill: #CBD5E1; }
+      .base-muted { fill: #94A3B8; }
+      .base-kicker { fill: #A5B4FC; }
+
+      .dot-prep { fill: #94A3B8; }
+      .dot-guard { fill: #818CF8; }
+      .dot-done { fill: #34D399; }
+
+      .status-prep { fill: #1E293B; stroke: #475569; }
+      .status-prep-text { fill: #E2E8F0; }
+      .status-guard { fill: #1E1B4B; stroke: #6366F1; }
+      .status-guard-text { fill: #C7D2FE; }
+      .status-done { fill: #064E3B; stroke: #10B981; }
+      .status-done-text { fill: #A7F3D0; }
+
+      .arrow-line, .arrow-feed { stroke: #818CF8; }
+      .arrow-done { stroke: #34D399; }
+      .arrow-label { fill: #C7D2FE; }
+      .arrow-label-done { fill: #A7F3D0; }
+      .marker-indigo { fill: #818CF8; }
+      .marker-done { fill: #34D399; }
+    }
+  </style>
+
   <defs>
-    <style>
-      .bg { fill: #181825; }
-      .box { fill: #1e1e2e; stroke: #45475a; stroke-width: 1.6; }
-      .box-purple { fill: #1e1e2e; stroke: #cba6f7; stroke-width: 2; }
-      .box-amber { fill: #1e1e2e; stroke: #f9e2af; stroke-width: 2; }
-      .box-green { fill: #1e1e2e; stroke: #a6e3a1; stroke-width: 2; }
-      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 18px; font-weight: 700; fill: #cdd6f4; text-anchor: middle; }
-      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #a6adc8; text-anchor: middle; }
-      .step-lbl { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 700; fill: #cdd6f4; }
-      .desc { font-family: system-ui, -apple-system, sans-serif; font-size: 11.5px; fill: #bac2de; }
-      .badge { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 800; fill: #181825; text-anchor: middle; }
-      .arrow { stroke: #89b4fa; stroke-width: 2.5; fill: none; }
-      .arrow-lbl { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 600; fill: #94e2d5; text-anchor: middle; }
-    </style>
-    <marker id="arr-b" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M 0 1 L 9 5 L 0 9 z" fill="#89b4fa"/>
+    <marker id="arr-indigo" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path class="marker-indigo" d="M 0 1 L 10 5 L 0 9 z" />
+    </marker>
+    <marker id="arr-done" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path class="marker-done" d="M 0 1 L 10 5 L 0 9 z" />
     </marker>
   </defs>
 
-  <rect width="900" height="320" rx="16" class="bg"/>
-  <text x="450" y="34" class="title">Garde-Fou MCP : Validation Humaine en Deux Temps (2PC)</text>
-  <text x="450" y="54" class="subtitle">Aucun agent externe ne modifie ou ne supprime vos cartes sans votre validation visuelle explicite</text>
+  <!-- Bandeau titre -->
+  <rect class="header-box" x="150" y="14" width="660" height="44" rx="6" />
+  <text class="header-text" x="480" y="41" text-anchor="middle">Comment votre assistant pilote AnkiDraft en toute sécurité ?</text>
 
-  <!-- Étape 1 -->
-  <g transform="translate(30, 84)">
-    <rect width="240" height="190" rx="12" class="box-purple"/>
-    <rect x="16" y="14" width="66" height="20" rx="6" fill="#cba6f7"/>
-    <text x="49" y="28" class="badge">PHASE 1</text>
-    <text x="16" y="56" class="step-lbl">Agent Externe MCP</text>
-    <text x="16" y="78" class="desc">Claude, Cursor ou Antigravity</text>
-    <text x="16" y="96" class="desc">interroge vos cours et prépare :</text>
-    <text x="16" y="120" class="desc">• propose_card_refactor</text>
-    <text x="16" y="138" class="desc">• propose_card_split</text>
-    <text x="16" y="156" class="desc">• begin / commit_staged_bundle</text>
-    <text x="16" y="176" class="desc" fill="#cba6f7">Aucune écriture directe en base</text>
+  <!-- Phase 01 : Assistant externe MCP (x=22..272) -->
+  <g transform="translate(22, 74)">
+    <rect class="card-prep" x="0" y="0" width="250" height="220" rx="8" />
+    <rect class="pill-prep" x="16" y="14" width="128" height="22" rx="4" />
+    <text class="pill-prep-text" x="80" y="29" text-anchor="middle">01 · PRÉPARATION</text>
+
+    <text class="card-title" x="16" y="58">Votre assistant habituel</text>
+    <text class="card-sub" x="16" y="75">Claude, Cursor, Antigravity (sans clé)</text>
+    <line class="divider" x1="16" y1="86" x2="234" y2="86" />
+
+    <rect class="dot-prep" x="16" y="100" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="106">Charge le Skill MCP adapté</text>
+
+    <rect class="dot-prep" x="16" y="122" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="128">Lit vos cours et vos paquets</text>
+
+    <rect class="dot-prep" x="16" y="144" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="150">Vérifie modèles et doublons</text>
+
+    <rect class="dot-prep" x="16" y="166" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="172">Envoie un lot de propositions</text>
+
+    <rect class="status-prep" x="16" y="186" width="218" height="24" rx="4" />
+    <text class="status-prep-text" x="125" y="202" text-anchor="middle">Aucune écriture directe en base</text>
   </g>
 
-  <path d="M 272 179 L 324 179" class="arrow" marker-end="url(#arr-b)"/>
-  <text x="298" y="167" class="arrow-lbl">Staging</text>
+  <!-- Flèche 1 -> 2 (gap x=272..355, centre 313.5) -->
+  <text class="arrow-label" x="313.5" y="158" text-anchor="middle">Lot en</text>
+  <text class="arrow-label" x="313.5" y="171" text-anchor="middle">attente</text>
+  <path class="arrow-line" d="M 278 184 H 347" marker-end="url(#arr-indigo)" />
 
-  <!-- Étape 2 -->
-  <g transform="translate(330, 84)">
-    <rect width="240" height="190" rx="12" class="box-amber"/>
-    <rect x="16" y="14" width="66" height="20" rx="6" fill="#f9e2af"/>
-    <text x="49" y="28" class="badge">PHASE 2</text>
-    <text x="16" y="56" class="step-lbl">Garde-Fou AnkiDraft</text>
-    <text x="16" y="78" class="desc">Vos propositions arrivent en</text>
-    <text x="16" y="96" class="desc">file d'attente (Staged Bundle) :</text>
-    <text x="16" y="120" class="desc">• Diff sémantique Avant / Après</text>
-    <text x="16" y="138" class="desc">• Prévisualisation KaTeX &amp; HTML</text>
-    <text x="16" y="156" class="desc">• Boutons Appliquer ou Rejeter</text>
-    <text x="16" y="176" class="desc" fill="#f9e2af">Contrôle humain à 100 %</text>
+  <!-- Phase 02 : Garde-Fou AnkiDraft (x=355..605) -->
+  <g transform="translate(355, 74)">
+    <rect class="card-guard" x="0" y="0" width="250" height="220" rx="8" />
+    <rect class="pill-guard" x="16" y="14" width="128" height="22" rx="4" />
+    <text class="pill-guard-text" x="80" y="29" text-anchor="middle">02 · GARDE-FOU</text>
+
+    <text class="card-title" x="16" y="58">Relecture dans AnkiDraft</text>
+    <text class="card-sub" x="16" y="75">Serveur MCP (Alt+5) › Garde-Fou</text>
+    <line class="divider" x1="16" y1="86" x2="234" y2="86" />
+
+    <rect class="dot-guard" x="16" y="100" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="106">Comparatif clair Avant / Après</text>
+
+    <rect class="dot-guard" x="16" y="122" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="128">Rendu réel des cartes et formules</text>
+
+    <rect class="dot-guard" x="16" y="144" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="150">Motif affiché pour chaque action</text>
+
+    <rect class="dot-guard" x="16" y="166" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="172">Vous cliquez Appliquer ou Rejeter</text>
+
+    <rect class="status-guard" x="16" y="186" width="218" height="24" rx="4" />
+    <text class="status-guard-text" x="125" y="202" text-anchor="middle">100 % sous contrôle humain</text>
   </g>
 
-  <path d="M 572 179 L 624 179" class="arrow" marker-end="url(#arr-b)"/>
-  <text x="598" y="167" class="arrow-lbl">Validé</text>
+  <!-- Flèche 2 -> 3 (gap x=605..688, centre 646.5) -->
+  <text class="arrow-label-done" x="646.5" y="158" text-anchor="middle">Votre</text>
+  <text class="arrow-label-done" x="646.5" y="171" text-anchor="middle">accord</text>
+  <path class="arrow-done" d="M 611 184 H 680" marker-end="url(#arr-done)" />
 
-  <!-- Étape 3 -->
-  <g transform="translate(630, 84)">
-    <rect width="240" height="190" rx="12" class="box-green"/>
-    <rect x="16" y="14" width="66" height="20" rx="6" fill="#a6e3a1"/>
-    <text x="49" y="28" class="badge">VALIDÉ</text>
-    <text x="16" y="56" class="step-lbl">Collection &amp; Export</text>
-    <text x="16" y="78" class="desc">Une fois le lot approuvé :</text>
-    <text x="16" y="102" class="desc">• Application atomique SQLite</text>
-    <text x="16" y="120" class="desc">• Historique Time Machine gardé</text>
-    <text x="16" y="138" class="desc">• Lien de provenance conservé</text>
-    <text x="16" y="156" class="desc">• Prêt pour export .apkg Anki</text>
-    <text x="16" y="176" class="desc" fill="#a6e3a1">Zéro perte accidentelle</text>
+  <!-- Phase 03 : Collection & Export (x=688..938) -->
+  <g transform="translate(688, 74)">
+    <rect class="card-done" x="0" y="0" width="250" height="220" rx="8" />
+    <rect class="pill-done" x="16" y="14" width="128" height="22" rx="4" />
+    <text class="pill-done-text" x="80" y="29" text-anchor="middle">03 · VALIDATION</text>
+
+    <text class="card-title" x="16" y="58">Collection &amp; Export Anki</text>
+    <text class="card-sub" x="16" y="75">Enregistré proprement en local</text>
+    <line class="divider" x1="16" y1="86" x2="234" y2="86" />
+
+    <rect class="dot-done" x="16" y="100" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="106">Lot appliqué en une seule fois</text>
+
+    <rect class="dot-done" x="16" y="122" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="128">Versions antérieures sauvegardées</text>
+
+    <rect class="dot-done" x="16" y="144" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="150">Lien avec vos chapitres conservé</text>
+
+    <rect class="dot-done" x="16" y="166" width="5" height="5" rx="1" />
+    <text class="card-item" x="28" y="172">Export .apkg sans perdre Anki</text>
+
+    <rect class="status-done" x="16" y="186" width="218" height="24" rx="4" />
+    <text class="status-done-text" x="125" y="202" text-anchor="middle">Zéro perte accidentelle</text>
+  </g>
+
+  <!-- Connecteur socle Skills -> Phase 01 -->
+  <path class="arrow-feed" d="M 147 322 V 298" marker-end="url(#arr-indigo)" />
+
+  <!-- Bandeau socle : Espace agentique & Skills (y=322..398) -->
+  <g transform="translate(22, 322)">
+    <rect class="base-box" x="0" y="0" width="916" height="76" rx="8" />
+    <text class="base-kicker" x="18" y="22">SOCLE · ESPACE AGENTIQUE &amp; SKILLS (~/ankiforge_agentique)</text>
+    <text class="base-muted" x="898" y="22" text-anchor="end">Serveur MCP (Alt+5) › Guides &amp; Workspaces</text>
+    <text class="base-title" x="18" y="44">13 Skills généraux + règles par profil protégées</text>
+    <text class="base-text" x="18" y="63">Votre assistant charge le profil actif et la méthode exacte (cours, OCR, sangsues, doublons) · Resynchronisé sans jamais écraser vos réglages.</text>
   </g>
 </svg>
