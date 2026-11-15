@@ -360,6 +360,11 @@ def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item
                 item.add_marker(unit_marker)
 
 
+def pytest_sessionfinish(session, exitstatus):
+    """Mémorise le véritable code de sortie de la session pytest pour pytest_unconfigure."""
+    session.config._ankidraft_exitstatus = exitstatus
+
+
 def pytest_unconfigure(config):
     """S'assure d'une sortie propre sans crash C++ Chromium WebEngine en fin de tests."""
     import os
@@ -371,5 +376,5 @@ def pytest_unconfigure(config):
 
     sys.stdout.flush()
     sys.stderr.flush()
-    exit_code = getattr(config, "exitstatus", 0)
+    exit_code = getattr(config, "_ankidraft_exitstatus", 0)
     os._exit(exit_code)
