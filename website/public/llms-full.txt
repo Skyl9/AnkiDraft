@@ -75,20 +75,39 @@ AnkiDraft is **provider-agnostic**: you are free to use the AI service of your c
 
 ## 1. Supported Providers
 
-In **Settings** (<kbd>Ctrl+,</kbd>) > **AI Providers**, you can configure:
-- **OpenAI** (GPT-4o, GPT-4o-mini, etc.)
-- **Google Gemini** (Gemini 2.5 Flash, Gemini 2.5 Pro)
-- **Anthropic Claude** (Claude Sonnet, Claude Haiku)
-- **Any OpenAI-Compatible Endpoint** (Mistral, OpenRouter, university server)
+In **Settings** (<kbd>Ctrl+,</kbd>) > **AI Engines**, you can configure:
+- **Google Gemini** (`Gemini 3.5 Flash Lite`, `Gemini 2.0 Flash`, `Gemini 1.5 Pro`)
+- **OpenRouter** (`:free` models including `Qwen 3.8 27B`, `Gemma 4 31B`, `Nemotron 3.5 Lightning`, plus hundreds of paid models)
+- **Groq** (`Llama 3.3 70B`, `DeepSeek-R1 70B` on LPU hardware)
+- **OpenAI** (`GPT-4o`, `GPT-4o-mini`, `o3-mini`) and **Anthropic Claude** (`Claude Sonnet`, `Claude Haiku`)
+- **OpenCode** and **any OpenAI-compatible endpoint** (Mistral, university server)
 - **Ollama (100% Free & Offline)**: see [Using a Free Local Model with Ollama](/en/ai-setup/local-models-ollama/).
 
-## 2. API Key Security
+## 2. Getting a Free API Key (Student Guide)
+
+| Free option | Credit card | How to obtain a key | Recommended preset in AnkiDraft | Caveats to keep in mind |
+| :--- | :--- | :--- | :--- | :--- |
+| **Google AI Studio** | No | Google account at [aistudio.google.com](https://aistudio.google.com/) → *Create API key* (`AIzaSy...`) | `Google Gemini 3.5 Flash Lite` (vision + PDF) | Rate limits/min & /day; free-tier prompts may be reviewed to improve Google products |
+| **OpenRouter (`:free`)** | No | Account at [openrouter.ai](https://openrouter.ai/) → *Keys* (`sk-or-...`) | `OpenRouter Free (Qwen 3.8 27B)` | ~20 req/min & ~50 req/day (or 1,000/day after a one-time $10 credit top-up) |
+| **Groq Console** | No | Account at [console.groq.com](https://console.groq.com/) → *API Keys* (`gsk_...`) | `Llama 3.3 70B` / `DeepSeek-R1 70B` | Strict tokens-per-minute caps on very long chapters |
+| **Mistral / GitHub / Campus** | No | Free tier on [Mistral](https://console.mistral.ai/), **GitHub Student Pack** (`models.github.ai`), **Google AI student offers**, or campus gateway | **Custom model…** (OpenAI-compatible URL) | Depends on student verification or university limits |
+
+**Activate it in 30 seconds inside AnkiDraft:**
+1. Open **Settings** (<kbd>Ctrl+,</kbd>) > **AI Engines**, paste the key next to the provider, and click **Test**.
+2. In the engine list below, click **Add a model** > **Popular quick presets** (for example `Google Gemini 3.5 Flash Lite` or `OpenRouter Free (Qwen 3.8 27B)`), or browse **Explore Catalog & Comparator...**.
+3. Make sure **Free / included / local model** is checked so the top-bar cost counter stays at `$0.00`.
+
+:::note
+For confidential medical notes or unlimited offline generation during exam season, prefer [local Ollama](/en/ai-setup/local-models-ollama/) or your existing assistant via [MCP Server (<kbd>Alt+5</kbd>)](/en/workflows/zero-cle-api-agent-mcp/).
+:::
+
+## 3. API Key Security
 
 - Your API keys are stored in your **operating system's secure keychain** (macOS Keychain, Windows Credential Manager, Linux Secret Service).
 - Keys never pass through any middleman server: AnkiDraft connects directly from your computer to your chosen provider.
 - Application logs automatically redact any secret key (`sk-*`, `AIza*`).
 
-## 3. Token Budget Control
+## 4. Token Budget Control
 
 Before running a batch generation across a large textbook, AnkiDraft estimates the required token count and lets you set a strict per-run token cap to prevent unexpected API bills.
 
@@ -494,6 +513,19 @@ AnkiDraft works both on its own and connected to your existing AI assistant (Cla
 | **Best suited for** | Extracting PDF chapters, adding voice audio, editing formulas | Spotting gaps across decks, bulk cleanup, and card rewrites |
 | **Your control** | Review every card before saving | **Approval required**: nothing changes until you click **Apply** |
 
+## How to Get a Free API Key (Student Guide)
+
+You do not need a credit card or paid subscription to use the built-in Studio — here are the easiest ways to get a free API key that works right inside AnkiDraft:
+
+1. **Google AI Studio (`Gemini`) — easiest starting point**: sign in with a Google account at [aistudio.google.com](https://aistudio.google.com/) and click **Create API key** (no credit card required). Paste the key (`AIzaSy...`) under **Settings > AI Engines > Gemini**, click **Test**, and pick the built-in **`Google Gemini 3.5 Flash Lite`** preset (great for PDFs and diagrams within daily rate limits; avoid sending sensitive private data on the free tier).
+2. **OpenRouter (`:free`) — multiple free models from one key**: create a free account at [openrouter.ai](https://openrouter.ai/) with no credit card, generate a key (`sk-or-...`), and use built-in `$0` models ending in `:free` such as **`OpenRouter Free (Qwen 3.8 27B)`** (subject to per-minute and daily rate caps).
+3. **Groq Console — ultra-fast open models**: generate a free key (`gsk_...`) at [console.groq.com](https://console.groq.com/) with no credit card for high-speed card drafting and auditing (subject to tokens-per-minute limits).
+4. **Student perks & campus access**: use your university email to check eligibility for the **GitHub Student Developer Pack** (including **GitHub Models** access), **Google AI student offers**, **Mistral's** free experimentation tier ([console.mistral.ai](https://console.mistral.ai/)), or university-hosted AI endpoints / academic cloud credits (configurable via **Custom model…**).
+
+:::tip
+See exact UI presets, privacy tips, and budget caps in [Configuring AI Providers](/en/ai-setup/ia_fournisseurs/).
+:::
+
 ## Get Started in 4 Simple Steps
 
 ### Step 1: Select or Create Your Profile
@@ -504,7 +536,7 @@ On first launch, AnkiDraft opens the `default` profile. To keep bulky course fil
 
 Open **Settings** (<kbd>Ctrl+,</kbd>) and switch to **AI Engines**:
 - **Free & 100% offline**: install [Ollama](/en/ai-setup/local-models-ollama/) locally and pick a model.
-- **With an API key**: enter your OpenAI, Google Gemini, or Anthropic Claude key (encrypted on your device).
+- **With an API key (free or paid)**: paste a [free-tier key from the options above](#how-to-get-a-free-api-key-student-guide) (Google Gemini, OpenRouter `:free`, Groq…) or a paid OpenAI / Anthropic key, stored encrypted in your OS keychain.
 - **Zero API key**: turn on the local connection in **MCP Server & Agents** (<kbd>Alt+5</kbd>) to use your [Claude or Cursor plan](/en/workflows/zero-cle-api-agent-mcp/).
 
 ### Step 3: Import Your First Study Material
@@ -1207,20 +1239,39 @@ AnkiDraft est **agnostique du fournisseur d'IA** : vous êtes libre d'utiliser l
 
 ## 1. Fournisseurs compatibles
 
-Dans **Paramètres** (<kbd>Ctrl+,</kbd>) > **Fournisseurs IA**, vous pouvez configurer :
-- **OpenAI** (GPT-4o, GPT-4o-mini, etc.)
-- **Google Gemini** (Gemini 2.5 Flash, Gemini 2.5 Pro)
-- **Anthropic Claude** (Claude Sonnet, Claude Haiku)
-- **Tout serveur compatible OpenAI** (Mistral, OpenRouter, serveur universitaire local)
+Dans **Paramètres** (<kbd>Ctrl+,</kbd>) > **Moteurs IA**, vous pouvez configurer :
+- **Google Gemini** (`Gemini 3.5 Flash Lite`, `Gemini 2.0 Flash`, `Gemini 1.5 Pro`)
+- **OpenRouter** (modèles gratuits `:free` dont `Qwen 3.8 27B`, `Gemma 4 31B`, `Nemotron 3.5 Lightning`, et centaines de modèles)
+- **Groq** (`Llama 3.3 70B`, `DeepSeek-R1 70B` sur puces LPU)
+- **OpenAI** (`GPT-4o`, `GPT-4o-mini`, `o3-mini`) et **Anthropic Claude** (`Claude Sonnet`, `Claude Haiku`)
+- **OpenCode** et **tout serveur compatible OpenAI** (Mistral, serveur universitaire local)
 - **Ollama (100 % gratuit et hors ligne)** : voir le guide [Utiliser un Modèle Local avec Ollama](/fr/ai-setup/local-models-ollama/).
 
-## 2. Sécurité de vos clés API
+## 2. Obtenir une clé API gratuite (spécial étudiants)
+
+| Source gratuite | Carte bancaire | Comment l'obtenir | Modèle conseillé dans AnkiDraft | Limites à connaître |
+| :--- | :--- | :--- | :--- | :--- |
+| **Google AI Studio** | Non | Compte Google sur [aistudio.google.com](https://aistudio.google.com/) → *Create API key* (`AIzaSy...`) | `Google Gemini 3.5 Flash Lite` (vision + PDF) | Quotas/min et /jour ; données utilisables par Google en palier gratuit |
+| **OpenRouter (`:free`)** | Non | Compte sur [openrouter.ai](https://openrouter.ai/) → *Keys* (`sk-or-...`) | `OpenRouter Gratuit (Qwen 3.8 27B)` | ~20 req/min et ~50 req/jour (ou 1 000/j après 10 $ de crédit non expirant) |
+| **Groq Console** | Non | Compte sur [console.groq.com](https://console.groq.com/) → *API Keys* (`gsk_...`) | `Llama 3.3 70B` / `DeepSeek-R1 70B` | Plafond de jetons/min strict sur les gros chapitres |
+| **Mistral / GitHub / Campus** | Non | Palier gratuit [Mistral](https://console.mistral.ai/), **GitHub Student Pack** (`models.github.ai`), crédits **Google AI étudiants** ou passerelle fac | **Modèle personnalisé…** (URL OpenAI-compatible) | Dépend de la vérification étudiante ou des quotas campus |
+
+**Comment l'activer en 30 secondes dans AnkiDraft :**
+1. Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) > **Moteurs IA** et collez la clé face au fournisseur correspondant, puis cliquez sur **Tester**.
+2. Dans la section des moteurs en dessous, cliquez sur **Ajouter un modèle** > **Presets rapides populaires** (ex. `Google Gemini 3.5 Flash Lite` ou `OpenRouter Gratuit (Qwen 3.8 27B)`), ou passez par **Explorer le catalogue & comparateur...**.
+3. Vérifiez que la case **Modèle gratuit / inclus / local** est cochée : le compteur de coûts de la barre supérieure restera à `0.00 $`.
+
+:::note
+Pour des documents médicaux confidentiels ou pour travailler sans aucune limite de quota en période d'examens, préférez [Ollama en local](/fr/ai-setup/local-models-ollama/) ou votre assistant via [Serveur MCP (<kbd>Alt+5</kbd>)](/fr/workflows/zero-cle-api-agent-mcp/).
+:::
+
+## 3. Sécurité de vos clés API
 
 - Vos clés API sont enregistrées dans le **trousseau sécurisé de votre système d'exploitation** (macOS Keychain, Windows Credential Manager, Secret Service Linux).
 - Elles ne transitent par aucun serveur intermédiaire : AnkiDraft communique directement depuis votre ordinateur vers l'API du fournisseur sélectionné.
 - Les journaux techniques masquent automatiquement toute clé (`sk-*`, `AIza*`).
 
-## 3. Contrôle du budget
+## 4. Contrôle du budget
 
 Avant de lancer une génération importante sur un livre entier, AnkiDraft estime le nombre de jetons (*tokens*) nécessaires et vous permet de fixer un plafond par exécution pour éviter toute surprise de facturation.
 
@@ -1626,6 +1677,19 @@ AnkiDraft fonctionne aussi bien de manière autonome qu'avec votre assistant IA 
 | **Idéal pour** | Extraire des chapitres de PDF, ajouter de l'audio, éditer des formules | Repérer les oublis dans plusieurs paquets, nettoyer ou reformuler en série |
 | **Votre contrôle** | Vous relisez chaque carte avant de l'enregistrer | **Validation obligatoire** : rien n'est modifié sans votre clic sur **Appliquer** |
 
+## Obtenir une clé API gratuite (spécial étudiants)
+
+Pas besoin de carte bancaire ni de budget mensuel pour utiliser le Studio intégré — voici les façons les plus simples d'obtenir une clé API gratuite compatible avec AnkiDraft :
+
+1. **Google AI Studio (`Gemini`) — recommandé pour débuter** : connectez-vous avec un simple compte Google sur [aistudio.google.com](https://aistudio.google.com/) et cliquez sur **Create API key** (sans carte bancaire). Collez la clé (`AIzaSy...`) dans **Paramètres > Moteurs IA > Gemini**, cliquez sur **Tester**, puis choisissez le preset **`Google Gemini 3.5 Flash Lite`** (idéal pour les PDF et schémas dans la limite des quotas quotidiens ; évitez toutefois d'y envoyer des données personnelles sensibles sur le palier gratuit).
+2. **OpenRouter (`:free`) — plusieurs modèles gratuits avec une seule clé** : créez un compte sur [openrouter.ai](https://openrouter.ai/) sans carte bancaire, générez une clé (`sk-or-...`), puis sélectionnez le preset **`OpenRouter Gratuit (Qwen 3.8 27B)`** (ou d'autres modèles se terminant par `:free`, facturés `0 $` sous réserve de quotas par minute/jour).
+3. **Groq Console — ultra-rapide sur modèles ouverts** : créez une clé (`gsk_...`) sans carte bancaire sur [console.groq.com](https://console.groq.com/) pour générer ou auditer des cartes à très haute vitesse (dans la limite des jetons par minute).
+4. **Avantages étudiants & campus** : utilisez votre adresse e-mail universitaire pour vérifier si vous avez droit au **GitHub Student Developer Pack** (accès sandbox/API **GitHub Models**), aux offres étudiantes **Google AI**, au palier gratuit d'expérimentation **Mistral** ([console.mistral.ai](https://console.mistral.ai/)), ou à un serveur IA / des crédits cloud fournis par votre université (ajoutable via **Modèle personnalisé…**).
+
+:::tip
+Retrouvez la comparaison complète, les réglages exacts et le suivi de budget dans le guide [Configurer vos Fournisseurs d'IA](/fr/ai-setup/ia_fournisseurs/).
+:::
+
 ## Démarrer en 4 étapes simples
 
 ### Étape 1 : Choisir ou créer votre profil
@@ -1636,7 +1700,7 @@ Au premier lancement, AnkiDraft ouvre le profil `default`. Pour éviter de méla
 
 Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>), puis l'onglet **Moteurs IA** :
 - **Gratuit et 100 % hors-ligne** : installez [Ollama](/fr/ai-setup/local-models-ollama/) sur votre ordinateur et choisissez un modèle local.
-- **Avec une clé API** : renseignez votre clé OpenAI, Google Gemini ou Anthropic Claude (chiffrée sur votre appareil).
+- **Avec une clé API (gratuite ou payante)** : renseignez une [clé gratuite ci-dessus](#obtenir-une-clé-api-gratuite-spécial-étudiants) (Google Gemini, OpenRouter `:free`, Groq…) ou une clé OpenAI / Anthropic, chiffrée localement dans le trousseau de votre système.
 - **Sans clé API** : activez la connexion locale dans **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) pour utiliser votre abonnement [Claude ou Cursor](/fr/workflows/zero-cle-api-agent-mcp/).
 
 ### Étape 3 : Importer votre premier cours
