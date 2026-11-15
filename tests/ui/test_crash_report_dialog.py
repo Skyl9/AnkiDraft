@@ -152,7 +152,7 @@ class TestCrashReportDialog:
             assert mock_open_url.called
             call_url: QUrl = mock_open_url.call_args[0][0]
             url_str = call_url.toString()
-            assert "https://github.com/Skyl9/AnkiForge/issues/new" in url_str
+            assert "https://github.com/Skyl9/AnkiDraft/issues/new" in url_str
             assert "labels=crash" in url_str
             assert mock_ack.called
 

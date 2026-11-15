@@ -122,7 +122,7 @@ class DashboardLayout(BaseLayout):
 
         title_box = QVBoxLayout()
         title_box.setSpacing(0)
-        title_lbl = QLabel(self.tr("AnkiForge Portal"))
+        title_lbl = QLabel(self.tr("AnkiDraft Portal"))
         title_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 15px; font-weight: bold;")
         self.profile_lbl = QLabel(tr("Espace de travail : %1", self.profile_name))
         self.profile_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED}; font-size: 11px;")

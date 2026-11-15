@@ -170,7 +170,7 @@ class ProfileSelectorDialog(QDialog):
     ) -> None:
         super().__init__(parent)
         self.is_startup = is_startup
-        self.setWindowTitle(self.tr("Espaces de Travail & Profils — AnkiForge"))
+        self.setWindowTitle(self.tr("Espaces de Travail & Profils — AnkiDraft"))
         self.setFixedSize(560, 660)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setStyleSheet(f"""
@@ -388,7 +388,7 @@ class ProfileSelectorDialog(QDialog):
             cancel_text = "Quitter"
             cancel_tooltip = "Quitter l'application"
             select_text = "Ouvrir cet Espace"
-            select_tooltip = "Ouvrir le profil sélectionné et lancer AnkiForge"
+            select_tooltip = "Ouvrir le profil sélectionné et lancer AnkiDraft"
         else:
             cancel_text = "Annuler"
             cancel_tooltip = "Fermer sans changer d'espace"

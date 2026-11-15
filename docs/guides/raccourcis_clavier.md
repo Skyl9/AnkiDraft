@@ -35,7 +35,7 @@ Cette page constitue la **référence officielle et exhaustive** de l'ensemble d
 | **Rechercher** | <kbd>Ctrl+F</kbd> | `Application` | Active le champ de recherche de la vue active | `app.find` |
 | **Importer un paquet Anki (.apkg)** | <kbd>Ctrl+Shift+I</kbd> | `Application` | Ouvre l'assistant d'importation de collection ou de paquet | `app.import` |
 | **Exporter des cartes Anki (.apkg)** | <kbd>Ctrl+Alt+E</kbd> | `Application` | Ouvre la boîte de dialogue d'export de cartes | `app.export` |
-| **Visite guidée d'AnkiForge** | <kbd>F1</kbd> | `Application` | Lance la visite interactive des fonctionnalités | `app.tour` |
+| **Visite guidée d'AnkiDraft** | <kbd>F1</kbd> | `Application` | Lance la visite interactive des fonctionnalités | `app.tour` |
 | **Historique des versions** | <kbd>Ctrl+H</kbd> | `Vue` | Affiche la machine à remonter le temps et les versions antérieures | `view.history` |
 
 ### Navigation

@@ -73,7 +73,7 @@ def test_cli_version_flag(capsys: pytest.CaptureFixture[str]) -> None:
         main(["--version"])
     assert exc_info.value.code == 0
     captured = capsys.readouterr()
-    assert "AnkiForge v" in captured.out
+    assert "AnkiDraft v" in captured.out
 
 
 @pytest.mark.unit
@@ -241,11 +241,11 @@ def test_run_mcp_server_cli_initializes_db_and_banner(
     assert get_active_profile() == "cli_test_profile"
 
     captured = capsys.readouterr()
-    assert "AnkiForge MCP Server" in captured.out
+    assert "AnkiDraft MCP Server" in captured.out
     assert "Profil actif        : cli_test_profile" in captured.out
     assert "Point d'entrée HTTP : http://127.0.0.1:8765/mcp" in captured.out
     assert "Point d'entrée SSE  : http://127.0.0.1:8765/sse" in captured.out
-    assert "Serveur MCP AnkiForge arrêté avec succès." in captured.out
+    assert "Serveur MCP AnkiDraft arrêté avec succès." in captured.out
 
 
 @pytest.mark.unit

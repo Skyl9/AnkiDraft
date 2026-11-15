@@ -233,7 +233,7 @@ class ModelImportDialog(QDialog):
             fields_list = self.model_data.get("fields_schema", ["Front", "Back"])
             preview_fields = {f: f"Exemple de contenu pour {f}" for f in fields_list}
             if "Front" in preview_fields:
-                preview_fields["Front"] = "Qu'est-ce que le type de note AnkiForge ?"
+                preview_fields["Front"] = "Qu'est-ce que le type de note AnkiDraft ?"
             if "Back" in preview_fields:
                 preview_fields["Back"] = "Un gabarit riche avec CSS modulaire et snippets interactifs."
             if "Texte" in preview_fields:

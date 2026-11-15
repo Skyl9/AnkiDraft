@@ -84,7 +84,7 @@ def build_shortcut_catalog() -> dict[ShortcutId, ShortcutDefinition]:
             category=ShortcutCategory.APPLICATION,
             scope=ShortcutScope.APPLICATION,
             default_sequence="F1",
-            title_getter=lambda: tr("Visite guidée d'AnkiForge"),
+            title_getter=lambda: tr("Visite guidée d'AnkiDraft"),
             description_getter=lambda: tr("Lance la visite interactive des fonctionnalités"),
         ),
         ShortcutId.APP_DEBUG_SCREENSHOT: ShortcutDefinition(

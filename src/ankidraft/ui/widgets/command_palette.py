@@ -163,7 +163,7 @@ class CommandPalette(QDialog):
         )
         self.register_command(
             "action.tour",
-            tr("Lancer la visite guidée d'AnkiForge"),
+            tr("Lancer la visite guidée d'AnkiDraft"),
             "compass",
             get_shortcut_sequence(ShortcutId.APP_TOUR),
             tr("Aide"),
@@ -177,7 +177,7 @@ class CommandPalette(QDialog):
         )
         self.register_command(
             "action.support",
-            tr("Soutenir le projet AnkiForge (Ko-fi)"),
+            tr("Soutenir le projet AnkiDraft (Ko-fi)"),
             "ph.heart",
             "",
             tr("Aide"),
@@ -205,7 +205,7 @@ class CommandPalette(QDialog):
         )
         self.register_command(
             "action.lifecycle_guide",
-            tr("Guide visuel du cycle de vie distribué (Anki ↔ AnkiForge)"),
+            tr("Guide visuel du cycle de vie distribué (Anki ↔ AnkiDraft)"),
             "arrows-clockwise",
             "",
             tr("Aide"),

@@ -43,7 +43,7 @@ class CreationHubWidget(QWidget):
         icon_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_container.addWidget(icon_lbl)
 
-        title_lbl = QLabel(self.tr("Studio de Création AnkiForge"))
+        title_lbl = QLabel(self.tr("Studio de Création AnkiDraft"))
         title_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 18px; font-weight: 700; border: none; background: transparent;")
         title_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_container.addWidget(title_lbl)

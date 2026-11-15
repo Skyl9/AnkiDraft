@@ -10,7 +10,7 @@
     </message>
     <message>
         <location line="+3"/>
-        <source>Le profil « %1 » est déjà ouvert par une autre instance d&apos;AnkiForge%2.
+        <source>Le profil « %1 » est déjà ouvert par une autre instance d&apos;AnkiDraft%2.
 
 L&apos;accès simultané au même profil est formellement bloqué pour éviter toute corruption des données.</source>
         <translation type="unfinished"></translation>
@@ -1804,7 +1804,7 @@ Voulez-vous mettre à jour les documents existants (contenu rafraîchi) ?</sourc
     </message>
     <message>
         <location line="+27"/>
-        <source>AnkiForge%1</source>
+        <source>AnkiDraft%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1939,7 +1939,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
     </message>
     <message>
         <location line="+7"/>
-        <source>Visite guidée d&apos;AnkiForge</source>
+        <source>Visite guidée d&apos;AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4650,7 +4650,7 @@ Cette action est irréversible.</source>
     </message>
     <message>
         <location line="+11"/>
-        <source>[AnkiForge] Compte-rendu d&apos;arbitrage utilisateur :</source>
+        <source>[AnkiDraft] Compte-rendu d&apos;arbitrage utilisateur :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5022,7 +5022,7 @@ Cette action est irréversible.</source>
     </message>
     <message>
         <location line="+413"/>
-        <source>Enregistrer les cartes validées dans votre collection AnkiForge (%1)</source>
+        <source>Enregistrer les cartes validées dans votre collection AnkiDraft (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5257,7 +5257,7 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
     <message>
         <location line="+29"/>
         <location line="+34"/>
-        <source>Bienvenue dans &lt;span style=&quot;color: %1;&quot;&gt;AnkiForge&lt;/span&gt;</source>
+        <source>Bienvenue dans &lt;span style=&quot;color: %1;&quot;&gt;AnkiDraft&lt;/span&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7187,7 +7187,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>Soutenir AnkiForge</source>
+        <source>Soutenir AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8057,7 +8057,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
     </message>
     <message>
         <location line="+7"/>
-        <source>Lancer la visite guidée d&apos;AnkiForge</source>
+        <source>Lancer la visite guidée d&apos;AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8076,7 +8076,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
     </message>
     <message>
         <location line="+7"/>
-        <source>Soutenir le projet AnkiForge (Ko-fi)</source>
+        <source>Soutenir le projet AnkiDraft (Ko-fi)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8102,7 +8102,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
     </message>
     <message>
         <location line="+7"/>
-        <source>Guide visuel du cycle de vie distribué (Anki ↔ AnkiForge)</source>
+        <source>Guide visuel du cycle de vie distribué (Anki ↔ AnkiDraft)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9515,7 +9515,7 @@ Une nouvelle version sera automatiquement créée.</source>
     </message>
     <message>
         <location line="+5"/>
-        <source>Les clés API sont chiffrées et conservées dans le trousseau sécurisé de votre système (service : AnkiForge). Elles ne sont jamais stockées en clair sur le disque.</source>
+        <source>Les clés API sont chiffrées et conservées dans le trousseau sécurisé de votre système (service : AnkiDraft). Elles ne sont jamais stockées en clair sur le disque.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10402,7 +10402,7 @@ Tous les clients MCP externes configurés (Claude Desktop, etc.) devront être m
     <name>AddonManagerDialog</name>
     <message>
         <location line="+200"/>
-        <source>Gestionnaire d&apos;Extensions AnkiForge</source>
+        <source>Gestionnaire d&apos;Extensions AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11780,7 +11780,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     </message>
     <message>
         <location line="-222"/>
-        <source>Enregistrer les cartes validées dans votre collection AnkiForge (Ctrl+S)</source>
+        <source>Enregistrer les cartes validées dans votre collection AnkiDraft (Ctrl+S)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12822,12 +12822,12 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     <name>CrashReportDialog</name>
     <message>
         <location filename="../../ui/dialogs/crash_report_dialog.py" line="-80"/>
-        <source>Rapport d&apos;arrêt inattendu d&apos;AnkiForge</source>
+        <source>Rapport d&apos;arrêt inattendu d&apos;AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+49"/>
-        <source>AnkiForge s&apos;est arrêté de manière inattendue</source>
+        <source>AnkiDraft s&apos;est arrêté de manière inattendue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12999,7 +12999,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     <name>CreationHubWidget</name>
     <message>
         <location filename="../../ui/views/creation_view/widgets/creation_hub.py" line="+46"/>
-        <source>Studio de Création AnkiForge</source>
+        <source>Studio de Création AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13617,7 +13617,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     <name>DashboardLayout</name>
     <message>
         <location filename="../../ui/layouts/dashboard_layout.py" line="-124"/>
-        <source>AnkiForge Portal</source>
+        <source>AnkiDraft Portal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13780,7 +13780,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>Version AnkiForge :</source>
+        <source>Version AnkiDraft :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14021,7 +14021,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     <name>DocReaderDialog</name>
     <message>
         <location filename="../../ui/dialogs/doc_reader_dialog.py" line="-392"/>
-        <source>Documentation &amp; Guides AnkiForge</source>
+        <source>Documentation &amp; Guides AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16217,7 +16217,7 @@ exact → section → page → lexical</source>
     <name>FeedbackDialog</name>
     <message>
         <location filename="../../ui/dialogs/feedback_dialog.py" line="-551"/>
-        <source>Retours &amp; Suggestions AnkiForge</source>
+        <source>Retours &amp; Suggestions AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16227,7 +16227,7 @@ exact → section → page → lexical</source>
     </message>
     <message>
         <location line="+4"/>
-        <source>Partagez un problème rencontré ou proposez une nouvelle fonctionnalité pour faire évoluer AnkiForge.</source>
+        <source>Partagez un problème rencontré ou proposez une nouvelle fonctionnalité pour faire évoluer AnkiDraft.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16257,7 +16257,7 @@ exact → section → page → lexical</source>
     </message>
     <message>
         <location line="+6"/>
-        <source>Soutenir le projet AnkiForge sur Ko-fi</source>
+        <source>Soutenir le projet AnkiDraft sur Ko-fi</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16684,7 +16684,7 @@ exact → section → page → lexical</source>
     <name>FloatingDockWindow</name>
     <message>
         <location filename="../../ui/components/tabs/floating_dock.py" line="+20"/>
-        <source>AnkiForge - Detached Tab</source>
+        <source>AnkiDraft - Detached Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16969,7 +16969,7 @@ exact → section → page → lexical</source>
     </message>
     <message>
         <location line="+15"/>
-        <source>Version d&apos;AnkiForge :</source>
+        <source>Version d&apos;AnkiDraft :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17092,7 +17092,7 @@ exact → section → page → lexical</source>
     <name>GlassmorphismLayout</name>
     <message>
         <location filename="../../ui/layouts/glass_layout.py" line="-110"/>
-        <source>AnkiForge</source>
+        <source>AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17120,7 +17120,7 @@ exact → section → page → lexical</source>
     <name>GlobalTitleBar</name>
     <message>
         <location filename="../../ui/components/title_bar.py" line="+29"/>
-        <source>AnkiForge</source>
+        <source>AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17297,12 +17297,12 @@ exact → section → page → lexical</source>
     <name>HelpTab</name>
     <message>
         <location filename="../../ui/widgets/settings_modal/tabs/help_tab.py" line="+74"/>
-        <source>Cycle de Vie Distribué (Anki ↔ AnkiForge)</source>
+        <source>Cycle de Vie Distribué (Anki ↔ AnkiDraft)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>Découvrez comment articuler sereinement vos séances de travail : création et découpage RAG dans le Studio AnkiForge, validation en staging, export de cartes vers Anki et synchronisation sans risque de perte de données ni prolifération de cartes zombies.</source>
+        <source>Découvrez comment articuler sereinement vos séances de travail : création et découpage RAG dans le Studio AnkiDraft, validation en staging, export de cartes vers Anki et synchronisation sans risque de perte de données ni prolifération de cartes zombies.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17317,7 +17317,7 @@ exact → section → page → lexical</source>
     </message>
     <message>
         <location line="+5"/>
-        <source>AnkiForge intègre plus de 90 raccourcis clavier déclaratifs organisés par portée (Application, Vue, Widget, Dialogue). Personnalisez vos combinaisons ou consultez la référence.</source>
+        <source>AnkiDraft intègre plus de 90 raccourcis clavier déclaratifs organisés par portée (Application, Vue, Widget, Dialogue). Personnalisez vos combinaisons ou consultez la référence.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18453,7 +18453,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+4"/>
-        <source>Pont bidirectionnel pour vos agents IA (Claude Code, agy, Cursor) sans surcoût dans AnkiForge.</source>
+        <source>Pont bidirectionnel pour vos agents IA (Claude Code, agy, Cursor) sans surcoût dans AnkiDraft.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18737,7 +18737,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+29"/>
-        <source>Astuce : L&apos;intégration MCP délègue l&apos;exécution à votre agent externe habituel sans consommer de quota LLM dans AnkiForge.</source>
+        <source>Astuce : L&apos;intégration MCP délègue l&apos;exécution à votre agent externe habituel sans consommer de quota LLM dans AnkiDraft.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19205,7 +19205,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     <name>MacosLayout</name>
     <message>
         <location filename="../../ui/layouts/macos_layout.py" line="-128"/>
-        <source>AnkiForge</source>
+        <source>AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19382,7 +19382,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+12"/>
-        <source>Ce modèle est actuellement sélectionné dans AnkiForge.</source>
+        <source>Ce modèle est actuellement sélectionné dans AnkiDraft.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19402,7 +19402,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+12"/>
-        <source>Modèle suggéré du catalogue officiel AnkiForge. Prêt à être activé.</source>
+        <source>Modèle suggéré du catalogue officiel AnkiDraft. Prêt à être activé.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19538,7 +19538,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+2"/>
-        <source>Explorez les spécifications réelles (Vision, Thinking, Contexte, Tarifs) adaptées aux pipelines AnkiForge.</source>
+        <source>Explorez les spécifications réelles (Vision, Thinking, Contexte, Tarifs) adaptées aux pipelines AnkiDraft.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19631,7 +19631,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+3"/>
-        <source>AnkiForge User</source>
+        <source>AnkiDraft User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19691,7 +19691,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
     </message>
     <message>
         <location line="+18"/>
-        <source>Paquet Type de note AnkiForge (*.afmodel)</source>
+        <source>Paquet Type de note AnkiDraft (*.afmodel)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -20554,7 +20554,7 @@ Utilisez {{ text_source }}.</source>
     </message>
     <message>
         <location line="+14"/>
-        <source>Les &lt;b&gt;Personas&lt;/b&gt; définissent la personnalité, les règles pédagogiques et les capacités de vos assistants IA dans AnkiForge. Ils régissent la formulation minimale selon les 20 règles de Wozniak, l&apos;extraction de vocabulaire ou encore les diagnostics autonomes du Consultant MCP.</source>
+        <source>Les &lt;b&gt;Personas&lt;/b&gt; définissent la personnalité, les règles pédagogiques et les capacités de vos assistants IA dans AnkiDraft. Ils régissent la formulation minimale selon les 20 règles de Wozniak, l&apos;extraction de vocabulaire ou encore les diagnostics autonomes du Consultant MCP.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -20872,7 +20872,7 @@ Utilisez {{ text_source }}.</source>
     <name>ProfileSelectorDialog</name>
     <message>
         <location line="+79"/>
-        <source>Espaces de Travail &amp; Profils — AnkiForge</source>
+        <source>Espaces de Travail &amp; Profils — AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -20941,7 +20941,7 @@ Utilisez {{ text_source }}.</source>
     <name>ProfileTransferDialog</name>
     <message>
         <location filename="../../ui/dialogs/profile_transfer_dialog.py" line="-580"/>
-        <source>Transférer du contenu entre Espaces de Travail — AnkiForge</source>
+        <source>Transférer du contenu entre Espaces de Travail — AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -21244,7 +21244,7 @@ Utilisez {{ text_source }}.</source>
     </message>
     <message>
         <location line="+35"/>
-        <source>AnkiForge a repéré des sauts de niveau illégaux (ex: H1 suivi directement de H3). Vérifiez ci-dessous les ajustements proposés. Rien ne sera modifié sans votre accord.</source>
+        <source>AnkiDraft a repéré des sauts de niveau illégaux (ex: H1 suivi directement de H3). Vérifiez ci-dessous les ajustements proposés. Rien ne sera modifié sans votre accord.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -21310,7 +21310,7 @@ Utilisez {{ text_source }}.</source>
     </message>
     <message>
         <location line="+16"/>
-        <source>Exporter le type de note au format JSON standardisé AnkiForge</source>
+        <source>Exporter le type de note au format JSON standardisé AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -21592,7 +21592,7 @@ Utilisez {{ text_source }}.</source>
     <message>
         <location filename="../../ui/widgets/settings_modal/modal.py" line="-548"/>
         <location line="+324"/>
-        <source>Paramètres AnkiForge</source>
+        <source>Paramètres AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -21741,7 +21741,7 @@ Utilisez {{ text_source }}.</source>
     <name>Sidebar</name>
     <message>
         <location filename="../../ui/components/sidebar.py" line="+43"/>
-        <source>AnkiForge</source>
+        <source>AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -21815,7 +21815,7 @@ Utilisez {{ text_source }}.</source>
     </message>
     <message>
         <location line="+17"/>
-        <source>BASE LOCALE ANKIFORGE</source>
+        <source>BASE LOCALE ANKIDRAFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -22488,12 +22488,12 @@ Utilisez {{ text_source }}.</source>
     <message>
         <location filename="../../ui/dialogs/support_dialog.py" line="+40"/>
         <location line="+29"/>
-        <source>Soutenir AnkiForge</source>
+        <source>Soutenir AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>AnkiForge est un projet open-source et gratuit, développé bénévolement. Si l&apos;application vous est utile, offrir un café permet de soutenir le développement et les futures fonctionnalités.</source>
+        <source>AnkiDraft est un projet open-source et gratuit, développé bénévolement. Si l&apos;application vous est utile, offrir un café permet de soutenir le développement et les futures fonctionnalités.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -22516,12 +22516,12 @@ Utilisez {{ text_source }}.</source>
     <name>SupportTab</name>
     <message>
         <location filename="../../ui/widgets/settings_modal/tabs/support_tab.py" line="+90"/>
-        <source>Soutenir AnkiForge</source>
+        <source>Soutenir AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>AnkiForge est un projet indépendant, gratuit et développé bénévolement. Votre soutien permet de financer le développement, les serveurs et les futures fonctionnalités. Merci pour votre aide !</source>
+        <source>AnkiDraft est un projet indépendant, gratuit et développé bénévolement. Votre soutien permet de financer le développement, les serveurs et les futures fonctionnalités. Merci pour votre aide !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -23330,7 +23330,7 @@ Utilisez {{ text_source }}.</source>
     <name>TopBar</name>
     <message>
         <location filename="../../ui/components/topbar.py" line="-173"/>
-        <source>AnkiForge</source>
+        <source>AnkiDraft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -23411,7 +23411,7 @@ Utilisez {{ text_source }}.</source>
     <name>UpdateDialog</name>
     <message>
         <location filename="../../ui/dialogs/update_dialog.py" line="-194"/>
-        <source>Une nouvelle version optimisée d&apos;AnkiForge est disponible au téléchargement.</source>
+        <source>Une nouvelle version optimisée d&apos;AnkiDraft est disponible au téléchargement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

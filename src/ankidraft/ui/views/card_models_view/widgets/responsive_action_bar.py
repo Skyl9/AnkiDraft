@@ -51,7 +51,7 @@ class ResponsiveTopActionBar(QFrame):
         layout.addStretch(1)
 
         # Boutons d'action
-        self.btn_export_json = IconButton("ph.export", tooltip=self.tr("Exporter le type de note au format JSON standardisé AnkiForge"), size=24)
+        self.btn_export_json = IconButton("ph.export", tooltip=self.tr("Exporter le type de note au format JSON standardisé AnkiDraft"), size=24)
 
         self.btn_toggle_preview = SecondaryButton(self.tr("Aperçu en direct"))
         self.btn_toggle_preview.setIcon(load_phosphor_icon("ph.columns", color=DesignTokens.TEXT_PRIMARY))

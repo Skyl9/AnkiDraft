@@ -663,7 +663,7 @@ class CreationView(QWidget):
         self.btn_save_anki = PrimaryButton("Enregistrer dans la Forge (0)")
         self.btn_save_anki.setIcon(load_on_accent_icon("ph.floppy-disk"))
         self.btn_save_anki.setEnabled(False)
-        self.btn_save_anki.setToolTip(tr("Enregistrer les cartes validées dans votre collection AnkiForge (%1)", get_shortcut_sequence(ShortcutId.APP_SAVE)))
+        self.btn_save_anki.setToolTip(tr("Enregistrer les cartes validées dans votre collection AnkiDraft (%1)", get_shortcut_sequence(ShortcutId.APP_SAVE)))
         main_bot_toolbar.addWidget(self.btn_save_anki)
 
         self.btn_accept_all = SecondaryButton("Tout valider")

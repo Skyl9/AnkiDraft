@@ -242,7 +242,7 @@ class BatchStagingPanel(QWidget):
         # Pôle Gauche : Enregistrer & Tout valider
         self.btn_save_anki = PrimaryButton("Enregistrer dans la Forge (0/0)")
         self.btn_save_anki.setIcon(load_on_accent_icon("ph.floppy-disk"))
-        self.btn_save_anki.setToolTip(self.tr("Enregistrer les cartes validées dans votre collection AnkiForge (Ctrl+S)"))
+        self.btn_save_anki.setToolTip(self.tr("Enregistrer les cartes validées dans votre collection AnkiDraft (Ctrl+S)"))
         self.btn_save_anki.clicked.connect(self._on_save_anki)
 
         self.btn_accept_all = SecondaryButton("Tout valider")

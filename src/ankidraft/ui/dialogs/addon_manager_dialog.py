@@ -377,7 +377,7 @@ class AddonDetailWidget(QWidget):
         # Logs d'erreur ou d'incompatibilité
         if addon_info.status == AddonStatus.INCOMPATIBLE:
             self.tabs.setTabText(2, self.tr("⚠️ Incompatibilité"))
-            self.error_edit.setText(addon_info.error_message or "Cette extension est incompatible avec la version actuelle d'AnkiForge.")
+            self.error_edit.setText(addon_info.error_message or "Cette extension est incompatible avec la version actuelle d'AnkiDraft.")
             self.tabs.setTabVisible(2, True)
         elif addon_info.error_message:
             self.tabs.setTabText(2, self.tr("⚠️ Diagnostic Erreur"))
@@ -599,7 +599,7 @@ class AddonManagerWidget(QWidget):
     def _install_zip(self) -> None:
         file_path, _ = QFileDialog.getOpenFileName(
             self,
-            "Installer une extension AnkiForge",
+            "Installer une extension AnkiDraft",
             "",
             "Archives Zip (*.zip)",
         )
@@ -624,7 +624,7 @@ class AddonManagerDialog(QDialog):
 
     def __init__(self, plugin_manager: PluginManager | None = None, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setWindowTitle(self.tr("Gestionnaire d'Extensions AnkiForge"))
+        self.setWindowTitle(self.tr("Gestionnaire d'Extensions AnkiDraft"))
         self.setMinimumSize(820, 520)
         self.resize(920, 580)
         layout = QVBoxLayout(self)

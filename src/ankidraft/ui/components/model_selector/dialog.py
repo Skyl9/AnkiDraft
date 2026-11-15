@@ -162,7 +162,7 @@ class ModelCardWidget(QFrame):
                     padding: 2px 8px;
                 }}
             """)
-            badge_curr.setToolTip(self.tr("Ce modèle est actuellement sélectionné dans AnkiForge."))
+            badge_curr.setToolTip(self.tr("Ce modèle est actuellement sélectionné dans AnkiDraft."))
             header_row.addWidget(badge_curr)
         elif self.is_installed:
             badge_inst = QLabel(self.tr("Configuré"))
@@ -192,7 +192,7 @@ class ModelCardWidget(QFrame):
                     padding: 2px 7px;
                 }}
             """)
-            badge_cat.setToolTip(self.tr("Modèle suggéré du catalogue officiel AnkiForge. Prêt à être activé."))
+            badge_cat.setToolTip(self.tr("Modèle suggéré du catalogue officiel AnkiDraft. Prêt à être activé."))
             header_row.addWidget(badge_cat)
 
         layout.addLayout(header_row)
@@ -371,7 +371,7 @@ class ModelDiscoveryDialog(QDialog):
             sub_title = (
                 self.tr("Choisissez le modèle adapté à votre tâche parmi vos moteurs configurés et le catalogue officiel.")
                 if self.picker_mode
-                else self.tr("Explorez les spécifications réelles (Vision, Thinking, Contexte, Tarifs) adaptées aux pipelines AnkiForge.")
+                else self.tr("Explorez les spécifications réelles (Vision, Thinking, Contexte, Tarifs) adaptées aux pipelines AnkiDraft.")
             )
 
         lbl_h = QLabel(main_title)

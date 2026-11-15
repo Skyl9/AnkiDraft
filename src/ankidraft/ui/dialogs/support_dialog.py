@@ -37,7 +37,7 @@ class SupportDialog(QDialog):
         super().__init__(parent)
         self.setObjectName("SupportDialog")
         self.setModal(False)
-        self.setWindowTitle(self.tr("Soutenir AnkiForge"))
+        self.setWindowTitle(self.tr("Soutenir AnkiDraft"))
         self.setMinimumSize(460, 260)
         self.resize(500, 300)
 
@@ -66,13 +66,13 @@ class SupportDialog(QDialog):
         title_col = QVBoxLayout()
         title_col.setSpacing(2)
 
-        main_title = QLabel(self.tr("Soutenir AnkiForge"))
+        main_title = QLabel(self.tr("Soutenir AnkiDraft"))
         main_title.setStyleSheet(f"font-size: 17px; font-weight: 700; color: {DesignTokens.TEXT_PRIMARY};")
         title_col.addWidget(main_title)
 
         sub_title = QLabel(
             self.tr(
-                "AnkiForge est un projet open-source et gratuit, développé bénévolement. "
+                "AnkiDraft est un projet open-source et gratuit, développé bénévolement. "
                 "Si l'application vous est utile, offrir un café permet de soutenir le "
                 "développement et les futures fonctionnalités."
             )

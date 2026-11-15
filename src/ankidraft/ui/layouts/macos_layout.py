@@ -130,7 +130,7 @@ class MacosLayout(BaseLayout):
         logo_label.setPixmap(load_logo_icon(DesignTokens.ACCENT_PRIMARY).pixmap(20, 20))
         logo_label.setStyleSheet("border: none; background: transparent;")
 
-        app_title = QLabel(self.tr("AnkiForge"))
+        app_title = QLabel(self.tr("AnkiDraft"))
         app_title.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-weight: bold; font-size: 14px; border: none; background: transparent;")
 
         self.profile_badge = QLabel(tr("• %1", self.profile_name))

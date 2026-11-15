@@ -14,9 +14,9 @@ def test_update_dialog_creation(qtbot: QtBot) -> None:
     """Vérifie l'initialisation et le contenu de la boîte de dialogue UpdateDialog."""
     info = UpdateInfo(
         version="0.3.0",
-        title="AnkiForge 0.3.0",
+        title="AnkiDraft 0.3.0",
         release_notes="## Améliorations\n- Vitesse de compilation x2",
-        html_url="https://github.com/Skyl9/AnkiForge/releases/tag/v0.3.0",
+        html_url="https://github.com/Skyl9/AnkiDraft/releases/tag/v0.3.0",
         published_at="2026-09-01T08:00:00Z",
     )
     dialog = UpdateDialog(info)
@@ -36,9 +36,9 @@ def test_topbar_update_badge_display(qtbot: QtBot) -> None:
 
     info = UpdateInfo(
         version="0.3.0",
-        title="AnkiForge 0.3.0",
+        title="AnkiDraft 0.3.0",
         release_notes="Nouvelle version",
-        html_url="https://github.com/Skyl9/AnkiForge/releases/tag/v0.3.0",
+        html_url="https://github.com/Skyl9/AnkiDraft/releases/tag/v0.3.0",
         published_at="2026-09-01T08:00:00Z",
     )
     topbar.set_update_available(info)
@@ -51,11 +51,11 @@ def test_update_dialog_download_ui_transitions(qtbot: QtBot, tmp_path: Path) -> 
     """Vérifie la transition des états visuels lors de la progression du téléchargement."""
     info = UpdateInfo(
         version="0.3.0",
-        title="AnkiForge 0.3.0",
+        title="AnkiDraft 0.3.0",
         release_notes="Notes",
-        html_url="https://github.com/Skyl9/AnkiForge/releases/tag/v0.3.0",
+        html_url="https://github.com/Skyl9/AnkiDraft/releases/tag/v0.3.0",
         published_at="2026-09-01T08:00:00Z",
-        assets=[{"name": "AnkiForge-macos-arm64.dmg", "browser_download_url": "https://example.com/dmg"}],
+        assets=[{"name": "AnkiDraft-macos-arm64.dmg", "browser_download_url": "https://example.com/dmg"}],
     )
     dialog = UpdateDialog(info)
     qtbot.addWidget(dialog)
@@ -69,7 +69,7 @@ def test_update_dialog_download_ui_transitions(qtbot: QtBot, tmp_path: Path) -> 
     assert "50.0 Mo" in dialog.progress_status_lbl.text()
 
     # Simulation de la fin de téléchargement
-    dummy_dest = tmp_path / "AnkiForge-macos-arm64.dmg"
+    dummy_dest = tmp_path / "AnkiDraft-macos-arm64.dmg"
     dummy_dest.write_bytes(b"content")
     dialog._on_download_finished(dummy_dest, "abcdef1234567890")
     assert dialog.progress_bar.value() == 100
@@ -80,16 +80,16 @@ def test_update_dialog_download_failure_transition(qtbot: QtBot) -> None:
     """Vérifie l'affichage de l'état d'erreur de sécurité en cas d'échec de vérification cryptographique."""
     info = UpdateInfo(
         version="0.3.0",
-        title="AnkiForge 0.3.0",
+        title="AnkiDraft 0.3.0",
         release_notes="Notes",
-        html_url="https://github.com/Skyl9/AnkiForge/releases/tag/v0.3.0",
+        html_url="https://github.com/Skyl9/AnkiDraft/releases/tag/v0.3.0",
         published_at="2026-09-01T08:00:00Z",
     )
     dialog = UpdateDialog(info)
     qtbot.addWidget(dialog)
     dialog.show()
 
-    dialog._on_download_failed("Échec de validation cryptographique : la signature officielle d'AnkiForge est invalide ou corrompue.")
+    dialog._on_download_failed("Échec de validation cryptographique : la signature officielle d'AnkiDraft est invalide ou corrompue.")
     assert "Échec de validation cryptographique" in dialog.progress_status_lbl.text()
     assert dialog.action_btn.text() == "Réessayer"
     assert dialog.action_btn.isEnabled() is True

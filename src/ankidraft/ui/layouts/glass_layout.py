@@ -130,7 +130,7 @@ class GlassmorphismLayout(BaseLayout):
         logo.setPixmap(load_logo_icon(DesignTokens.ACCENT_PRIMARY).pixmap(22, 22))
         logo.setStyleSheet("border: none; background: transparent;")
 
-        title = QLabel(self.tr("AnkiForge"))
+        title = QLabel(self.tr("AnkiDraft"))
         title.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-weight: bold; font-size: 15px; border: none; background: transparent;")
 
         header_layout.addWidget(logo)

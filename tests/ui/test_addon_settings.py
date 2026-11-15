@@ -156,7 +156,7 @@ def test_addon_incompatible_ui(qtbot):
             "name": "Super Future Tool",
             "version": "5.0.0",
             "min_ankiforge_version": "99.0.0",
-            "description": "Nécessite AnkiForge 99.0.0",
+            "description": "Nécessite AnkiDraft 99.0.0",
         }
         (p_inc / "manifest.json").write_text(json.dumps(m_inc), encoding="utf-8")
         (p_inc / "__init__.py").write_text("def init_addon(api): pass", encoding="utf-8")

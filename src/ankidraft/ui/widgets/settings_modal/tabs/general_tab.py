@@ -334,7 +334,7 @@ class GeneralTab(SettingsDirtyMixin, QWidget):
         self.lbl_exp_dir.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 12px; font-weight: 500;")
         exp_row.addWidget(self.lbl_exp_dir)
 
-        default_export = str(Path.home() / "AnkiForge" / "Exports")
+        default_export = str(Path.home() / "AnkiDraft" / "Exports")
         self.le_export = StyledLineEdit()
         self.le_export.setMinimumWidth(0)
         self.le_export.setFixedHeight(30)
@@ -540,7 +540,7 @@ class GeneralTab(SettingsDirtyMixin, QWidget):
 
         # 1. Version et informations système
         version_row = QHBoxLayout()
-        lbl_v_title = QLabel(self.tr("Version d'AnkiForge :"))
+        lbl_v_title = QLabel(self.tr("Version d'AnkiDraft :"))
         lbl_v_title.setWordWrap(True)
         lbl_v_title.setMinimumWidth(0)
         lbl_v_title.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 12px; font-weight: 500;")

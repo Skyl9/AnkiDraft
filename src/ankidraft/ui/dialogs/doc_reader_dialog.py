@@ -41,7 +41,7 @@ class DocReaderDialog(QDialog):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setObjectName("DocReaderDialog")
-        self.setWindowTitle(self.tr("Documentation & Guides AnkiForge"))
+        self.setWindowTitle(self.tr("Documentation & Guides AnkiDraft"))
         self.setMinimumSize(820, 560)
         self.resize(920, 680)
         self.setModal(False)

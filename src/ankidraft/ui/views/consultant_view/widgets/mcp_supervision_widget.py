@@ -150,7 +150,7 @@ class MCPSupervisionWidget(QWidget):
         lbl_title.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 16px; font-weight: 700; background: transparent; border: none;")
         title_info_col.addWidget(lbl_title)
 
-        lbl_subtitle = QLabel(self.tr("Pont bidirectionnel pour vos agents IA (Claude Code, agy, Cursor) sans surcoût dans AnkiForge."))
+        lbl_subtitle = QLabel(self.tr("Pont bidirectionnel pour vos agents IA (Claude Code, agy, Cursor) sans surcoût dans AnkiDraft."))
         lbl_subtitle.setStyleSheet(f"color: {DesignTokens.TEXT_SECONDARY}; font-size: 12px; background: transparent; border: none;")
         lbl_subtitle.setWordWrap(True)
         title_info_col.addWidget(lbl_subtitle)
@@ -554,7 +554,7 @@ class MCPSupervisionWidget(QWidget):
         snippets_layout.addWidget(self.edit_snippet_code)
 
         # Note de bas de carte sobre
-        lbl_tip = QLabel(self.tr("Astuce : L'intégration MCP délègue l'exécution à votre agent externe habituel sans consommer de quota LLM dans AnkiForge."))
+        lbl_tip = QLabel(self.tr("Astuce : L'intégration MCP délègue l'exécution à votre agent externe habituel sans consommer de quota LLM dans AnkiDraft."))
         lbl_tip.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED}; font-size: 11px; background: transparent; border: none;")
         lbl_tip.setWordWrap(True)
         snippets_layout.addWidget(lbl_tip)

@@ -296,9 +296,9 @@ def make_fake_update_info() -> UpdateInfo:
 
     return UpdateInfo(
         version="3.2.0",
-        title="AnkiForge 3.2.0 — Galerie de widgets enrichie",
+        title="AnkiDraft 3.2.0 — Galerie de widgets enrichie",
         release_notes=("### Nouveautés\n\n- Galerie de widgets complète pour le mode développeur.\n- Nouveaux gabarits de cartes communautaires.\n- Corrections de stabilité sur le pipeline DAG.\n"),
-        html_url="https://github.com/Skyl9/AnkiForge/releases/tag/v3.2.0",
+        html_url="https://github.com/Skyl9/AnkiDraft/releases/tag/v3.2.0",
         published_at="2026-10-20T09:00:00Z",
         channel="stable",
         is_prerelease=False,
@@ -328,7 +328,7 @@ def make_fake_model_package() -> dict[str, Any]:
     return {
         "name": "Biologie Fondamentale (import)",
         "metadata": {
-            "author": "Galerie AnkiForge",
+            "author": "Galerie AnkiDraft",
             "version": "1.2.0",
             "description": "Gabarit de démonstration avec champs source et styles modulaires.",
             "tags": ["biologie", "sciences"],

@@ -77,7 +77,7 @@ class StarterModelCardWidget(QFrame):
         title_lbl.setStyleSheet(f"font-size: 14px; font-weight: bold; color: {DesignTokens.TEXT_PRIMARY};")
         layout.addWidget(title_lbl)
 
-        author_lbl = QLabel(tr("Par : %1", pack.get("author", "AnkiForge")))
+        author_lbl = QLabel(tr("Par : %1", pack.get("author", "AnkiDraft")))
         author_lbl.setStyleSheet(f"font-size: 11px; color: {DesignTokens.TEXT_MUTED};")
         layout.addWidget(author_lbl)
 

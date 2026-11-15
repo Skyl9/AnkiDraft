@@ -131,7 +131,7 @@ class ModelExportDialog(QDialog):
         lbl_a = QLabel(self.tr("Auteur :"))
         lbl_a.setStyleSheet(f"font-size: 11px; color: {DesignTokens.TEXT_SECONDARY};")
         self.input_author = StyledLineEdit()
-        self.input_author.setText(self.tr("AnkiForge User"))
+        self.input_author.setText(self.tr("AnkiDraft User"))
         box_author.addWidget(lbl_a)
         box_author.addWidget(self.input_author)
         row_author_ver.addLayout(box_author, 2)
@@ -222,7 +222,7 @@ class ModelExportDialog(QDialog):
 
     def _on_browse_destination(self) -> None:
         is_bundle = self.radio_bundle.isChecked()
-        filter_str = self.tr("Paquet Type de note AnkiForge (*.afmodel)") if is_bundle else self.tr("Fichier Type de note JSON (*.json)")
+        filter_str = self.tr("Paquet Type de note AnkiDraft (*.afmodel)") if is_bundle else self.tr("Fichier Type de note JSON (*.json)")
         ext = BUNDLE_EXTENSION if is_bundle else ".json"
         default_name = f"{self.model.name.replace(' ', '_').lower()}_model{ext}"
 
@@ -275,7 +275,7 @@ class ModelExportDialog(QDialog):
             return
 
         out_path = Path(dest_str)
-        author = self.input_author.text().strip() or "AnkiForge User"
+        author = self.input_author.text().strip() or "AnkiDraft User"
         version = self.input_version.text().strip() or "1.0.0"
         desc = self.input_desc.text().strip()
         tags = [t.strip() for t in self.input_tags.text().split(",") if t.strip()]

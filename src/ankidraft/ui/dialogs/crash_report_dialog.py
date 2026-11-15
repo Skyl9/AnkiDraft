@@ -60,7 +60,7 @@ class CrashReportDialog(QDialog):
         self.setObjectName("CrashReportDialog")
         # Invite explicitement non-bloquante pour laisser l'utilisateur interagir avec l'application
         self.setModal(False)
-        self.setWindowTitle(self.tr("Rapport d'arrêt inattendu d'AnkiForge"))
+        self.setWindowTitle(self.tr("Rapport d'arrêt inattendu d'AnkiDraft"))
         self.setMinimumSize(620, 460)
         self.resize(680, 520)
 
@@ -109,7 +109,7 @@ class CrashReportDialog(QDialog):
         title_col = QVBoxLayout()
         title_col.setSpacing(2)
 
-        main_title = QLabel(self.tr("AnkiForge s'est arrêté de manière inattendue"))
+        main_title = QLabel(self.tr("AnkiDraft s'est arrêté de manière inattendue"))
         main_title.setStyleSheet(f"font-size: 15px; font-weight: 700; color: {DesignTokens.TEXT_PRIMARY};")
         title_col.addWidget(main_title)
 
@@ -286,7 +286,7 @@ class CrashReportDialog(QDialog):
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             self.tr("Exporter le rapport de crash"),
-            str(Path.home() / "ankiforge_crash_report.md"),
+            str(Path.home() / "ankidraft_crash_report.md"),
             self.tr("Fichiers Markdown (*.md)"),
         )
         if file_path:

@@ -199,7 +199,7 @@ class DashboardHeroBanner(QFrame):
         layout.setSpacing(6)
 
         # Titre centré agrandi
-        self.title = QLabel(tr('Bienvenue dans <span style="color: %1;">AnkiForge</span>', DesignTokens.ACCENT_PRIMARY))
+        self.title = QLabel(tr('Bienvenue dans <span style="color: %1;">AnkiDraft</span>', DesignTokens.ACCENT_PRIMARY))
         self.title.setFont(QFont(DesignTokens.FONT_MAIN, 20, QFont.Weight.Bold))
         self.title.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; border: none; background: transparent;")
         self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -233,7 +233,7 @@ class DashboardHeroBanner(QFrame):
             }}
         """)
         self.icon_label.setPixmap(load_phosphor_icon("ph.stack", color=profile.accent_primary).pixmap(24, 24))
-        self.title.setText(tr('Bienvenue dans <span style="color: %1;">AnkiForge</span>', profile.accent_primary))
+        self.title.setText(tr('Bienvenue dans <span style="color: %1;">AnkiDraft</span>', profile.accent_primary))
         self.title.setStyleSheet(f"color: {profile.text_primary}; border: none; background: transparent;")
         self.subtitle.setStyleSheet(f"color: {profile.text_muted}; border: none; background: transparent;")
 

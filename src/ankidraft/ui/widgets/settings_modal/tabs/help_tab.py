@@ -71,14 +71,14 @@ class HelpTab(SettingsDirtyMixin, QWidget):
         title_col = QVBoxLayout()
         title_col.setSpacing(2)
 
-        lbl_cycle_title = QLabel(self.tr("Cycle de Vie Distribué (Anki ↔ AnkiForge)"), self.card_lifecycle)
+        lbl_cycle_title = QLabel(self.tr("Cycle de Vie Distribué (Anki ↔ AnkiDraft)"), self.card_lifecycle)
         lbl_cycle_title.setStyleSheet(f"font-size: 14px; font-weight: bold; color: {DesignTokens.TEXT_PRIMARY};")
         title_col.addWidget(lbl_cycle_title)
 
         lbl_cycle_desc = QLabel(
             self.tr(
                 "Découvrez comment articuler sereinement vos séances de travail : création et découpage RAG "
-                "dans le Studio AnkiForge, validation en staging, export de cartes vers Anki et synchronisation "
+                "dans le Studio AnkiDraft, validation en staging, export de cartes vers Anki et synchronisation "
                 "sans risque de perte de données ni prolifération de cartes zombies."
             ),
             self.card_lifecycle,
@@ -123,7 +123,7 @@ class HelpTab(SettingsDirtyMixin, QWidget):
         shortcuts_col.addWidget(lbl_shortcuts_title)
 
         lbl_shortcuts_desc = QLabel(
-            self.tr("AnkiForge intègre plus de 90 raccourcis clavier déclaratifs organisés par portée (Application, Vue, Widget, Dialogue). Personnalisez vos combinaisons ou consultez la référence."),
+            self.tr("AnkiDraft intègre plus de 90 raccourcis clavier déclaratifs organisés par portée (Application, Vue, Widget, Dialogue). Personnalisez vos combinaisons ou consultez la référence."),
             self.card_shortcuts,
         )
         lbl_shortcuts_desc.setWordWrap(True)

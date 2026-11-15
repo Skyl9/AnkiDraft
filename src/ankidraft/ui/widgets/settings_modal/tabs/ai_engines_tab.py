@@ -79,22 +79,22 @@ class CloudKeyPingWorker(QRunnable):
         try:
             req = None
             if self.provider_id == "openai":
-                req = urllib.request.Request("https://api.openai.com/v1/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiForge"})
+                req = urllib.request.Request("https://api.openai.com/v1/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiDraft"})
             elif self.provider_id == "anthropic":
-                req = urllib.request.Request("https://api.anthropic.com/v1/models", headers={"x-api-key": self.key_val, "anthropic-version": "2023-06-01", "User-Agent": "AnkiForge"})
+                req = urllib.request.Request("https://api.anthropic.com/v1/models", headers={"x-api-key": self.key_val, "anthropic-version": "2023-06-01", "User-Agent": "AnkiDraft"})
             elif self.provider_id == "gemini":
                 req = urllib.request.Request(
                     "https://generativelanguage.googleapis.com/v1beta/models",
-                    headers={"x-goog-api-key": self.key_val, "User-Agent": "AnkiForge"},
+                    headers={"x-goog-api-key": self.key_val, "User-Agent": "AnkiDraft"},
                 )  # la clé passe par l'en-tête x-goog-api-key, jamais dans l'URL (anti-fuite)
             elif self.provider_id == "groq":
-                req = urllib.request.Request("https://api.groq.com/openai/v1/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiForge"})
+                req = urllib.request.Request("https://api.groq.com/openai/v1/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiDraft"})
             elif self.provider_id == "opencode":
                 oc_base = str(SettingsService.get("opencode/base_url", "https://opencode.ai/zen/v1") or "https://opencode.ai/zen/v1").rstrip("/")
-                req = urllib.request.Request(f"{oc_base}/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiForge"})
+                req = urllib.request.Request(f"{oc_base}/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiDraft"})
             elif self.provider_id == "openrouter":
                 or_base = str(SettingsService.get("openrouter/base_url", "https://openrouter.ai/api/v1") or "https://openrouter.ai/api/v1").rstrip("/")
-                req = urllib.request.Request(f"{or_base}/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiForge"})
+                req = urllib.request.Request(f"{or_base}/models", headers={"Authorization": f"Bearer {self.key_val}", "User-Agent": "AnkiDraft"})
 
             if req is None:
                 self.signals.result_ready.emit(self.provider_id, True, "Format valide")
@@ -137,7 +137,7 @@ class OllamaScanWorker(QRunnable):
 
 def _fetch_ollama_models_and_caps(base_url: str) -> tuple[list[str], list[tuple[str, Any]]]:
     """Interroge /api/tags puis détecte les capacités de chaque modèle (réseau seul, appelé côté worker)."""
-    req = urllib.request.Request(f"{base_url}/api/tags", headers={"User-Agent": "AnkiForge"})
+    req = urllib.request.Request(f"{base_url}/api/tags", headers={"User-Agent": "AnkiDraft"})
     with urllib.request.urlopen(req, timeout=1.2) as resp:  # nosec B310  # boucle locale uniquement + timeout borné
         data = json.loads(resp.read().decode())
 
@@ -189,7 +189,7 @@ class AIEnginesTab(SettingsDirtyMixin, QWidget):
         layout.addWidget(self.lbl_sec_keys)
 
         self.lbl_sec_keys_desc = QLabel(
-            self.tr("Les clés API sont chiffrées et conservées dans le trousseau sécurisé de votre système (service : AnkiForge). Elles ne sont jamais stockées en clair sur le disque.")
+            self.tr("Les clés API sont chiffrées et conservées dans le trousseau sécurisé de votre système (service : AnkiDraft). Elles ne sont jamais stockées en clair sur le disque.")
         )
         self.lbl_sec_keys_desc.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED}; font-size: 11.5px;")
         self.lbl_sec_keys_desc.setWordWrap(True)

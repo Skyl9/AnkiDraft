@@ -432,7 +432,7 @@ def dialog_labels() -> dict[str, str]:
         "SelectionDialog": tr("Sélection simple"),
         "SmartMergeDialog": tr("Fusion intelligente"),
         "StarterPackDialog": tr("Catalogue de types de note"),
-        "SupportDialog": tr("Soutenir AnkiForge"),
+        "SupportDialog": tr("Soutenir AnkiDraft"),
         "TagHygieneDialog": tr("Hygiène des tags"),
         "TaxonomyAuditDialog": tr("Audit de taxonomie"),
         "ToolEditorDialog": tr("Éditeur d'outil Python"),

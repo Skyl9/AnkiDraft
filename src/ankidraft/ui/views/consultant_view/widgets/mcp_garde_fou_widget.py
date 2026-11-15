@@ -1843,7 +1843,7 @@ class MCPGardeFouWidget(QWidget):
         p = self._current_patch
         payload = staged_payload_of(p)
         feedback_lines = [
-            tr("[AnkiForge] Compte-rendu d'arbitrage utilisateur :"),
+            tr("[AnkiDraft] Compte-rendu d'arbitrage utilisateur :"),
             f"- Réf. : {p.patch_id}",
             f"- Cible : Note #{p.target_id} (Type: {p.patch_type})",
             f"- Titre : {payload.get('title', '')}",

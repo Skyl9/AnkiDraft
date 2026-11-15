@@ -82,7 +82,7 @@ class TopBar(QWidget):
         self.logo_icon.setPixmap(load_logo_icon(DesignTokens.ACCENT_PRIMARY).pixmap(24, 24))
         self.logo_icon.clicked.connect(self.toggle_requested.emit)
 
-        self.logo_text = QLabel(self.tr("AnkiForge"))
+        self.logo_text = QLabel(self.tr("AnkiDraft"))
         self.logo_text.setObjectName("SidebarLogoText")
 
         self.toggle_btn = IconButton("list", tooltip=self.tr("Replier/Déplier la barre latérale"), size=28)

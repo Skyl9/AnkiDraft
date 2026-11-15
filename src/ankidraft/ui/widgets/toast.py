@@ -370,7 +370,7 @@ class ToastManager:
         try:
             from ankidraft.services.system.notification_service import SystemNotificationService
 
-            effective_title = title or str(Toast.LEVEL_CONFIG.get(level_enum, {}).get("title", "AnkiForge"))
+            effective_title = title or str(Toast.LEVEL_CONFIG.get(level_enum, {}).get("title", "AnkiDraft"))
             SystemNotificationService.get_instance().notify_if_background(
                 host_window=host_window,
                 title=effective_title,

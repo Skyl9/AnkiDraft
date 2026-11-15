@@ -106,7 +106,7 @@ def main(argv: list[str] | None = None) -> None:
         from ankidraft import __version__
 
         sys.stdout.write(
-            f"AnkiForge v{__version__}\n\n"
+            f"AnkiDraft v{__version__}\n\n"
             "Options:\n"
             "  -h, --help               Affiche ce message d'aide et quitte.\n"
             "  -v, --version            Affiche la version de l'application et quitte.\n"
@@ -124,13 +124,13 @@ def main(argv: list[str] | None = None) -> None:
     if known_args.version:
         from ankidraft import __version__
 
-        sys.stdout.write(f"AnkiForge v{__version__}\n")
+        sys.stdout.write(f"AnkiDraft v{__version__}\n")
         sys.exit(0)
 
     if known_args.smoke_test:
         from ankidraft import __version__
 
-        sys.stdout.write(f"AnkiForge v{__version__} - Smoke Test Passed\n")
+        sys.stdout.write(f"AnkiDraft v{__version__} - Smoke Test Passed\n")
         sys.exit(0)
 
     # Imports lourds diffères après les drapeaux immédiats (--help / --version / --smoke-test)
@@ -204,7 +204,7 @@ def main(argv: list[str] | None = None) -> None:
     import logging
 
     logger = logging.getLogger(__name__)
-    logger.info("Démarrage d'AnkiForge en environnement : [%s] (Données : %s)", env_name, get_app_data_dir())
+    logger.info("Démarrage d'AnkiDraft en environnement : [%s] (Données : %s)", env_name, get_app_data_dir())
 
     # Mode Headless : Serveur MCP autonome sans UI
     if known_args.mcp_server:
@@ -301,7 +301,7 @@ def main(argv: list[str] | None = None) -> None:
         msg.setWindowTitle(tr("Espace de travail en cours d'utilisation"))
         msg.setText(
             tr(
-                "Le profil « %1 » est déjà ouvert par une autre instance d'AnkiForge%2.\n\nL'accès simultané au même profil est formellement bloqué pour éviter toute corruption des données.",
+                "Le profil « %1 » est déjà ouvert par une autre instance d'AnkiDraft%2.\n\nL'accès simultané au même profil est formellement bloqué pour éviter toute corruption des données.",
                 selected_profile,
                 pid_hint,
             )

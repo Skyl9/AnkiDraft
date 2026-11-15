@@ -147,7 +147,7 @@ class Sidebar(QWidget):
         from ankidraft.utils.icon_loader import load_logo_icon
 
         self.logo_icon.setPixmap(load_logo_icon(DesignTokens.ACCENT_PRIMARY).pixmap(24, 24))
-        self.logo_text = QLabel(self.tr("AnkiForge"), self)
+        self.logo_text = QLabel(self.tr("AnkiDraft"), self)
         self.logo_text.hide()
         self.toggle_btn = IconButton("list", tooltip=self.tr("Toggle Sidebar"), size=24, parent=self)
         self.toggle_btn.hide()

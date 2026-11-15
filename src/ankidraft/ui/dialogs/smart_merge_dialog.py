@@ -265,7 +265,7 @@ class SmartMergeDialog(QDialog):
         titles_layout.setContentsMargins(4, 0, 4, 0)
         titles_layout.setSpacing(12)
 
-        lbl_local_title = QLabel(self.tr("BASE LOCALE ANKIFORGE"))
+        lbl_local_title = QLabel(self.tr("BASE LOCALE ANKIDRAFT"))
         lbl_local_title.setStyleSheet(f"font-size: 11px; font-weight: bold; color: {DesignTokens.COLOR_RED}; text-transform: uppercase;")
         titles_layout.addWidget(lbl_local_title, 1)
 

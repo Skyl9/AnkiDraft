@@ -522,7 +522,7 @@ class SettingsRegistry:
         SettingDescriptor(
             key="help/lifecycle_guide",
             label="Guide visuel du cycle de vie distribué",
-            description="Illustre l'articulation des sessions entre le Studio AnkiForge et Anki Desktop.",
+            description="Illustre l'articulation des sessions entre le Studio AnkiDraft et Anki Desktop.",
             keywords=("cycle de vie", "distribué", "guide", "visuel", "anki", "studio"),
             tab="Aide & Guides",
             section="Documentation",

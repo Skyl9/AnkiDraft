@@ -1933,7 +1933,7 @@ class BatchView(QWidget):
 
             def _build_note_tags(raw: dict[str, Any]) -> list[str]:
                 """Construit les tags de traçabilité fins pour une note de la file batch."""
-                common_tags = ["AnkiForge_Batch"]
+                common_tags = ["AnkiDraft_Batch"]
                 if not doc:
                     return build_document_tags(extra_tags=common_tags)
                 documentation_enabled = raw.get("_documentation_enabled", True)

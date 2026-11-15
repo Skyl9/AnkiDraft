@@ -123,7 +123,7 @@ class DeveloperTab(QWidget):
         meta_rows = [
             (self.tr("Environnement :"), get_environment_display_name()),
             (self.tr("Profil actif :"), profile_name),
-            (self.tr("Version AnkiForge :"), v_info.version),
+            (self.tr("Version AnkiDraft :"), v_info.version),
             (self.tr("Interpréteur Python :"), py_version),
             (self.tr("Base de données :"), db_path),
         ]

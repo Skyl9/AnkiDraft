@@ -85,7 +85,7 @@ class SettingsModal(QDialog):
         self._pulse_timer: QTimer | None = None
         self._pulse_original: tuple[QWidget, str] | None = None
 
-        self.setWindowTitle(self.tr("Paramètres AnkiForge"))
+        self.setWindowTitle(self.tr("Paramètres AnkiDraft"))
         self.setMinimumSize(820, 560)
         self.resize(880, 620)
         self.setModal(False)
@@ -409,7 +409,7 @@ class SettingsModal(QDialog):
         self.lbl_header_icon.setPixmap(load_phosphor_icon("ph.sliders-horizontal", color=DesignTokens.ACCENT_PRIMARY).pixmap(18, 18))
         header_layout.addWidget(self.lbl_header_icon)
 
-        self.lbl_title = QLabel(self.tr("Paramètres AnkiForge"))
+        self.lbl_title = QLabel(self.tr("Paramètres AnkiDraft"))
         self.lbl_title.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 15px; font-weight: bold;")
         header_layout.addWidget(self.lbl_title)
 

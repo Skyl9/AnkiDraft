@@ -27,7 +27,7 @@ class TestFeedbackDialog:
         dialog = FeedbackDialog(tab="bug")
         qtbot.addWidget(dialog)
 
-        assert dialog.windowTitle() == "Retours & Suggestions AnkiForge"
+        assert dialog.windowTitle() == "Retours & Suggestions AnkiDraft"
         assert dialog.tab_bar.currentIndex() == 0
         assert dialog.stacked_widget.currentIndex() == 0
         assert dialog.bug_include_diag_cb.isChecked()
@@ -169,7 +169,7 @@ class TestFeedbackDialog:
             assert mock_open_url.called
             call_url: QUrl = mock_open_url.call_args[0][0]
             url_str = call_url.toString()
-            assert "https://github.com/Skyl9/AnkiForge/issues/new" in url_str
+            assert "https://github.com/Skyl9/AnkiDraft/issues/new" in url_str
             assert "GitHub+Test" in url_str or "GitHub%20Test" in url_str
             assert "labels=bug" in url_str
             assert "✓ Page GitHub ouverte" in dialog.lbl_status.text()

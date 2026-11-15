@@ -117,7 +117,7 @@ def load_logo_icon(color: str = DesignTokens.ACCENT_PRIMARY) -> QIcon:
 
     logo_path = next((p for p in candidates if p.exists()), None)
     if not logo_path:
-        logger.debug("Logo AnkiForge introuvable dans les ressources")
+        logger.debug("Logo AnkiDraft introuvable dans les ressources")
         return QIcon()
 
     try:
@@ -130,5 +130,5 @@ def load_logo_icon(color: str = DesignTokens.ACCENT_PRIMARY) -> QIcon:
         _logo_cache[color] = icon
         return icon
     except Exception as e:
-        logger.debug("Erreur de chargement du logo AnkiForge: %s", e)
+        logger.debug("Erreur de chargement du logo AnkiDraft: %s", e)
         return QIcon()

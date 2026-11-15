@@ -709,11 +709,11 @@ def test_settings_modal_theme_reactivity(qtbot):
 
     # Appliquer thème sombre
     modal.refresh_theme(dark_prof)
-    assert modal.lbl_title.text() == "Paramètres AnkiForge"
+    assert modal.lbl_title.text() == "Paramètres AnkiDraft"
 
     # Appliquer thème clair
     modal.refresh_theme(light_prof)
-    assert modal.lbl_title.text() == "Paramètres AnkiForge"
+    assert modal.lbl_title.text() == "Paramètres AnkiDraft"
 
 
 def test_tts_settings_tab_actions(qtbot, tmp_path):

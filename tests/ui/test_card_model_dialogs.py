@@ -32,7 +32,7 @@ def test_model_export_dialog(qtbot: QtBot, tmp_path: Path):
     dlg = ModelExportDialog(model=model)
     qtbot.addWidget(dlg)
 
-    assert dlg.input_author.text() == "AnkiForge User"
+    assert dlg.input_author.text() == "AnkiDraft User"
     assert dlg.input_version.text() == "1.0.0"
     assert dlg.radio_bundle.isChecked()
 
@@ -119,7 +119,7 @@ def test_starter_pack_dialog(qtbot: QtBot):
         "id": "medical_qcm",
         "name": "Médical & QCM Interactif Test",
         "category": "Médecine",
-        "author": "AnkiForge",
+        "author": "AnkiDraft",
         "version": "1.0.0",
         "fields_schema": ["Question", "Reponse"],
         "templates": [{"name": "QCM", "qfmt": "{{Question}}", "afmt": "{{Reponse}}"}],

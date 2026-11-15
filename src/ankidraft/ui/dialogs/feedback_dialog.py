@@ -61,7 +61,7 @@ class FeedbackDialog(QDialog):
         parent: QWidget | None = None,
     ) -> None:
         super().__init__(parent)
-        self.setWindowTitle(self.tr("Retours & Suggestions AnkiForge"))
+        self.setWindowTitle(self.tr("Retours & Suggestions AnkiDraft"))
         self.setMinimumSize(840, 680)
         self.resize(880, 740)
         self.setObjectName("FeedbackDialog")
@@ -103,7 +103,7 @@ class FeedbackDialog(QDialog):
         main_title.setStyleSheet(f"font-size: 17px; font-weight: 700; color: {DesignTokens.TEXT_PRIMARY};")
         title_col.addWidget(main_title)
 
-        sub_title = QLabel(self.tr("Partagez un problème rencontré ou proposez une nouvelle fonctionnalité pour faire évoluer AnkiForge."))
+        sub_title = QLabel(self.tr("Partagez un problème rencontré ou proposez une nouvelle fonctionnalité pour faire évoluer AnkiDraft."))
         sub_title.setStyleSheet(f"font-size: 12px; color: {DesignTokens.TEXT_MUTED};")
         title_col.addWidget(sub_title)
 
@@ -169,7 +169,7 @@ class FeedbackDialog(QDialog):
         footer_layout.addWidget(self.btn_export)
 
         self.btn_kofi = SecondaryButton("Soutenir sur Ko-fi ☕")
-        self.btn_kofi.setToolTip(self.tr("Soutenir le projet AnkiForge sur Ko-fi"))
+        self.btn_kofi.setToolTip(self.tr("Soutenir le projet AnkiDraft sur Ko-fi"))
         self.btn_kofi.setFixedHeight(32)
         self.btn_kofi.setIcon(load_phosphor_icon("ph.heart", color=DesignTokens.COLOR_RED))
         self.btn_kofi.clicked.connect(self._on_kofi_clicked)

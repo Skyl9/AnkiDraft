@@ -77,7 +77,7 @@ class RepairHeadingsDialog(QDialog):
         desc_layout.addWidget(title_lbl)
 
         sub_lbl = QLabel(
-            self.tr("AnkiForge a repéré des sauts de niveau illégaux (ex: H1 suivi directement de H3). Vérifiez ci-dessous les ajustements proposés. Rien ne sera modifié sans votre accord.")
+            self.tr("AnkiDraft a repéré des sauts de niveau illégaux (ex: H1 suivi directement de H3). Vérifiez ci-dessous les ajustements proposés. Rien ne sera modifié sans votre accord.")
         )
         sub_lbl.setWordWrap(True)
         sub_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_SECONDARY}; font-size: 11px;")

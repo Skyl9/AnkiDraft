@@ -169,7 +169,7 @@ class MainWindow(QMainWindow):
         from ankidraft import __version__
 
         title_suffix = f" [DEV] - profil: {profile_name} (v{__version__})" if is_development() else f" - {profile_name}"
-        self.setWindowTitle(tr("AnkiForge%1", title_suffix))
+        self.setWindowTitle(tr("AnkiDraft%1", title_suffix))
         self.setMinimumSize(1200, 720)
 
         # Application & Window Icon

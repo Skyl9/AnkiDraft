@@ -1545,7 +1545,7 @@ class CardModelsView(QWidget):
             self,
             self.tr("Importer un type de note"),
             "",
-            "Paquets & Modèles AnkiForge (*.afmodel *.json);;Paquet .afmodel (*.afmodel);;Fichier JSON (*.json)",
+            "Paquets & Modèles AnkiDraft (*.afmodel *.json);;Paquet .afmodel (*.afmodel);;Fichier JSON (*.json)",
         )
         if file_path:
             try:

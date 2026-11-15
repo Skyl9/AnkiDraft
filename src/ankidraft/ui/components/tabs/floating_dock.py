@@ -17,7 +17,7 @@ class FloatingDockWindow(QWidget):
 
     def __init__(self):
         super().__init__(None, Qt.WindowType.Window)
-        self.setWindowTitle(self.tr("AnkiForge - Detached Tab"))
+        self.setWindowTitle(self.tr("AnkiDraft - Detached Tab"))
         self.resize(800, 600)
         self.setStyleSheet(f"background-color: {DesignTokens.BG_PANEL};")
 

@@ -75,11 +75,11 @@ class UpdateDialog(QDialog):
         title_col = QVBoxLayout()
         title_col.setSpacing(2)
 
-        main_title = QLabel(self.update_info.title or f"AnkiForge v{self.update_info.version}")
+        main_title = QLabel(self.update_info.title or f"AnkiDraft v{self.update_info.version}")
         main_title.setStyleSheet(f"font-size: 18px; font-weight: 700; color: {DesignTokens.TEXT_PRIMARY};")
         title_col.addWidget(main_title)
 
-        sub_title = QLabel(self.tr("Une nouvelle version optimisée d'AnkiForge est disponible au téléchargement."))
+        sub_title = QLabel(self.tr("Une nouvelle version optimisée d'AnkiDraft est disponible au téléchargement."))
         sub_title.setStyleSheet(f"font-size: 13px; color: {DesignTokens.TEXT_MUTED};")
         title_col.addWidget(sub_title)
 
@@ -196,7 +196,7 @@ class UpdateDialog(QDialog):
             return
 
         download_url = str(asset["browser_download_url"])
-        filename = str(asset.get("name", f"AnkiForge-v{self.update_info.version}"))
+        filename = str(asset.get("name", f"AnkiDraft-v{self.update_info.version}"))
 
         # ISSUE 8 : Validation HTTPS + domaine de confiance avant tout démarrage de téléchargement
         try:

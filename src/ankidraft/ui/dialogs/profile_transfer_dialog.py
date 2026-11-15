@@ -55,7 +55,7 @@ class ProfileTransferDialog(QDialog):
         self.active_profile = get_active_profile() or "default"
         self._is_updating_preview = False
 
-        self.setWindowTitle(self.tr("Transférer du contenu entre Espaces de Travail — AnkiForge"))
+        self.setWindowTitle(self.tr("Transférer du contenu entre Espaces de Travail — AnkiDraft"))
         self.setMinimumSize(640, 680)
         self.resize(680, 720)
         self.setModal(True)

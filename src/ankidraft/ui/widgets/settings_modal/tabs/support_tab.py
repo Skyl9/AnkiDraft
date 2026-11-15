@@ -87,13 +87,13 @@ class SupportTab(SettingsDirtyMixin, QWidget):
         title_col = QVBoxLayout()
         title_col.setSpacing(2)
 
-        lbl_title = QLabel(self.tr("Soutenir AnkiForge"), self.card_support)
+        lbl_title = QLabel(self.tr("Soutenir AnkiDraft"), self.card_support)
         lbl_title.setStyleSheet(f"font-size: 14px; font-weight: bold; color: {DesignTokens.TEXT_PRIMARY};")
         title_col.addWidget(lbl_title)
 
         lbl_desc = QLabel(
             self.tr(
-                "AnkiForge est un projet indépendant, gratuit et développé "
+                "AnkiDraft est un projet indépendant, gratuit et développé "
                 "bénévolement. Votre soutien permet de financer le développement, "
                 "les serveurs et les futures fonctionnalités. Merci pour votre aide !"
             ),

@@ -82,7 +82,7 @@ class PersonaEmptyStateWidget(QWidget):
         lbl_desc = QLabel(
             self.tr(
                 "Les <b>Personas</b> définissent la personnalité, les règles pédagogiques et les capacités "
-                "de vos assistants IA dans AnkiForge. Ils régissent la formulation minimale selon les "
+                "de vos assistants IA dans AnkiDraft. Ils régissent la formulation minimale selon les "
                 "20 règles de Wozniak, l'extraction de vocabulaire ou encore les diagnostics autonomes "
                 "du Consultant MCP."
             )
