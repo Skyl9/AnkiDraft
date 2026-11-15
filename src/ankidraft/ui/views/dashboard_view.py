@@ -10,6 +10,8 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QHBoxLayout,
     QLabel,
+    QProgressBar,
+    QPushButton,
     QScrollArea,
     QSizePolicy,
     QSplitter,
@@ -50,37 +52,151 @@ class DashboardWorker(QThread):
 StatsWorker = DashboardWorker
 
 
+class OnboardingChecklistWidget(QFrame):
+    """Checklist interactive 'Premiers pas' sur le tableau de bord."""
+
+    step_action_requested = Signal(str)
+    hidden_permanently = Signal()
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setObjectName("OnboardingChecklistWidget")
+        self.is_collapsed: bool = False
+        self.setStyleSheet(f"""
+            QFrame#OnboardingChecklistWidget {{
+                background-color: {DesignTokens.BG_PANEL};
+                border: 1px solid {DesignTokens.BORDER_COLOR};
+                border-radius: {DesignTokens.RADIUS_MD}px;
+            }}
+        """)
+
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(12, 8, 12, 8)
+        layout.setSpacing(4)
+
+        header = QHBoxLayout()
+        header.setSpacing(8)
+        self.lbl_title = QLabel(self.tr("Premiers pas avec AnkiDraft"))
+        self.lbl_title.setFont(QFont(DesignTokens.FONT_MAIN, 12, QFont.Weight.Bold))
+        self.lbl_title.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; border: none; background: transparent;")
+        header.addWidget(self.lbl_title)
+
+        self.lbl_progress = QLabel(tr("%1/4 terminées", 0))
+        self.lbl_progress.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED}; font-size: 11px; border: none; background: transparent;")
+        header.addWidget(self.lbl_progress)
+        header.addStretch()
+
+        from ankidraft.ui.components import IconButton
+
+        self.btn_toggle = IconButton("ph.caret-up", tooltip=self.tr("Replier la checklist"), size=22)
+        self.btn_toggle.clicked.connect(self.toggle_collapse)
+        header.addWidget(self.btn_toggle)
+
+        self.btn_hide = IconButton("ph.x", tooltip=self.tr("Masquer définitivement la checklist"), size=22)
+        self.btn_hide.clicked.connect(self._on_hide_clicked)
+        header.addWidget(self.btn_hide)
+        layout.addLayout(header)
+
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setRange(0, 4)
+        self.progress_bar.setValue(0)
+        self.progress_bar.setTextVisible(False)
+        self.progress_bar.setFixedHeight(4)
+        self.progress_bar.setStyleSheet(f"""
+            QProgressBar {{
+                background-color: {DesignTokens.BG_INPUT};
+                border: none;
+                border-radius: 2px;
+            }}
+            QProgressBar::chunk {{
+                background-color: {DesignTokens.ACCENT_PRIMARY};
+                border-radius: 2px;
+            }}
+        """)
+        layout.addWidget(self.progress_bar)
+
+        self.steps_container = QWidget()
+        steps_layout = QVBoxLayout(self.steps_container)
+        steps_layout.setContentsMargins(0, 2, 0, 0)
+        steps_layout.setSpacing(2)
+
+        self._step_rows: dict[str, tuple[QLabel, QLabel, QPushButton]] = {}
+        step_defs = [
+            ("ai", self.tr("Configurer un moteur IA ou activer un agent MCP externe"), self.tr("Configurer →")),
+            ("doc", self.tr("Importer et délimiter un premier document de cours"), self.tr("Importer →")),
+            ("cards", self.tr("Forger ou auditer un premier lot de cartes"), self.tr("Forger →")),
+            ("export", self.tr("Exporter un paquet .apkg vers Anki"), self.tr("Exporter →")),
+        ]
+        for key, label_text, btn_text in step_defs:
+            row = QHBoxLayout()
+            row.setSpacing(8)
+            ico = QLabel()
+            ico.setPixmap(load_phosphor_icon("ph.circle", color=DesignTokens.TEXT_MUTED).pixmap(14, 14))
+            ico.setStyleSheet("border: none; background: transparent;")
+            lbl = QLabel(label_text)
+            lbl.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 12px; border: none; background: transparent;")
+            btn = QPushButton(btn_text)
+            btn.setFlat(True)
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            btn.setStyleSheet(f"color: {DesignTokens.ACCENT_PRIMARY}; background: transparent; border: none; padding: 1px 4px; font-size: 11px; font-weight: 600;")
+            btn.clicked.connect(lambda _checked=False, k=key: self.step_action_requested.emit(k))
+            row.addWidget(ico)
+            row.addWidget(lbl, 1)
+            row.addWidget(btn)
+            steps_layout.addLayout(row)
+            self._step_rows[key] = (ico, lbl, btn)
+
+        layout.addWidget(self.steps_container)
+
+    def toggle_collapse(self) -> None:
+        self.set_collapsed(not self.is_collapsed)
+
+    def set_collapsed(self, collapsed: bool) -> None:
+        self.is_collapsed = collapsed
+        self.steps_container.setVisible(not collapsed)
+        self.btn_toggle.setIcon(load_phosphor_icon("ph.caret-down" if collapsed else "ph.caret-up", color=DesignTokens.TEXT_PRIMARY))
+        self.btn_toggle.setToolTip(self.tr("Déplier la checklist") if collapsed else self.tr("Replier la checklist"))
+
+    def _on_hide_clicked(self) -> None:
+        self.setVisible(False)
+        self.hidden_permanently.emit()
+
+    def update_progress(self, *, ai_ready: bool, doc_imported: bool, cards_created: bool, apkg_exported: bool) -> None:
+        states = {
+            "ai": ai_ready,
+            "doc": doc_imported,
+            "cards": cards_created,
+            "export": apkg_exported,
+        }
+        done_count = sum(1 for v in states.values() if v)
+        self.progress_bar.setValue(done_count)
+        self.lbl_progress.setText(tr("%1/4 terminées", done_count))
+
+        for key, done in states.items():
+            ico, lbl, _btn = self._step_rows[key]
+            if done:
+                ico.setPixmap(load_phosphor_icon("ph.check-circle", color=DesignTokens.COLOR_GREEN).pixmap(16, 16))
+                lbl.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED}; font-size: 12px; text-decoration: line-through; border: none; background: transparent;")
+            else:
+                ico.setPixmap(load_phosphor_icon("ph.circle", color=DesignTokens.TEXT_MUTED).pixmap(16, 16))
+                lbl.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 12px; border: none; background: transparent;")
+
+        if done_count == 4 and not self.is_collapsed:
+            self.set_collapsed(True)
+
+
 class DashboardHeroBanner(QFrame):
-    """Bandeau d'accueil centré, épuré et agrandi (120px)."""
+    """Bandeau d'accueil centré, épuré et agrandi (96px)."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setFixedHeight(122)
+        self.setFixedHeight(96)
         self._apply_style()
 
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setContentsMargins(18, 14, 18, 14)
         layout.setSpacing(6)
-
-        # Icône carrée arrondie centrée
-        self.icon_wrapper = QFrame()
-        self.icon_wrapper.setFixedSize(42, 42)
-        self.icon_wrapper.setStyleSheet(f"""
-            QFrame {{
-                background-color: {DesignTokens.BG_ACTIVE};
-                border-radius: 4px;
-                border: 1px solid {DesignTokens.BORDER_COLOR};
-            }}
-        """)
-        icon_layout = QVBoxLayout(self.icon_wrapper)
-        icon_layout.setContentsMargins(0, 0, 0, 0)
-        icon_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.icon_label = QLabel()
-        self.icon_label.setPixmap(load_phosphor_icon("ph.stack", color=DesignTokens.ACCENT_PRIMARY).pixmap(24, 24))
-        self.icon_label.setStyleSheet("border: none; background: transparent;")
-        icon_layout.addWidget(self.icon_label)
-        layout.addWidget(self.icon_wrapper, 0, Qt.AlignmentFlag.AlignCenter)
 
         # Titre centré agrandi
         self.title = QLabel(tr('Bienvenue dans <span style="color: %1;">AnkiForge</span>', DesignTokens.ACCENT_PRIMARY))
@@ -700,12 +816,26 @@ class DashboardView(QWidget):
 
         content_widget = QWidget()
         content_layout = QVBoxLayout(content_widget)
-        content_layout.setContentsMargins(18, 16, 18, 16)
-        content_layout.setSpacing(14)
+        content_layout.setContentsMargins(16, 10, 16, 10)
+        content_layout.setSpacing(8)
 
         # 1. Hero Banner centré agrandi (sans profil)
         self.hero_banner = DashboardHeroBanner()
         content_layout.addWidget(self.hero_banner)
+
+        # 1b. Checklist interactive de premiers pas
+        self.onboarding_checklist = OnboardingChecklistWidget(self)
+        self.onboarding_checklist.step_action_requested.connect(self._on_onboarding_step_action)
+        self.onboarding_checklist.hidden_permanently.connect(self._on_hide_onboarding_checklist)
+        try:
+            from ankidraft.database.models import SettingModel
+
+            hidden_setting = SettingModel.get_or_none(SettingModel.key == "ui/onboarding_checklist_hidden")
+            if hidden_setting is not None and hidden_setting.value == "true":
+                self.onboarding_checklist.setVisible(False)
+        except Exception:
+            logger.debug("Impossible de lire ui/onboarding_checklist_hidden à l'initialisation")
+        content_layout.addWidget(self.onboarding_checklist)
 
         # 2. Actions Rapides élargies (82px)
         actions_header = QHBoxLayout()
@@ -849,6 +979,41 @@ class DashboardView(QWidget):
         splitter.setStretchFactor(1, 1)
         self._update_tooltips()
 
+    def _on_hide_onboarding_checklist(self) -> None:
+        from ankidraft.database.models import SettingModel
+
+        SettingModel.insert(key="ui/onboarding_checklist_hidden", value="true").on_conflict_replace().execute()
+
+    def _on_onboarding_step_action(self, step_key: str) -> None:
+        if step_key == "ai":
+            self.request_navigation.emit("settings", "ai")
+        elif step_key == "doc":
+            self.request_navigation.emit("documents", None)
+        elif step_key == "cards":
+            self.request_navigation.emit("creation", None)
+        elif step_key == "export":
+            self._open_export_dialog()
+
+    def _refresh_onboarding_checklist(self) -> None:
+        if not hasattr(self, "onboarding_checklist") or not self.onboarding_checklist.isVisible():
+            return
+        try:
+            from ankidraft.database.models import DocumentModel, LLMConfigModel, NoteModel, SettingModel
+
+            ai_ready = LLMConfigModel.select().exists()
+            doc_imported = DocumentModel.select().exists()
+            cards_created = NoteModel.select().exists()
+            exp_setting = SettingModel.get_or_none(SettingModel.key == "telemetry/first_apkg_exported")
+            apkg_exported = exp_setting is not None and exp_setting.value == "true"
+            self.onboarding_checklist.update_progress(
+                ai_ready=ai_ready,
+                doc_imported=doc_imported,
+                cards_created=cards_created,
+                apkg_exported=apkg_exported,
+            )
+        except Exception:
+            logger.debug("Erreur rafraîchissement checklist premiers pas")
+
     def refresh_data(self):
         """Lance l'actualisation asynchrone des données du tableau de bord."""
         logger.debug("Actualisation asynchrone des métriques du tableau de bord…")
@@ -921,6 +1086,9 @@ class DashboardView(QWidget):
 
         # 2. Rétention projetée & charge à l'équilibre (FSRS dérivé de l'intervalle)
         self.retention_curve.set_projection(data.get("fsrs_projection"))
+
+        # 2b. Progression de la checklist Premiers pas
+        self._refresh_onboarding_checklist()
 
         # 3. Diagnostics & Alertes Proactives
         diagnostics = data.get("diagnostics", [])

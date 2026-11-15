@@ -1763,7 +1763,7 @@ Voulez-vous mettre à jour les documents existants (contenu rafraîchi) ?</sourc
     <message>
         <location line="+4"/>
         <location line="+6"/>
-        <location filename="../../ui/views/dashboard_view.py" line="+732"/>
+        <location filename="../../ui/views/dashboard_view.py" line="+862"/>
         <location filename="../../ui/widget_gallery/families/layouts.py" line="+1"/>
         <source>Bibliothèque</source>
         <translation type="unfinished"></translation>
@@ -5243,14 +5243,20 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="-646"/>
+        <location filename="../../ui/views/dashboard_view.py" line="-778"/>
+        <location line="+89"/>
+        <source>%1/4 terminées</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <location line="+34"/>
         <source>Bienvenue dans &lt;span style=&quot;color: %1;&quot;&gt;AnkiForge&lt;/span&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+542"/>
-        <location line="+64"/>
+        <location line="+78"/>
         <source>Forger des cartes (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13565,7 +13571,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DashboardDropZone</name>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="-210"/>
+        <location filename="../../ui/views/dashboard_view.py" line="-224"/>
         <source>Glissez un PDF, Document ou Paquet Anki ici</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13619,7 +13625,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DashboardView</name>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="+621"/>
+        <location filename="../../ui/views/dashboard_view.py" line="+635"/>
         <source>Actions Rapides</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13649,7 +13655,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+82"/>
         <source>Aucune activité récente</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20213,6 +20219,70 @@ Aucune anomalie détectée dans votre collection.</source>
     </message>
 </context>
 <context>
+    <name>OnboardingChecklistWidget</name>
+    <message>
+        <location filename="../../ui/views/dashboard_view.py" line="-973"/>
+        <source>Premiers pas avec AnkiDraft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location line="+67"/>
+        <source>Replier la checklist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-63"/>
+        <source>Masquer définitivement la checklist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Configurer un moteur IA ou activer un agent MCP externe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Configurer →</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Importer et délimiter un premier document de cours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Importer →</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Forger ou auditer un premier lot de cartes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Forger →</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Exporter un paquet .apkg vers Anki</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Exporter →</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Déplier la checklist</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PageInspectorWidget</name>
     <message>
         <location filename="../../ui/views/documents_view/widgets/album_viewer.py" line="-1306"/>
@@ -20761,7 +20831,7 @@ Utilisez {{ text_source }}.</source>
 <context>
     <name>ProactiveDiagnosticsWidget</name>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="-548"/>
+        <location filename="../../ui/views/dashboard_view.py" line="+297"/>
         <source>Diagnostics &amp; Actions Proactives</source>
         <translation type="unfinished"></translation>
     </message>
