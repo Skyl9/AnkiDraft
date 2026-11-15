@@ -48,9 +48,9 @@
 
     <!-- Solution -->
     <rect x="20" y="188" width="370" height="135" class="box-solution"/>
-    <text x="32" y="210" class="box-lbl-green">✅ La solution AnkiForge (Remplacement .colpkg) :</text>
+    <text x="32" y="210" class="box-lbl-green">✅ La solution AnkiDraft (Remplacement .colpkg) :</text>
     <text x="32" y="232" class="box-text">• L'import de collection remplace intégralement les cartes</text>
-    <text x="32" y="250" class="box-text">• Toute carte supprimée dans Anki disparaît d'AnkiForge</text>
+    <text x="32" y="250" class="box-text">• Toute carte supprimée dans Anki disparaît d'AnkiDraft</text>
     <text x="32" y="268" class="box-text">• Zéro carte zombie résiduelle ou réapparition fantôme</text>
     <text x="32" y="295" class="box-sub">🛡️ Sauvegarde SQLite automatique avant chaque remplacement.</text>
   </g>

@@ -30,15 +30,15 @@
   <rect width="900" height="480" class="bg" rx="16"/>
 
   <!-- En-tête -->
-  <text x="450" y="38" class="title">Cycle Global Distribué : AnkiForge ↔ Anki</text>
+  <text x="450" y="38" class="title">Cycle Global Distribué : AnkiDraft ↔ Anki</text>
   <text x="450" y="58" class="subtitle">Articulation sereine entre la création de cours assistée par IA et les révisions quotidiennes</text>
 
-  <!-- 1. Étape 1 : Studio AnkiForge (Authoring) -->
+  <!-- 1. Étape 1 : Studio AnkiDraft (Authoring) -->
   <g transform="translate(40, 85)">
     <rect width="370" height="150" class="card card-accent-blue"/>
     <rect x="16" y="16" width="28" height="22" rx="6" fill="#89b4fa"/>
     <text x="30" y="32" class="step-num" text-anchor="middle">1</text>
-    <text x="54" y="33" class="step-title">Studio AnkiForge (Authoring &amp; IA)</text>
+    <text x="54" y="33" class="step-title">Studio AnkiDraft (Authoring &amp; IA)</text>
     <text x="16" y="66" class="step-desc">• Ingestion documentaire : PDF, audio, web, markdown</text>
     <text x="16" y="88" class="step-desc">• Découpage sémantique (RAG) &amp; traçabilité de couverture</text>
     <text x="16" y="110" class="step-desc">• Génération ciblée par agents IA (pipelines DAG)</text>
@@ -75,7 +75,7 @@
     <text x="16" y="66" class="step-desc">• Import du paquet .apkg : nouvelles cartes intégrées</text>
     <text x="16" y="88" class="step-desc">• Révisions quotidiennes avec algorithme FSRS / SM-2</text>
     <text x="16" y="110" class="step-desc">• <tspan class="step-highlight">Anki est maître absolu</tspan> des intervalles et révisions</text>
-    <text x="16" y="130" class="step-desc">Zéro altération des progrès par AnkiForge</text>
+    <text x="16" y="130" class="step-desc">Zéro altération des progrès par AnkiDraft</text>
   </g>
 
   <!-- Flèche 3 -> 4 (Horizontale retour vers la gauche) -->
@@ -90,7 +90,7 @@
     <text x="30" y="32" class="step-num" text-anchor="middle">4</text>
     <text x="54" y="33" class="step-title">Rafraîchissement &amp; Anti-Zombies</text>
     <text x="16" y="66" class="step-desc">• Export régulier de votre collection complète (.colpkg)</text>
-    <text x="16" y="88" class="step-desc">• Import dans AnkiForge : mise à jour des statistiques</text>
+    <text x="16" y="88" class="step-desc">• Import dans AnkiDraft : mise à jour des statistiques</text>
     <text x="16" y="110" class="step-desc">• <tspan class="step-highlight">Purge définitive des cartes supprimées</tspan> dans Anki</text>
     <text x="16" y="130" class="step-desc">Sauvegarde automatique de sécurité avant remplacement</text>
   </g>

@@ -50,7 +50,7 @@ Two non-destructive actions to filter a textbook without deleting pages ([Scope 
 An automated multi-step workflow (e.g., retrieve key passages ➔ synthesize clean Markdown ➔ draft cards ➔ add TTS audio ➔ stage for human review).
 
 - **Before**: Copying a chapter into a chat box, generating cards, fixing broken LaTeX manually, then creating audio one card at a time.
-- **After**: Clicking **Run Pipeline** executes the full workflow automatically and delivers clean drafts ready to review.
+- **After**: Click **Test DAG** in the pipeline editor to simulate a workflow step-by-step, or **Generate** in the Creation Studio to run generation automatically and send clean drafts to review.
 
 ---
 
@@ -106,7 +106,7 @@ AnkiDraft isolates authoring assets (**Studio Scope**: PDFs, transcripts, RAG in
 
 ## 11. Smart Merge
 
-A 3-way visual diff (**Local**, **Common Base**, **Incoming**) inspired by developer merge tools: when importing an updated `.apkg` from a classmate, only true text conflicts require your decision.
+A 3-pane visual diff (**Local Base**, **Merged Result (Interactive)**, **Incoming Base (.apkg)**) inspired by developer merge tools: when importing an updated `.apkg` from a classmate, only true text conflicts require your decision.
 
 - **Before**: Blindly overwriting your personal edits or losing a teammate's additions when importing a shared deck.
 - **After**: Pick the exact version per field while preserving media and review scheduling.

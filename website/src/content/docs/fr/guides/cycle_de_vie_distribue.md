@@ -3,7 +3,7 @@ title: Guide Visuel du Cycle de Vie Distribué AnkiDraft et Anki
 description: Comprendre la complémentarité entre le studio de création AnkiDraft et le moteur de révision Anki via .apkg et .colpkg sans aucun conflit de synchro.
 ---
 
-Bienvenue dans le guide d'utilisation du système distribué d'AnkiDraft (anciennement AnkiForge).
+Bienvenue dans le guide d'utilisation du système distribué d'AnkiDraft.
 
 AnkiDraft et Anki fonctionnent main dans la main comme un duo complémentaire :
 - **AnkiDraft est votre Studio d'Authoring** : c'est votre atelier de création intellectuelle assisté par intelligence artificielle. Vous y organisez vos cours, vos livres, vos découpages RAG, vos personas d'extraction et vous y concevez des flashcards fidèles à vos sources avec une validation humaine rigoureuse.

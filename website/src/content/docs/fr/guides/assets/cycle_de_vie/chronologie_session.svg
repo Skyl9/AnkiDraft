@@ -21,7 +21,7 @@
 
   <!-- Titre -->
   <text x="460" y="38" class="title">Chronologie d'une Session Type : Du Cours aux Révisions</text>
-  <text x="460" y="58" class="subtitle">Enchaînement pas-à-pas des étapes de travail entre AnkiForge et Anki</text>
+  <text x="460" y="58" class="subtitle">Enchaînement pas-à-pas des étapes de travail entre AnkiDraft et Anki</text>
 
   <!-- Axe chronologique central -->
   <line x1="60" y1="210" x2="860" y2="210" class="timeline-axis"/>

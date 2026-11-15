@@ -3,7 +3,7 @@ title: Visual Guide to the Distributed Lifecycle (AnkiDraft & Anki)
 description: Understand how the AnkiDraft authoring studio and the Anki spaced-repetition engine work together via .apkg and .colpkg without sync conflicts.
 ---
 
-Welcome to the distributed workflow guide for AnkiDraft (formerly AnkiForge).
+Welcome to the distributed workflow guide for AnkiDraft.
 
 AnkiDraft and Anki work hand in hand as complementary tools:
 - **AnkiDraft is your Authoring Studio**: your AI-assisted workspace where you organize textbooks, track chapter coverage (Smart Coverage / Cycle Global Distribué), design flashcards, and validate card quality.

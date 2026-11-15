@@ -50,7 +50,7 @@ Deux actions non destructives pour filtrer un document sans jamais supprimer ses
 Enchaînement automatisé d'étapes configurables (ex. : extraire les passages clés ➔ synthétiser en Markdown propre ➔ rédiger des cartes ➔ ajouter l'audio TTS ➔ afficher pour revue humaine).
 
 - **Avant** : Copier un chapitre dans un chat, demander des cartes, reformater manuellement les formules LaTeX, puis générer le son carte par carte.
-- **Après** : Un clic sur **Lancer le Pipeline** exécute toute la chaîne automatiquement et soumet les cartes prêtes à relire.
+- **Après** : Cliquez sur **Tester le DAG** dans l'éditeur de Pipelines pour simuler la chaîne étape par étape, ou sur **Générer** dans le Studio de Création pour produire automatiquement des cartes prêtes à relire.
 
 ---
 
@@ -106,7 +106,7 @@ AnkiDraft sépare vos ressources d'atelier (**Périmètre Studio** : PDF, transc
 
 ## 11. Fusion intelligente (Smart Merge)
 
-Comparateur visuel à 3 colonnes (**Local**, **Base commune**, **Distant**) inspiré des outils de développement : lors de l'import d'un `.apkg` modifié par quelqu'un d'autre, seuls les conflits réels de texte sont soumis à votre choix.
+Comparateur visuel à 3 panneaux (**Base locale**, **Résultat fusionné interactif**, **Base entrante .apkg**) inspiré des outils de développement : lors de l'import d'un `.apkg` modifié par quelqu'un d'autre, seuls les conflits réels de texte sont soumis à votre choix.
 
 - **Avant** : Écraser à l'aveugle vos corrections personnelles ou perdre les ajouts d'un camarade lors de l'import d'un paquet partagé.
 - **Après** : Vous choisissez champ par champ quelle version conserver, en préservant les médias et le planning de révision.

@@ -682,7 +682,7 @@ Review the generated cards, run a quick check in **Analysis & AI Audit** (<kbd>A
 URL: https://ankidraft.app/en/guides/cycle_de_vie_distribue/
 Description: Understand how the AnkiDraft authoring studio and the Anki spaced-repetition engine work together via .apkg and .colpkg without sync conflicts.
 
-Welcome to the distributed workflow guide for AnkiDraft (formerly AnkiForge).
+Welcome to the distributed workflow guide for AnkiDraft.
 
 AnkiDraft and Anki work hand in hand as complementary tools:
 - **AnkiDraft is your Authoring Studio**: your AI-assisted workspace where you organize textbooks, track chapter coverage (Smart Coverage / Cycle Global Distribué), design flashcards, and validate card quality.
@@ -760,18 +760,27 @@ No—AnkiDraft and Anki complement each other. **AnkiDraft** is the authoring an
 Yes. AnkiDraft is free, runs offline on your computer, and supports free local AI models via [Ollama](/en/ai-setup/local-models-ollama/) without any paid API subscription.
 
 ### Are my PDFs and flashcards uploaded to the cloud?
-No. Your PDFs, SQLite database, and media files stay locally on your drive (`~/.ankidraft/`). If you configure a cloud AI provider (OpenAI, Gemini, Claude), only the text passages you explicitly select for card generation are sent directly to your API account.
+No. Your PDFs, SQLite database, and media files stay locally on your drive, isolated per profile (`~/.ankidraft/profiles/<profile_name>/`). If you configure a cloud AI provider (OpenAI, Gemini, Claude), only the text passages you explicitly select for card generation are sent directly to your API account.
 
 ## 2. Troubleshooting
 
 ### macOS shows a security prompt on first launch
-Make sure you dragged **AnkiDraft** into your **Applications** folder from the `.dmg` disk image. If macOS asks for confirmation on first open, right-click the **AnkiDraft** icon and select **Open**.
+Make sure you dragged **AnkiDraft** into your **Applications** folder from the `.dmg` disk image. Official macOS releases are notarized by Apple; if you test an unsigned or *nightly* build and Gatekeeper asks for confirmation, right-click the **AnkiDraft** icon > **Open** (or allow the app in **System Settings > Privacy & Security**).
+
+### Ollama is not detected or no local model appears
+Make sure **Ollama** is running locally and listening on the default address (`http://localhost:11434`; for SSRF protection, only local/loopback URLs are allowed under **Settings** (<kbd>Ctrl+,</kbd>) > **AI Engines** > **Local Ollama**). Also ensure you have pulled at least one model via `ollama pull <model>` before testing the connection.
+
+### My scanned PDF has no text or LaTeX formulas look broken
+Automatic fast extraction (PyMuPDF / pypdf) works for digital PDFs with selectable text. For scanned handouts or math-heavy lectures, click **`Marker OCR`** in the document toolbar ([PDF & Document Import](/en/sources/import-pdf/)). On first use, AnkiDraft installs PyTorch and local models (~5 GB free disk space and an internet connection required once), after which OCR runs 100% offline.
+
+### How do I export cards to Anki Desktop without losing review history?
+Use **Export Anki Cards (.apkg)** (<kbd>Ctrl+Alt+E</kbd>) to create a package for Anki: AnkiDraft never alters FSRS or SM-2 scheduling. Periodically export your full collection (`.colpkg`) from Anki Desktop and import it back into AnkiDraft (<kbd>Ctrl+Shift+I</kbd>) to refresh retention counters and purge deleted cards ([Distributed Lifecycle Guide](/en/guides/cycle_de_vie_distribue/)).
 
 ### My math formulas do not render in Anki
 Verify that your equations use standard MathJax/KaTeX delimiters (`\( ... \)` for inline math and `\[ ... \]` for centered block equations).
 
 ### How do I report a bug or request a feature?
-Inside AnkiDraft, open **Settings** (<kbd>Ctrl+,</kbd>) > **Help** > **Report an Idea or Bug**, or open an issue on the [official GitHub repository](https://github.com/Skyl9/AnkiDraft/issues).
+Inside AnkiDraft, open **Settings** (<kbd>Ctrl+,</kbd>) > **Help & Guides** > **Report an Idea or Bug**, click **Help & Feedback** in the sidebar footer, or open an issue on the [official GitHub repository](https://github.com/Skyl9/AnkiDraft/issues).
 
 ---
 
@@ -826,7 +835,7 @@ Two non-destructive actions to filter a textbook without deleting pages ([Scope 
 An automated multi-step workflow (e.g., retrieve key passages ➔ synthesize clean Markdown ➔ draft cards ➔ add TTS audio ➔ stage for human review).
 
 - **Before**: Copying a chapter into a chat box, generating cards, fixing broken LaTeX manually, then creating audio one card at a time.
-- **After**: Clicking **Run Pipeline** executes the full workflow automatically and delivers clean drafts ready to review.
+- **After**: Click **Test DAG** in the pipeline editor to simulate a workflow step-by-step, or **Generate** in the Creation Studio to run generation automatically and send clean drafts to review.
 
 ---
 
@@ -882,7 +891,7 @@ AnkiDraft isolates authoring assets (**Studio Scope**: PDFs, transcripts, RAG in
 
 ## 11. Smart Merge
 
-A 3-way visual diff (**Local**, **Common Base**, **Incoming**) inspired by developer merge tools: when importing an updated `.apkg` from a classmate, only true text conflicts require your decision.
+A 3-pane visual diff (**Local Base**, **Merged Result (Interactive)**, **Incoming Base (.apkg)**) inspired by developer merge tools: when importing an updated `.apkg` from a classmate, only true text conflicts require your decision.
 
 - **Before**: Blindly overwriting your personal edits or losing a teammate's additions when importing a shared deck.
 - **After**: Pick the exact version per field while preserving media and review scheduling.
@@ -902,46 +911,187 @@ Anki's term for a card you repeatedly fail during reviews—almost always becaus
 URL: https://ankidraft.app/en/guides/raccourcis_clavier/
 Description: Official reference of all keyboard shortcuts in AnkiDraft by category and scope to navigate workspaces, edit cards, and run AI pipelines fast.
 
-This page lists the default keyboard shortcuts in AnkiDraft. You can customize any shortcut in **Settings** (<kbd>Ctrl+,</kbd>) > **Keyboard**.
+<!-- ⚠️ TRANSLATED FROM THE AUTO-GENERATED SHORTCUTS CATALOG (src/ankidraft/ui/shortcuts/catalog.py) -->
 
-> On macOS, <kbd>Ctrl</kbd> maps automatically to <kbd>Cmd ⌘</kbd>.
+This page is the **official and complete reference** for all AnkiDraft keyboard shortcuts from the central declarative registry (`src/ankidraft/ui/shortcuts/`).
 
-## 1. Global Application Actions
+:::note
+All shortcuts listed below can be viewed, searched, and customized in the app under **Settings (Ctrl+,) > Keyboard**. On macOS, <kbd>Ctrl</kbd> maps automatically to <kbd>Cmd ⌘</kbd>.
+:::
 
-| Action | Default Shortcut | Scope | Description |
-| :--- | :--- | :--- | :--- |
-| **Command Palette** | <kbd>Ctrl+K</kbd> | `Application` | Open the global command palette omnibox |
-| **Settings** | <kbd>Ctrl+,</kbd> | `Application` | Open the Settings dialog |
-| **Save** | <kbd>Ctrl+S</kbd> | `Application` | Save changes in the active view |
-| **Run Primary Action** | <kbd>Ctrl+Return</kbd> | `Application` | Trigger the main action in the active view (generate, run) |
-| **Find / Search** | <kbd>Ctrl+F</kbd> | `Application` | Focus the search field in the active view |
-| **Import Anki Package (.apkg / .colpkg)** | <kbd>Ctrl+Shift+I</kbd> | `Application` | Open the collection or deck import wizard |
-| **Export Anki Cards (.apkg)** | <kbd>Ctrl+Alt+E</kbd> | `Application` | Open the `.apkg` card export dialog |
-| **Interactive Guided Tour** | <kbd>F1</kbd> | `Application` | Launch the interactive feature tour |
+---
 
-## 2. Workspace Navigation
+## 🏛️ Architecture & Keyboard Rules
 
-| Action | Default Shortcut | Scope | Description |
-| :--- | :--- | :--- | :--- |
-| **Dashboard** | <kbd>Ctrl+1</kbd> | `Application` | Switch to the Dashboard view |
-| **Editor & Browser** | <kbd>Ctrl+2</kbd> | `Application` | Switch to the Note Editor and Card Browser |
-| **Documents & Sources** | <kbd>Ctrl+3</kbd> | `Application` | Switch to the Document Hub |
-| **Generation & Pipelines** | <kbd>Ctrl+4</kbd> | `Application` | Switch to Batch AI Generation |
-| **Quality & Wozniak Audit** | <kbd>Ctrl+5</kbd> | `Application` | Switch to the Wozniak Quality Linter |
-| **AI Consultant** | <kbd>Ctrl+6</kbd> | `Application` | Switch to the interactive AI Consultant |
+1. **Strict 4-tier scope hierarchy**:
+    - **Dialog**: highest priority when a modal dialog is open.
+    - **Widget**: active only when a specific widget (table, list, canvas) holds focus.
+    - **View**: active within the currently displayed main workspace view.
+    - **Application**: global across the entire application (command palette, navigation, settings).
+2. **Text-input priority**: whenever a text field (`QLineEdit`, `QTextEdit`, KaTeX) has focus, single-key and card-level shortcuts never trigger unintended card actions.
+3. **Protected sequences**: essential system shortcuts (`Ctrl+C`, `Ctrl+V`, `Ctrl+Z`, `Ctrl+A`, `Ctrl+W`, `Ctrl+Q`) cannot be reassigned to prevent ergonomic conflicts.
 
-## 3. Note Editor & Formatting
+---
 
-| Action | Default Shortcut | Scope | Description |
-| :--- | :--- | :--- | :--- |
-| **New Note** | <kbd>Ctrl+N</kbd> | `View` | Create a new flashcard note |
-| **Duplicate Note** | <kbd>Ctrl+D</kbd> | `View` | Duplicate the selected note |
-| **Delete Note** | <kbd>Delete</kbd> | `View` | Delete the selected note(s) |
-| **Bold** | <kbd>Ctrl+B</kbd> | `Widget` | Toggle bold text formatting |
-| **Italic** | <kbd>Ctrl+I</kbd> | `Widget` | Toggle italic text formatting |
-| **Underline** | <kbd>Ctrl+U</kbd> | `Widget` | Toggle underline formatting |
-| **Insert Cloze Deletion** | <kbd>Ctrl+Shift+C</kbd> | `Widget` | Wrap selection in `{{c1::...}}` |
-| **Undo / Redo** | <kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Shift+Z</kbd> | `Widget` | Undo or redo the last edit |
+## 📋 Shortcut Inventory (98 actions)
+
+### Application
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Command Palette** | <kbd>Ctrl+K</kbd> | `Application` | Open the global command palette omnibox | `app.command_palette` |
+| **Settings** | <kbd>Ctrl+,</kbd> | `Application` | Open the Settings dialog | `app.settings` |
+| **Save** | <kbd>Ctrl+S</kbd> | `Application` | Unified save router for the active view | `app.save` |
+| **Primary View Action** | <kbd>Ctrl+Return</kbd> | `Application` | Trigger the main action in the active view (generation, run) | `app.run_primary` |
+| **Find** | <kbd>Ctrl+F</kbd> | `Application` | Focus the search field in the active view | `app.find` |
+| **Import Anki Package (.apkg)** | <kbd>Ctrl+Shift+I</kbd> | `Application` | Open the collection or deck import wizard | `app.import` |
+| **Export Anki Cards (.apkg)** | <kbd>Ctrl+Alt+E</kbd> | `Application` | Open the card export dialog | `app.export` |
+| **AnkiDraft Guided Tour** | <kbd>F1</kbd> | `Application` | Launch the interactive feature tour | `app.tour` |
+| **Version History** | <kbd>Ctrl+H</kbd> | `View` | Display the timeline and previous card versions | `view.history` |
+
+### Navigation
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Go to View 1** | <kbd>Alt+1</kbd> | `Application` | — | `nav.view_1` |
+| **Go to View 2** | <kbd>Alt+2</kbd> | `Application` | — | `nav.view_2` |
+| **Go to View 3** | <kbd>Alt+3</kbd> | `Application` | — | `nav.view_3` |
+| **Go to View 4** | <kbd>Alt+4</kbd> | `Application` | — | `nav.view_4` |
+| **Go to View 5** | <kbd>Alt+5</kbd> | `Application` | — | `nav.view_5` |
+| **Go to View 6** | <kbd>Alt+6</kbd> | `Application` | — | `nav.view_6` |
+| **Go to View 7** | <kbd>Alt+7</kbd> | `Application` | — | `nav.view_7` |
+| **Go to View 8** | <kbd>Alt+8</kbd> | `Application` | — | `nav.view_8` |
+| **Go to View 9** | <kbd>Alt+9</kbd> | `Application` | — | `nav.view_9` |
+| **Next View** | <kbd>Ctrl+Tab</kbd> | `Application` | — | `nav.next_view` |
+| **Previous View** | <kbd>Ctrl+Shift+Tab</kbd> | `Application` | — | `nav.prev_view` |
+
+### Editing & Browser
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Move to Deck…** | <kbd>Ctrl+D</kbd> | `View` | Move selected cards or notes to another deck | `edition.move_to_deck` |
+| **New Deck…** | <kbd>Ctrl+N</kbd> | `View` | Create a new flashcard deck | `edition.new_deck` |
+| **Deselect All** | <kbd>Ctrl+Shift+A</kbd> | `View` | Uncheck and deselect all cards in the view | `edition.deselect_all` |
+| **Edit Focused Note** | <kbd>Ctrl+E</kbd> | `View` | Focus the field editor for the selected note | `edition.edit_note` |
+| **Edit Focused Note (Quick Key)** | <kbd>E</kbd> *(single key)* | `Widget` | Open the editor directly from the card table | `edition.edit_note_bare` |
+| **Change Note Type…** | <kbd>Ctrl+Shift+M</kbd> | `View` | Change the note type of the selected cards | `edition.change_model` |
+| **Toggle Cards / Notes** | <kbd>Ctrl+Alt+T</kbd> | `View` | Switch table display between individual cards and parent notes | `edition.toggle_display_mode` |
+| **Targeted Find & Replace…** | <kbd>Ctrl+Alt+F</kbd> | `View` | Open Group Edit pre-configured on Find and Replace | `edition.find_replace` |
+| **Delete Selection** | <kbd>Ctrl+Delete</kbd> | `View` | Permanently delete selected cards or notes | `edition.delete` |
+| **Suspend / Unsuspend** | <kbd>Ctrl+J</kbd> | `View` | Toggle suspended state on selected cards or notes | `edition.suspend` |
+| **Suspend / Unsuspend (Table)** | <kbd>!</kbd> *(single key)* | `Widget` | Toggle suspended state from the focused table | `edition.suspend_bare` |
+| **Group Edit…** | <kbd>Ctrl+Shift+E</kbd> | `View` | Open the batch Group Edit dialog | `edition.group_edit` |
+| **Show / Hide Preview** | <kbd>Ctrl+P</kbd> | `View` | Toggle the card preview side panel | `edition.toggle_preview` |
+| **Collapse / Expand Card List** | <kbd>Ctrl+Shift+T</kbd> | `View` | Collapse or expand the card table panel | `edition.toggle_table` |
+| **Previous Card** | <kbd>Alt+Up</kbd> | `View` | Select the previous card in the table | `edition.prev_card` |
+| **Next Card** | <kbd>Alt+Down</kbd> | `View` | Select the next card in the table | `edition.next_card` |
+| **No Flag** | <kbd>Ctrl+0</kbd> | `View` | Remove any flag from selected cards | `edition.flag_0` |
+| **Flag 1 (Red)** | <kbd>Ctrl+1</kbd> | `View` | — | `edition.flag_1` |
+| **Flag 2 (Orange)** | <kbd>Ctrl+2</kbd> | `View` | — | `edition.flag_2` |
+| **Flag 3 (Green)** | <kbd>Ctrl+3</kbd> | `View` | — | `edition.flag_3` |
+| **Flag 4 (Blue)** | <kbd>Ctrl+4</kbd> | `View` | — | `edition.flag_4` |
+| **Flag 5 (Pink)** | <kbd>Ctrl+5</kbd> | `View` | — | `edition.flag_5` |
+| **Flag 6 (Turquoise)** | <kbd>Ctrl+6</kbd> | `View` | — | `edition.flag_6` |
+| **Flag 7 (Purple)** | <kbd>Ctrl+7</kbd> | `View` | — | `edition.flag_7` |
+| **Bold** | <kbd>Ctrl+B</kbd> | `View` | Apply bold formatting to selected text | `edition.format_bold` |
+| **Italic** | <kbd>Ctrl+I</kbd> | `View` | Apply italic formatting to selected text | `edition.format_italic` |
+| **Underline** | <kbd>Ctrl+U</kbd> | `View` | Apply underline formatting to selected text | `edition.format_underline` |
+| **Cloze Deletion** | <kbd>Ctrl+Shift+C</kbd> | `View` | Insert an Anki cloze deletion (`{{c1::...}}`) | `edition.format_cloze` |
+| **KaTeX Formula** | <kbd>Ctrl+M</kbd> | `View` | Insert a KaTeX math inline or block formula | `edition.format_math` |
+| **Inline Code** | <kbd>Ctrl+K</kbd> | `View` | Wrap selected text in code tags | `edition.format_code` |
+
+### Studio & Batch
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **New Input Tab** | <kbd>Ctrl+N</kbd> | `View` | Open a new free-form input tab in Creation Studio | `creation.new_input` |
+| **Compose Batch…** | <kbd>Ctrl+N</kbd> | `View` | Open the Batch Slice Composer dialog | `batch.compose` |
+| **Validate Card (Space)** | <kbd>Space</kbd> *(single key)* | `Widget` | Mark the focused card as approved | `review.validate_space` |
+| **Validate Card (V)** | <kbd>V</kbd> *(single key)* | `Widget` | Mark the focused card as approved | `review.validate_v` |
+| **Reject Card (Delete)** | <kbd>Delete</kbd> *(single key)* | `Widget` | Reject the focused card | `review.reject_delete` |
+| **Reject Card (Backspace)** | <kbd>Backspace</kbd> *(single key)* | `Widget` | Reject the focused card | `review.reject_backspace` |
+| **Reject Card (R)** | <kbd>R</kbd> *(single key)* | `Widget` | Reject the focused card | `review.reject_r` |
+| **Edit Card** | <kbd>E</kbd> *(single key)* | `Widget` | Enable inline editing for the focused card | `review.edit` |
+| **Previous Card** | <kbd>Alt+Left</kbd> | `Widget` | Select the previous card in the review table | `review.prev_card` |
+| **Next Card** | <kbd>Alt+Right</kbd> | `Widget` | Select the next card in the review table | `review.next_card` |
+| **Previous Slice** | <kbd>Alt+Up</kbd> | `Widget` | Switch to the previous task or slice in batch review | `review.prev_task` |
+| **Next Slice** | <kbd>Alt+Down</kbd> | `Widget` | Switch to the next task or slice in batch review | `review.next_task` |
+
+### Documents
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Import Document** | <kbd>Ctrl+O</kbd> | `View` | Open the file picker to import a document or course | `documents.import_file` |
+| **New Album…** | <kbd>Ctrl+N</kbd> | `View` | Create a new image document album | `documents.new_album` |
+| **Delimit Scope…** | <kbd>Ctrl+Alt+P</kbd> | `View` | Open the document scope & exclusion dialog | `documents.delimit_scope` |
+| **Vectorize in RAG** | <kbd>Ctrl+Alt+R</kbd> | `View` | Start vector indexing of the active document for semantic search | `documents.vectorize` |
+| **Show / Hide Coverage** | <kbd>Ctrl+Alt+C</kbd> | `View` | Toggle the coverage and structure inspection panel | `documents.toggle_coverage` |
+
+### Analysis & Audit
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Reindex Sources** | <kbd>Ctrl+Alt+R</kbd> | `View` | Reindex the selected topic or document in Analysis | `analysis.reindex` |
+| **Align Sources** | <kbd>Ctrl+Alt+A</kbd> | `View` | Synchronize and align Anki cards with source sections | `analysis.align_sources` |
+| **Forge Focused Fragment** | <kbd>Ctrl+Alt+F</kbd> | `View` | Open Creation Studio on the selected orphan section | `analysis.forge_fragment` |
+
+### Note Types
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **New Note Type** | <kbd>Ctrl+N</kbd> | `View` | Create a new card note type | `models.new_type` |
+| **Duplicate Note Type** | <kbd>Ctrl+Shift+D</kbd> | `View` | Duplicate the currently selected note type | `models.duplicate` |
+| **Import Note Type (JSON)…** | <kbd>Ctrl+Alt+O</kbd> | `View` | Import a note type definition from a JSON file | `models.import_json` |
+| **Export Note Type (JSON)…** | <kbd>Ctrl+Alt+E</kbd> | `View` | Export the selected note type to JSON | `models.export_json` |
+| **Format Code** | <kbd>Ctrl+Alt+L</kbd> | `Widget` | Re-indent and clean HTML or CSS code in the editor | `code.format` |
+
+### Pipelines & Agents
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **New Agent** | <kbd>Ctrl+N</kbd> | `View` | Create a new AI agent in the workshop | `agents.new` |
+| **Duplicate Agent** | <kbd>Ctrl+Shift+D</kbd> | `View` | Clone the selected AI agent | `agents.duplicate` |
+| **New Pipeline** | <kbd>Ctrl+N</kbd> | `View` | Create a new DAG pipeline | `pipelines.new` |
+| **Move Step Up** | <kbd>Ctrl+Up</kbd> | `View` | Move the selected step earlier in the DAG | `pipelines.move_step_up` |
+| **Move Step Down** | <kbd>Ctrl+Down</kbd> | `View` | Move the selected step later in the DAG | `pipelines.move_step_down` |
+| **Delete Focused Step** | <kbd>Delete</kbd> *(single key)* | `Widget` | Delete the currently selected step in the workflow | `pipelines.delete_step` |
+
+### A/B Lab
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Previous Sample A** | <kbd>Alt+Up</kbd> | `View` | Show the previous card generated by Branch A | `ab.sample_a_prev` |
+| **Next Sample A** | <kbd>Alt+Down</kbd> | `View` | Show the next card generated by Branch A | `ab.sample_a_next` |
+| **Previous Sample B** | <kbd>Alt+Left</kbd> | `View` | Show the previous card generated by Branch B | `ab.sample_b_prev` |
+| **Next Sample B** | <kbd>Alt+Right</kbd> | `View` | Show the next card generated by Branch B | `ab.sample_b_next` |
+
+### Smart Merge
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Previous Conflict** | <kbd>Alt+Left</kbd> | `Dialog` | Navigate to the previous import conflict | `merge.prev_conflict` |
+| **Next Conflict** | <kbd>Alt+Right</kbd> | `Dialog` | Navigate to the next import conflict | `merge.next_conflict` |
+| **Keep All Local** | <kbd>Ctrl+Alt+Left</kbd> | `Dialog` | Keep all local field values for the conflicting card | `merge.keep_all_local` |
+| **Keep All Incoming** | <kbd>Ctrl+Alt+Right</kbd> | `Dialog` | Replace all field values with the incoming version | `merge.keep_all_incoming` |
+| **Confirm Merge** | <kbd>Ctrl+Return</kbd> | `Dialog` | Confirm conflict resolutions and apply the merge | `merge.confirm` |
+
+### Tooling & Debug
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Debug Screenshot** | <kbd>Ctrl+F12</kbd> | `Application` | Save a UI snapshot for diagnostic purposes | `app.debug_screenshot` |
+| **Dialog Gallery (Dev)** | <kbd>Ctrl+Alt+D</kbd> | `Application` | Open the dialog showcase in development mode | `app.debug_gallery` |
+
+### Dialogs
+
+| Action | Default Sequence | Scope | Description | Identifier |
+| :--- | :--- | :--- | :--- | :--- |
+| **Close Dialog** | <kbd>Escape</kbd> | `Dialog` | Close the active dialog without confirming | `dialog.close` |
+| **Confirm Dialog** | <kbd>Return</kbd> | `Dialog` | Confirm and accept the dialog selection | `dialog.confirm` |
+| **Apply Changes** | <kbd>Ctrl+Return</kbd> | `Dialog` | Validate or apply changes without closing the dialog | `dialog.apply` |
+| **New Deck** | <kbd>Ctrl+N</kbd> | `Dialogue` | Open new deck creation inside the deck picker | `dialog.new_deck` |
+| **Previous Item** | <kbd>Up</kbd> *(single key)* | `Widget` | Select the previous item in the dialog list | `dialog.prev_item` |
+| **Next Item** | <kbd>Down</kbd> *(single key)* | `Widget` | Select the next item in the dialog list | `dialog.next_item` |
 
 ---
 
@@ -2037,7 +2187,7 @@ Relisez les cartes proposées, lancez une vérification dans **Analyse & Audit I
 URL: https://ankidraft.app/fr/guides/cycle_de_vie_distribue/
 Description: Comprendre la complémentarité entre le studio de création AnkiDraft et le moteur de révision Anki via .apkg et .colpkg sans aucun conflit de synchro.
 
-Bienvenue dans le guide d'utilisation du système distribué d'AnkiDraft (anciennement AnkiForge).
+Bienvenue dans le guide d'utilisation du système distribué d'AnkiDraft.
 
 AnkiDraft et Anki fonctionnent main dans la main comme un duo complémentaire :
 - **AnkiDraft est votre Studio d'Authoring** : c'est votre atelier de création intellectuelle assisté par intelligence artificielle. Vous y organisez vos cours, vos livres, vos découpages RAG, vos personas d'extraction et vous y concevez des flashcards fidèles à vos sources avec une validation humaine rigoureuse.
@@ -2132,18 +2282,27 @@ Non : AnkiDraft et Anki sont complémentaires. **AnkiDraft** est l'atelier de cr
 Oui. L'application est gratuite, fonctionne hors ligne, et vous pouvez utiliser des modèles d'IA locaux gratuits grâce à [Ollama](/fr/ai-setup/local-models-ollama/) sans aucune clé API payante.
 
 ### Mes cours PDF et mes cartes sont-ils envoyés dans le cloud ?
-Non. Vos fichiers PDF, votre base de données et vos médias restent stockés localement sur votre ordinateur (`~/.ankidraft/`). Si vous utilisez un fournisseur cloud (OpenAI, Gemini, Claude), seuls les passages sélectionnés pour une génération sont transmis directement à votre compte API.
+Non. Vos fichiers PDF, votre base SQLite et vos médias restent stockés localement sur votre ordinateur, isolés par profil (`~/.ankidraft/profiles/<nom_du_profil>/`). Si vous utilisez un fournisseur cloud (OpenAI, Gemini, Claude), seuls les passages sélectionnés pour une génération sont transmis directement à votre compte API.
 
 ## 2. Résolution des problèmes courants
 
 ### macOS affiche un avertissement à la première ouverture
-Assurez-vous d'avoir bien glissé **AnkiDraft** dans votre dossier **Applications** depuis le fichier `.dmg`. Si macOS demande une confirmation au premier lancement, faites un clic droit sur l'icône d'AnkiDraft > **Ouvrir**.
+Assurez-vous d'avoir glissé **AnkiDraft** dans votre dossier **Applications** depuis l'image `.dmg`. Les releases officielles macOS sont notarisées par Apple ; si vous testez une build *nightly* ou non signée et que macOS affiche une alerte Gatekeeper, faites un clic droit sur l'icône d'AnkiDraft > **Ouvrir** (ou autorisez l'application dans **Réglages Système > Confidentialité et sécurité**).
+
+### Ollama n'est pas détecté ou aucun modèle local n'apparaît
+Vérifiez qu'**Ollama** est démarré sur votre machine et écoute sur l'adresse locale par défaut (`http://localhost:11434` ; par sécurité anti-SSRF, seules les URL locales/loopback sont acceptées dans **Paramètres** (<kbd>Ctrl+,</kbd>) > **Moteurs IA** > **Ollama Local**). Assurez-vous également d'avoir déjà téléchargé un modèle via `ollama pull <modèle>` avant de cliquer sur le test de connexion.
+
+### Mon PDF scanné reste vide ou les formules LaTeX sont mal extraites
+L'extraction automatique rapide (PyMuPDF / pypdf) convient aux PDF numériques dont le texte est sélectionnable. Pour un polycopié scanné ou riche en formules complexes, cliquez sur le bouton **`Marker OCR`** dans la barre d'outils du document ([Import PDF & Documents](/fr/sources/import-pdf/)). Lors du premier lancement, AnkiDraft télécharge PyTorch et les modèles locaux (~5 Go d'espace disque et connexion Internet requis), puis tout fonctionne 100 % hors ligne.
+
+### Comment exporter mes cartes vers Anki Desktop sans perdre mes révisions ?
+Utilisez **Exporter des cartes Anki (.apkg)** (<kbd>Ctrl+Alt+E</kbd>) pour générer un paquet à ouvrir dans Anki : AnkiDraft n'altère jamais l'ordonnancement FSRS ou SM-2. Périodiquement, exportez votre collection complète (`.colpkg`) depuis Anki Desktop et réimportez-la dans AnkiDraft (<kbd>Ctrl+Shift+I</kbd>) pour actualiser vos statistiques et purger les cartes supprimées ([Cycle de Vie Distribué](/fr/guides/cycle_de_vie_distribue/)).
 
 ### Mes formules mathématiques ne s'affichent pas dans Anki
 Vérifiez que vous utilisez bien les délimiteurs compatibles MathJax/KaTeX (`\( ... \)` pour une formule en ligne et `\[ ... \]` pour un bloc centré).
 
 ### Comment signaler un bug ou suggérer une amélioration ?
-Dans AnkiDraft, ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) > **Aide** > **Signaler une idée ou un bug**, ou ouvrez un ticket sur le [dépôt GitHub officiel](https://github.com/Skyl9/AnkiDraft/issues).
+Dans AnkiDraft, ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) > **Aide & Guides** > **Signaler une idée ou un bug**, cliquez directement sur **Aide & Retours** en bas de la barre latérale, ou ouvrez un ticket sur le [dépôt GitHub officiel](https://github.com/Skyl9/AnkiDraft/issues).
 
 ---
 
@@ -2198,7 +2357,7 @@ Deux actions non destructives pour filtrer un document sans jamais supprimer ses
 Enchaînement automatisé d'étapes configurables (ex. : extraire les passages clés ➔ synthétiser en Markdown propre ➔ rédiger des cartes ➔ ajouter l'audio TTS ➔ afficher pour revue humaine).
 
 - **Avant** : Copier un chapitre dans un chat, demander des cartes, reformater manuellement les formules LaTeX, puis générer le son carte par carte.
-- **Après** : Un clic sur **Lancer le Pipeline** exécute toute la chaîne automatiquement et soumet les cartes prêtes à relire.
+- **Après** : Cliquez sur **Tester le DAG** dans l'éditeur de Pipelines pour simuler la chaîne étape par étape, ou sur **Générer** dans le Studio de Création pour produire automatiquement des cartes prêtes à relire.
 
 ---
 
@@ -2254,7 +2413,7 @@ AnkiDraft sépare vos ressources d'atelier (**Périmètre Studio** : PDF, transc
 
 ## 11. Fusion intelligente (Smart Merge)
 
-Comparateur visuel à 3 colonnes (**Local**, **Base commune**, **Distant**) inspiré des outils de développement : lors de l'import d'un `.apkg` modifié par quelqu'un d'autre, seuls les conflits réels de texte sont soumis à votre choix.
+Comparateur visuel à 3 panneaux (**Base locale**, **Résultat fusionné interactif**, **Base entrante .apkg**) inspiré des outils de développement : lors de l'import d'un `.apkg` modifié par quelqu'un d'autre, seuls les conflits réels de texte sont soumis à votre choix.
 
 - **Avant** : Écraser à l'aveugle vos corrections personnelles ou perdre les ajouts d'un camarade lors de l'import d'un paquet partagé.
 - **Après** : Vous choisissez champ par champ quelle version conserver, en préservant les médias et le planning de révision.
@@ -2277,7 +2436,7 @@ Description: Consultez la liste officielle des raccourcis clavier d'AnkiDraft pa
 <!-- ⚠️ DOCUMENT AUTO-GÉNÉRÉ DEPUIS src/ankidraft/ui/shortcuts/catalog.py - NE PAS MODIFIER MANUELLEMENT -->
 <!-- Exécutez 'uv run python script/check_shortcuts_drift.py --fix' pour régénérer -->
 
-Cette page constitue la **référence officielle et exhaustive** de l'ensemble des raccourcis clavier d'AnkiForge, issue du registre central déclaratif (`src/ankidraft/ui/shortcuts/`) conformément à l'**ADR 0032**.
+Cette page constitue la **référence officielle et exhaustive** de l'ensemble des raccourcis clavier d'AnkiDraft, issue du registre central déclaratif (`src/ankidraft/ui/shortcuts/`) conformément à l'**ADR 0032**.
 
 :::note
 Tous les raccourcis listés ci-dessous peuvent être visualisés, recherchés et personnalisés dans l'application via les **Paramètres (Ctrl+,) > onglet Clavier**.
