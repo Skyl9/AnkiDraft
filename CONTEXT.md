@@ -475,6 +475,18 @@ Glossaire des termes du domaine. Cette page ne contient **aucun** détail d'impl
 - **Protection molette ComboBox (`ComboBoxWheelFilter`)** : mécanisme d'interception et de filtrage d'événements neutralisant le changement intempestif d'option lors du défilement d'une page ou d'un formulaire lorsque le menu popup n'est pas activement déployé.
   _Avoid_ : scroll libre non protégé, écouteur molette bricolé
 
+## Entrée dans l'Application, Mode Découverte & Tutoriel Interactif
+
+- **Écran d'accueil initial (First-Launch Welcome)** : porte d'entrée unique affichée au tout premier démarrage lorsqu'aucun profil utilisateur n'existe encore, proposant trois choix explicites : explorer le profil *Exemple d'introduction*, importer sa collection Anki existante (`.apkg` / `.colpkg`, en passant la présentation guidée), ou démarrer un espace vierge (en passant la présentation guidée).
+  _Avoid_ : création silencieuse de `default` sans choix, assistant d'installation bloquant
+- **Profil Exemple d'introduction (`intro-example`)** : profil isolé et réinitialisable identifié techniquement sur disque par `intro-example` et en base par le drapeau `app/is_intro_example`, dont le libellé affiché dans l'interface passe par `tr()`. Héberge les données pré-calculées de découverte sans polluer l'espace personnel et se supprime ou se réinitialise en un clic.
+  _Avoid_ : bac à sable anonyme, identification par nom littéral traduit, dump SQLite figé
+- **Constructeur de données d'introduction (`demo_seed`)** : module Python idempotent générant le jeu de données d'exemple exclusivement via les services métier existants à partir d'un mini-cours Markdown illustré embarqué (~10 notes/cartes avec KaTeX, Cloze et schéma, 2 cartes sangsues pré-auditées, 1 proposition de patch MCP en attente et 1 tâche batch terminée en attente de revue).
+  _Avoid_ : inserts SQL bruts contournant les services, appels LLM réels au démarrage
+- **Tutoriel interactif modulaire (`InteractiveTourController`)** : moteur de guidage réactif orienté actions réelles, structuré en un tronc commun court (« L'essentiel AnkiDraft ») suivi de modules thématiques au choix de l'utilisateur, pilotant un compagnon d'étape non bloquant synchronisé par les signaux métier Qt.
+  _Avoid_ : diaporama passif sur la barre latérale, infobulle `ToolTip` bloquante, parcours linéaire imposé
+
+
 
 
 
