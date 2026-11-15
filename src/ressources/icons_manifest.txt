@@ -267,3 +267,7 @@ SVGs/regular/wrench.svg
 SVGs/regular/x-circle.svg
 SVGs/regular/x.svg
 SVGs/regular/youtube-logo.svg
+SVGs/regular/broadcast.svg
+SVGs/regular/flow-arrow.svg
+SVGs/regular/tag-chevron.svg
+SVGs/regular/user-focus.svg

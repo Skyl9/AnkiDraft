@@ -541,7 +541,7 @@ class MCPWorkspaceGuideWidget(QWidget):
 
         self.lbl_inspector_target.setText(item.relative_path or self.tr("Racine du workspace"))
 
-        explanation = self.tr("%1 — %2", item.severity.value, item.message)
+        explanation = tr("%1 — %2", item.severity.value, item.message)
         self.page_explanation.setPlainText(explanation)
 
         if item.relative_path:

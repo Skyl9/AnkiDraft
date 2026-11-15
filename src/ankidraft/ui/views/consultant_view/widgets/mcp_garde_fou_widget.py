@@ -12,7 +12,7 @@ import logging
 from typing import Any
 
 from PySide6.QtCore import QSize, Qt, Signal
-from PySide6.QtGui import QEnterEvent, QGuiApplication, QKeySequence, QMouseEvent, QShortcut
+from PySide6.QtGui import QEnterEvent, QGuiApplication, QKeyEvent, QMouseEvent
 from PySide6.QtWidgets import (
     QFrame,
     QHBoxLayout,
@@ -409,19 +409,26 @@ class MCPGardeFouWidget(QWidget):
 
         self._setup_ui()
 
-        # Raccourcis clavier (Power User)
-        self._shortcut_apply = QShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Return), self)
-        self._shortcut_apply.activated.connect(self._apply_current_patch)
-        self._shortcut_apply_enter = QShortcut(QKeySequence(Qt.Modifier.CTRL | Qt.Key.Key_Enter), self)
-        self._shortcut_apply_enter.activated.connect(self._apply_current_patch)
-        self._shortcut_reject = QShortcut(QKeySequence(Qt.Key.Key_Delete), self)
-        self._shortcut_reject.activated.connect(self._reject_current_patch)
-
         # Abonnement direct au bus d'événements pour le rafraîchissement incrémental
         event_bus.subscribe(MCPPatchStagedEvent, self._on_mcp_patch_staged)
         event_bus.subscribe(MCPBundleStagedEvent, self._on_mcp_bundle_staged)
 
         self.reload_pending_patches()
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        """Gère les raccourcis clavier locaux (Ctrl+Entrée pour appliquer, Suppr pour rejeter)."""
+        if event.modifiers() & Qt.KeyboardModifier.ControlModifier and event.key() in (
+            Qt.Key.Key_Return,
+            Qt.Key.Key_Enter,
+        ):
+            self._apply_current_patch()
+            event.accept()
+            return
+        if event.key() == Qt.Key.Key_Delete:
+            self._reject_current_patch()
+            event.accept()
+            return
+        super().keyPressEvent(event)
 
     @property
     def current_patch_id(self) -> str | None:
@@ -1469,7 +1476,7 @@ class MCPGardeFouWidget(QWidget):
             elif p_type in ("deck_create", "create_deck", "deck_rename", "rename_deck"):
                 self.btn_apply.setText(tr("Appliquer au paquet"))
                 self.btn_apply.setToolTip(tr("Valider l'opération sur le paquet (Ctrl+Entrée)"))
-                self.btn_apply.setIcon(load_on_accent_icon("ph.folder-check"))
+                self.btn_apply.setIcon(load_on_accent_icon("ph.folder"))
                 self.btn_apply.setStyleSheet("")
             elif p_type in ("set_tags", "set_tags_bulk", "tag_add", "tag_remove", "tags") or (isinstance(payload, dict) and ("tags_added" in payload or "tags_removed" in payload)):
                 self.btn_apply.setText(tr("Enregistrer les tags"))

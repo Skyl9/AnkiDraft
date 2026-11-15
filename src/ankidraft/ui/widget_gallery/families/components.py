@@ -26,6 +26,7 @@ from ankidraft.dev.fake_data import (
 from ankidraft.ui.components.badges import Badge, StatusBadge, TagButton
 from ankidraft.ui.components.buttons import (
     ActionButton,
+    ContextHelpButton,
     DangerButton,
     FilterChipButton,
     IconButton,
@@ -143,6 +144,10 @@ def _make_premium_action_card() -> QWidget:
 
 def _make_primary_button() -> QWidget:
     return PrimaryButton(tr("Enregistrer"))
+
+
+def _make_context_help_button() -> QWidget:
+    return ContextHelpButton("general", tr("Aide contextuelle"))
 
 
 def _make_secondary_button() -> QWidget:
@@ -607,6 +612,7 @@ COMPONENT_FACTORIES: dict[str, Callable[[], QWidget]] = {
     "PipelineSelectWindow": _make_pipeline_select_window,
     "PremiumActionCard": _make_premium_action_card,
     "PrimaryButton": _make_primary_button,
+    "ContextHelpButton": _make_context_help_button,
     "ScrollableTabBarWidget": _make_scrollable_tab_bar,
     "SecondaryButton": _make_secondary_button,
     "SegmentedTabBar": _make_segmented_tab_bar,
@@ -715,6 +721,7 @@ def component_labels() -> dict[str, str]:
         "PipelineSelectWindow": tr("Sélection de pipeline"),
         "PremiumActionCard": tr("Carte d'action premium"),
         "PrimaryButton": tr("Bouton principal"),
+        "ContextHelpButton": tr("Bouton d'aide contextuelle"),
         "ScrollableTabBarWidget": tr("Barre d'onglets défilante"),
         "SecondaryButton": tr("Bouton secondaire"),
         "SegmentedTabBar": tr("Barre d'onglets segmentée"),

@@ -272,7 +272,7 @@ class CardCreateViewWidget(QWidget):
         self.btn_change_deck.clicked.connect(self._on_change_deck)
         meta_row.addWidget(self.btn_change_deck)
 
-        lbl_sep = QLabel("•")
+        lbl_sep = QLabel(tr("•"))
         lbl_sep.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED};")
         meta_row.addWidget(lbl_sep)
 

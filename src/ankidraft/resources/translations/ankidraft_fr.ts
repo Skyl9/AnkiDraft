@@ -796,7 +796,7 @@ Cliquer pour voir les détails</source>
     <message>
         <location line="+62"/>
         <location filename="../../ui/dialogs/tag_hygiene_dialog.py" line="+144"/>
-        <location filename="../../ui/widget_gallery/families/components.py" line="+149"/>
+        <location filename="../../ui/widget_gallery/families/components.py" line="+154"/>
         <source>Annuler</source>
         <translation type="unfinished"></translation>
     </message>
@@ -953,6 +953,7 @@ Le document `%1` n&apos;a pas pu être chargé.</source>
     </message>
     <message>
         <location filename="../../ui/dialogs/document_scope_dialog.py" line="+212"/>
+        <location filename="../../ui/views/consultant_view/widgets/mcp_workspace_guide_widget.py" line="+544"/>
         <source>%1 — %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1313,7 +1314,7 @@ Nombre de planches : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+176"/>
+        <location line="+181"/>
         <source>Le transfert s&apos;est exécuté avec %1 erreur(s) :
 %2</source>
         <translation type="unfinished"></translation>
@@ -1885,7 +1886,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../../ui/widget_gallery/families/components.py" line="-4"/>
+        <location filename="../../ui/widget_gallery/families/components.py" line="-8"/>
         <source>Enregistrer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2235,7 +2236,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../../ui/widget_gallery/families/components.py" line="+58"/>
+        <location filename="../../ui/widget_gallery/families/components.py" line="+62"/>
         <location filename="../../ui/widget_gallery/families/dialogs.py" line="+335"/>
         <source>Gras</source>
         <translation type="unfinished"></translation>
@@ -2347,7 +2348,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../ui/widget_gallery/families/components.py" line="-70"/>
+        <location filename="../../ui/widget_gallery/families/components.py" line="-74"/>
         <source>Éditer la carte</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3200,7 +3201,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
     </message>
     <message>
         <location line="+51"/>
-        <location filename="../../ui/widget_gallery/families/components.py" line="+239"/>
+        <location filename="../../ui/widget_gallery/families/components.py" line="+243"/>
         <location line="+65"/>
         <source>Documents</source>
         <translation type="unfinished"></translation>
@@ -3223,6 +3224,11 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
     <message>
         <location line="+344"/>
         <source>✅ %1 fiches Anki synchronisées via les tags sur l&apos;ensemble des cours !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Échec de l&apos;alignement global : %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3488,7 +3494,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../../ui/widget_gallery/families/components.py" line="-324"/>
+        <location filename="../../ui/widget_gallery/families/components.py" line="-328"/>
         <location filename="../../ui/widget_gallery/families/models.py" line="+99"/>
         <location line="+2"/>
         <source>Validé</source>
@@ -4185,18 +4191,18 @@ Gabarits : %3</source>
     </message>
     <message>
         <location line="+44"/>
-        <location line="+1257"/>
+        <location line="+1264"/>
         <source>Étape %1 — %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1254"/>
-        <location line="+1270"/>
+        <location line="-1261"/>
+        <location line="+1277"/>
         <source>Proposition — %1 #%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1234"/>
+        <location line="-1241"/>
         <source>CARTE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4227,7 +4233,7 @@ Gabarits : %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+316"/>
+        <location line="+323"/>
         <location line="+649"/>
         <source>PROPOSITIONS EN ATTENTE</source>
         <translation type="unfinished"></translation>
@@ -4891,7 +4897,7 @@ Cette action est irréversible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/consultant_view/widgets/mcp_workspace_guide_widget.py" line="+393"/>
+        <location filename="../../ui/views/consultant_view/widgets/mcp_workspace_guide_widget.py" line="-151"/>
         <source>Audit terminé : %1 écart(s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4928,7 +4934,7 @@ Cette action est irréversible.</source>
     <message>
         <location line="+65"/>
         <location line="+176"/>
-        <location filename="../../ui/widget_gallery/families/components.py" line="+407"/>
+        <location filename="../../ui/widget_gallery/families/components.py" line="+411"/>
         <location filename="../../ui/widgets/card_create_view_widget.py" line="-195"/>
         <location line="+402"/>
         <source>Nouvelle carte</source>
@@ -6227,7 +6233,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/widget_gallery/families/components.py" line="-399"/>
+        <location filename="../../ui/widget_gallery/families/components.py" line="-403"/>
         <source>biologie</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6262,7 +6268,12 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+9"/>
+        <source>Aide contextuelle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Saisissez le gabarit HTML...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6507,7 +6518,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+131"/>
+        <location line="+132"/>
         <source>Bouton d&apos;action</source>
         <extracomment>Correspondance clé de galerie → factory, source unique de la couverture. Identifiants des classes incarnées par chaque entrée. La valeur est le nom simple de la classe ; les homonymes inter-modules sont qualifiés par leur module afin que les deux ``ClickableLabel`` restent contrôlés séparément. Identifiant de classe déclaré par chaque entrée (les homonymes restent traçables).</extracomment>
         <translation type="unfinished"></translation>
@@ -6780,6 +6791,11 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
     <message>
         <location line="+1"/>
         <source>Bouton principal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Bouton d&apos;aide contextuelle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7549,7 +7565,12 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+4"/>
+        <source>•</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Changer le modèle de note</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9942,7 +9963,7 @@ Tous les clients MCP externes configurés (Claude Desktop, etc.) devront être m
 <context>
     <name>AISourcesDiagnosticTab</name>
     <message>
-        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-316"/>
+        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-322"/>
         <source>Rechercher un document ou cours...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10039,11 +10060,6 @@ Tous les clients MCP externes configurés (Claude Desktop, etc.) devront être m
     <message>
         <location line="+225"/>
         <source>Synchronisation des fiches Anki pour l&apos;ensemble des cours en cours...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>Échec de l&apos;alignement global : %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12761,6 +12777,14 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     </message>
 </context>
 <context>
+    <name>CollapsibleSettingsGroup</name>
+    <message>
+        <location filename="../../ui/widgets/settings_modal/components/collapsible_group.py" line="+59"/>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CommandPalette</name>
     <message>
         <location filename="../../ui/widgets/command_palette.py" line="-203"/>
@@ -14361,7 +14385,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DocumentInspectorPanel</name>
     <message>
-        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-1605"/>
+        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-1586"/>
         <source>Retourner à la liste générale des documents</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19162,12 +19186,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>%1 — %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Fichier absent sur disque.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20921,7 +20940,7 @@ Utilisez {{ text_source }}.</source>
 <context>
     <name>ProfileTransferDialog</name>
     <message>
-        <location filename="../../ui/dialogs/profile_transfer_dialog.py" line="-575"/>
+        <location filename="../../ui/dialogs/profile_transfer_dialog.py" line="-580"/>
         <source>Transférer du contenu entre Espaces de Travail — AnkiForge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21046,7 +21065,7 @@ Utilisez {{ text_source }}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+121"/>
+        <location line="+126"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+2"/>

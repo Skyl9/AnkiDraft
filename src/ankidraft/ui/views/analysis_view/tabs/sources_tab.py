@@ -1858,7 +1858,7 @@ class AISourcesDiagnosticTab(QWidget):
 
     def _on_align_all_error(self, message: str) -> None:
         """Affiche une erreur d'alignement global et clôt la passe d'activité."""
-        show_toast(self, self.tr("Échec de l'alignement global : %1", message), is_error=True)
+        show_toast(self, tr("Échec de l'alignement global : %1", message), is_error=True)
         ReindexActivityService.get_instance().finish(documents=0, fragments=0, errors=1)
 
     def show_inspector(self, doc_id: int) -> None:

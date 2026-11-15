@@ -56,7 +56,7 @@ class CollapsibleSettingsGroup(QFrame):
         header_layout.addWidget(self.lbl_title)
         header_layout.addStretch()
 
-        self.lbl_badge = QLabel("0")
+        self.lbl_badge = QLabel(self.tr("0"))
         self.lbl_badge.setStyleSheet("background: transparent; border: none;")
         apply_pill_badge_style(self.lbl_badge, DesignTokens.ACCENT_PRIMARY)
         self.lbl_badge.setVisible(self._hidden_count > 0)

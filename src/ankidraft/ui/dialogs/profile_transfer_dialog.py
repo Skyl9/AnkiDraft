@@ -445,6 +445,11 @@ class ProfileTransferDialog(QDialog):
                 item.setCheckState(Qt.CheckState.Unchecked)
                 item.setData(Qt.ItemDataRole.UserRole, int(a["id"]))
                 item.setToolTip(tr("Album : %1\nNombre de planches : %2", titre, pages))
+        except FileNotFoundError:
+            self.list_decks.clear()
+            self.list_tags.clear()
+            self.list_models.clear()
+            self.list_albums.clear()
         finally:
             self._is_updating_preview = False
 
