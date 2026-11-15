@@ -1,61 +1,45 @@
 ---
-title: MCP Server, External Agents & Skills
-description: "Connect Claude, Cursor, or Antigravity to AnkiDraft via MCP, load dedicated Skills in your agent workspace, and review every batch in Safeguard."
+title: MCP Server, External Agents & Workspaces
+description: Connect Claude, Cursor, or Antigravity to AnkiDraft's local MCP server, sync your ~/ankiforge_agentique workspace, and review every batch in Safeguard.
 ---
 
-AnkiDraft includes a built-in local **MCP (Model Context Protocol)** server (`127.0.0.1:8765`) so you can steer your collection directly from **Claude Desktop**, **Claude Code**, **Cursor**, **Antigravity**, or **Gemini CLI**, with **zero additional API keys**.
+AnkiDraft includes a built-in local **MCP (Model Context Protocol)** server (`127.0.0.1:8765`, automatically incrementing to a free port if occupied) so you can steer your collection directly from **Claude Desktop**, **Claude Code**, **Cursor**, **Windsurf**, or **Antigravity (`agy`)**, with **zero additional API keys**.
 
-To make your assistant immediately reliable with Anki collections, AnkiDraft pairs with a dedicated **agent workspace** (`~/ankiforge_agentique`) containing **ready-to-use MCP Skills**.
+To provide your assistant with your active profile context and the live tool list, AnkiDraft also manages a dedicated **agent workspace** (`~/ankiforge_agentique` by default).
 
 ## 1. Inside MCP Server & Agents (<kbd>Alt+5</kbd>)
 
 The **MCP Server & Agents** view (<kbd>Alt+5</kbd>) organizes everything across **5 sub-tabs**:
 
-1. **Supervision & Configuration**: start or stop the local server, rotate your access token, and copy one-click JSON configs for **Claude**, **Antigravity (agy)**, **Cursor**, or **cURL**.
-2. **Safeguard & Validation**: mandatory two-phase human review gate where every creation, edit, split, or deletion waits for your click (**Apply** or **Reject**).
-3. **Tool Catalog**: searchable reference of every MCP tool exposed by the local server.
+1. **Supervision & Configuration**: start, stop, restart, or ping the local server (Streamable HTTP and SSE transports), rotate the 256-bit Bearer access token (**Rotate token**), and copy ready-to-paste snippets for **Claude**, **Antigravity (agy)**, **Cursor**, or **cURL**.
+2. **Safeguard & Validation**: mandatory two-phase human review gate. Individual proposals and multi-step **Staged Bundles** (locked until `commit_staged_bundle`) wait for your explicit approval (**Apply**, **Reject proposal**, **Reject all**).
+3. **Tool Catalog**: searchable, domain-filtered inventory of all **93 MCP tools** exposed by the local server (cards, decks, tags, note types, albums, pipelines, agents, documents/knowledge gaps, and workspace drift checks).
 4. **Activity**: live log of tool calls executed by your external assistant and their status.
-5. **Guides & Workspaces**: manages your local agent workspace (`~/ankiforge_agentique` by default) with a compliance matrix, drift detection (**Check Drift**), safe updates (**Resync**), and initialization (**Initialize Workspace**).
+5. **Guides & Workspaces**: manages your local agent workspace (`~/ankiforge_agentique` by default) with a compliance matrix, diff inspector, **Check Drift**, **Resync**, and **Initialize Workspace**.
 
-## 2. Agent Workspace & Dedicated MCP Skills
+## 2. The Agent Workspace (`~/ankiforge_agentique`)
 
-Connecting the MCP server gives your client access to raw tools; **opening your agent workspace (`~/ankiforge_agentique`)** in Claude Code, Cursor, or Antigravity equips the assistant with clear guidelines, your active profile context, and **specialized Skills** under `.agents/skills/`:
+Connecting the MCP server alone gives access to the 93 raw tools; **initializing and opening `~/ankiforge_agentique`** in Claude Code, Cursor, or Antigravity also equips your assistant with your active AnkiDraft profile state, safety rules, and synced tool catalog:
 
-### General Collection & Authoring Skills (`.agents/skills/general/`)
-
-| User goal | Triggered Skill | What it does |
-| :--- | :--- | :--- |
-| **Start a session** | `synchronisation-ankiforge` | Detects the active profile, checks MCP tools, and refreshes profile metrics |
-| **Get a 360° overview** | `exploration-collection` | Summarizes decks, flags, coverage status, and top priorities |
-| **Audit card clarity** | `audit-qualite` | Flags overly long, vague, duplicate, or multi-fact cards |
-| **Check note types** | `audit-pertinence-modele` | Measures real field usage and spots redundant card models |
-| **Fix failing cards** | `chasse-sangsues` | Diagnoses *leech* cards with repeated lapses and proposes splits or hints |
-| **Enrich a deck** | `amelioration-deck` | Proposes wording fixes, clues, enrichments, and atomic splits |
-| **Handle flagged cards** | `refactorisation-cartes` | Collects cards flagged during reviews and stages clean rewrite batches |
-| **Modernize templates** | `refacto-modeles` | Refactors HTML/CSS note types and fixes styling issues safely |
-| **Clean up tags** | `hygiene-taxonomie-tags` | Audits and merges near-duplicate or inconsistent tag clusters |
-| **Merge duplicates** | `deduplication-consolidation` | Finds duplicate notes and preserves the one with stronger review history |
-| **Find missing concepts** | `audit-couverture-rag` | Compares an imported course document against your deck to fill coverage gaps |
-| **Create from notes** | `generation-cours-markdown` | Backs up your profile, structures Markdown courses, generates short cards with previews |
-| **Extract from scans** | `ingestion-albums-visuels` | Uses OCR pages and visual plates to build grounded cards from scanned books |
-
-### Profile Context, Shared Domain Rules & Meta Skills
-
-- **Protected profile & subject rules**: `.agents/profiles/<profile>/profile-context.md` tracks your decks and study context, while `.agents/rules/_shared_models/` and `.agents/skills/_shared_domain/` (such as `extraction-japonais`) store reusable subject-specific workflows.
-- **Continuous improvement (`meta/`)**: `evolution-skills` refines existing skills after a complex session, and `feedback-dev-ankiforge` captures workflow edge cases.
+- **Root instruction files**: `AGENT.md` (master instructions), `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md`, and `.gitignore`.
+- **Profile & catalog files inside `.agents/`**:
+  - `.agents/active-profile.md`: reflects the currently active AnkiDraft profile.
+  - `.agents/mcp-catalog.md`: mirrors the exact list of MCP tools available on your server.
+  - `.agents/glossary-and-internals.md` and `.agents/rules/ankiforge-conventions.md`: document AnkiDraft internals and two-phase safety constraints.
+- **Synced skill templates**: `.agents/skills/general/` (`ask-forge`, `audit-ankiforge`, `code-review`, `domain-modeling`, `doubt-driven-development`, `implement`, `peewee-expert`, `pipeline-dag-ia`, `proposer-commits`, `rag-smart-coverage`, `research`, `tdd`, `ui-pyside6-design`) and `.agents/skills/meta/` (`gouvernance-skills`, `session-retrospective`).
 
 :::note
-When updating from **Guides & Workspaces > Resync**, AnkiDraft refreshes system files (`AGENT.md`, `CLAUDE.md`, `GEMINI.md`, `AGENTS.md`, `.agents/active-profile.md`, `.agents/mcp-catalog.md`) **without ever overwriting** your protected `profiles/`, `_shared_models/`, or `_shared_domain/` skills.
+When updating via **Guides & Workspaces › Resync** (or the `sync_agent_workspace` MCP tool), AnkiDraft runs a non-destructive 3-way sync on system files and **preserves 100%** of your protected user directories **`profiles/`** and **`_shared_models/`**, as well as symbolic links. Drift checks (**Check Drift** / `audit_workspace_drift`) are strictly read-only.
 :::
 
 ## 3. Safety Safeguard: Two-Phase Human Validation
 
-Neither an external MCP agent nor any workspace skill can alter or delete cards behind your back:
-1. The assistant stages proposed changes inside a **Staged Bundle**.
-2. Under **MCP Server & Agents** > **Safeguard & Validation**, you inspect a clear before/after diff of every added, edited, split, or deleted card.
-3. Click **Apply** or **Reject**: you remain in complete control of your collection.
+Neither an external MCP agent nor any tool can modify or delete cards behind your back:
+1. The assistant stages proposed changes as intermediate patches or a sequential **Staged Bundle**.
+2. Under **MCP Server & Agents** › **Safeguard & Validation**, you inspect a clear before/after diff of every added, edited, split, or deleted card.
+3. Click **Apply** or **Reject proposal**: you remain in complete control of your collection.
 
 ## 4. Practical Step-by-Step Guides
 
-- **[Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](/en/workflows/zero-cle-api-agent-mcp/)**: quick setup and ready-to-use prompts that trigger your Skills.
+- **[Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](/en/workflows/zero-cle-api-agent-mcp/)**: quick setup and ready-to-use prompts for Claude, Cursor, or Antigravity.
 - **[Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene](/en/workflows/sauvetage-et-hygiene-anki-mcp/)**: clean up an imported `.apkg` deck or `.colpkg` collection without losing review progress.

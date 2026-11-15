@@ -4,118 +4,155 @@ Source: https://ankidraft.app
 
 ---
 
-# [EN] MCP Server, External Agents & Skills
+# [EN] Agent Editor (Alt+9) and A/B Testing Lab
+URL: https://ankidraft.app/en/ai-setup/agents-et-tests-ab/
+Description: Build and version custom personas in Agent Editor (Alt+9), tailor Jinja2 prompts and model overrides, and compare models or pipelines side by side in A/B.
+
+The **AI Lab** section in the sidebar brings together the **Agent Editor** (<kbd>Alt+9</kbd>), [DAG Pipelines](/en/cards/dag_et_rag/), and **A/B Tests** so you can tune how the AI drafts and audits cards for each subject.
+
+## 1. Customizing Personas in Agent Editor (<kbd>Alt+9</kbd>)
+
+Open **AI Lab › Agent Editor** (<kbd>Alt+9</kbd>) to create, organize in folders, and refine your agents:
+
+- **Scope and Output Format**:
+  - **Agent Scope / Usage**: `Forge Pipeline (DAG)`, `AI Consultant (MCP Server)`, or `Universal (Forge & MCP)` (filterable in the tree via **All**, **Pipeline**, **MCP**, **Universal**).
+  - **Output Format**: `json`, `cloze`, `markdown`, or `text`.
+- **Dedicated AI Engine (optional)**: pin a specific engine to the agent (for instance a fast or Vision-capable model), or keep inheritance enabled so it follows the **global default AI model** configured in **Settings** (<kbd>Ctrl+,</kbd>).
+- **Jinja2 Instructions & Prompt**:
+  - Start fast using **Templates...** (ready-made Cloze, Wozniak, or Language starter frameworks).
+  - Insert runtime variables at cursor position (`{{ text_source }}`, `{{ last_output }}`, `{{ fields }}`, `{{ retrieved_chunks }}`, `{{ item }}`, `{{ initial_prompt }}`, `{{ state.variables.xxx }}`), browse **Variables**, and check the live interpolated prompt via **Preview**.
+- **Tools & Role Presets**: select allowed tools manually or apply built-in presets (*Wozniak Auditor*, *Model & CSS Architect*, *SRS & Leech Analyst*, *RAG & Document Researcher*, *DB & Scripts Admin*, *Universal Consultant*).
+- **Unit Testing & Version History**:
+  - Click **Test** (<kbd>Ctrl+Enter</kbd>) to run the agent in isolation on a sample snippet before wiring it into a pipeline.
+  - Open **History** (Time Machine) to inspect prompt revisions with visual diffs, or duplicate an existing agent before experimenting.
+
+## 2. Comparing Configurations in A/B Tests
+
+Open **AI Lab › A/B Tests** to evaluate two setups objectively on the same source document (or snippet) and target note type:
+
+- **3 Comparison Modes**:
+  1. **Compare two AI Engines** (for example `Gemini 3.5 Flash Lite` vs. a local Ollama or free OpenRouter model).
+  2. **Compare two Prompts / Personas** using a shared engine.
+  3. **Compare two DAG Pipelines** end to end.
+- **Inference Controls**: keep shared Temperature and Max Tokens, or check **Independent A/B Settings** to vary parameters per branch, then click **Run A/B Test** (<kbd>Ctrl+Enter</kbd>).
+- **4 Side-by-Side Inspection Views**:
+  - **Visual Render** (interactive Front/Back preview with **Desktop 100%**, **Tablet 768px**, and **Mobile 375px** toggles plus **Sync Navigation A ↔ B**).
+  - **Fields Table** (structured field-by-field breakdown).
+  - **Raw JSON** (direct model payloads).
+  - **Diff A↔B** (line-by-line comparison), paired with card counts, token totals, latency, and estimated USD cost per branch.
+
+---
+
+# [EN] MCP Server, External Agents & Workspaces
 URL: https://ankidraft.app/en/ai-setup/consultant_mcp/
-Description: Connect Claude, Cursor, or Antigravity to AnkiDraft via MCP, load dedicated Skills in your agent workspace, and review every batch in Safeguard.
+Description: Connect Claude, Cursor, or Antigravity to AnkiDraft's local MCP server, sync your ~/ankiforge_agentique workspace, and review every batch in Safeguard.
 
-AnkiDraft includes a built-in local **MCP (Model Context Protocol)** server (`127.0.0.1:8765`) so you can steer your collection directly from **Claude Desktop**, **Claude Code**, **Cursor**, **Antigravity**, or **Gemini CLI**, with **zero additional API keys**.
+AnkiDraft includes a built-in local **MCP (Model Context Protocol)** server (`127.0.0.1:8765`, automatically incrementing to a free port if occupied) so you can steer your collection directly from **Claude Desktop**, **Claude Code**, **Cursor**, **Windsurf**, or **Antigravity (`agy`)**, with **zero additional API keys**.
 
-To make your assistant immediately reliable with Anki collections, AnkiDraft pairs with a dedicated **agent workspace** (`~/ankiforge_agentique`) containing **ready-to-use MCP Skills**.
+To provide your assistant with your active profile context and the live tool list, AnkiDraft also manages a dedicated **agent workspace** (`~/ankiforge_agentique` by default).
 
 ## 1. Inside MCP Server & Agents (<kbd>Alt+5</kbd>)
 
 The **MCP Server & Agents** view (<kbd>Alt+5</kbd>) organizes everything across **5 sub-tabs**:
 
-1. **Supervision & Configuration**: start or stop the local server, rotate your access token, and copy one-click JSON configs for **Claude**, **Antigravity (agy)**, **Cursor**, or **cURL**.
-2. **Safeguard & Validation**: mandatory two-phase human review gate where every creation, edit, split, or deletion waits for your click (**Apply** or **Reject**).
-3. **Tool Catalog**: searchable reference of every MCP tool exposed by the local server.
+1. **Supervision & Configuration**: start, stop, restart, or ping the local server (Streamable HTTP and SSE transports), rotate the 256-bit Bearer access token (**Rotate token**), and copy ready-to-paste snippets for **Claude**, **Antigravity (agy)**, **Cursor**, or **cURL**.
+2. **Safeguard & Validation**: mandatory two-phase human review gate. Individual proposals and multi-step **Staged Bundles** (locked until `commit_staged_bundle`) wait for your explicit approval (**Apply**, **Reject proposal**, **Reject all**).
+3. **Tool Catalog**: searchable, domain-filtered inventory of all **93 MCP tools** exposed by the local server (cards, decks, tags, note types, albums, pipelines, agents, documents/knowledge gaps, and workspace drift checks).
 4. **Activity**: live log of tool calls executed by your external assistant and their status.
-5. **Guides & Workspaces**: manages your local agent workspace (`~/ankiforge_agentique` by default) with a compliance matrix, drift detection (**Check Drift**), safe updates (**Resync**), and initialization (**Initialize Workspace**).
+5. **Guides & Workspaces**: manages your local agent workspace (`~/ankiforge_agentique` by default) with a compliance matrix, diff inspector, **Check Drift**, **Resync**, and **Initialize Workspace**.
 
-## 2. Agent Workspace & Dedicated MCP Skills
+## 2. The Agent Workspace (`~/ankiforge_agentique`)
 
-Connecting the MCP server gives your client access to raw tools; **opening your agent workspace (`~/ankiforge_agentique`)** in Claude Code, Cursor, or Antigravity equips the assistant with clear guidelines, your active profile context, and **specialized Skills** under `.agents/skills/`:
+Connecting the MCP server alone gives access to the 93 raw tools; **initializing and opening `~/ankiforge_agentique`** in Claude Code, Cursor, or Antigravity also equips your assistant with your active AnkiDraft profile state, safety rules, and synced tool catalog:
 
-### General Collection & Authoring Skills (`.agents/skills/general/`)
-
-| User goal | Triggered Skill | What it does |
-| :--- | :--- | :--- |
-| **Start a session** | `synchronisation-ankiforge` | Detects the active profile, checks MCP tools, and refreshes profile metrics |
-| **Get a 360° overview** | `exploration-collection` | Summarizes decks, flags, coverage status, and top priorities |
-| **Audit card clarity** | `audit-qualite` | Flags overly long, vague, duplicate, or multi-fact cards |
-| **Check note types** | `audit-pertinence-modele` | Measures real field usage and spots redundant card models |
-| **Fix failing cards** | `chasse-sangsues` | Diagnoses *leech* cards with repeated lapses and proposes splits or hints |
-| **Enrich a deck** | `amelioration-deck` | Proposes wording fixes, clues, enrichments, and atomic splits |
-| **Handle flagged cards** | `refactorisation-cartes` | Collects cards flagged during reviews and stages clean rewrite batches |
-| **Modernize templates** | `refacto-modeles` | Refactors HTML/CSS note types and fixes styling issues safely |
-| **Clean up tags** | `hygiene-taxonomie-tags` | Audits and merges near-duplicate or inconsistent tag clusters |
-| **Merge duplicates** | `deduplication-consolidation` | Finds duplicate notes and preserves the one with stronger review history |
-| **Find missing concepts** | `audit-couverture-rag` | Compares an imported course document against your deck to fill coverage gaps |
-| **Create from notes** | `generation-cours-markdown` | Backs up your profile, structures Markdown courses, generates short cards with previews |
-| **Extract from scans** | `ingestion-albums-visuels` | Uses OCR pages and visual plates to build grounded cards from scanned books |
-
-### Profile Context, Shared Domain Rules & Meta Skills
-
-- **Protected profile & subject rules**: `.agents/profiles/<profile>/profile-context.md` tracks your decks and study context, while `.agents/rules/_shared_models/` and `.agents/skills/_shared_domain/` (such as `extraction-japonais`) store reusable subject-specific workflows.
-- **Continuous improvement (`meta/`)**: `evolution-skills` refines existing skills after a complex session, and `feedback-dev-ankiforge` captures workflow edge cases.
+- **Root instruction files**: `AGENT.md` (master instructions), `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md`, and `.gitignore`.
+- **Profile & catalog files inside `.agents/`**:
+  - `.agents/active-profile.md`: reflects the currently active AnkiDraft profile.
+  - `.agents/mcp-catalog.md`: mirrors the exact list of MCP tools available on your server.
+  - `.agents/glossary-and-internals.md` and `.agents/rules/ankiforge-conventions.md`: document AnkiDraft internals and two-phase safety constraints.
+- **Synced skill templates**: `.agents/skills/general/` (`ask-forge`, `audit-ankiforge`, `code-review`, `domain-modeling`, `doubt-driven-development`, `implement`, `peewee-expert`, `pipeline-dag-ia`, `proposer-commits`, `rag-smart-coverage`, `research`, `tdd`, `ui-pyside6-design`) and `.agents/skills/meta/` (`gouvernance-skills`, `session-retrospective`).
 
 :::note
-When updating from **Guides & Workspaces > Resync**, AnkiDraft refreshes system files (`AGENT.md`, `CLAUDE.md`, `GEMINI.md`, `AGENTS.md`, `.agents/active-profile.md`, `.agents/mcp-catalog.md`) **without ever overwriting** your protected `profiles/`, `_shared_models/`, or `_shared_domain/` skills.
+When updating via **Guides & Workspaces › Resync** (or the `sync_agent_workspace` MCP tool), AnkiDraft runs a non-destructive 3-way sync on system files and **preserves 100%** of your protected user directories **`profiles/`** and **`_shared_models/`**, as well as symbolic links. Drift checks (**Check Drift** / `audit_workspace_drift`) are strictly read-only.
 :::
 
 ## 3. Safety Safeguard: Two-Phase Human Validation
 
-Neither an external MCP agent nor any workspace skill can alter or delete cards behind your back:
-1. The assistant stages proposed changes inside a **Staged Bundle**.
-2. Under **MCP Server & Agents** > **Safeguard & Validation**, you inspect a clear before/after diff of every added, edited, split, or deleted card.
-3. Click **Apply** or **Reject**: you remain in complete control of your collection.
+Neither an external MCP agent nor any tool can modify or delete cards behind your back:
+1. The assistant stages proposed changes as intermediate patches or a sequential **Staged Bundle**.
+2. Under **MCP Server & Agents** › **Safeguard & Validation**, you inspect a clear before/after diff of every added, edited, split, or deleted card.
+3. Click **Apply** or **Reject proposal**: you remain in complete control of your collection.
 
 ## 4. Practical Step-by-Step Guides
 
-- **[Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](/en/workflows/zero-cle-api-agent-mcp/)**: quick setup and ready-to-use prompts that trigger your Skills.
+- **[Zero API Key Workflow: Drive AnkiDraft from Claude or Cursor](/en/workflows/zero-cle-api-agent-mcp/)**: quick setup and ready-to-use prompts for Claude, Cursor, or Antigravity.
 - **[Anki Collection Rescue: Duplicates, Leeches, and MCP Hygiene](/en/workflows/sauvetage-et-hygiene-anki-mcp/)**: clean up an imported `.apkg` deck or `.colpkg` collection without losing review progress.
 
 ---
 
 # [EN] Configuring AI Providers (OpenAI, Gemini, Claude)
 URL: https://ankidraft.app/en/ai-setup/ia_fournisseurs/
-Description: Securely connect your OpenAI, Anthropic, or Gemini API keys, configure local providers, and track your token budget per pipeline in AnkiDraft.
+Description: Securely connect OpenAI, Anthropic, Gemini, Groq, OpenCode, or OpenRouter API keys and configure generation token limits, RAG settings, and MCP budgets.
 
 AnkiDraft is **provider-agnostic**: you are free to use the AI service of your choice or switch models depending on the task.
 
-## 1. Supported Providers
+## 1. Supported Providers and Gateways
 
-In **Settings** (<kbd>Ctrl+,</kbd>) > **AI Engines**, you can configure:
-- **Google Gemini** (`Gemini 3.5 Flash Lite`, `Gemini 2.0 Flash`, `Gemini 1.5 Pro`)
-- **OpenRouter** (`:free` models including `Qwen 3.8 27B`, `Gemma 4 31B`, `Nemotron 3.5 Lightning`, plus hundreds of paid models)
-- **Groq** (`Llama 3.3 70B`, `DeepSeek-R1 70B` on LPU hardware)
-- **OpenAI** (`GPT-4o`, `GPT-4o-mini`, `o3-mini`) and **Anthropic Claude** (`Claude Sonnet`, `Claude Haiku`)
-- **OpenCode** and **any OpenAI-compatible endpoint** (Mistral, university server)
-- **Ollama (100% Free & Offline)**: see [Using a Free Local Model with Ollama](/en/ai-setup/local-models-ollama/).
+In **Settings** (<kbd>Ctrl+,</kbd>) › **AI Engines**, you can configure:
+
+- **Dedicated Cloud API Keys (`CLOUD PROVIDER API KEYS`)**:
+  - **OpenAI** (`GPT-4o`, `GPT-4o-mini`, `o3-mini`, `o1`, `o1-mini`)
+  - **Anthropic** (`Claude 3.7 Sonnet`, `Claude 3.5 Sonnet`, `Claude 3.5 Haiku`)
+  - **Google Gemini** (`Gemini 3.5 Flash Lite`, `Gemini 2.0 Flash`, `Gemini 1.5 Pro`)
+  - **Groq** (`Llama 3.3 70B`, `DeepSeek-R1 70B` on LPU hardware)
+  - **OpenCode** (`DeepSeek V4 Flash`, `Gemini 3.5 Flash Lite`, `GPT-5.4 Mini`, `Qwen 3.8 Flash`)
+  - **OpenRouter** (`:free` models including `Qwen 3.8 27B`, `Gemma 4 31B`, `Nemotron 3.5 Lightning`, plus hundreds of paid models)
+- **Configurable Local Servers & Gateways (`LOCAL SERVERS & ACCESS GATEWAYS`)**:
+  - **Local Ollama** (`http://localhost:11434` by default) — see [Using a Free Local Model with Ollama](/en/ai-setup/local-models-ollama/)
+  - **OpenCode Gateway** (`https://opencode.ai/zen/v1` by default)
+  - **OpenRouter API** (`https://openrouter.ai/api/v1` by default)
+- **Custom Models (`Add a model ▾` › `Custom model...`)**: register any model ID or OpenAI-compatible provider and configure its **Context Limit**, **Generation Cap (max tokens)**, **Default Temperature**, and capabilities (**Multimodal vision**, **Deep reasoning (Thinking / CoT)**, **JSON structured outputs**, **Free / included / local model**).
 
 ## 2. Getting a Free API Key (Student Guide)
 
 | Free option | Credit card | How to obtain a key | Recommended preset in AnkiDraft | Caveats to keep in mind |
 | :--- | :--- | :--- | :--- | :--- |
 | **Google AI Studio** | No | Google account at [aistudio.google.com](https://aistudio.google.com/) → *Create API key* (`AIzaSy...`) | `Google Gemini 3.5 Flash Lite` (vision + PDF) | Rate limits/min & /day; free-tier prompts may be reviewed to improve Google products |
-| **OpenRouter (`:free`)** | No | Account at [openrouter.ai](https://openrouter.ai/) → *Keys* (`sk-or-...`) | `OpenRouter Free (Qwen 3.8 27B)` | ~20 req/min & ~50 req/day (or 1,000/day after a one-time $10 credit top-up) |
+| **OpenRouter (`:free`)** | No | Account at [openrouter.ai](https://openrouter.ai/) → *Keys* (`sk-or-...`) | `OpenRouter Gratuit (Qwen 3.8 27B)` | ~20 req/min & ~50 req/day (or 1,000/day after a one-time $10 credit top-up) |
 | **Groq Console** | No | Account at [console.groq.com](https://console.groq.com/) → *API Keys* (`gsk_...`) | `Llama 3.3 70B` / `DeepSeek-R1 70B` | Strict tokens-per-minute caps on very long chapters |
-| **Mistral / GitHub / Campus** | No | Free tier on [Mistral](https://console.mistral.ai/), **GitHub Student Pack** (`models.github.ai`), **Google AI student offers**, or campus gateway | **Custom model…** (OpenAI-compatible URL) | Depends on student verification or university limits |
+| **GitHub / Campus / OpenCode** | No | **GitHub Student Pack** (`models.github.ai`), **OpenCode** gateway, or university endpoint | **Custom model…** / **OpenCode Gateway** | Depends on student verification or gateway limits |
 
 **Activate it in 30 seconds inside AnkiDraft:**
-1. Open **Settings** (<kbd>Ctrl+,</kbd>) > **AI Engines**, paste the key next to the provider, and click **Test**.
-2. In the engine list below, click **Add a model** > **Popular quick presets** (for example `Google Gemini 3.5 Flash Lite` or `OpenRouter Free (Qwen 3.8 27B)`), or browse **Explore Catalog & Comparator...**.
-3. Make sure **Free / included / local model** is checked so the top-bar cost counter stays at `$0.00`.
+1. Open **Settings** (<kbd>Ctrl+,</kbd>) › **AI Engines**, paste the key next to the provider, and click **Test**.
+2. Below the **ENGINES & MODELS CATALOG**, click **Add a model ▾** › **Popular quick presets** (for example `Google Gemini 3.5 Flash Lite` or `OpenRouter Gratuit (Qwen 3.8 27B)`), or open **Explore catalog & comparator...**.
+3. Make sure **Free / included / local model** is checked in the model settings so the top-bar cost counter stays at `$0.00`.
 
 :::note
 For confidential medical notes or unlimited offline generation during exam season, prefer [local Ollama](/en/ai-setup/local-models-ollama/) or your existing assistant via [MCP Server (<kbd>Alt+5</kbd>)](/en/workflows/zero-cle-api-agent-mcp/).
 :::
 
-## 3. API Key Security
+## 3. API Key & MCP Server Security
 
-- Your API keys are stored in your **operating system's secure keychain** (macOS Keychain, Windows Credential Manager, Linux Secret Service).
-- Keys never pass through any middleman server: AnkiDraft connects directly from your computer to your chosen provider.
-- Application logs automatically redact any secret key (`sk-*`, `AIza*`).
+- **Strict OS Keychain Storage**: API keys are stored in your **operating system's secure keychain** (service `AnkiForge`: macOS Keychain, Windows Credential Manager, Linux Secret Service). If no OS keyring is available, keys are never saved in plaintext on disk.
+- **Direct Connection**: keys never pass through any middleman server—AnkiDraft connects directly from your computer to your chosen provider.
+- **Automatic Log Redaction**: the async logging filter automatically masks secret keys (`sk-*`, `AIza*`) and `Bearer` tokens before writing logs to disk.
+- **Local MCP Server (`LOCAL MCP SERVER`)**: in the same **AI Engines** tab, toggle the background server, adjust its **Listening port** (`8765` by default) under **Advanced MCP & diagnostics**, rotate the 256-bit Bearer token (**Rotate token**), and pick the default destination for contextual prompts.
 
-## 4. Token Budget Control
+## 4. Global AI Preferences, RAG & Token Caps
 
-Before running a batch generation across a large textbook, AnkiDraft estimates the required token count and lets you set a strict per-run token cap to prevent unexpected API bills.
+- **Global Default AI Model**: choose the default engine inherited by [Agents](/en/ai-setup/agents-et-tests-ab/) or pipeline steps when no override is set.
+- **Global Feature Toggles**: control **Streaming responses**, **Vision capabilities enabled**, **Automatic card validation**, and **Automatic Linter audit**.
+- **Generation Token Caps, CoT & Timeouts**:
+  - Under **Advanced generation & RAG options**: adjust **Temperature**, **Max Tokens Cap** (`4,096` to `128,000`, default `16,384`), **Thinking Budget (CoT)** (`0` to `32,768` tokens), **Max generation timeout**, and semantic retrieval parameters (**RAG Chunks (Top-K)** from `1` to `20`, **Min similarity threshold** from `40%` to `95%`).
+  - Under **DEFAULT GENERATION PARAMETERS**: set **Default temperature** (`0.30`), **Default max token budget** (`4,000`), and **Default request timeout** (`60 s`).
+- **Consultant Budget Safeguard (`Consultant Token Budget` & `Consultant Cost Budget (USD)`)**: set dedicated caps for Consultant runs (up to `200,000 tokens` and `$5.00`, defaulting to `50,000 tokens` / `$0.50`), with a **preventive stop at 80% of the quota**.
+- **Estimations & Spend Tracking**: document pickers and slice composers show an estimated token count (`~X tokens`) for your selected text, DAG pipeline steps accept per-step token budgets, **A/B Tests** estimate USD run cost, and the top-bar counter tracks cumulative consumption.
 
 ---
 
 # [EN] Using a Free Local Model with Ollama
 URL: https://ankidraft.app/en/ai-setup/local-models-ollama/
-Description: Generate atomic Anki flashcards 100% offline and for free on your own computer using local Ollama models with full privacy and zero API fees.
+Description: Generate atomic Anki flashcards 100% offline and for free on your computer using local Ollama models with automatic capability detection and zero API keys.
 
 Prefer not to use paid cloud APIs, or studying confidential documents offline? AnkiDraft integrates natively with **Ollama**.
 
@@ -126,12 +163,16 @@ Prefer not to use paid cloud APIs, or studying confidential documents offline? A
    - **8 GB RAM**: `ollama pull llama3.2:3b` or `ollama pull qwen2.5:3b`
    - **16 GB+ RAM (e.g., Apple Silicon M1/M2/M3/M4)**: `ollama pull qwen2.5:7b` or `ollama pull mistral`
 
-## 2. Enable Ollama in AnkiDraft
+## 2. Connect and Scan Ollama in AnkiDraft
 
-1. Open **Settings** (<kbd>Ctrl+,</kbd>) > **AI Providers**.
-2. Select **Ollama (Local)**: the default local endpoint `http://localhost:11434` is detected automatically.
-3. Click **Refresh Models** and choose the model you just downloaded.
-4. You can now generate and audit flashcards for free and completely offline!
+1. Open **Settings** (<kbd>Ctrl+,</kbd>) › **AI Engines**.
+2. Under **LOCAL SERVERS & ACCESS GATEWAYS**, locate **Local Ollama:** (`http://localhost:11434` by default; only local/loopback URLs are allowed as an anti-SSRF safeguard).
+3. Click **Scan Models**: AnkiDraft queries Ollama (`/api/tags`), detects each model's capabilities automatically (Vision, Thinking/CoT, JSON output, context window), and imports new models into your catalog marked as **Free / included / local**.
+4. You can also add or fine-tune a local model manually via **Add a model ▾** › **Popular quick presets** › **`Ollama Local (llama3)`** or **Custom model...** (useful to enable **Multimodal vision** or adjust **Context Limit** and **Default Temperature**).
+
+:::tip
+If local inference runs slowly on CPU or modest hardware, increase **Max generation timeout** and **Default request timeout** in **Settings** (<kbd>Ctrl+,</kbd>) › **AI Engines** so long chapters do not time out prematurely.
+:::
 
 ---
 
@@ -1312,134 +1353,175 @@ No card is ever modified behind your back:
 
 ---
 
-# [FR] Serveur MCP, Agents Externes et Skills
+# [FR] Éditeur d'Agents (Alt+9) et Tests A/B
+URL: https://ankidraft.app/fr/ai-setup/agents-et-tests-ab/
+Description: Créez et versionnez vos personas dans Éditeur d'Agents (Alt+9), personnalisez les prompts Jinja2 et comparez moteurs ou pipelines dans Tests A/B.
+
+La section **Laboratoire IA** de la barre latérale réunit l'**Éditeur d'Agents** (<kbd>Alt+9</kbd>), les [Pipelines DAG](/fr/cards/dag_et_rag/) et le laboratoire **Tests A/B** pour adapter finement le comportement rédactionnel de l'IA à vos matières.
+
+## 1. Configurer vos personas dans l'Éditeur d'Agents (<kbd>Alt+9</kbd>)
+
+Ouvrez **Laboratoire IA › Éditeur d'Agents** (<kbd>Alt+9</kbd>) pour créer, organiser par dossiers et personnaliser vos agents :
+
+- **Portée et format de sortie** :
+  - **Portée / Usage** : `Pipeline de Forge (DAG)`, `Consultant IA (Serveur MCP)` ou `Universel (Forge & MCP)` (avec filtres rapides **Tous**, **Pipeline**, **MCP**, **Universel** dans l'arborescence).
+  - **Format de sortie** : `json`, `cloze`, `markdown` ou `text`.
+- **Moteur IA dédié (optionnel)** : assignez un modèle précis à l'agent (par ex. un modèle rapide ou compatible Vision), ou conservez l'héritage pour suivre automatiquement le **modèle IA global par défaut** défini dans **Paramètres** (<kbd>Ctrl+,</kbd>).
+- **Instructions & Prompt Jinja2** :
+  - Démarrez vite avec **Canevas...** (structures prêtes à l'emploi Cloze, Wozniak, Langues…).
+  - Insérez au curseur les variables dynamiques (`{{ text_source }}`, `{{ last_output }}`, `{{ fields }}`, `{{ retrieved_chunks }}`, `{{ item }}`, `{{ initial_prompt }}`, `{{ state.variables.xxx }}`), consultez l'aide **Variables** et vérifiez le rendu réel avec **Aperçu**.
+- **Outils & Presets par rôle** : cochez manuellement les outils accessibles à l'agent ou appliquez un preset (*Auditeur Wozniak*, *Architecte Modèles & CSS*, *Analyste SRS & Sangsues*, *Chercheur RAG & Documents*, *Administrateur BDD & Scripts*, *Consultant Universel (Tout)*).
+- **Test unitaire & Historique des versions** :
+  - Cliquez sur **Tester** (<kbd>Ctrl+Entrée</kbd>) pour exécuter l'agent seul sur un court extrait avant de l'intégrer dans un pipeline.
+  - Utilisez **Historique** (Machine à Remonter le Temps) pour comparer les révisions successives de vos prompts via un diff visuel, et dupliquez un agent existant pour expérimenter sans risque.
+
+## 2. Comparer deux approches dans Tests A/B
+
+Ouvrez **Laboratoire IA › Tests A/B** pour trancher objectivement entre deux configurations sur un même document (ou extrait) et un même type de note cible :
+
+- **3 modes de comparaison** :
+  1. **Comparer deux Moteurs IA** (ex. `Gemini 3.5 Flash Lite` vs un modèle local Ollama ou OpenRouter gratuit).
+  2. **Comparer deux Prompts / Personas** sur un moteur commun.
+  3. **Comparer deux Pipelines DAG** complets.
+- **Réglages d'inférence** : testez à paramètres identiques ou cochez **Réglages indépendants A/B** pour varier Température et Max Tokens entre la branche A et la branche B, puis lancez avec **Lancer le Test A/B** (<kbd>Ctrl+Entrée</kbd>).
+- **4 vues comparatives côte à côte** :
+  - **Rendu Visuel** (Recto/Verso interactif avec modes **Bureau 100%**, **Tablette 768px** et **Mobile 375px**, plus **Synchronisation Navigation A ↔ B**).
+  - **Tableau des Champs** (inspection structurée champ par champ).
+  - **JSON Brut** (sortie brute des modèles).
+  - **Diff A↔B** (mise en évidence directe des écarts textuels), avec suivi du nombre de cartes, des tokens, de la latence et du coût USD estimé pour chaque branche.
+
+---
+
+# [FR] Serveur MCP, Agents Externes et Workspaces
 URL: https://ankidraft.app/fr/ai-setup/consultant_mcp/
-Description: Connectez Claude, Cursor ou Antigravity à AnkiDraft via MCP, utilisez les Skills dédiés dans votre espace agentique et validez chaque lot via Garde-Fou.
+Description: Connectez Claude, Cursor ou Antigravity au serveur MCP local d'AnkiDraft, synchronisez votre workspace ~/ankiforge_agentique et validez via Garde-Fou.
 
-AnkiDraft intègre un **serveur MCP (Model Context Protocol)** local (`127.0.0.1:8765`) qui vous permet de piloter votre collection directement depuis **Claude Desktop**, **Claude Code**, **Cursor**, **Antigravity** ou **Gemini CLI**, sans aucune clé API supplémentaire.
+AnkiDraft intègre un **serveur MCP (Model Context Protocol)** local (`127.0.0.1:8765`, avec repli automatique sur un port libre si occupé) qui vous permet de piloter votre collection directement depuis **Claude Desktop**, **Claude Code**, **Cursor**, **Windsurf** ou **Antigravity (`agy`)**, sans aucune clé API supplémentaire.
 
-Pour rendre votre assistant immédiatement fiable sur Anki, AnkiDraft s'appuie sur un **espace de travail agentique dédié** (`~/ankiforge_agentique`) contenant des **Skills MCP prêts à l'emploi**.
+Pour donner à votre assistant le contexte de votre profil actif et le catalogue des outils disponibles, AnkiDraft gère également un **espace de travail agentique** dédié (`~/ankiforge_agentique` par défaut).
 
 ## 1. Les 5 onglets de Serveur MCP & Agents (<kbd>Alt+5</kbd>)
 
 La vue **Serveur MCP & Agents** (<kbd>Alt+5</kbd>) centralise toute la connexion et le contrôle :
 
-1. **Supervision & Configuration** : démarrez ou arrêtez le serveur local, régénérez le jeton d'accès et copiez en un clic la configuration pour **Claude**, **Antigravity (agy)**, **Cursor** ou **cURL**.
-2. **Garde-Fou & Validation** : sas obligatoire de relecture humaine en deux temps où chaque création, retouche, scission ou suppression attend votre feu vert (**Appliquer** ou **Rejeter**).
-3. **Catalogue d'Outils** : inventaire interactif des outils MCP exposés par le serveur local.
-4. **Activité** : journal en direct des requêtes exécutées par votre assistant et de leur résultat.
-5. **Guides & Workspaces** : gestionnaire de votre dossier agentique (`~/ankiforge_agentique` par défaut) avec matrice de conformité, détection de dérive (**Vérifier le drift**), mise à jour (**Resynchroniser**) et création initiale (**Amorcer le workspace**).
+1. **Supervision & Configuration** : démarrer, arrêter, redémarrer ou tester (**Ping**) le serveur local (transports HTTP Streamable et SSE), renouveler le jeton **Bearer 256 bits** (**Renouveler le jeton**) et copier la configuration JSON/CLI prête à l'emploi pour **Claude**, **Antigravity (agy)**, **Cursor** ou **cURL**.
+2. **Garde-Fou & Validation** : sas humain obligatoire en deux phases (*Two-Phase Commit*). Chaque proposition individuelle ou lot multi-étapes (**Staged Bundle** verrouillé jusqu'à finalisation `commit_staged_bundle`) attend votre validation explicite (**Appliquer**, **Rejeter la proposition**, **Tout rejeter**).
+3. **Catalogue d'Outils** : inventaire interactif et filtrable par domaine des **93 outils MCP** exposés par le serveur local (consultation, création/édition de cartes, paquets, tags, types de notes, albums, pipelines, agents, documents/lacunes et audit de workspace).
+4. **Activité** : journal en temps réel des appels d'outils exécutés par votre assistant externe et de leur statut.
+5. **Guides & Workspaces** : gestion de votre workspace agentique local (`~/ankiforge_agentique` par défaut) avec matrice de conformité, inspecteur diff, **Vérifier le drift**, **Resynchroniser** et **Amorcer le workspace**.
 
-## 2. L'espace de travail agentique et vos Skills MCP
+## 2. L'espace de travail agentique (`~/ankiforge_agentique`)
 
-Connecter le serveur MCP seul donne accès aux outils bruts ; **ouvrir votre espace agentique (`~/ankiforge_agentique`)** dans Claude Code, Cursor ou Antigravity donne en plus à l'assistant une méthode complète, vos règles de profil et des **Skills spécialisés** dans `.agents/skills/` :
+Connecter le serveur MCP seul donne accès aux 93 outils bruts ; **initialiser puis ouvrir `~/ankiforge_agentique`** dans Claude Code, Cursor ou Antigravity fournit en plus à l'assistant le contexte du profil AnkiDraft actif, les garde-fous et le catalogue synchronisé :
 
-### Compétences générales (`.agents/skills/general/`)
-
-| Objectif utilisateur | Skill activé | Rôle concret |
-| :--- | :--- | :--- |
-| **Démarrer une session** | `synchronisation-ankiforge` | Vérifie le profil actif, les outils MCP disponibles et rafraîchit les compteurs du profil |
-| **Faire un bilan global** | `exploration-collection` | Dresse un panorama 360° des paquets, drapeaux et priorités de travail |
-| **Contrôler la clarté** | `audit-qualite` | Repère les cartes trop longues, floues, redondantes ou multi-notions |
-| **Vérifier un modèle de note** | `audit-pertinence-modele` | Mesure l'utilité réelle de chaque champ et détecte les modèles redondants |
-| **Corriger les cartes ratées** | `chasse-sangsues` | Analyse les cartes *sangsues* (échecs répétés) et propose découpages ou indices |
-| **Enrichir un paquet** | `amelioration-deck` | Propose des reformulations, corrections, indices et découpages en cartes courtes |
-| **Traiter les drapeaux** | `refactorisation-cartes` | Récupère les cartes marquées d'un drapeau pendant vos révisions et prépare un lot de correction |
-| **Nettoyer les gabarits** | `refacto-modeles` | Modernise la mise en page HTML/CSS et corrige les modèles de cartes défectueux |
-| **Organiser les tags** | `hygiene-taxonomie-tags` | Repère et fusionne les variantes de tags proches ou incohérentes |
-| **Fusionner les doublons** | `deduplication-consolidation` | Détecte les cartes en doublon et conserve celle ayant le meilleur historique Anki |
-| **Repérer les oublis de cours** | `audit-couverture-rag` | Compare un document importé avec votre paquet pour créer les cartes manquantes |
-| **Créer depuis un cours** | `generation-cours-markdown` | Structure un cours Markdown, sauvegarde la base et génère des cartes courtes avec prévisualisation |
-| **Extraire un scan / album** | `ingestion-albums-visuels` | Exploite l'OCR des livres scannés et planches d'images pour produire des cartes reliées aux pages |
-
-### Compétences métier partagées, profils et méta-skills
-
-- **Règles par profil et modèles partagés (sanctuarisés)** : `.agents/profiles/<profil>/profile-context.md` décrit vos paquets et objectifs du profil actif, tandis que `.agents/rules/_shared_models/` et `.agents/skills/_shared_domain/` (par exemple `extraction-japonais`) conservent vos consignes par matière.
-- **Amélioration continue (`meta/`)** : `evolution-skills` permet d'ajuster un skill après une session de travail, et `feedback-dev-ankiforge` recense d'éventuelles limites techniques rencontrées.
+- **Fichiers système générés à la racine** : `AGENT.md` (instructions maîtres), shims `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md` et `.gitignore`.
+- **Contexte & conventions dans `.agents/`** :
+  - `.agents/active-profile.md` : indique le profil AnkiDraft actif pour la session.
+  - `.agents/mcp-catalog.md` : reflète la liste exacte des outils MCP disponibles sur votre serveur.
+  - `.agents/glossary-and-internals.md` et `.agents/rules/ankiforge-conventions.md` : rappellent le fonctionnement interne et les garde-fous d'AnkiDraft.
+- **Gabarits de skills synchronisés** : `.agents/skills/general/` (`ask-forge`, `audit-ankiforge`, `code-review`, `domain-modeling`, `doubt-driven-development`, `implement`, `peewee-expert`, `pipeline-dag-ia`, `proposer-commits`, `rag-smart-coverage`, `research`, `tdd`, `ui-pyside6-design`) et `.agents/skills/meta/` (`gouvernance-skills`, `session-retrospective`).
 
 :::note
-Lors d'une mise à jour via **Guides & Workspaces > Resynchroniser**, AnkiDraft actualise les guides système (`AGENT.md`, `CLAUDE.md`, `GEMINI.md`, `AGENTS.md`, `.agents/active-profile.md`, `.agents/mcp-catalog.md`) **sans jamais écraser** vos fichiers de profil (`profiles/`), vos règles de modèles (`_shared_models/`) ni vos skills personnalisés (`_shared_domain/`).
+Lors d'une mise à jour via **Guides & Workspaces › Resynchroniser** (ou via l'outil MCP `sync_agent_workspace`), AnkiDraft effectue une synchronisation 3 voies non destructive des fichiers système et **préserve 100 %** de vos répertoires utilisateur sanctuarisés **`profiles/`** et **`_shared_models/`** ainsi que vos liens symboliques. L'audit (**Vérifier le drift** / `audit_workspace_drift`) est strictement en lecture seule.
 :::
 
-## 3. Garde-fou de sécurité : validation humaine en deux temps
+## 3. Le Garde-Fou : validation humaine en deux temps
 
-Ni un agent externe connecté via MCP ni aucun de ses skills ne peut modifier ou supprimer vos cartes sans votre accord :
-1. L'assistant prépare ses propositions dans un **lot en attente (Staged Bundle)**.
-2. Dans **Serveur MCP & Agents** > **Garde-Fou & Validation**, vous inspectez l'avant/après de chaque carte ajoutée, modifiée, scindée ou supprimée.
-3. Vous cliquez sur **Appliquer** ou **Rejeter** : vous gardez toujours le contrôle absolu sur votre collection.
+Ni un agent externe connecté via MCP ni aucun outil ne peut modifier ou supprimer vos cartes sans votre accord :
+1. L'assistant prépare ses modifications dans des patchs intermédiaires ou un **Staged Bundle** (lot séquentiel).
+2. Dans **Serveur MCP & Agents** › **Garde-Fou & Validation**, vous inspectez le comparatif Avant / Après de chaque carte ajoutée, modifiée, scindée ou supprimée.
+3. Cliquez sur **Appliquer** ou **Rejeter la proposition** : vous gardez un contrôle absolu sur votre collection.
 
-## 4. Passer à la pratique
+## 4. Parcours pratiques étape par étape
 
-- **[Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor](/fr/workflows/zero-cle-api-agent-mcp/)** : configuration rapide et exemples de demandes déclenchant les Skills.
+- **[Parcours Zéro Clé API : Piloter AnkiDraft avec Claude ou Cursor](/fr/workflows/zero-cle-api-agent-mcp/)** : configuration rapide et exemples de demandes avec Claude, Cursor ou Antigravity.
 - **[Parcours Sauvetage Anki : Doublons, Sangsues et Hygiène MCP](/fr/workflows/sauvetage-et-hygiene-anki-mcp/)** : nettoyer un paquet `.apkg` ou une collection `.colpkg` existante sans perdre votre historique.
 
 ---
 
 # [FR] Configurer vos Fournisseurs d'IA (OpenAI, Gemini, Claude)
 URL: https://ankidraft.app/fr/ai-setup/ia_fournisseurs/
-Description: Connectez vos clés API OpenAI, Anthropic ou Gemini en toute sécurité, configurez vos modèles locaux et maîtrisez votre budget de tokens IA global.
+Description: Connectez vos clés API OpenAI, Anthropic, Gemini, Groq, OpenCode ou OpenRouter en toute sécurité et maîtrisez les plafonds de tokens IA et Consultant.
 
-AnkiDraft est **agnostique du fournisseur d'IA** : vous êtes libre d'utiliser le service de votre choix ou d'alterner selon vos besoins.
+AnkiDraft est **agnostique vis-à-vis des fournisseurs** : vous choisissez librement le service d'IA adapté à votre budget ou basculez de modèle selon la tâche.
 
-## 1. Fournisseurs compatibles
+## 1. Fournisseurs et passerelles compatibles
 
-Dans **Paramètres** (<kbd>Ctrl+,</kbd>) > **Moteurs IA**, vous pouvez configurer :
-- **Google Gemini** (`Gemini 3.5 Flash Lite`, `Gemini 2.0 Flash`, `Gemini 1.5 Pro`)
-- **OpenRouter** (modèles gratuits `:free` dont `Qwen 3.8 27B`, `Gemma 4 31B`, `Nemotron 3.5 Lightning`, et centaines de modèles)
-- **Groq** (`Llama 3.3 70B`, `DeepSeek-R1 70B` sur puces LPU)
-- **OpenAI** (`GPT-4o`, `GPT-4o-mini`, `o3-mini`) et **Anthropic Claude** (`Claude Sonnet`, `Claude Haiku`)
-- **OpenCode** et **tout serveur compatible OpenAI** (Mistral, serveur universitaire local)
-- **Ollama (100 % gratuit et hors ligne)** : voir le guide [Utiliser un Modèle Local avec Ollama](/fr/ai-setup/local-models-ollama/).
+Dans **Paramètres** (<kbd>Ctrl+,</kbd>) › **Moteurs IA**, vous pouvez configurer :
+
+- **Clés API Cloud dédiées (`CLÉS API DES FOURNISSEURS CLOUD`)** :
+  - **OpenAI** (`GPT-4o`, `GPT-4o-mini`, `o3-mini`, `o1`, `o1-mini`)
+  - **Anthropic** (`Claude 3.7 Sonnet`, `Claude 3.5 Sonnet`, `Claude 3.5 Haiku`)
+  - **Google Gemini** (`Gemini 3.5 Flash Lite`, `Gemini 2.0 Flash`, `Gemini 1.5 Pro`)
+  - **Groq** (`Llama 3.3 70B`, `DeepSeek-R1 70B` sur matériel LPU)
+  - **OpenCode** (`DeepSeek V4 Flash`, `Gemini 3.5 Flash Lite`, `GPT-5.4 Mini`, `Qwen 3.8 Flash`)
+  - **OpenRouter** (modèles `:free` dont `Qwen 3.8 27B`, `Gemma 4 31B`, `Nemotron 3.5 Lightning`, plus des centaines de modèles payants)
+- **Passerelles configurables (`SERVEURS LOCAUX & PASSERELLES D'ACCÈS`)** :
+  - **Ollama Local** (`http://localhost:11434` par défaut) — voir [Utiliser un Modèle Local avec Ollama](/fr/ai-setup/local-models-ollama/)
+  - **Passerelle OpenCode** (`https://opencode.ai/zen/v1` par défaut)
+  - **API OpenRouter** (`https://openrouter.ai/api/v1` par défaut)
+- **Modèles personnalisés (`Ajouter un modèle ▾` › `Modèle personnalisé...`)** : ajoutez n'importe quel identifiant de modèle ou fournisseur compatible OpenAI et ajustez sa **Limite Contexte**, son **Plafond Génération (max tokens)**, sa **Température par défaut** et ses capacités (**Vision multimodale**, **Raisonnement approfondi (Thinking / CoT)**, **Sorties structurées JSON**, **Modèle gratuit / inclus / local**).
 
 ## 2. Obtenir une clé API gratuite (spécial étudiants)
 
-| Source gratuite | Carte bancaire | Comment l'obtenir | Modèle conseillé dans AnkiDraft | Limites à connaître |
+| Option gratuite | Carte bancaire | Comment obtenir la clé | Preset conseillé dans AnkiDraft | Limites à connaître |
 | :--- | :--- | :--- | :--- | :--- |
-| **Google AI Studio** | Non | Compte Google sur [aistudio.google.com](https://aistudio.google.com/) → *Create API key* (`AIzaSy...`) | `Google Gemini 3.5 Flash Lite` (vision + PDF) | Quotas/min et /jour ; données utilisables par Google en palier gratuit |
-| **OpenRouter (`:free`)** | Non | Compte sur [openrouter.ai](https://openrouter.ai/) → *Keys* (`sk-or-...`) | `OpenRouter Gratuit (Qwen 3.8 27B)` | ~20 req/min et ~50 req/jour (ou 1 000/j après 10 $ de crédit non expirant) |
-| **Groq Console** | Non | Compte sur [console.groq.com](https://console.groq.com/) → *API Keys* (`gsk_...`) | `Llama 3.3 70B` / `DeepSeek-R1 70B` | Plafond de jetons/min strict sur les gros chapitres |
-| **Mistral / GitHub / Campus** | Non | Palier gratuit [Mistral](https://console.mistral.ai/), **GitHub Student Pack** (`models.github.ai`), crédits **Google AI étudiants** ou passerelle fac | **Modèle personnalisé…** (URL OpenAI-compatible) | Dépend de la vérification étudiante ou des quotas campus |
+| **Google AI Studio** | Non | Compte Google sur [aistudio.google.com](https://aistudio.google.com/) → *Create API key* (`AIzaSy...`) | `Google Gemini 3.5 Flash Lite` (vision + PDF) | Plafonds par minute/jour ; sur le palier gratuit, Google peut examiner les requêtes pour améliorer ses produits |
+| **OpenRouter (`:free`)** | Non | Compte sur [openrouter.ai](https://openrouter.ai/) → *Keys* (`sk-or-...`) | `OpenRouter Gratuit (Qwen 3.8 27B)` | ~20 req/min et ~50 req/jour (ou 1 000/jour après un dépôt ponctuel de 10 $) |
+| **Groq Console** | Non | Compte sur [console.groq.com](https://console.groq.com/) → *API Keys* (`gsk_...`) | `Llama 3.3 70B` / `DeepSeek-R1 70B` | Quotas serrés de tokens/minute sur les très longs chapitres |
+| **GitHub / Campus / OpenCode** | Non | **GitHub Student Pack** (`models.github.ai`), passerelle **OpenCode** ou endpoint universitaire | **Modèle personnalisé…** / **Passerelle OpenCode** | Dépend de la vérification étudiante ou des quotas de votre passerelle |
 
-**Comment l'activer en 30 secondes dans AnkiDraft :**
-1. Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) > **Moteurs IA** et collez la clé face au fournisseur correspondant, puis cliquez sur **Tester**.
-2. Dans la section des moteurs en dessous, cliquez sur **Ajouter un modèle** > **Presets rapides populaires** (ex. `Google Gemini 3.5 Flash Lite` ou `OpenRouter Gratuit (Qwen 3.8 27B)`), ou passez par **Explorer le catalogue & comparateur...**.
-3. Vérifiez que la case **Modèle gratuit / inclus / local** est cochée : le compteur de coûts de la barre supérieure restera à `0.00 $`.
+**Activer votre clé en 30 secondes dans AnkiDraft :**
+1. Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) › **Moteurs IA**, collez la clé face au fournisseur correspondant, puis cliquez sur **Tester**.
+2. Sous le **CATALOGUE DES MOTEURS & MODÈLES**, cliquez sur **Ajouter un modèle ▾** › **Presets rapides populaires** (par ex. `Google Gemini 3.5 Flash Lite` ou `OpenRouter Gratuit (Qwen 3.8 27B)`), ou cliquez sur **Explorer le catalogue & comparateur...**.
+3. Cochez **Modèle gratuit / inclus / local** dans les propriétés du modèle si vous souhaitez que le compteur de coûts de la barre supérieure reste à `$0.00`.
 
 :::note
 Pour des documents médicaux confidentiels ou pour travailler sans aucune limite de quota en période d'examens, préférez [Ollama en local](/fr/ai-setup/local-models-ollama/) ou votre assistant via [Serveur MCP (<kbd>Alt+5</kbd>)](/fr/workflows/zero-cle-api-agent-mcp/).
 :::
 
-## 3. Sécurité de vos clés API
+## 3. Sécurité des clés API et du serveur MCP
 
-- Vos clés API sont enregistrées dans le **trousseau sécurisé de votre système d'exploitation** (macOS Keychain, Windows Credential Manager, Secret Service Linux).
-- Elles ne transitent par aucun serveur intermédiaire : AnkiDraft communique directement depuis votre ordinateur vers l'API du fournisseur sélectionné.
-- Les journaux techniques masquent automatiquement toute clé (`sk-*`, `AIza*`).
+- **Trousseau OS chiffré obligatoire** : vos clés API sont conservées dans le **trousseau sécurisé de votre système** (service `AnkiForge` : macOS Keychain, Gestionnaire d'identification Windows, Secret Service Linux). Si aucun trousseau système n'est disponible, la clé n'est jamais écrite en clair sur le disque.
+- **Connexion directe sans intermédiaire** : aucune clé ne transite par un serveur tiers AnkiDraft ; votre ordinateur dialogue directement avec le fournisseur choisi.
+- **Masquage automatique dans les logs** : le pipeline de journalisation filtre automatiquement les clés d'API (`sk-*`, `AIza*`) et jetons `Bearer` avant toute écriture disque.
+- **Serveur MCP local (`SERVEUR MCP LOCAL`)** : depuis le même onglet **Moteurs IA**, activez ou désactivez le serveur en arrière-plan, choisissez le **Port d'écoute** (`8765` par défaut) sous **Avancé MCP & diagnostic**, régénérez le jeton Bearer 256 bits (**Renouveler le jeton**) et définissez l'onglet et la cible des demandes contextuelles.
 
-## 4. Contrôle du budget
+## 4. Préférences IA globales, RAG & contrôle des plafonds
 
-Avant de lancer une génération importante sur un livre entier, AnkiDraft estime le nombre de jetons (*tokens*) nécessaires et vous permet de fixer un plafond par exécution pour éviter toute surprise de facturation.
+- **Modèle IA par défaut global** : sélectionnez le moteur utilisé lorsqu'un [Agent](/fr/ai-setup/agents-et-tests-ab/) ou une étape hérite du modèle global.
+- **Bascules globales** : activez ou désactivez **Streaming des réponses**, **Capacités Vision activées**, **Validation automatique des cartes** et **Audit Linter automatique**.
+- **Plafonds de tokens, réflexion & délais** :
+  - Sous **Options avancées de génération & RAG** : réglez la **Température**, le **Plafond Max Tokens** (`4 096` à `128 000`, `16 384` par défaut), le **Budget Réflexion (CoT)** (`0` à `32 768` tokens), le **Délai max. de génération** par requête, ainsi que les réglages de recherche sémantique (**Chunks RAG (Top-K)** de `1` à `20` et **Seuil similarité min** de `40 %` à `95 %`).
+  - Sous **PARAMÈTRES DE GÉNÉRATION PAR DÉFAUT** : ajustez la **Température par défaut** (`0.30`), le **Budget max tokens par défaut** (`4 000`) et le **Délai de requête par défaut** (`60 s`).
+- **Protection budget du Consultant (`Budget Tokens Consultant` & `Budget Coût Consultant (USD)`)** : fixez un plafond dédié aux sessions du Consultant (jusqu'à `200 000 tokens` et `5.00 $`, défaut `50 000 tokens` / `0.50 $`), avec **arrêt préventif à 80 % du quota**.
+- **Suivi des estimations et coûts** : lors de la sélection d'un document ou du découpage en tranches, AnkiDraft affiche une estimation du volume en tokens (`~X tokens`) ; les pipelines DAG acceptent un plafond par étape ; la vue **Tests A/B** estime le coût USD avant comparaison ; et le compteur de la barre supérieure suit le volume cumulé consommé.
 
 ---
 
 # [FR] Utiliser un Modèle Local Gratuit avec Ollama
 URL: https://ankidraft.app/fr/ai-setup/local-models-ollama/
-Description: Générez des flashcards Anki atomiques 100 % hors-ligne et gratuitement sur votre ordinateur grâce aux modèles locaux Ollama sans aucune clé API.
+Description: Générez vos flashcards Anki 100 % hors-ligne et gratuitement sur votre ordinateur avec Ollama grâce à l'auto-détection locale, sans aucune clé API cloud.
 
-Vous ne souhaitez pas utiliser d'API payante ou vous étudiez des documents confidentiels sans connexion internet ? AnkiDraft s'intègre nativement avec **Ollama**.
+Vous ne souhaitez pas utiliser d'API payante ou vous révisez des documents confidentiels sans connexion Internet ? AnkiDraft s'intègre nativement avec **Ollama**.
 
 ## 1. Installer Ollama en 2 minutes
 
 1. Téléchargez et installez Ollama depuis [ollama.com](https://ollama.com).
-2. Ouvrez un terminal et téléchargez un modèle adapté à la configuration de votre ordinateur :
-   - **Ordinateur avec 8 Go de RAM** : `ollama pull llama3.2:3b` ou `ollama pull qwen2.5:3b`
-   - **Ordinateur avec 16 Go+ de RAM (ex. Mac M1/M2/M3/M4)** : `ollama pull qwen2.5:7b` ou `ollama pull mistral`
+2. Ouvrez votre terminal et téléchargez un modèle adapté à la mémoire vive (RAM) de votre ordinateur :
+   - **8 Go de RAM** : `ollama pull llama3.2:3b` ou `ollama pull qwen2.5:3b`
+   - **16 Go+ de RAM (ex. Apple Silicon M1/M2/M3/M4)** : `ollama pull qwen2.5:7b` ou `ollama pull mistral`
 
-## 2. Activer Ollama dans AnkiDraft
+## 2. Connecter et scanner Ollama dans AnkiDraft
 
-1. Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) > **Fournisseurs IA**.
-2. Sélectionnez **Ollama (Local)** : l'adresse par défaut `http://localhost:11434` est détectée automatiquement.
-3. Cliquez sur **Rafraîchir les modèles** et choisissez le modèle que vous venez de télécharger.
-4. Vous pouvez désormais générer et auditer vos flashcards gratuitement et 100 % hors ligne !
+1. Ouvrez **Paramètres** (<kbd>Ctrl+,</kbd>) › **Moteurs IA**.
+2. Sous **SERVEURS LOCAUX & PASSERELLES D'ACCÈS**, repérez la ligne **Ollama Local :** (`http://localhost:11434` par défaut ; seules les URL locales/loopback sont acceptées par sécurité anti-SSRF).
+3. Cliquez sur **Scanner les modèles** : AnkiDraft interroge Ollama (`/api/tags`), détecte automatiquement les capacités de chaque modèle (Vision, Thinking/CoT, JSON, fenêtre de contexte) et les importe dans votre catalogue avec l'indicateur **Modèle gratuit / inclus / local**.
+4. Vous pouvez également ajouter manuellement un modèle via **Ajouter un modèle ▾** › **Presets rapides populaires** › **`Ollama Local (llama3)`** ou **Modèle personnalisé...** (pratique pour ajuster la **Limite Contexte**, activer **Vision multimodale** sur un modèle vision local ou ajuster la **Température**).
+
+:::tip
+Si votre ordinateur génère lentement sur CPU ou GPU modeste, augmentez le **Délai max. de génération** et le **Délai de requête par défaut** dans **Paramètres** (<kbd>Ctrl+,</kbd>) › **Moteurs IA** afin d'éviter un arrêt prématuré sur les longs chapitres.
+:::
 
 ---
 

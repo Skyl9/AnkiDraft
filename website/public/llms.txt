@@ -46,9 +46,10 @@
 - [Synchronization, Duplicates, and Smart Merge](https://ankidraft.app/en/anki-sync/synchro_smart_merge/): Resolve conflicts during Anki imports with Smart Merge, preserve existing review schedules, and clean up duplicate flashcards automatically.
 
 ### AI Setup
-- [MCP Server, External Agents & Skills](https://ankidraft.app/en/ai-setup/consultant_mcp/): Connect Claude, Cursor, or Antigravity to AnkiDraft via MCP, load dedicated Skills in your agent workspace, and review every batch in Safeguard.
-- [Configuring AI Providers (OpenAI, Gemini, Claude)](https://ankidraft.app/en/ai-setup/ia_fournisseurs/): Securely connect your OpenAI, Anthropic, or Gemini API keys, configure local providers, and track your token budget per pipeline in AnkiDraft.
-- [Using a Free Local Model with Ollama](https://ankidraft.app/en/ai-setup/local-models-ollama/): Generate atomic Anki flashcards 100% offline and for free on your own computer using local Ollama models with full privacy and zero API fees.
+- [Agent Editor (Alt+9) and A/B Testing Lab](https://ankidraft.app/en/ai-setup/agents-et-tests-ab/): Build and version custom personas in Agent Editor (Alt+9), tailor Jinja2 prompts and model overrides, and compare models or pipelines side by side in A/B.
+- [MCP Server, External Agents & Workspaces](https://ankidraft.app/en/ai-setup/consultant_mcp/): Connect Claude, Cursor, or Antigravity to AnkiDraft's local MCP server, sync your ~/ankiforge_agentique workspace, and review every batch in Safeguard.
+- [Configuring AI Providers (OpenAI, Gemini, Claude)](https://ankidraft.app/en/ai-setup/ia_fournisseurs/): Securely connect OpenAI, Anthropic, Gemini, Groq, OpenCode, or OpenRouter API keys and configure generation token limits, RAG settings, and MCP budgets.
+- [Using a Free Local Model with Ollama](https://ankidraft.app/en/ai-setup/local-models-ollama/): Generate atomic Anki flashcards 100% offline and for free on your computer using local Ollama models with automatic capability detection and zero API keys.
 
 ### Guides & Help
 - [Visual Guide to the Distributed Lifecycle (AnkiDraft & Anki)](https://ankidraft.app/en/guides/cycle_de_vie_distribue/): Understand how the AnkiDraft authoring studio and the Anki spaced-repetition engine work together via .apkg and .colpkg without sync conflicts.
@@ -94,9 +95,10 @@
 - [Synchronisation, Doublons et Fusion Intelligente (Smart Merge)](https://ankidraft.app/fr/anki-sync/synchro_smart_merge/): Résolvez les conflits lors d'un import Anki avec le Smart Merge, préservez votre historique de révision et éliminez les cartes en doublon facilement.
 
 ### Configuration IA
-- [Serveur MCP, Agents Externes et Skills](https://ankidraft.app/fr/ai-setup/consultant_mcp/): Connectez Claude, Cursor ou Antigravity à AnkiDraft via MCP, utilisez les Skills dédiés dans votre espace agentique et validez chaque lot via Garde-Fou.
-- [Configurer vos Fournisseurs d'IA (OpenAI, Gemini, Claude)](https://ankidraft.app/fr/ai-setup/ia_fournisseurs/): Connectez vos clés API OpenAI, Anthropic ou Gemini en toute sécurité, configurez vos modèles locaux et maîtrisez votre budget de tokens IA global.
-- [Utiliser un Modèle Local Gratuit avec Ollama](https://ankidraft.app/fr/ai-setup/local-models-ollama/): Générez des flashcards Anki atomiques 100 % hors-ligne et gratuitement sur votre ordinateur grâce aux modèles locaux Ollama sans aucune clé API.
+- [Éditeur d'Agents (Alt+9) et Tests A/B](https://ankidraft.app/fr/ai-setup/agents-et-tests-ab/): Créez et versionnez vos personas dans Éditeur d'Agents (Alt+9), personnalisez les prompts Jinja2 et comparez moteurs ou pipelines dans Tests A/B.
+- [Serveur MCP, Agents Externes et Workspaces](https://ankidraft.app/fr/ai-setup/consultant_mcp/): Connectez Claude, Cursor ou Antigravity au serveur MCP local d'AnkiDraft, synchronisez votre workspace ~/ankiforge_agentique et validez via Garde-Fou.
+- [Configurer vos Fournisseurs d'IA (OpenAI, Gemini, Claude)](https://ankidraft.app/fr/ai-setup/ia_fournisseurs/): Connectez vos clés API OpenAI, Anthropic, Gemini, Groq, OpenCode ou OpenRouter en toute sécurité et maîtrisez les plafonds de tokens IA et Consultant.
+- [Utiliser un Modèle Local Gratuit avec Ollama](https://ankidraft.app/fr/ai-setup/local-models-ollama/): Générez vos flashcards Anki 100 % hors-ligne et gratuitement sur votre ordinateur avec Ollama grâce à l'auto-détection locale, sans aucune clé API cloud.
 
 ### Guides & Aide
 - [Guide Visuel du Cycle de Vie Distribué AnkiDraft et Anki](https://ankidraft.app/fr/guides/cycle_de_vie_distribue/): Comprendre la complémentarité entre le studio de création AnkiDraft et le moteur de révision Anki via .apkg et .colpkg sans aucun conflit de synchro.
