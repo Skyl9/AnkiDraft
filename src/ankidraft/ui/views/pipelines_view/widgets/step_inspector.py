@@ -556,6 +556,14 @@ class StepInspectorPanel(QFrame):
 
         self.combo_fail_beh = StyledComboBox()
         self.combo_fail_beh.setFixedHeight(30)
+        self.combo_fail_beh.setToolTip(
+            self.tr(
+                "Détermine le comportement du moteur DAG si cette étape échoue :\n"
+                "• stop : interrompt immédiatement le pipeline\n"
+                "• continue : ignore l'erreur et passe à l'étape suivante\n"
+                "• goto_failure_step : redirige vers une étape de secours dédiée"
+            )
+        )
         self.combo_fail_beh.addItem(
             load_phosphor_icon("ph.stop-circle", color=DesignTokens.COLOR_RED),
             self.tr("Arrêter le pipeline (stop)"),
@@ -712,6 +720,14 @@ class StepInspectorPanel(QFrame):
                 lbl_mode = QLabel(self.tr("Découpage :"))
                 lbl_mode.setStyleSheet(f"color: {DesignTokens.TEXT_MUTED}; font-size: 11px; font-weight: bold; margin-left: 10px;")
                 combo_mode = StyledComboBox()
+                combo_mode.setToolTip(
+                    self.tr(
+                        "Mode de découpage Map-Reduce du document :\n"
+                        "• page : traite chaque page PDF indépendamment\n"
+                        "• chapter : découpe selon la hiérarchie des chapitres/sections\n"
+                        "• paragraphs : regroupe par lots de paragraphes équilibrés"
+                    )
+                )
                 combo_mode.addItem(load_phosphor_icon("ph.file-text", color=DesignTokens.TEXT_PRIMARY), self.tr("Par Page (PDF)"), userData="page")
                 combo_mode.addItem(load_phosphor_icon("ph.article", color=DesignTokens.TEXT_PRIMARY), self.tr("Par Section / Chapitre"), userData="chapter")
                 combo_mode.addItem(load_phosphor_icon("ph.package", color=DesignTokens.TEXT_PRIMARY), self.tr("Par Lots de Paragraphes"), userData="paragraphs")

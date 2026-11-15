@@ -45,9 +45,10 @@ class TourBubble(QWidget):
 
     tour_finished = Signal()
 
-    def __init__(self, main_window: QWidget) -> None:
+    def __init__(self, main_window: QWidget, *, preserve_completion_flag: bool = False) -> None:
         super().__init__(main_window)
         self.main_window = main_window
+        self.preserve_completion_flag = preserve_completion_flag
 
         self.setWindowFlags(Qt.WindowType.ToolTip | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
@@ -266,15 +267,16 @@ class TourBubble(QWidget):
     def end_tour(self) -> None:
         """Termine et enregistre la fin de la visite guidée."""
         self.hide()
-        from ankidraft.utils.environment import get_app_qsettings
+        if not self.preserve_completion_flag:
+            from ankidraft.utils.environment import get_app_qsettings
 
-        settings = get_app_qsettings()
-        settings.setValue("app/tour_completed", True)
-        if hasattr(self.main_window, "settings") and hasattr(self.main_window.settings, "setValue"):
-            try:
-                self.main_window.settings.setValue("app/tour_completed", True)
-            except (RuntimeError, AttributeError, OSError) as e:
-                logger.debug("Échec enregistrement tour_completed : %s", e)
+            settings = get_app_qsettings()
+            settings.setValue("app/tour_completed", True)
+            if hasattr(self.main_window, "settings") and hasattr(self.main_window.settings, "setValue"):
+                try:
+                    self.main_window.settings.setValue("app/tour_completed", True)
+                except (RuntimeError, AttributeError, OSError) as e:
+                    logger.debug("Échec enregistrement tour_completed : %s", e)
         self.tour_finished.emit()
 
 
@@ -333,3 +335,123 @@ def create_default_tour_steps(main_window: Any) -> list[TourStep]:
             action=lambda: main_window._on_view_selected("consultant") if hasattr(main_window, "_on_view_selected") else None,
         ),
     ]
+
+
+def create_view_tour_steps(view_key: str, view_widget: QWidget) -> list[TourStep]:
+    """Génère une mini-visite guidée thématique (3 à 4 étapes) pour une vue donnée."""
+    from ankidraft.utils.i18n import tr
+
+    tours: dict[str, list[TourStep]] = {
+        "documents": [
+            TourStep(
+                title=tr("Bibliothèque de Sources"),
+                text=tr("Importez vos PDF, documents Markdown, vidéos YouTube ou pages web pour alimenter la forge."),
+                target_widget_getter=lambda: getattr(view_widget, "tree_sources", None),
+            ),
+            TourStep(
+                title=tr("Délimitation & Portée"),
+                text=tr("Sélectionnez précisément les chapitres, sections ou plages de pages à inclure sans modifier le document original."),
+                target_widget_getter=lambda: getattr(view_widget, "btn_delimit", None),
+            ),
+            TourStep(
+                title=tr("Indexation RAG & Couverture"),
+                text=tr("Vérifiez quelles sections sont indexées et déjà couvertes par vos cartes Anki."),
+                target_widget_getter=lambda: getattr(view_widget, "btn_index_rag", None),
+            ),
+        ],
+        "creation": [
+            TourStep(
+                title=tr("Studio de Génération"),
+                text=tr("Choisissez votre source documentaire, le paquet cible et le modèle de note Anki."),
+                target_widget_getter=lambda: getattr(view_widget, "combo_source", None),
+            ),
+            TourStep(
+                title=tr("Pipeline & Persona"),
+                text=tr("Sélectionnez le pipeline DAG et le profil pédagogique adaptés à votre matière."),
+                target_widget_getter=lambda: getattr(view_widget, "combo_pipeline", None),
+            ),
+            TourStep(
+                title=tr("Lancement & Prévisualisation"),
+                text=tr("Lancez la génération puis relisez chaque carte proposée avant de l'enregistrer dans votre collection."),
+                target_widget_getter=lambda: getattr(view_widget, "btn_generate", None),
+            ),
+        ],
+        "pipelines": [
+            TourStep(
+                title=tr("Sélection du Pipeline DAG"),
+                text=tr("Créez ou sélectionnez un workflow multi-étapes (LLM, RAG, Map-Reduce, Validation humaine)."),
+                target_widget_getter=lambda: getattr(view_widget, "combo_pipeline", None),
+            ),
+            TourStep(
+                title=tr("Chaîne d'Étapes"),
+                text=tr("Ordonnancez vos étapes et configurez les branchements conditionnels en cas de succès ou d'échec."),
+                target_widget_getter=lambda: getattr(view_widget, "steps_container", None),
+            ),
+            TourStep(
+                title=tr("Inspecteur d'Étape"),
+                text=tr("Réglez le prompt, le mode de découpage Map-Reduce et la politique d'échec de l'étape sélectionnée."),
+                target_widget_getter=lambda: getattr(view_widget, "inspector", None),
+            ),
+        ],
+        "analysis": [
+            TourStep(
+                title=tr("Audit Wozniak (20 Règles)"),
+                text=tr("Détectez automatiquement les cartes trop longues, ambiguës ou non atomiques."),
+                target_widget=view_widget,
+            ),
+            TourStep(
+                title=tr("Couverture Documentaire"),
+                text=tr("Inspectez les paliers de résolution (exact, section, page, lexical) reliant chaque note à sa source."),
+                target_widget=view_widget,
+            ),
+            TourStep(
+                title=tr("Correction Assistée"),
+                text=tr("Appliquez les suggestions d'amélioration ou ouvrez les cartes ciblées dans l'éditeur."),
+                target_widget=view_widget,
+            ),
+        ],
+        "consultant": [
+            TourStep(
+                title=tr("Cockpit MCP & Consultant"),
+                text=tr("Supervisez le serveur MCP local et les agents externes connectés à votre collection."),
+                target_widget=view_widget,
+            ),
+            TourStep(
+                title=tr("Garde-Fou en Deux Temps"),
+                text=tr("Toute mutation proposée par un agent passe par ce sas de validation humaine avant écriture en base."),
+                target_widget=view_widget,
+            ),
+            TourStep(
+                title=tr("Audit & Traçabilité"),
+                text=tr("Consultez l'historique des appels d'outils et les journaux d'exécution en temps réel."),
+                target_widget=view_widget,
+            ),
+        ],
+        "card_models": [
+            TourStep(
+                title=tr("Types de Notes Anki"),
+                text=tr("Gérez vos modèles de notes, champs personnalisés et gabarits Recto/Verso Jinja2."),
+                target_widget=view_widget,
+            ),
+            TourStep(
+                title=tr("Éditeur HTML / CSS"),
+                text=tr("Personnalisez le rendu visuel de vos cartes avec aperçu instantané."),
+                target_widget=view_widget,
+            ),
+            TourStep(
+                title=tr("Directives Cloze & KaTeX"),
+                text=tr("Testez vos textes à trous et formules mathématiques avant l'export .apkg."),
+                target_widget=view_widget,
+            ),
+        ],
+    }
+    return tours.get(view_key, [])
+
+
+def start_view_tour(view_key: str, view_widget: QWidget, parent_window: QWidget | None = None) -> TourBubble:
+    """Lance une mini-visite guidée thématique sans écraser app/tour_completed."""
+    host = parent_window or view_widget.window() or view_widget
+    bubble = TourBubble(host, preserve_completion_flag=True)
+    bubble.steps = create_view_tour_steps(view_key, view_widget)
+    bubble.start_tour()
+    return bubble

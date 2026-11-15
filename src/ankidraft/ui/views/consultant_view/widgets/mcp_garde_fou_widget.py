@@ -855,6 +855,8 @@ class MCPGardeFouWidget(QWidget):
             title=tr("Garde-Fou au repos"),
             description=tr("Toutes les propositions d'agents IA ont été traitées.\nVotre collection Anki est parfaitement synchronisée et protégée."),
             parent=self,
+            guide_page="ai-setup/consultant_mcp.md",
+            guide_anchor="2-garde-fou-de-securite-validation-humaine-en-deux-temps",
         )
         self.detail_stack.addWidget(self.empty_view)
 

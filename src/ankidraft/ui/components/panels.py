@@ -1020,7 +1020,7 @@ class StatCard(QFrame):
 
 
 class EmptyStateWidget(QFrame):
-    """Widget d'état vide avec icône, titre et description."""
+    """Widget d'état vide pédagogique avec icône, titre, description, action primaire et lien vers un guide."""
 
     def __init__(
         self,
@@ -1029,6 +1029,11 @@ class EmptyStateWidget(QFrame):
         description: str = "",
         action_button: QWidget | None = None,
         parent: QWidget | None = None,
+        *,
+        secondary_button: QWidget | None = None,
+        guide_page: str | None = None,
+        guide_anchor: str = "",
+        guide_label: str | None = None,
     ) -> None:
         super().__init__(parent)
         layout = QVBoxLayout(self)
@@ -1053,5 +1058,30 @@ class EmptyStateWidget(QFrame):
             self.desc_lbl.setStyleSheet(f"font-size: 12px; color: {DesignTokens.TEXT_MUTED}; border: none; background: transparent; max-width: 400px;")
             layout.addWidget(self.desc_lbl)
 
-        if action_button:
-            layout.addWidget(action_button, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.guide_button: QWidget | None = None
+        if secondary_button is not None:
+            self.guide_button = secondary_button
+        elif guide_page:
+            from ankidraft.ui.components.buttons import SecondaryButton
+
+            btn_guide = SecondaryButton(guide_label or self.tr("Lire le guide"))
+            btn_guide.setIcon(load_phosphor_icon("ph.book-open", color=DesignTokens.TEXT_PRIMARY))
+            btn_guide.clicked.connect(lambda: self._open_guide(guide_page, guide_anchor))
+            self.guide_button = btn_guide
+
+        if action_button is not None or self.guide_button is not None:
+            actions_row = QHBoxLayout()
+            actions_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            actions_row.setSpacing(8)
+            if action_button is not None:
+                actions_row.addWidget(action_button)
+            if self.guide_button is not None:
+                actions_row.addWidget(self.guide_button)
+            layout.addLayout(actions_row)
+
+    def _open_guide(self, guide_page: str, guide_anchor: str = "") -> None:
+        from ankidraft.ui.dialogs.doc_reader_dialog import DocReaderDialog
+
+        dlg = DocReaderDialog.open_at(guide_page, guide_anchor, parent=self.window())
+        dlg.show()
+        dlg.raise_()

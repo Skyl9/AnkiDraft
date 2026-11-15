@@ -320,9 +320,17 @@ class CreationView(QWidget):
         lbl_src = QLabel(self.tr("DOCUMENT SOURCE"))
         lbl_src.setMinimumWidth(0)
         lbl_src.setStyleSheet(f"color: {DesignTokens.TEXT_SECONDARY}; font-weight: 700; font-size: 11px; letter-spacing: 0.5px; border: none; background: transparent;")
+        from ankidraft.ui.components import ContextHelpButton
+
+        self.btn_context_help = ContextHelpButton(
+            "cards/generation_ia.md",
+            tooltip=self.tr("Aide sur le Studio de Génération de cartes"),
+            size=24,
+        )
         src_top.addWidget(src_ico)
         src_top.addWidget(lbl_src)
         src_top.addStretch()
+        src_top.addWidget(self.btn_context_help)
         src_layout.addLayout(src_top)
 
         self.doc_picker_btn = DocumentPickerButton(self)

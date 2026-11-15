@@ -314,6 +314,39 @@ class IconButton(QPushButton):
             self.setIcon(load_phosphor_icon(self.icon_name, color=color))
 
 
+class ContextHelpButton(IconButton):
+    """Bouton discret d'aide contextuelle (?) ouvrant DocReaderDialog sur la section ciblée."""
+
+    def __init__(
+        self,
+        page_path: str,
+        anchor: str = "",
+        *,
+        tooltip: str = "",
+        size: int = 26,
+        tour_callback: Any | None = None,
+        parent: QWidget | None = None,
+    ) -> None:
+        from ankidraft.utils.i18n import tr
+
+        effective_tooltip = tooltip or tr("Ouvrir l'aide contextuelle de cet écran")
+        super().__init__("ph.question", tooltip=effective_tooltip, size=size, parent=parent)
+        self.page_path = page_path
+        self.anchor = anchor
+        self.tour_callback = tour_callback
+        self.setAutoDefault(False)
+        self.clicked.connect(self.open_help)
+
+    def open_help(self) -> Any:
+        """Ouvre DocReaderDialog directement à la page et à l'ancre configurées."""
+        from ankidraft.ui.dialogs.doc_reader_dialog import DocReaderDialog
+
+        dlg = DocReaderDialog.open_at(self.page_path, self.anchor, parent=self.window())
+        dlg.show()
+        dlg.raise_()
+        return dlg
+
+
 class PremiumActionCard(QFrame):
     """Grande carte d'action avec icône + titre + description. Usage: Dashboard."""
 

@@ -268,12 +268,21 @@ class DocumentsView(FileDropMixin, QWidget):
         self.btn_copy_profile = IconButton("ph.arrows-left-right", tooltip=self.tr("Importer des documents depuis un autre profil"), size=24)
         self.btn_copy_profile.clicked.connect(self._on_import_from_other_profile)
 
+        from ankidraft.ui.components import ContextHelpButton
+
+        self.btn_context_help = ContextHelpButton(
+            "sources/hub_multimodal.md",
+            tooltip=self.tr("Aide sur la bibliothèque de sources et l'ingestion multimédia"),
+            size=24,
+        )
+
         explorer_toolbar.addWidget(self.btn_import, 1)
         explorer_toolbar.addWidget(self.btn_import_url)
         explorer_toolbar.addWidget(self.btn_copy_profile)
         explorer_toolbar.addWidget(self.btn_new_album)
         explorer_toolbar.addWidget(self.btn_new_folder)
         explorer_toolbar.addWidget(self.btn_delete)
+        explorer_toolbar.addWidget(self.btn_context_help)
         explorer_layout.addLayout(explorer_toolbar)
 
         # Champ de recherche dynamique
@@ -409,9 +418,14 @@ class DocumentsView(FileDropMixin, QWidget):
         btn_quick_album.setIcon(load_phosphor_icon("ph.images", color=DesignTokens.COLOR_PURPLE))
         btn_quick_album.clicked.connect(self._on_new_album)
 
+        self.btn_quick_guide = SecondaryButton(self.tr("Lire le guide"), tooltip=self.tr("Ouvrir le guide de prise en main du Hub Multimodal"))
+        self.btn_quick_guide.setIcon(load_phosphor_icon("ph.book-open", color=DesignTokens.TEXT_PRIMARY))
+        self.btn_quick_guide.clicked.connect(self._on_open_documents_guide)
+
         empty_actions.addWidget(btn_quick_import)
         empty_actions.addWidget(btn_quick_url)
         empty_actions.addWidget(btn_quick_album)
+        empty_actions.addWidget(self.btn_quick_guide)
         empty_layout.addLayout(empty_actions)
 
         self.editor_stack.addWidget(empty_page)
@@ -1803,6 +1817,14 @@ class DocumentsView(FileDropMixin, QWidget):
         dialog = AlbumImportDialog(self)
         dialog.album_created.connect(self._on_album_created)
         dialog.exec()
+
+    @Slot()
+    def _on_open_documents_guide(self) -> None:
+        from ankidraft.ui.dialogs.doc_reader_dialog import DocReaderDialog
+
+        dlg = DocReaderDialog.open_at("sources/hub_multimodal.md", parent=self.window())
+        dlg.show()
+        dlg.raise_()
 
     @Slot(int)
     def _on_album_created(self, doc_id: int) -> None:

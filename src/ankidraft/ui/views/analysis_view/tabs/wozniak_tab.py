@@ -148,9 +148,17 @@ class AIWozniakLinterTab(QWidget):
         row1.addWidget(self.btn_deck)
         row1.addWidget(self.engine_combo)
         row1.addStretch()
+        from ankidraft.ui.components import ContextHelpButton
+
+        self.btn_context_help = ContextHelpButton(
+            "cards/qualite_wozniak.md",
+            tooltip=self.tr("Aide sur l'audit des 20 règles de Piotr Wozniak"),
+            size=26,
+        )
         row1.addWidget(self.btn_rules)
         row1.addWidget(self.btn_analyze)
         row1.addWidget(self.score_badge)
+        row1.addWidget(self.btn_context_help)
         h_outer_layout.addLayout(row1)
 
         # Ligne 2 : Recherche & Statistiques

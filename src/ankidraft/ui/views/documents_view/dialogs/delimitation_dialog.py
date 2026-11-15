@@ -2015,8 +2015,16 @@ class DocumentDelimitationDialog(ScopeModeExclusivityMixin, QDialog):
             f"background-color: {DesignTokens.COLOR_YELLOW_BG}; color: {DesignTokens.COLOR_YELLOW_TEXT}; border: 1px solid {DesignTokens.COLOR_YELLOW_BORDER};"
             f" border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: bold;"
         )
+        from ankidraft.ui.components import ContextHelpButton
+
+        self.btn_context_help = ContextHelpButton(
+            "sources/delimitation_portee.md",
+            tooltip=self.tr("Aide sur la délimitation et les modes de portée"),
+            size=24,
+        )
         header_top.addWidget(badge_global)
         header_top.addStretch()
+        header_top.addWidget(self.btn_context_help)
         h_layout.addLayout(header_top)
 
         desc_lbl = QLabel(
@@ -2059,21 +2067,25 @@ class DocumentDelimitationDialog(ScopeModeExclusivityMixin, QDialog):
             }}
         """
         self.btn_scope_mode_all = QPushButton(self.tr("Tout le document"))
+        self.btn_scope_mode_all.setToolTip(self.tr("Inclure l'intégralité du document dans le périmètre d'indexation et de génération."))
         self.btn_scope_mode_all.setIcon(load_phosphor_icon("ph.files", color=DesignTokens.TEXT_PRIMARY))
         self.btn_scope_mode_all.setCheckable(True)
         self.btn_scope_mode_all.setStyleSheet(mode_btn_style)
 
         self.btn_scope_mode_range = QPushButton(self.tr("Plage de pages"))
+        self.btn_scope_mode_range.setToolTip(self.tr("Restreindre le périmètre à un intervalle continu de pages (ex. pages 12 à 34)."))
         self.btn_scope_mode_range.setIcon(load_phosphor_icon("ph.frame-corners", color=DesignTokens.TEXT_PRIMARY))
         self.btn_scope_mode_range.setCheckable(True)
         self.btn_scope_mode_range.setStyleSheet(mode_btn_style)
 
         self.btn_scope_mode_structure = QPushButton(self.tr("Par Chapitres"))
+        self.btn_scope_mode_structure.setToolTip(self.tr("Cocher ou écarter des chapitres entiers selon la table des matières."))
         self.btn_scope_mode_structure.setIcon(load_phosphor_icon("ph.tree-structure", color=DesignTokens.TEXT_PRIMARY))
         self.btn_scope_mode_structure.setCheckable(True)
         self.btn_scope_mode_structure.setStyleSheet(mode_btn_style)
 
         self.btn_scope_mode_sections = QPushButton(self.tr("Par Sections"))
+        self.btn_scope_mode_sections.setToolTip(self.tr("Sélectionner finement des sous-sections individuelles sans modifier le document source."))
         self.btn_scope_mode_sections.setIcon(load_phosphor_icon("ph.list-dashes", color=DesignTokens.TEXT_PRIMARY))
         self.btn_scope_mode_sections.setCheckable(True)
         self.btn_scope_mode_sections.setStyleSheet(mode_btn_style)

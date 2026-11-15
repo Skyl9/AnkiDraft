@@ -411,8 +411,16 @@ class MCPServerDashboardWidget(QWidget):
         self.sub_tab_bar.add_tab("workspaces", self.tr("Guides & Workspaces"), icon_name="ph.robot")
         self.sub_tab_bar.tab_index_changed.connect(self._on_sub_tab_changed)
 
+        from ankidraft.ui.components import ContextHelpButton
+
+        self.btn_context_help = ContextHelpButton(
+            "ai-setup/consultant_mcp.md",
+            tooltip=self.tr("Aide sur le Cockpit MCP et le Garde-Fou en deux temps"),
+            size=26,
+        )
         tab_layout.addWidget(self.sub_tab_bar)
         tab_layout.addStretch()
+        tab_layout.addWidget(self.btn_context_help)
         outer_layout.addWidget(self.tab_container)
 
         # ── Empilement des vues ───────────────────────────────────────────

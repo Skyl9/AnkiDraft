@@ -272,6 +272,7 @@ class DocumentInspectorPanel(QWidget):
         header_lbl.setMinimumWidth(120)
 
         self.lbl_doc_summary = QLabel(self.tr("Couverture : 0%"))
+        self.lbl_doc_summary.setToolTip(self.tr("Paliers de résolution de couverture (du plus précis au plus large) :\nexact → section → page → lexical"))
         self.lbl_doc_summary.setFont(QFont(DesignTokens.FONT_MAIN, 10, QFont.Weight.Bold))
         self.lbl_doc_summary.setStyleSheet(
             f"background-color: {DesignTokens.COLOR_GREEN_BG}; color: {DesignTokens.COLOR_GREEN}; border: 1px solid {DesignTokens.COLOR_GREEN_BORDER}; border-radius: 9999px; padding: 4px 10px;"
@@ -1560,10 +1561,18 @@ class AISourcesDiagnosticTab(QWidget):
         self.btn_refresh.setIcon(load_phosphor_icon("ph.arrows-clockwise", color=DesignTokens.TEXT_PRIMARY))
         self.btn_refresh.clicked.connect(self.refresh_data)
 
+        from ankidraft.ui.components import ContextHelpButton
+
+        self.btn_context_help = ContextHelpButton(
+            "cards/dag_et_rag.md",
+            tooltip=self.tr("Aide sur l'alignement RAG et la couverture documentaire"),
+            size=26,
+        )
         row1.addWidget(self.search_input, 1)
         row1.addWidget(self.status_combo)
         row1.addWidget(self.sort_combo)
         row1.addWidget(self.btn_refresh)
+        row1.addWidget(self.btn_context_help)
         f_outer.addLayout(row1)
 
         row2 = QHBoxLayout()

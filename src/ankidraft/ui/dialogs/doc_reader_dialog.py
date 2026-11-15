@@ -184,10 +184,19 @@ class DocReaderDialog(QDialog):
             self.lbl_title.setText(effective_title)
             self.setWindowTitle(effective_title)
 
-        # Conversion Markdown vers HTML avec extensions de tables et blocs de code
+        from markdown.extensions.toc import TocExtension
+
+        from ankidraft.services.documentation.doc_service import _slugify
+
+        # Conversion Markdown vers HTML avec ancres de titres (TocExtension), tables et blocs de code
         html_body = markdown.markdown(
             cleaned_md,
-            extensions=["tables", "fenced_code", "nl2br"],
+            extensions=[
+                "tables",
+                "fenced_code",
+                "nl2br",
+                TocExtension(slugify=lambda value, _sep: _slugify(value)),
+            ],
         )
 
         full_html = self._wrap_in_document_template(html_body)
@@ -197,6 +206,20 @@ class DocReaderDialog(QDialog):
         doc.setBaseUrl(QUrl.fromLocalFile(str(self._base_dir) + "/"))
         self.text_browser.setHtml(full_html)
         self.text_browser.moveCursor(QTextCursor.MoveOperation.Start)
+
+    def scroll_to_anchor(self, anchor: str) -> bool:
+        """Défile vers une ancre de section (#slug ou texte de titre) dans le document chargé."""
+        clean_anchor = anchor.strip().lstrip("#")
+        if not clean_anchor:
+            return False
+
+        self.text_browser.scrollToAnchor(clean_anchor)
+        search_candidate = clean_anchor.replace("-", " ").strip()
+        if search_candidate:
+            self.text_browser.moveCursor(QTextCursor.MoveOperation.Start)
+            if self.text_browser.find(search_candidate):
+                return True
+        return True
 
     def _wrap_in_document_template(self, html_body: str) -> str:
         """Enveloppe le fragment HTML avec les styles CSS dérivés des DesignTokens."""
@@ -414,4 +437,20 @@ class DocReaderDialog(QDialog):
                 base_dir=user_docs_path,
                 title=cls.tr("Erreur"),
             )
+        return dlg
+
+    @classmethod
+    def open_at(cls, page_path: str, anchor: str = "", parent: QWidget | None = None) -> DocReaderDialog:
+        """Ouvre le lecteur directement sur une page relative du corpus et une ancre optionnelle."""
+        raw_page = page_path.strip()
+        effective_anchor = anchor.strip().lstrip("#")
+        if "#" in raw_page:
+            page_part, _, frag_part = raw_page.partition("#")
+            raw_page = page_part.strip()
+            if not effective_anchor:
+                effective_anchor = frag_part.strip().lstrip("#")
+
+        dlg = cls.open_guide(raw_page, parent=parent)
+        if effective_anchor:
+            dlg.scroll_to_anchor(effective_anchor)
         return dlg

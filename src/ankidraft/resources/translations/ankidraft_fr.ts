@@ -4,7 +4,7 @@
 <context>
     <name></name>
     <message>
-        <location filename="../../__main__.py" line="+296"/>
+        <location filename="../../__main__.py" line="+301"/>
         <source>Espace de travail en cours d&apos;utilisation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -285,6 +285,12 @@ L&apos;accès simultané au même profil est formellement bloqué pour éviter t
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../ui/components/buttons.py" line="+332"/>
+        <source>Ouvrir l&apos;aide contextuelle de cet écran</source>
+        <extracomment>Relief de repos : flou et décalage du halo porté par la bordure du bouton.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../ui/components/code_editor/widgets/status_bar.py" line="+107"/>
         <source>Cliquez pour aller à la première anomalie :
 %1</source>
@@ -381,7 +387,7 @@ Cliquer pour tronquer la saisie à ce niveau</source>
         <location line="+6"/>
         <location line="+64"/>
         <location filename="../../ui/views/analysis_view/tabs/duplicates_merge_tab.py" line="+192"/>
-        <location filename="../../ui/views/creation_view/view.py" line="+1720"/>
+        <location filename="../../ui/views/creation_view/view.py" line="+1728"/>
         <location line="+29"/>
         <location filename="../../ui/widgets/segment_inspector_widget.py" line="+509"/>
         <location line="+75"/>
@@ -681,7 +687,7 @@ Cliquer pour voir les détails</source>
         <location filename="../../ui/dialogs/addon_manager_dialog.py" line="+104"/>
         <location filename="../../ui/dialogs/human_validation_dialog.py" line="+72"/>
         <location filename="../../ui/views/consultant_view/widgets/inline_diff_card_widget.py" line="+209"/>
-        <location filename="../../ui/views/pipelines_view/view.py" line="+786"/>
+        <location filename="../../ui/views/pipelines_view/view.py" line="+809"/>
         <location filename="../../ui/widgets/note_editor_widget.py" line="+330"/>
         <source>&lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
@@ -934,12 +940,12 @@ Aucune modification ne sera écrite en base de données.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/dialogs/doc_reader_dialog.py" line="+334"/>
+        <location filename="../../ui/dialogs/doc_reader_dialog.py" line="+360"/>
         <source>%1 résultat(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+76"/>
         <source># Guide Introuvable
 
 Le document `%1` n&apos;a pas pu être chargé.</source>
@@ -968,7 +974,7 @@ Le document `%1` n&apos;a pas pu être chargé.</source>
     <message>
         <location line="+83"/>
         <location filename="../../ui/views/documents_view/dialogs/delimitation_dialog.py" line="+492"/>
-        <location line="+3274"/>
+        <location line="+3286"/>
         <source>Ch. %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1024,7 +1030,7 @@ Le document `%1` n&apos;a pas pu être chargé.</source>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="+1782"/>
+        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="+1791"/>
         <location line="+3"/>
         <location line="+1"/>
         <location filename="../../ui/views/analysis_view/tabs/wozniak_tab.py" line="+122"/>
@@ -1386,7 +1392,7 @@ Nombre de planches : %2</source>
         <location line="+26"/>
         <location filename="../../ui/views/batch_view/widgets/batch_staging_panel.py" line="+476"/>
         <location filename="../../ui/views/creation_view/view.py" line="+211"/>
-        <location filename="../../ui/views/documents_view/view.py" line="+1675"/>
+        <location filename="../../ui/views/documents_view/view.py" line="+1689"/>
         <location filename="../../ui/views/documents_view/widgets/audio_player.py" line="+234"/>
         <location line="+11"/>
         <location line="+29"/>
@@ -1468,7 +1474,7 @@ Voulez-vous le dupliquer (Non) ou écraser sa configuration (Oui) ?</source>
     <message>
         <location line="+5"/>
         <location line="+261"/>
-        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-510"/>
+        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-518"/>
         <location filename="../../ui/widgets/card_create_view_widget.py" line="-67"/>
         <source>Paquet : %1</source>
         <translation type="unfinished"></translation>
@@ -2834,7 +2840,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../../ui/views/documents_view/dialogs/delimitation_dialog.py" line="-3518"/>
+        <location filename="../../ui/views/documents_view/dialogs/delimitation_dialog.py" line="-3530"/>
         <source>%1 carte%2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2944,7 +2950,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
     <message>
         <location line="+700"/>
         <location filename="../../ui/views/documents_view/dialogs/delimitation_dialog.py" line="-19"/>
-        <location filename="../../ui/views/pipelines_view/widgets/step_inspector.py" line="+971"/>
+        <location filename="../../ui/views/pipelines_view/widgets/step_inspector.py" line="+987"/>
         <location filename="../../ui/widgets/editor_toolbar_widget.py" line="+179"/>
         <location line="+143"/>
         <source>%1%2</source>
@@ -3036,7 +3042,7 @@ Insère : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-1108"/>
+        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-1109"/>
         <source>Document introuvable.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3061,7 +3067,7 @@ Insère : %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+455"/>
+        <location line="+456"/>
         <location line="+78"/>
         <source>⊘ %1  ·  Exclue de l&apos;analyse</source>
         <translation type="unfinished"></translation>
@@ -3069,7 +3075,7 @@ Insère : %2</source>
     <message>
         <location line="-76"/>
         <location line="+78"/>
-        <location filename="../../ui/views/documents_view/view.py" line="+721"/>
+        <location filename="../../ui/views/documents_view/view.py" line="+729"/>
         <source>%1
 Hors périmètre : cette section ne compte plus dans la couverture du document.</source>
         <translation type="unfinished"></translation>
@@ -3215,7 +3221,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+336"/>
+        <location line="+344"/>
         <source>✅ %1 fiches Anki synchronisées via les tags sur l&apos;ensemble des cours !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3273,7 +3279,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+204"/>
+        <location line="+212"/>
         <source>Paquet actif : %1 • Prêt pour l&apos;audit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4147,13 +4153,13 @@ Gabarits : %3</source>
     </message>
     <message>
         <location line="+131"/>
-        <location line="+269"/>
+        <location line="+277"/>
         <source>Nouvelle proposition de refactorisation reçue (#%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-267"/>
-        <location line="+269"/>
+        <location line="-275"/>
+        <location line="+277"/>
         <source>Nouvelle proposition reçue (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4179,18 +4185,18 @@ Gabarits : %3</source>
     </message>
     <message>
         <location line="+44"/>
-        <location line="+1255"/>
+        <location line="+1257"/>
         <source>Étape %1 — %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1252"/>
-        <location line="+1268"/>
+        <location line="-1254"/>
+        <location line="+1270"/>
         <source>Proposition — %1 #%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1232"/>
+        <location line="-1234"/>
         <source>CARTE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4222,12 +4228,12 @@ Gabarits : %3</source>
     </message>
     <message>
         <location line="+316"/>
-        <location line="+647"/>
+        <location line="+649"/>
         <source>PROPOSITIONS EN ATTENTE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-631"/>
+        <location line="-633"/>
         <source>Replier le volet de sélection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4268,13 +4274,13 @@ Gabarits : %3</source>
     </message>
     <message>
         <location line="+54"/>
-        <location line="+490"/>
+        <location line="+492"/>
         <source>Garde-Fou au repos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-489"/>
-        <location line="+490"/>
+        <location line="-491"/>
+        <location line="+492"/>
         <source>Toutes les propositions d&apos;agents IA ont été traitées.
 Votre collection Anki est parfaitement synchronisée et protégée.</source>
         <translation type="unfinished"></translation>
@@ -5004,12 +5010,12 @@ Cette action est irréversible.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/creation_view/view.py" line="-2748"/>
+        <location filename="../../ui/views/creation_view/view.py" line="-2756"/>
         <source>Créer une saisie libre sans document source (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+405"/>
+        <location line="+413"/>
         <source>Enregistrer les cartes validées dans votre collection AnkiForge (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5035,7 +5041,7 @@ Cette action est irréversible.</source>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../../ui/views/documents_view/view.py" line="-1280"/>
+        <location filename="../../ui/views/documents_view/view.py" line="-1288"/>
         <source>%1 (Non extrait)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5362,7 +5368,7 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+101"/>
         <source>(Total : %1 pages)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5441,7 +5447,7 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/documents_view/view.py" line="-873"/>
+        <location filename="../../ui/views/documents_view/view.py" line="-887"/>
         <source>Importer un document (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5451,7 +5457,7 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+191"/>
+        <location line="+205"/>
         <source>Markdown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5562,7 +5568,7 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+212"/>
+        <location line="+220"/>
         <source>PDF &apos;%1&apos; importé. Démarrage de l&apos;analyse Marker OCR...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6030,7 +6036,7 @@ Voulez-vous la sauvegarder avant de continuer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/pipelines_view/view.py" line="-580"/>
+        <location filename="../../ui/views/pipelines_view/view.py" line="-603"/>
         <source>0 étapes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6045,13 +6051,13 @@ Voulez-vous la sauvegarder avant de continuer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+288"/>
+        <location line="+297"/>
         <location line="+1"/>
         <source>%1 étape%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+66"/>
         <location filename="../../ui/views/pipelines_view/widgets/step_item.py" line="+71"/>
         <source>&lt;b&gt;%1.&lt;/b&gt; %2</source>
         <translation type="unfinished"></translation>
@@ -6145,7 +6151,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/pipelines_view/widgets/step_inspector.py" line="-876"/>
+        <location filename="../../ui/views/pipelines_view/widgets/step_inspector.py" line="-892"/>
         <source>Agent IA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6200,7 +6206,7 @@ Veuillez corriger le template avant d&apos;enregistrer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+381"/>
+        <location line="+397"/>
         <source>Tagguer les cartes avec leur section source</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8965,8 +8971,188 @@ Une nouvelle version sera automatiquement créée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/widgets/tour_guide.py" line="+188"/>
+        <location filename="../../ui/widgets/tour_guide.py" line="+189"/>
         <source>%1/%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+158"/>
+        <source>Bibliothèque de Sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Importez vos PDF, documents Markdown, vidéos YouTube ou pages web pour alimenter la forge.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Délimitation &amp; Portée</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sélectionnez précisément les chapitres, sections ou plages de pages à inclure sans modifier le document original.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Indexation RAG &amp; Couverture</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Vérifiez quelles sections sont indexées et déjà couvertes par vos cartes Anki.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Studio de Génération</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Choisissez votre source documentaire, le paquet cible et le modèle de note Anki.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Pipeline &amp; Persona</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sélectionnez le pipeline DAG et le profil pédagogique adaptés à votre matière.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Lancement &amp; Prévisualisation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Lancez la génération puis relisez chaque carte proposée avant de l&apos;enregistrer dans votre collection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Sélection du Pipeline DAG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Créez ou sélectionnez un workflow multi-étapes (LLM, RAG, Map-Reduce, Validation humaine).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Chaîne d&apos;Étapes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ordonnancez vos étapes et configurez les branchements conditionnels en cas de succès ou d&apos;échec.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Inspecteur d&apos;Étape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Réglez le prompt, le mode de découpage Map-Reduce et la politique d&apos;échec de l&apos;étape sélectionnée.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Audit Wozniak (20 Règles)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Détectez automatiquement les cartes trop longues, ambiguës ou non atomiques.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Couverture Documentaire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Inspectez les paliers de résolution (exact, section, page, lexical) reliant chaque note à sa source.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Correction Assistée</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Appliquez les suggestions d&apos;amélioration ou ouvrez les cartes ciblées dans l&apos;éditeur.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Cockpit MCP &amp; Consultant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Supervisez le serveur MCP local et les agents externes connectés à votre collection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Garde-Fou en Deux Temps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Toute mutation proposée par un agent passe par ce sas de validation humaine avant écriture en base.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Audit &amp; Traçabilité</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Consultez l&apos;historique des appels d&apos;outils et les journaux d&apos;exécution en temps réel.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Types de Notes Anki</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Gérez vos modèles de notes, champs personnalisés et gabarits Recto/Verso Jinja2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Éditeur HTML / CSS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Personnalisez le rendu visuel de vos cartes avec aperçu instantané.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Directives Cloze &amp; KaTeX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Testez vos textes à trous et formules mathématiques avant l&apos;export .apkg.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9750,7 +9936,7 @@ Tous les clients MCP externes configurés (Claude Desktop, etc.) devront être m
 <context>
     <name>AISourcesDiagnosticTab</name>
     <message>
-        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-308"/>
+        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-316"/>
         <source>Rechercher un document ou cours...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9805,7 +9991,12 @@ Tous les clients MCP externes configurés (Claude Desktop, etc.) devront être m
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+13"/>
+        <source>Aide sur l&apos;alignement RAG et la couverture documentaire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Formats :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10027,7 +10218,7 @@ Tous les clients MCP externes configurés (Claude Desktop, etc.) devront être m
 <context>
     <name>AIWozniakLinterTab</name>
     <message>
-        <location filename="../../ui/views/analysis_view/tabs/wozniak_tab.py" line="-477"/>
+        <location filename="../../ui/views/analysis_view/tabs/wozniak_tab.py" line="-485"/>
         <source>Audit Wozniak</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10042,7 +10233,12 @@ Tous les clients MCP externes configurés (Claude Desktop, etc.) devront être m
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+16"/>
+        <source>Aide sur l&apos;audit des 20 règles de Piotr Wozniak</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Rechercher une carte, un mot-clé ou une anomalie...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12805,12 +13001,17 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>CreationView</name>
     <message>
-        <location filename="../../ui/views/creation_view/view.py" line="-2869"/>
+        <location filename="../../ui/views/creation_view/view.py" line="-2877"/>
         <source>DOCUMENT SOURCE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+7"/>
+        <source>Aide sur le Studio de Génération de cartes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+58"/>
         <source>CIBLES ANKI</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13789,7 +13990,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DocReaderDialog</name>
     <message>
-        <location filename="../../ui/dialogs/doc_reader_dialog.py" line="-354"/>
+        <location filename="../../ui/dialogs/doc_reader_dialog.py" line="-392"/>
         <source>Documentation &amp; Guides AnkiForge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13834,7 +14035,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="+208"/>
         <source>0 résultat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13842,12 +14043,17 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DocumentDelimitationDialog</name>
     <message>
-        <location filename="../../ui/views/documents_view/dialogs/delimitation_dialog.py" line="-1929"/>
+        <location filename="../../ui/views/documents_view/dialogs/delimitation_dialog.py" line="-1941"/>
         <source>DÉLIMITATION GLOBALE (STRUCTURE DU DOCUMENT)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+9"/>
+        <source>Aide sur la délimitation et les modes de portée</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Éliminez définitivement les parties non pertinentes (pages blanches, répétitions, sommaires, préfaces). Cette délimitation assainit durablement la structure du document dans la bibliothèque et réindexe le moteur de recherche IA (RAG).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13857,8 +14063,18 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Inclure l&apos;intégralité du document dans le périmètre d&apos;indexation et de génération.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+5"/>
         <source>Plage de pages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Restreindre le périmètre à un intervalle continu de pages (ex. pages 12 à 34).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13867,8 +14083,18 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Cocher ou écarter des chapitres entiers selon la table des matières.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+5"/>
         <source>Par Sections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sélectionner finement des sous-sections individuelles sans modifier le document source.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14129,13 +14355,19 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DocumentInspectorPanel</name>
     <message>
-        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-1596"/>
+        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-1605"/>
         <source>Retourner à la liste générale des documents</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Couverture : 0%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Paliers de résolution de couverture (du plus précis au plus large) :
+exact → section → page → lexical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14340,7 +14572,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DocumentPreviewWidget</name>
     <message>
-        <location filename="../../ui/views/documents_view/dialogs/delimitation_dialog.py" line="-2943"/>
+        <location filename="../../ui/views/documents_view/dialogs/delimitation_dialog.py" line="-2955"/>
         <source>Aperçu</source>
         <extracomment>Plafond de décodage de l&apos;aperçu. Un album de 200 planches en pleine résolution coûterait des secondes de gel pour un cadre de 700 px : le rendu est borné.</extracomment>
         <translation type="unfinished"></translation>
@@ -14604,7 +14836,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DocumentsView</name>
     <message>
-        <location filename="../../ui/views/documents_view/view.py" line="-2621"/>
+        <location filename="../../ui/views/documents_view/view.py" line="-2643"/>
         <source>Importer depuis le Web / YouTube</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14615,17 +14847,22 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     </message>
     <message>
         <location line="+3"/>
-        <location line="+1871"/>
+        <location line="+1893"/>
         <source>Supprimer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1867"/>
+        <location line="-1889"/>
         <source>Importer des documents depuis un autre profil</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+7"/>
+        <source>Aide sur la bibliothèque de sources et l&apos;ingestion multimédia</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Rechercher un document...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14665,7 +14902,17 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+4"/>
+        <source>Lire le guide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Ouvrir le guide de prise en main du Hub Multimodal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>Sélectionnez un document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14731,25 +14978,25 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     </message>
     <message>
         <location line="+100"/>
-        <location line="+1660"/>
+        <location line="+1668"/>
         <location line="+21"/>
         <source>Couverture : 0%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1677"/>
+        <location line="-1685"/>
         <source>Ouvrir le diagnostic complet du document dans Analyse &amp; Audit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+25"/>
-        <location line="+1634"/>
+        <location line="+1642"/>
         <location line="+21"/>
         <source>0 sections analysées • 0 cartes liées</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1649"/>
+        <location line="-1657"/>
         <source>Associer les fiches portant les tags de traçabilité (source:/section:/page:) aux sections de ce document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14934,7 +15181,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+77"/>
+        <location line="+85"/>
         <location line="+4"/>
         <source>Erreur lors de l&apos;import du PDF.</source>
         <translation type="unfinished"></translation>
@@ -15822,6 +16069,14 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     <message>
         <location line="+7"/>
         <source>Rétablir par défaut</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EmptyStateWidget</name>
+    <message>
+        <location filename="../../ui/components/panels.py" line="+449"/>
+        <source>Lire le guide</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17067,7 +17322,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>IdePanel</name>
     <message>
-        <location filename="../../ui/components/panels.py" line="-224"/>
+        <location filename="../../ui/components/panels.py" line="-673"/>
         <source>Aucun onglet affiché</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17763,7 +18018,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>LinkedNoteCard</name>
     <message>
-        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-1258"/>
+        <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="-1259"/>
         <source>Ouvrir cette note dans l&apos;éditeur de cartes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17998,7 +18253,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>MCPActivityDetailDialog</name>
     <message>
-        <location filename="../../ui/views/consultant_view/widgets/mcp_dashboard_widget.py" line="-422"/>
+        <location filename="../../ui/views/consultant_view/widgets/mcp_dashboard_widget.py" line="-430"/>
         <source>Succès</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18057,35 +18312,40 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
     <name>MCPServerDashboardWidget</name>
     <message>
         <location line="+57"/>
-        <location line="+269"/>
+        <location line="+277"/>
         <source>Nouvelle proposition de refactorisation reçue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-107"/>
         <source>Supervision &amp; Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+70"/>
+        <location line="+78"/>
         <source>Garde-Fou &amp; Validation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-69"/>
+        <location line="-77"/>
         <source>Catalogue d&apos;Outils</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+62"/>
+        <location line="+70"/>
         <source>Activité</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-61"/>
+        <location line="-69"/>
         <source>Guides &amp; Workspaces</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Aide sur le Cockpit MCP et le Garde-Fou en deux temps</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -20265,7 +20525,7 @@ Utilisez {{ text_source }}.</source>
 <context>
     <name>PersonaIdentityCard</name>
     <message>
-        <location filename="../../ui/views/pipelines_view/widgets/step_inspector.py" line="-683"/>
+        <location filename="../../ui/views/pipelines_view/widgets/step_inspector.py" line="-699"/>
         <source>&lt;b&gt;Agent : Non défini&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20363,7 +20623,7 @@ Utilisez {{ text_source }}.</source>
 <context>
     <name>PipelinesView</name>
     <message>
-        <location filename="../../ui/views/pipelines_view/view.py" line="-730"/>
+        <location filename="../../ui/views/pipelines_view/view.py" line="-753"/>
         <source>PIPELINE :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20378,12 +20638,17 @@ Utilisez {{ text_source }}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>À quoi sert le moteur DAG ? (rôle, garde-fous, intérêt du test)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+6"/>
+        <source>Ouvrir la documentation complète des pipelines DAG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>ÉTAPES DU WORKFLOW :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20443,7 +20708,22 @@ Utilisez {{ text_source }}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="+123"/>
+        <source>Ajouter une étape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Aucune étape dans ce pipeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ajoutez une première étape (LLM, RAG, Map-Reduce ou Validation humaine) pour construire votre workflow DAG.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+122"/>
         <source>Pipeline renommé avec succès</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21780,6 +22060,14 @@ Utilisez {{ text_source }}.</source>
     </message>
     <message>
         <location line="+9"/>
+        <source>Détermine le comportement du moteur DAG si cette étape échoue :
+• stop : interrompt immédiatement le pipeline
+• continue : ignore l&apos;erreur et passe à l&apos;étape suivante
+• goto_failure_step : redirige vers une étape de secours dédiée</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
         <source>Arrêter le pipeline (stop)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21814,7 +22102,15 @@ Utilisez {{ text_source }}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
+        <source>Mode de découpage Map-Reduce du document :
+• page : traite chaque page PDF indépendamment
+• chapter : découpe selon la hiérarchie des chapitres/sections
+• paragraphs : regroupe par lots de paragraphes équilibrés</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Par Page (PDF)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -22997,7 +23293,7 @@ Utilisez {{ text_source }}.</source>
 <context>
     <name>TourBubble</name>
     <message>
-        <location filename="../../ui/widgets/tour_guide.py" line="-101"/>
+        <location filename="../../ui/widgets/tour_guide.py" line="-355"/>
         <source>Titre</source>
         <translation type="unfinished"></translation>
     </message>
@@ -23342,7 +23638,7 @@ https://blog.example.com/article-1</source>
 <context>
     <name>cls</name>
     <message>
-        <location filename="../../ui/dialogs/doc_reader_dialog.py" line="+62"/>
+        <location filename="../../ui/dialogs/doc_reader_dialog.py" line="+75"/>
         <source>Erreur</source>
         <translation type="unfinished"></translation>
     </message>

@@ -240,10 +240,19 @@ class PipelinesView(QWidget):
         self.btn_more_menu.clicked.connect(self._on_open_more_menu)
         pipeline_sel_row.addWidget(self.btn_more_menu, alignment=Qt.AlignmentFlag.AlignVCenter)
 
+        from ankidraft.ui.components import ContextHelpButton
+
         # Aide pédagogique : à quoi sert le moteur DAG (affordance & découverte)
         self.btn_dag_help = IconButton("ph.info", tooltip=self.tr("À quoi sert le moteur DAG ? (rôle, garde-fous, intérêt du test)"), size=28)
         self.btn_dag_help.clicked.connect(self._on_show_dag_help)
         pipeline_sel_row.addWidget(self.btn_dag_help, alignment=Qt.AlignmentFlag.AlignVCenter)
+
+        self.btn_context_help = ContextHelpButton(
+            "cards/dag_et_rag.md",
+            tooltip=self.tr("Ouvrir la documentation complète des pipelines DAG"),
+            size=28,
+        )
+        pipeline_sel_row.addWidget(self.btn_context_help, alignment=Qt.AlignmentFlag.AlignVCenter)
 
         content_layout.addLayout(pipeline_sel_row)
 
@@ -517,6 +526,20 @@ class PipelinesView(QWidget):
         total = len(self.current_steps)
         self.lbl_step_count.setText(tr("%1 étape%2", total, "s" if total > 1 else ""))
         self.lbl_pipeline_steps_badge.setText(tr("%1 étape%2", total, "s" if total > 1 else ""))
+
+        if total == 0:
+            from ankidraft.ui.components import EmptyStateWidget, PrimaryButton
+
+            btn_add_first = PrimaryButton(self.tr("Ajouter une étape"))
+            btn_add_first.clicked.connect(lambda: self._on_add_step_clicked(insert_at=0))
+            empty_steps = EmptyStateWidget(
+                icon_name="ph.flow-arrow",
+                title=self.tr("Aucune étape dans ce pipeline"),
+                description=self.tr("Ajoutez une première étape (LLM, RAG, Map-Reduce ou Validation humaine) pour construire votre workflow DAG."),
+                action_button=btn_add_first,
+                guide_page="cards/dag_et_rag.md",
+            )
+            self.steps_layout.insertWidget(0, empty_steps)
 
         for idx, step_data in enumerate(self.current_steps, start=1):
             is_sel = (idx - 1) == self._selected_step_index
