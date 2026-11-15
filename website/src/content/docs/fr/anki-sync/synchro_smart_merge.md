@@ -5,14 +5,18 @@ description: Résolvez les conflits lors d'un import Anki avec le Smart Merge, p
 
 Lorsque vous travaillez à plusieurs sur un même paquet ou que vous modifiez une carte à la fois dans Anki et dans AnkiDraft, l'outil de **Fusion Intelligente (Smart Merge)** protège votre travail.
 
-## 1. Comment fonctionne Smart Merge lors d'un import `.apkg` ?
+## 1. Déclenchement et fonctionnement de Smart Merge (3 panneaux)
 
-Si une carte entrante possède le même identifiant qu'une carte déjà présente dans AnkiDraft :
-- **Si seules les statistiques de révision ont changé dans Anki** : aucun conflit n'est déclenché, la mise à jour est transparente.
-- **Si le texte de la carte a été modifié des deux côtés** : la fenêtre de comparaison à 3 panneaux (*Version locale*, *Base commune*, *Version importée*) s'ouvre pour vous permettre de choisir la formulation à conserver ou de combiner les deux.
+Lors d'un import `.apkg` ou `.txt`, lorsqu'une note entrante partage le même **GUID** qu'une note locale :
+- **Si aucune édition manuelle, fusion ou restauration locale n'a été faite sur la note** : l'archive entrante met à jour la note **silencieusement**, sans ouvrir de conflit.
+- **Si le contenu diffère et que la note possède des éditions locales** : la fenêtre **Smart Merge** s'ouvre avec un badge de **Similarité (%)** et **3 colonnes** :
+  1. À gauche (rouge, lecture seule) : **Base locale AnkiForge** ;
+  2. Au centre (bleu, **éditable**) : **Résultat fusionné (interactif)**, avec boutons de transfert champ par champ (`◀` / `▶`) et indicateurs `Différent` / `Identique` ;
+  3. À droite (vert, lecture seule) : **Base entrante (`.apkg`)**.
 
-## 2. Détecter et fusionner les doublons
+Raccourcis clavier dédiés dans Smart Merge : <kbd>Alt+Gauche</kbd> / <kbd>Alt+Droite</kbd> (conflit précédent / suivant), <kbd>Ctrl+Alt+Gauche</kbd> (**Tout garder Local**), <kbd>Ctrl+Alt+Droite</kbd> (**Tout remplacer par Entrant**) et <kbd>Ctrl+Entrée</kbd> (**Valider la fusion**).
 
-Depuis **Analyse & Audit IA** (<kbd>Alt+4</kbd>) ou votre assistant connecté en [MCP](/fr/ai-setup/consultant_mcp/), vous pouvez lancer une recherche de doublons sur vos paquets :
-- **Doublons exacts** : cartes ayant le même recto.
-- **Doublons proches** : cartes formulées légèrement différemment mais portant sur la même définition, détectées rapidement grâce au calcul de similarité intégré.
+## 2. Doublons, fusions et hygiène des médias
+
+- **Fusions & Doublons** : depuis **Analyse & Audit IA** (<kbd>Alt+4</kbd>) › onglet **Fusions & Doublons**, le scan rapide de **Édition & Navigateur** (<kbd>Alt+3</kbd>) ou votre assistant connecté en [MCP](/fr/ai-setup/consultant_mcp/), repérez les doublons exacts et quasi-doublons (similarité de Levenshtein) pour fusionner sans perte.
+- **Médias & stockage** : les médias importés sont dédupliqués par empreinte MD5 et décompressés depuis Zstandard si nécessaire ; vous pouvez purger les médias et le cache audio TTS orphelins dans **Paramètres** (<kbd>Ctrl+,</kbd>) › **Stockage**.
