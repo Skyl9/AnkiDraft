@@ -8,8 +8,9 @@ description: Consultez la liste officielle des raccourcis clavier d'AnkiDraft pa
 
 Cette page constitue la **référence officielle et exhaustive** de l'ensemble des raccourcis clavier d'AnkiForge, issue du registre central déclaratif (`src/ankidraft/ui/shortcuts/`) conformément à l'**ADR 0032**.
 
-> [!NOTE]
-> Tous les raccourcis listés ci-dessous peuvent être visualisés, recherchés et personnalisés dans l'application via les **Paramètres (Ctrl+,) > onglet Clavier**.
+:::note
+Tous les raccourcis listés ci-dessous peuvent être visualisés, recherchés et personnalisés dans l'application via les **Paramètres (Ctrl+,) > onglet Clavier**.
+:::
 
 ---
 
