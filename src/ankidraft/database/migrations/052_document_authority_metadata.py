@@ -13,13 +13,17 @@ from peewee_migrate import Migrator
 
 def migrate(migrator: Migrator, database, fake=False, **kwargs):
     """Ajoute les colonnes d'autorité épistémique à la table documents."""
-    migrator.add_fields(
-        "documentmodel",
-        authority_score=FloatField(null=True, index=True),
-        authority_type=CharField(null=True, index=True, max_length=64),
-        authority_certificate=TextField(null=True),
-        source_sha256=CharField(max_length=64, null=True, index=True),
-    )
+    if fake:
+        return
+    existing = {row[1] for row in database.execute_sql("PRAGMA table_info(documentmodel);").fetchall()}
+    if "authority_score" not in existing:
+        migrator.add_fields("documentmodel", authority_score=FloatField(null=True, index=True))
+    if "authority_type" not in existing:
+        migrator.add_fields("documentmodel", authority_type=CharField(null=True, index=True, max_length=64))
+    if "authority_certificate" not in existing:
+        migrator.add_fields("documentmodel", authority_certificate=TextField(null=True))
+    if "source_sha256" not in existing:
+        migrator.add_fields("documentmodel", source_sha256=CharField(max_length=64, null=True, index=True))
 
 
 def rollback(migrator: Migrator, database, fake=False, **kwargs):
