@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="640" height="300" role="img" aria-label="Courbe de rétention mémorielle et rappels espacés">
+  <rect width="640" height="300" rx="12" fill="#0f172a" />
+  <line x1="70" y1="245" x2="600" y2="245" stroke="#475569" stroke-width="2" />
+  <line x1="70" y1="35" x2="70" y2="245" stroke="#475569" stroke-width="2" />
+  <line x1="70" y1="75" x2="600" y2="75" stroke="#334155" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="20" y="80" fill="#94a3b8" font-family="sans-serif" font-size="12">90%</text>
+  <text x="16" y="45" fill="#94a3b8" font-family="sans-serif" font-size="12">100%</text>
+  <text x="540" y="272" fill="#94a3b8" font-family="sans-serif" font-size="12">Temps (jours)</text>
+  <text x="160" y="272" fill="#cbd5e1" font-family="sans-serif" font-size="12">Rappel 1</text>
+  <text x="315" y="272" fill="#cbd5e1" font-family="sans-serif" font-size="12">Rappel 2</text>
+  <text x="485" y="272" fill="#cbd5e1" font-family="sans-serif" font-size="12">Rappel 3</text>
+  <path d="M 70 42 Q 115 110 175 155" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="4,4" />
+  <path d="M 175 42 Q 245 78 335 102" fill="none" stroke="#3b82f6" stroke-width="3" />
+  <path d="M 335 42 Q 420 62 505 76" fill="none" stroke="#10b981" stroke-width="3" />
+  <path d="M 505 42 Q 555 50 595 56" fill="none" stroke="#6366f1" stroke-width="3" />
+  <circle cx="175" cy="42" r="5" fill="#3b82f6" />
+  <circle cx="335" cy="42" r="5" fill="#10b981" />
+  <circle cx="505" cy="42" r="5" fill="#6366f1" />
+  <text x="88" y="30" fill="#f8fafc" font-family="sans-serif" font-size="14" font-weight="bold">Effet d'espacement : croissance de la stabilité S</text>
+</svg>
