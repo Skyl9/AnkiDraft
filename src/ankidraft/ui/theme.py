@@ -320,7 +320,8 @@ def setup_dynamic_theme(app: QApplication) -> None:
     from ankidraft.ui.style_engine.engine import StyleEngine
 
     app.setStyle("Fusion")
-    default_font = QFont(DesignTokens.FONT_MAIN, DesignTokens.FONT_SIZE_BASE)
+    default_font = QFont(DesignTokens.FONT_MAIN)
+    default_font.setPixelSize(DesignTokens.FONT_SIZE_BASE)
     app.setFont(default_font)
     ComboBoxWheelFilter.install(app)
     StyleEngine.instance().apply_theme(DesignTokens.ACTIVE_THEME_ID, app)

@@ -253,6 +253,7 @@ class BatchView(QWidget):
 
         # MAIN SPLITTER
         self.main_splitter = QSplitter(Qt.Orientation.Vertical)
+        self.main_splitter.setHandleWidth(6)
         main_layout.addWidget(self.main_splitter, 1)
 
         # MIDDLE ROW

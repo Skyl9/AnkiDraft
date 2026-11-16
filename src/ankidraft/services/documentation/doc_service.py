@@ -364,7 +364,7 @@ class AppDocumentationService:
                 total_files += len(md_files)
                 for fpath in md_files:
                     try:
-                        rel_path = str(fpath.relative_to(base_dir))
+                        rel_path = fpath.relative_to(base_dir).as_posix()
                         raw_text = fpath.read_text(encoding="utf-8", errors="replace")
                         page_title, category = self._infer_category_and_title(rel_path, raw_text)
 

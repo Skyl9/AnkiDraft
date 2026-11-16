@@ -17,12 +17,14 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QScrollArea,
+    QSizePolicy,
     QVBoxLayout,
     QWidget,
 )
 
 from ankidraft.services.profile_manager import ProfileManager
 from ankidraft.ui.components.buttons import ActionButton, PrimaryButton, apply_compact_style
+from ankidraft.ui.components.flow_layout import FlowLayout
 from ankidraft.ui.dialogs.dialog_gallery_dialog import (
     DialogGalleryDialog,
     IsolatedBatchSliceComposerDialog,
@@ -90,6 +92,8 @@ class DeveloperTab(QWidget):
         title_env_box.setSpacing(2)
 
         lbl_env_title = QLabel(self.tr("Cockpit Runtime & Environnement"), self.env_card)
+        lbl_env_title.setWordWrap(True)
+        lbl_env_title.setMinimumWidth(0)
         lbl_env_title.setStyleSheet(f"font-size: 14px; font-weight: bold; color: {DesignTokens.TEXT_PRIMARY};")
         title_env_box.addWidget(lbl_env_title)
 
@@ -114,6 +118,7 @@ class DeveloperTab(QWidget):
         grid = QGridLayout()
         grid.setHorizontalSpacing(16)
         grid.setVerticalSpacing(6)
+        grid.setColumnStretch(1, 1)
 
         profile_name = get_active_profile()
         db_path = str(ProfileManager().get_db_path(profile_name))
@@ -139,6 +144,7 @@ class DeveloperTab(QWidget):
             lbl_v = QLabel(str(v), self.env_card)
             lbl_v.setWordWrap(True)
             lbl_v.setMinimumWidth(0)
+            lbl_v.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
             lbl_v.setStyleSheet(f"font-size: 11px; font-family: '{DesignTokens.FONT_CODE}'; color: {DesignTokens.TEXT_PRIMARY};")
             lbl_v.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
             grid.addWidget(lbl_v, row_idx, 1)
@@ -163,6 +169,8 @@ class DeveloperTab(QWidget):
         title_gal_box.setSpacing(2)
 
         lbl_gal_title = QLabel(self.tr("Galerie de Test des Boîtes de Dialogue"), self.gallery_card)
+        lbl_gal_title.setWordWrap(True)
+        lbl_gal_title.setMinimumWidth(0)
         lbl_gal_title.setStyleSheet(f"font-size: 14px; font-weight: bold; color: {DesignTokens.TEXT_PRIMARY};")
         title_gal_box.addWidget(lbl_gal_title)
 
@@ -176,22 +184,26 @@ class DeveloperTab(QWidget):
         title_gal_box.addWidget(lbl_gal_desc)
 
         header_gal.addLayout(title_gal_box, 1)
+        gallery_card_layout.addLayout(header_gal)
+
+        gal_actions_container = QWidget(self.gallery_card)
+        gal_actions_layout = FlowLayout(gal_actions_container, margin=0, h_spacing=8, v_spacing=6)
 
         btn_open_gallery = PrimaryButton(self.tr("Ouvrir la Galerie Plein Écran"))
         btn_open_gallery.setMinimumWidth(0)
         btn_open_gallery.setIcon(load_phosphor_icon("ph.arrows-out-simple", color=DesignTokens.TEXT_ON_ACCENT))
         apply_compact_style(btn_open_gallery, height=28)
         btn_open_gallery.clicked.connect(self.open_full_gallery_dialog)
-        header_gal.addWidget(btn_open_gallery)
+        gal_actions_layout.addWidget(btn_open_gallery)
 
         btn_open_widget_gallery = ActionButton(self.tr("Galerie de widgets"))
         btn_open_widget_gallery.setMinimumWidth(0)
         btn_open_widget_gallery.setIcon(load_phosphor_icon("ph.squares-four", color=DesignTokens.TEXT_PRIMARY))
         apply_compact_style(btn_open_widget_gallery, height=28)
         btn_open_widget_gallery.clicked.connect(self.open_widget_gallery)
-        header_gal.addWidget(btn_open_widget_gallery)
+        gal_actions_layout.addWidget(btn_open_widget_gallery)
 
-        gallery_card_layout.addLayout(header_gal)
+        gallery_card_layout.addWidget(gal_actions_container)
 
         # Grille des 6 dialogues recensés
         dialogs_info = [

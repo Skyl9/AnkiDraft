@@ -1,3 +1,5 @@
+import os
+
 from PySide6.QtCore import QMimeData
 from PySide6.QtGui import QDragEnterEvent, QDragMoveEvent, QDropEvent
 from PySide6.QtWidgets import QLabel
@@ -5,7 +7,7 @@ from PySide6.QtWidgets import QLabel
 
 def local_file_paths(mime_data: QMimeData) -> list[str]:
     """Extrait les chemins de fichiers locaux d'un glisser-déposer du système."""
-    return [url.toLocalFile() for url in mime_data.urls() if url.isLocalFile()]
+    return [os.path.normpath(url.toLocalFile()) for url in mime_data.urls() if url.isLocalFile()]
 
 
 class FileDropMixin:

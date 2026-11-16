@@ -1293,7 +1293,9 @@ class StyleEngine(QObject):
             application.setPalette(palette)
 
             # Application de la police système par défaut pour éliminer les fallbacks lents ("Sans Serif")
-            app_font = QFont(profile.font_main, profile.font_size_base)
+            # Taille en pixels (cohérente avec `font-size: ...px` du QSS sur Windows/Linux 96 DPI et macOS).
+            app_font = QFont(profile.font_main)
+            app_font.setPixelSize(profile.font_size_base)
             application.setFont(app_font)
 
             # Global QSS
