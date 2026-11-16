@@ -25,15 +25,15 @@ Une fois le workspace ouvert, formulez simplement vos demandes en langage nature
 - **Demande** : *« Vérifie et synchronise le workspace avec mon profil AnkiDraft actif, puis fais-moi un bilan de mes paquets, cartes marquées d'un drapeau et documents importés. »*
 
 ### Cas B — Créer des cartes à partir d'un cours structuré
-- **Outils MCP clés** : `get_document_outline`, `search_document`, `create_notes_batch`, `begin_staged_bundle`, `commit_staged_bundle`.
-- **Demande** : *« À partir du chapitre sur la régulation glycémique dans mon document #3, prépare un lot de 12 cartes courtes en KaTeX dans le paquet `Biochimie::Métabolisme` et envoie le lot groupé au Garde-Fou. »*
+- **Outils MCP clés** : `get_document_outline`, `search_document`, `write_mcp_artifact`, `create_notes_batch`, `begin_staged_bundle`, `commit_staged_bundle`.
+- **Demande** : *« À partir du chapitre sur la régulation glycémique dans mon document #3, rédige une fiche de synthèse via `write_mcp_artifact`, prépare un lot de 12 cartes courtes en KaTeX dans le paquet `Biochimie::Métabolisme` et envoie le lot groupé au Garde-Fou. »*
 
 ### Cas C — Repérer les notions oubliées entre cours et paquet
 - **Outil MCP clé** : `diagnose_domain_knowledge_gaps`.
 - **Demande** : *« Lance `diagnose_domain_knowledge_gaps` sur mon cours d'Immunologie en croisant tous mes paquets, liste les notions manquantes ou non atomiques et propose les cartes pour combler les trous. »*
 
 ### Cas D — Moderniser vos modèles de cartes et votre CSS
-- **Outils MCP clés** : outils de consultation et de proposition sur les types de notes (`Catalogue d'Outils` › *Types de notes*).
+- **Outils MCP clés** : `list_note_types`, `get_note_type_details`, `propose_css_tune`, `propose_note_type_refactor`, `preview_card_render` (`Catalogue d'Outils` › *Types de notes*).
 - **Demande** : *« Vérifie les champs du modèle `Médecine Cloze`, améliore la lisibilité des indices en mode sombre et soumets la mise à jour du gabarit à ma validation. »*
 
 ### Cas E — Nettoyer cartes ratées, doublons et tags

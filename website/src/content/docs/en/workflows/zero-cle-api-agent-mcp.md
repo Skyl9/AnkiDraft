@@ -25,15 +25,15 @@ With the workspace open, write natural requests — your assistant picks the rig
 - **Prompt**: *"Verify and sync the workspace with my active AnkiDraft profile, then give me an overview of my decks, flagged cards, and imported study documents."*
 
 ### Case B — Create Cards from a Structured Lecture
-- **Key MCP tools**: `get_document_outline`, `search_document`, `create_notes_batch`, `begin_staged_bundle`, `commit_staged_bundle`.
-- **Prompt**: *"Read the glycemic regulation sections of document #3, draft 12 short KaTeX flashcards in deck `Biochemistry::Metabolism`, and send the staged bundle to Safeguard."*
+- **Key MCP tools**: `get_document_outline`, `search_document`, `write_mcp_artifact`, `create_notes_batch`, `begin_staged_bundle`, `commit_staged_bundle`.
+- **Prompt**: *"Read the glycemic regulation sections of document #3, save a synthesis artifact with `write_mcp_artifact`, draft 12 short KaTeX flashcards in deck `Biochemistry::Metabolism`, and send the staged bundle to Safeguard."*
 
 ### Case C — Spot Concepts Missing Between Course and Deck
 - **Key MCP tool**: `diagnose_domain_knowledge_gaps`.
 - **Prompt**: *"Run `diagnose_domain_knowledge_gaps` on my Immunology textbook across all decks, list missing or non-atomic concepts, and stage cards to close the coverage gaps."*
 
 ### Case D — Modernize Card Templates and Dark-Mode CSS
-- **Key MCP tools**: note type inspection & proposal tools (*Tool Catalog* › *Note Types*).
+- **Key MCP tools**: `list_note_types`, `get_note_type_details`, `propose_css_tune`, `propose_note_type_refactor`, `preview_card_render` (*Tool Catalog* › *Note Types*).
 - **Prompt**: *"Inspect `Medical Cloze` fields, improve hint contrast in dark mode, and stage the template update for my review."*
 
 ### Case E — Clean Up Failing Cards, Duplicates, and Tags
