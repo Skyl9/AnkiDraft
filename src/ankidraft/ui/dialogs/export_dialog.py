@@ -296,8 +296,8 @@ class ExportDialog(QDialog):
         if file_path:
             p = Path(file_path)
             if not p.suffix:
-                file_path = str(p.with_suffix(".apkg"))
-            self.dest_input.setText(file_path)
+                p = p.with_suffix(".apkg")
+            self.dest_input.setText(str(p))
 
         self.raise_()
         self.activateWindow()

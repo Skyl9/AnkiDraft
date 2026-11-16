@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QProgressBar,
     QPushButton,
+    QScrollArea,
     QSizePolicy,
     QSplitter,
     QStackedWidget,
@@ -428,7 +429,12 @@ class DocumentsView(FileDropMixin, QWidget):
         empty_actions.addWidget(self.btn_quick_guide)
         empty_layout.addLayout(empty_actions)
 
-        self.editor_stack.addWidget(empty_page)
+        empty_scroll = QScrollArea()
+        empty_scroll.setWidgetResizable(True)
+        empty_scroll.setFrameShape(QFrame.Shape.NoFrame)
+        empty_scroll.setStyleSheet("QScrollArea { background: transparent; border: none; }")
+        empty_scroll.setWidget(empty_page)
+        self.editor_stack.addWidget(empty_scroll)
 
         # PAGE 1 : Conteneur Éditeur
         editor_container = QWidget()
@@ -455,7 +461,7 @@ class DocumentsView(FileDropMixin, QWidget):
         self.doc_title_lbl = QLabel(self.tr("Sélectionnez un document"))
         self.doc_title_lbl.setStyleSheet(f"color: {DesignTokens.TEXT_PRIMARY}; font-size: 15px; font-weight: bold;")
         self.doc_title_lbl.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
-        self.doc_title_lbl.setMinimumWidth(50)
+        self.doc_title_lbl.setMinimumWidth(0)
         row1.addWidget(self.doc_title_lbl, 1)
 
         self.doc_type_badge = Badge(tr("Markdown"), variant="neutral")

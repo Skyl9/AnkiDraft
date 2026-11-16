@@ -6,7 +6,7 @@ import uuid
 from typing import Any
 
 from PySide6.QtCore import QSize, Qt, QThreadPool, QTimer, Slot
-from PySide6.QtGui import QFontMetrics
+from PySide6.QtGui import QFont, QFontMetrics
 from PySide6.QtWidgets import (
     QCheckBox,
     QFrame,
@@ -993,9 +993,12 @@ class ABTestsView(QWidget):
         display = getattr(cfg, "name", None) or getattr(cfg, "display_name", None) or getattr(cfg, "model_id", None) or "—"
         return str(display)
 
-    def _elide_badge(self, text: str, max_w: int = 220) -> str:
+    def _elide_badge(self, text: str, max_w: int = 240) -> str:
         """Tronque le texte d'un badge pour qu'il tienne dans FlowLayout sans écrasement."""
-        return QFontMetrics(self.summary_labels["mode"].font()).elidedText(text, Qt.TextElideMode.ElideRight, max_w)
+        badge_font = QFont(DesignTokens.FONT_CODE)
+        badge_font.setPixelSize(11)
+        badge_font.setWeight(QFont.Weight.DemiBold)
+        return QFontMetrics(badge_font).elidedText(text, Qt.TextElideMode.ElideRight, max_w)
 
     def _update_results_branch_labels(self) -> None:
         """Affiche sur les toolbars Résultats la branche A/B réellement configurée (lecture seule)."""

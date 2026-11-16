@@ -30,6 +30,7 @@ from ankidraft.services.ai.persona_version_service import PersonaVersionService
 from ankidraft.ui.components import (
     Badge,
     FilterChipButton,
+    FlowLayout,
     GlowLineEdit,
     PrimaryButton,
     SecondaryButton,
@@ -202,8 +203,8 @@ class PersonaCreationWizardDialog(QDialog):
         left_layout.addWidget(self.edit_gallery_search)
 
         # Filtres de catégorie
-        cat_row = QHBoxLayout()
-        cat_row.setSpacing(4)
+        cat_container = QWidget()
+        cat_row = FlowLayout(cat_container, margin=0, h_spacing=4, v_spacing=4)
         self.cat_buttons: list[tuple[FilterChipButton, str]] = []
 
         categories = [
@@ -221,9 +222,8 @@ class PersonaCreationWizardDialog(QDialog):
             cat_row.addWidget(btn)
             self.cat_buttons.append((btn, cat_key))
 
-        cat_row.addStretch()
         self.cat_buttons[0][0].setChecked(True)
-        left_layout.addLayout(cat_row)
+        left_layout.addWidget(cat_container)
 
         # Scroll des cartes
         cards_scroll = QScrollArea()
