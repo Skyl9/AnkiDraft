@@ -1,7 +1,10 @@
 """Tests unitaires pour CoverageAlignmentService et la résolution bidirectionnelle des médias."""
 
 import json
+import sqlite3
 import uuid
+from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -10,6 +13,7 @@ from ankidraft.database.models import (
     DeckModel,
     DocumentChunkModel,
     DocumentModel,
+    DocumentPageModel,
     MediaModel,
     NoteChunkLinkModel,
     NoteModel,
@@ -1346,3 +1350,289 @@ def test_sync_coverage_legacy_doc_id_fallback_and_self_healing():
     assert not any(t.startswith("doc:") for t in tags_after)
     assert f"source:{clean_source_slug(doc_legacy.title)}" in tags_after
     assert f"section:{section_key(chunk_legacy.heading_path)}" in tags_after
+
+
+def _init_source_profile_db(db_path: Path) -> sqlite3.Connection:
+    """Initialise une base SQLite minimale de profil source pour les tests de copie."""
+    con = sqlite3.connect(db_path)
+    con.executescript(
+        """
+        CREATE TABLE mediamodel (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            filename TEXT UNIQUE,
+            original_name TEXT,
+            checksum TEXT UNIQUE,
+            mime_type TEXT
+        );
+        CREATE TABLE documentmodel (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT UNIQUE,
+            content TEXT,
+            file_type TEXT,
+            source_url TEXT,
+            total_pages INTEGER,
+            original_media_id INTEGER
+        );
+        CREATE TABLE document_chunks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            document_id INTEGER,
+            chunk_index INTEGER,
+            content TEXT,
+            content_hash TEXT,
+            page_number INTEGER,
+            heading_path TEXT,
+            start_time REAL,
+            end_time REAL
+        );
+        CREATE TABLE document_pages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            document_id INTEGER,
+            media_id INTEGER,
+            page_number INTEGER,
+            rotation INTEGER,
+            crop_data TEXT,
+            ocr_text TEXT,
+            bounding_boxes TEXT,
+            status TEXT
+        );
+        """
+    )
+    con.commit()
+    return con
+
+
+def test_copy_document_from_profile_missing_source_db_returns_none(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Retourne None sans erreur lorsque la base du profil source n'existe pas."""
+    monkeypatch.setenv("ANKIFORGE_DATA_DIR", str(tmp_path))
+
+    result = CoverageAlignmentService.copy_document_from_profile("profil_absent", "profil_cible", 1)
+
+    assert result is None
+
+
+def test_copy_document_from_profile_missing_document_returns_none(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Retourne None lorsque l'identifiant du document est absent dans le profil source."""
+    monkeypatch.setenv("ANKIFORGE_DATA_DIR", str(tmp_path))
+    src_dir = tmp_path / "profiles" / "src_vide"
+    src_dir.mkdir(parents=True, exist_ok=True)
+    con = _init_source_profile_db(src_dir / "ankidraft.db")
+    con.close()
+
+    result = CoverageAlignmentService.copy_document_from_profile("src_vide", "cible", 999)
+
+    assert result is None
+
+
+def test_copy_document_from_profile_closes_sqlite_connection_on_query_error(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Garantit la fermeture de la connexion sqlite3 source même en cas d'exception SQL."""
+    monkeypatch.setenv("ANKIFORGE_DATA_DIR", str(tmp_path))
+    src_dir = tmp_path / "profiles" / "src_corrompu"
+    src_dir.mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(src_dir / "ankidraft.db")
+    con.execute("CREATE TABLE documentmodel (id INTEGER PRIMARY KEY, title TEXT, original_media_id INTEGER);")
+    con.execute("INSERT INTO documentmodel (id, title, original_media_id) VALUES (1, 'Doc', NULL);")
+    con.commit()
+    con.close()
+
+    close_calls = 0
+    real_connect = sqlite3.connect
+
+    class _TrackedConnection:
+        def __init__(self, inner: sqlite3.Connection) -> None:
+            object.__setattr__(self, "_inner", inner)
+
+        def __getattr__(self, name: str) -> Any:
+            return getattr(object.__getattribute__(self, "_inner"), name)
+
+        def __setattr__(self, name: str, value: Any) -> None:
+            setattr(object.__getattribute__(self, "_inner"), name, value)
+
+        def close(self) -> None:
+            nonlocal close_calls
+            close_calls += 1
+            object.__getattribute__(self, "_inner").close()
+
+    monkeypatch.setattr(sqlite3, "connect", lambda *args, **kwargs: _TrackedConnection(real_connect(*args, **kwargs)))
+
+    with pytest.raises(sqlite3.OperationalError):
+        CoverageAlignmentService.copy_document_from_profile("src_corrompu", "cible", 1)
+
+    assert close_calls == 1
+
+
+def test_copy_document_from_profile_copies_document_chunks_and_original_media(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Copie document, média original physique et fragments ordonnés vers le profil cible."""
+    monkeypatch.setenv("ANKIFORGE_DATA_DIR", str(tmp_path))
+    src_dir = tmp_path / "profiles" / "src_pdf"
+    (src_dir / "media").mkdir(parents=True, exist_ok=True)
+    (src_dir / "media" / "orig_abc.pdf").write_bytes(b"%PDF-1.4-bytes")
+
+    con = _init_source_profile_db(src_dir / "ankidraft.db")
+    cur = con.cursor()
+    cur.execute(
+        "INSERT INTO mediamodel (filename, original_name, checksum, mime_type) VALUES (?, ?, ?, ?)",
+        ("orig_abc.pdf", "cours.pdf", "chk_orig_abc", "application/pdf"),
+    )
+    media_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO documentmodel (title, content, file_type, source_url, total_pages, original_media_id) VALUES (?, ?, ?, ?, ?, ?)",
+        ("Cours Copié", "# Intro\nTexte", "pdf", None, 2, media_id),
+    )
+    doc_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO document_chunks (document_id, chunk_index, content, content_hash, page_number, heading_path) VALUES (?, ?, ?, ?, ?, ?)",
+        (doc_id, 0, "Chunk zéro", "h0", 1, "Intro"),
+    )
+    cur.execute(
+        "INSERT INTO document_chunks (document_id, chunk_index, content, content_hash, page_number, heading_path) VALUES (?, ?, ?, ?, ?, ?)",
+        (doc_id, 1, "Chunk un", "h1", 2, "Suite"),
+    )
+    con.commit()
+    con.close()
+
+    assert doc_id is not None
+    copied = CoverageAlignmentService.copy_document_from_profile("src_pdf", "dst_pdf", doc_id)
+
+    assert copied is not None
+    assert copied.title == "Cours Copié"
+    assert copied.original_media is not None
+    assert copied.original_media.filename == "orig_abc.pdf"
+    assert (tmp_path / "profiles" / "dst_pdf" / "media" / "orig_abc.pdf").read_bytes() == b"%PDF-1.4-bytes"
+
+    chunks = list(DocumentChunkModel.select().where(DocumentChunkModel.document == copied).order_by(DocumentChunkModel.chunk_index))
+    assert len(chunks) == 2
+    assert [c.content for c in chunks] == ["Chunk zéro", "Chunk un"]
+
+
+def test_copy_document_from_profile_album_copies_pages_and_reuses_existing_media(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Copie un album complet avec ses planches, réutilise les MediaModel existants et tolère un fichier manquant."""
+    monkeypatch.setenv("ANKIFORGE_DATA_DIR", str(tmp_path))
+    src_dir = tmp_path / "profiles" / "src_album"
+    (src_dir / "media").mkdir(parents=True, exist_ok=True)
+    (src_dir / "media" / "page1.png").write_bytes(b"PNG1")
+    (src_dir / "media" / "page2.png").write_bytes(b"PNG2")
+
+    existing_target_media = MediaModel.create(
+        filename="page2.png",
+        original_name="scan2.png",
+        checksum="chk_p2",
+        mime_type="image/png",
+    )
+
+    con = _init_source_profile_db(src_dir / "ankidraft.db")
+    cur = con.cursor()
+    cur.execute(
+        "INSERT INTO mediamodel (filename, original_name, checksum, mime_type) VALUES (?, ?, ?, ?)",
+        ("page1.png", "scan1.png", "chk_p1", "image/png"),
+    )
+    m1_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO mediamodel (filename, original_name, checksum, mime_type) VALUES (?, ?, ?, ?)",
+        ("page2.png", "scan2.png", "chk_p2", "image/png"),
+    )
+    m2_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO documentmodel (title, content, file_type, source_url, total_pages, original_media_id) VALUES (?, ?, ?, ?, ?, ?)",
+        ("Album Copié", "", "album", None, 2, None),
+    )
+    doc_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO document_pages (document_id, media_id, page_number, rotation, crop_data, ocr_text, bounding_boxes, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (doc_id, m1_id, 1, 90, "[0,0,10,10]", "OCR 1", None, "ready"),
+    )
+    cur.execute(
+        "INSERT INTO document_pages (document_id, media_id, page_number, rotation, crop_data, ocr_text, bounding_boxes, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (doc_id, m2_id, 2, 0, None, "OCR 2", None, "ready"),
+    )
+    con.commit()
+    con.close()
+
+    assert doc_id is not None
+    copied = CoverageAlignmentService.copy_document_from_profile("src_album", "dst_album", doc_id)
+
+    assert copied is not None
+    assert copied.file_type == "album"
+    pages = list(DocumentPageModel.select().where(DocumentPageModel.document == copied).order_by(DocumentPageModel.page_number))
+    assert len(pages) == 2
+    assert pages[0].rotation == 90
+    assert pages[0].ocr_text == "OCR 1"
+    assert pages[1].media_id == existing_target_media.id
+    assert (tmp_path / "profiles" / "dst_album" / "media" / "page1.png").read_bytes() == b"PNG1"
+    assert (tmp_path / "profiles" / "dst_album" / "media" / "page2.png").read_bytes() == b"PNG2"
+
+
+def test_copy_document_from_profile_missing_physical_media_and_existing_dst_preserved(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Tolère un fichier média absent sur disque et n'écrase pas un média déjà présent en cible."""
+    monkeypatch.setenv("ANKIFORGE_DATA_DIR", str(tmp_path))
+    src_dir = tmp_path / "profiles" / "src_edge"
+    dst_dir = tmp_path / "profiles" / "dst_edge"
+    (src_dir / "media").mkdir(parents=True, exist_ok=True)
+    (dst_dir / "media").mkdir(parents=True, exist_ok=True)
+
+    # Le fichier original_media est absent en source ; celui de la planche existe déjà en cible
+    (src_dir / "media" / "shared.png").write_bytes(b"SOURCE_BYTES")
+    (dst_dir / "media" / "shared.png").write_bytes(b"TARGET_EXISTING")
+
+    con = _init_source_profile_db(src_dir / "ankidraft.db")
+    cur = con.cursor()
+    cur.execute(
+        "INSERT INTO mediamodel (filename, original_name, checksum, mime_type) VALUES (?, ?, ?, ?)",
+        ("missing.pdf", "missing.pdf", "chk_missing", "application/pdf"),
+    )
+    orig_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO mediamodel (filename, original_name, checksum, mime_type) VALUES (?, ?, ?, ?)",
+        ("shared.png", "shared.png", "chk_shared", "image/png"),
+    )
+    shared_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO mediamodel (filename, original_name, checksum, mime_type) VALUES (?, ?, ?, ?)",
+        ("missing_p2.png", "missing_p2.png", "chk_missing_p2", "image/png"),
+    )
+    missing_p2_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO documentmodel (title, content, file_type, source_url, total_pages, original_media_id) VALUES (?, ?, ?, ?, ?, ?)",
+        ("Album Edge", "", "album", None, 2, orig_id),
+    )
+    doc_id = cur.lastrowid
+    cur.execute(
+        "INSERT INTO document_pages (document_id, media_id, page_number, rotation, crop_data, ocr_text, bounding_boxes, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (doc_id, shared_id, 1, 0, None, "P1", None, "ready"),
+    )
+    cur.execute(
+        "INSERT INTO document_pages (document_id, media_id, page_number, rotation, crop_data, ocr_text, bounding_boxes, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (doc_id, missing_p2_id, 2, 0, None, "P2 média absent disque", None, "ready"),
+    )
+    con.commit()
+    con.close()
+
+    assert doc_id is not None
+    copied = CoverageAlignmentService.copy_document_from_profile("src_edge", "dst_edge", doc_id)
+
+    assert copied is not None
+    assert (dst_dir / "media" / "shared.png").read_bytes() == b"TARGET_EXISTING"
+    assert not (dst_dir / "media" / "missing.pdf").exists()
+    assert not (dst_dir / "media" / "missing_p2.png").exists()
+    pages = list(DocumentPageModel.select().where(DocumentPageModel.document == copied).order_by(DocumentPageModel.page_number))
+    assert len(pages) == 2
+    assert pages[0].media is not None
+    assert pages[1].media is not None
+    assert CoverageAlignmentService._copy_profile_media_file(src_dir / "media", dst_dir / "media", "") is False

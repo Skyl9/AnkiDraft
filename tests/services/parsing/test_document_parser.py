@@ -2,9 +2,12 @@ import json
 import os
 import stat
 from pathlib import Path
+from types import SimpleNamespace
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import docx
+import pymupdf
 import pytest
 from pptx import Presentation
 
@@ -641,3 +644,187 @@ def test_parse_pdf_with_marker_default_retrocompatibility(mock_popen, mock_get_m
     assert "--force_ocr" not in cmd
     assert "--disable_ocr" not in cmd
     assert "TORCH_DEVICE" in env
+
+
+# ==========================================
+# TESTS PYMUPDF NATIF (PDF)
+# ==========================================
+
+
+def _make_png_bytes(width: int, height: int) -> bytes:
+    """Construit des octets PNG synthétiques aux dimensions exactes via PyMuPDF."""
+    pix = pymupdf.Pixmap(pymupdf.csRGB, pymupdf.IRect(0, 0, width, height), False)
+    pix.clear_with(200)
+    return bytes(pix.tobytes("png"))
+
+
+def test_parse_pdf_pymupdf_text_and_admissible_figures_interleaved(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Extrait texte et figures admissibles d'un vrai PDF synthétique en les triant selon y0."""
+    pdf_path = tmp_path / "cours_figures.pdf"
+    doc = pymupdf.open()
+    page1 = doc.new_page(width=595, height=842)
+    page1.insert_text((50, 60), "Titre introductif haut de page")
+    page1.insert_image(pymupdf.Rect(50, 140, 250, 340), stream=_make_png_bytes(200, 200))
+    page1.insert_image(pymupdf.Rect(50, 360, 70, 380), stream=_make_png_bytes(20, 20))
+    page1.insert_text((50, 460), "Paragraphe sous la figure")
+
+    page2 = doc.new_page(width=595, height=842)
+    page2.insert_text((50, 80), "Contenu de la page deux")
+    doc.save(str(pdf_path))
+    doc.close()
+
+    stored_calls: list[tuple[bytes, str, str]] = []
+    mock_media_manager = MagicMock()
+
+    def _fake_store(data: bytes, original_name: str, mime_type: str | None = None) -> SimpleNamespace:
+        stored_calls.append((data, original_name, str(mime_type)))
+        return SimpleNamespace(filename=f"hash_{len(stored_calls)}.png")
+
+    mock_media_manager.store_media_bytes.side_effect = _fake_store
+    monkeypatch.setattr(DocumentParser, "get_marker_executable", staticmethod(lambda: None))
+
+    progress_messages: list[str] = []
+    parser = DocumentParser(media_manager=mock_media_manager)
+    result = parser.parse_document(str(pdf_path), progress_callback=progress_messages.append)
+
+    assert "## Page 1" in result
+    assert "## Page 2" in result
+    assert "\n\n[SPLIT]\n\n" in result
+    assert "![Figure 1 (Page 1)](hash_1.png)" in result
+    assert "<!-- media_bboxes:" in result
+    assert len(stored_calls) == 1
+    assert stored_calls[0][1] == "page_1_figure_1.png"
+
+    # Vérifie l'ordre vertical y0 : titre -> figure -> paragraphe
+    idx_top = result.index("Titre introductif haut de page")
+    idx_fig = result.index("![Figure 1 (Page 1)](hash_1.png)")
+    idx_bottom = result.index("Paragraphe sous la figure")
+    assert idx_top < idx_fig < idx_bottom
+
+    assert "Extraction PDF native en cours (PyMuPDF)..." in progress_messages
+    assert "Lecture de la page 1 / 2..." in progress_messages
+    assert "Lecture de la page 2 / 2..." in progress_messages
+
+
+def test_parse_pdf_pymupdf_cancelled_raises_interrupted(tmp_path: Path) -> None:
+    """Lève InterruptedError immédiatement si check_cancel retourne True."""
+    pdf_path = tmp_path / "cancel.pdf"
+    doc = pymupdf.open()
+    page = doc.new_page()
+    page.insert_text((50, 50), "Texte")
+    doc.save(str(pdf_path))
+    doc.close()
+
+    parser = DocumentParser(media_manager=MagicMock())
+    with pytest.raises(InterruptedError, match="annulée"):
+        parser._parse_pdf_with_pymupdf(pdf_path, check_cancel=lambda: True)
+
+
+def test_parse_pdf_pymupdf_empty_raises_value_error(tmp_path: Path) -> None:
+    """Lève ValueError si le PDF ne contient ni texte ni figure exploitable."""
+    pdf_path = tmp_path / "vide.pdf"
+    doc = pymupdf.open()
+    doc.new_page()
+    doc.save(str(pdf_path))
+    doc.close()
+
+    parser = DocumentParser(media_manager=MagicMock())
+    with pytest.raises(ValueError, match="Aucun texte extractible"):
+        parser._parse_pdf_with_pymupdf(pdf_path)
+
+
+def test_parse_pdf_pymupdf_missing_fitz_raises_runtime_error(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Lève RuntimeError explicite lorsque PyMuPDF (fitz) n'est pas disponible."""
+    monkeypatch.setattr(document_parser, "fitz", None)
+    parser = DocumentParser(media_manager=MagicMock())
+
+    with pytest.raises(RuntimeError, match="pymupdf"):
+        parser._parse_pdf_with_pymupdf(tmp_path / "absent.pdf")
+
+
+def test_parse_pdf_pymupdf_handles_text_fallback_and_image_edge_cases(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Couvre les repli texte simple, erreurs d'extraction d'image, bboxes invalides et close() défaillant."""
+
+    class _FallbackTextPage:
+        def get_text(self, mode: str | None = None) -> Any:
+            if mode == "blocks":
+                raise RuntimeError("blocks error")
+            return "Texte issu du repli simple"
+
+        def get_image_info(self, xrefs: bool = True) -> list[dict[str, Any]]:
+            raise RuntimeError("image info error")
+
+    class _ImageEdgeCasePage:
+        def get_text(self, mode: str | None = None) -> list[tuple[Any, ...]]:
+            return [
+                (0, 10, 100, 20, "Bloc texte normal", 0, 0),
+                (0, 20, 100, 30, "   ", 1, 0),
+                (0, 30, 100, 40, "Bloc image ignoré", 2, 1),
+            ]
+
+        def get_image_info(self, xrefs: bool = True) -> list[dict[str, Any]]:
+            return [
+                {"width": 10, "height": 10, "xref": 1},  # Trop petite
+                {"width": 200, "height": 200, "xref": None},  # Sans xref
+                {"width": 200, "height": 200, "xref": 2},  # extract_image lève une erreur
+                {"width": 200, "height": 200, "xref": 3},  # extract_image sans octets
+                {"width": 200, "height": 200, "xref": 4, "bbox": ("bad", "bbox")},  # store_media_bytes -> None
+                {"width": 200, "height": 200, "xref": 5, "bbox": ("bad", "y")},  # bbox non numérique mais stocké
+                {"width": 200, "height": 200, "xref": 6, "bbox": (10, 25, 210, 225)},  # JPEG valide sans filename puis valide
+            ]
+
+    class _FakeDoc:
+        def __init__(self) -> None:
+            self._pages = [_FallbackTextPage(), _ImageEdgeCasePage()]
+
+        def __len__(self) -> int:
+            return len(self._pages)
+
+        def __iter__(self) -> Any:
+            return iter(self._pages)
+
+        def extract_image(self, xref: int) -> dict[str, Any] | None:
+            if xref == 2:
+                raise OSError("corrupted xref")
+            if xref == 3:
+                return {"ext": "png", "image": b""}
+            if xref == 4:
+                return {"ext": "png", "image": b"img4"}
+            if xref == 5:
+                return {"ext": "jpg", "image": b"img5"}
+            if xref == 6:
+                return {"ext": "jpg", "image": b"img6"}
+            return None
+
+        def close(self) -> None:
+            raise OSError("close failed")
+
+    fake_fitz = SimpleNamespace(open=lambda _path: _FakeDoc())
+    monkeypatch.setattr(document_parser, "fitz", fake_fitz)
+
+    mock_media_manager = MagicMock()
+    mock_media_manager.store_media_bytes.side_effect = [
+        None,
+        SimpleNamespace(filename="fig_bad_bbox.jpg"),
+        SimpleNamespace(filename="fig_valid.jpg"),
+    ]
+
+    parser = DocumentParser(media_manager=mock_media_manager)
+    result = parser._parse_pdf_with_pymupdf(tmp_path / "edge.pdf")
+
+    assert "Texte issu du repli simple" in result
+    assert "Bloc texte normal" in result
+    assert "Bloc image ignoré" not in result
+    assert "![Figure 1 (Page 2)](fig_bad_bbox.jpg)" in result
+    assert "![Figure 2 (Page 2)](fig_valid.jpg)" in result
+    assert '"fig_valid.jpg": "10.0,25.0,210.0,225.0"' in result
+    assert mock_media_manager.store_media_bytes.call_args_list[1].kwargs["mime_type"] == "image/jpeg"
