@@ -1252,6 +1252,7 @@ def test_documents_view_long_title_allows_narrow_resize(qtbot, mock_db):
 
     view = DocumentsView()
     qtbot.addWidget(view)
+    view.resize(900, 700)
     view.show()
     view.editor_stack.setCurrentIndex(1)
 

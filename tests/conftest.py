@@ -1,6 +1,7 @@
 # tests/conftest.py
 import contextlib
 import os
+import sys
 from collections.abc import Callable
 
 import pytest
@@ -57,6 +58,64 @@ from ankidraft.database.models import (
     TokenUsageModel,
     db,
 )
+
+
+def _ensure_windows_offscreen_fontdir() -> None:
+    """Expose Segoe UI et Consolas au plugin Qt offscreen sous Windows.
+
+    Sous Windows, ``QT_QPA_PLATFORM=offscreen`` utilise ``QFreeTypeFontDatabase`` au lieu
+    de ``QWindowsFontDatabase``. Sans ``QT_QPA_FONTDIR``, aucune police TrueType n'est
+    chargée et Qt bascule sur une métrique de secours surdimensionnée (~12 px/caractère).
+    On copie uniquement les fichiers TrueType essentiels dans un cache temporaire léger
+    pour éviter d'analyser des centaines de polices système (et d'anciens ``.fon``).
+    """
+    if sys.platform != "win32" or os.environ.get("QT_QPA_PLATFORM") != "offscreen":
+        return
+    if "QT_QPA_FONTDIR" in os.environ:
+        return
+
+    import shutil
+    import tempfile
+    from pathlib import Path
+
+    win_fonts = Path(os.environ.get("WINDIR", r"C:\Windows")) / "Fonts"
+    if not win_fonts.is_dir():
+        return
+
+    cache_dir = Path(tempfile.gettempdir()) / "ankidraft_win_offscreen_fonts"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+
+    font_files = (
+        "segoeui.ttf",
+        "segoeuib.ttf",
+        "segoeuii.ttf",
+        "segoeuiz.ttf",
+        "segoeuil.ttf",
+        "segoeuisl.ttf",
+        "seguisb.ttf",
+        "consola.ttf",
+        "consolab.ttf",
+        "arial.ttf",
+        "arialbd.ttf",
+    )
+    copied_any = False
+    for fname in font_files:
+        src = win_fonts / fname
+        dst = cache_dir / fname
+        if src.is_file():
+            if not dst.is_file():
+                tmp_dst = cache_dir / f".{fname}.{os.getpid()}.tmp"
+                with contextlib.suppress(OSError):
+                    shutil.copy2(src, tmp_dst)
+                    os.replace(tmp_dst, dst)
+            if dst.is_file():
+                copied_any = True
+
+    if copied_any:
+        os.environ["QT_QPA_FONTDIR"] = str(cache_dir)
+
+
+_ensure_windows_offscreen_fontdir()
 
 # Document Marker typique (fixture partagée) : un sommaire dont les entrées sont
 # balisées comme des titres Markdown, suivi du corps réel des chapitres sous les
@@ -265,6 +324,25 @@ def mock_db():
         test_db.execute_sql("DROP TABLE IF EXISTS migratehistory;")
     test_db.drop_tables(models)
     test_db.close()
+
+
+@pytest.fixture(scope="session")
+def qapp_cls():
+    """Force la police applicative par défaut (Segoe UI 13px) sous Windows offscreen."""
+    from PySide6.QtGui import QFont
+    from PySide6.QtWidgets import QApplication
+
+    class _AnkiDraftTestQApplication(QApplication):
+        def __init__(self, argv: list[str]) -> None:
+            super().__init__(argv)
+            if sys.platform == "win32" and os.environ.get("QT_QPA_PLATFORM") == "offscreen":
+                from ankidraft.ui.theme import DEFAULT_FONT_MAIN, DesignTokens
+
+                app_font = QFont(DEFAULT_FONT_MAIN)
+                app_font.setPixelSize(DesignTokens.FONT_SIZE_BASE)
+                self.setFont(app_font)
+
+    return _AnkiDraftTestQApplication
 
 
 @pytest.fixture(autouse=True)
