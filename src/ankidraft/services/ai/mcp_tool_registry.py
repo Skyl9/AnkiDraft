@@ -5098,16 +5098,17 @@ class MCPToolRegistry:
                 staging_dir = profile_manager.get_staging_dir()
                 file_path = Path(locator)
 
-                # Rejet des chemins absolus
-                if file_path.is_absolute():
+                # Rejet des chemins absolus (Unix '/...' inclus sur Windows où Path.is_absolute() exige une lettre de lecteur)
+                if file_path.is_absolute() or locator.strip().startswith(("/", "\\")):
                     return json.dumps(
                         {"status": "error", "message": "Chemin absolu refusé : le fichier doit être relatif au dossier staging/ du profil"},
                         ensure_ascii=False,
                     )
 
                 # Résolution sécurisée : vérifier que le fichier est bien dans staging/
+                candidate_path = staging_dir / file_path
                 try:
-                    resolved_path = (staging_dir / file_path).resolve()
+                    resolved_path = candidate_path.resolve()
                     staging_resolved = staging_dir.resolve()
                     if not resolved_path.is_relative_to(staging_resolved):
                         return json.dumps(
@@ -5120,12 +5121,15 @@ class MCPToolRegistry:
                         ensure_ascii=False,
                     )
 
-                # Rejet des liens symboliques
-                if resolved_path.is_symlink():
-                    return json.dumps(
-                        {"status": "error", "message": "Liens symboliques interdits dans le dossier de staging"},
-                        ensure_ascii=False,
-                    )
+                # Rejet des liens symboliques AVANT déréférencement (resolve() suit le lien vers la cible)
+                cur_path = candidate_path
+                while cur_path != staging_dir and cur_path != cur_path.parent:
+                    if cur_path.is_symlink():
+                        return json.dumps(
+                            {"status": "error", "message": "Liens symboliques interdits dans le dossier de staging"},
+                            ensure_ascii=False,
+                        )
+                    cur_path = cur_path.parent
 
                 if not resolved_path.exists():
                     return json.dumps(
@@ -5297,7 +5301,7 @@ class MCPToolRegistry:
                 )
             artifacts_dir = get_artifacts_dir()
             target_file = artifacts_dir / safe_name
-            target_file.write_text(content, encoding="utf-8")
+            target_file.write_text(content, encoding="utf-8", newline="\n")
             stat_info = target_file.stat()
             digest = hashlib.sha256(content.encode("utf-8")).hexdigest()
             lines_count = content.count("\n") + 1 if content else 0
