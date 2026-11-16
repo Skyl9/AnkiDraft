@@ -533,94 +533,126 @@ class IdePanel(QFrame):
     def _show_tabs_menu(self):
         self._show_tabs_menu_at_button(self.menu_btn)
 
+    def _resolve_top_view(self) -> QWidget | None:
+        """Remonte la hiérarchie Qt jusqu'au conteneur racine de la vue (QStackedWidget ou fenêtre)."""
+        top_view: QWidget | None = self
+        while top_view and top_view.parentWidget() and top_view.parentWidget() != top_view.window():
+            if top_view.parentWidget().__class__.__name__ == "QStackedWidget":
+                break
+            top_view = top_view.parentWidget()
+        return top_view or self.window()
+
+    def _collect_tabs_registry(self) -> dict[str, tuple["IdePanel", dict[str, Any]]]:
+        """Agrège les onglets enregistrés sur l'ensemble des panneaux frères de la vue."""
+        top_view = self._resolve_top_view()
+        all_view_panels = top_view.findChildren(IdePanel) if top_view else [self]
+        catalog: dict[str, tuple[IdePanel, dict[str, Any]]] = {}
+        for panel in all_view_panels:
+            for title, info in panel._registered_tabs.items():
+                catalog[title] = (panel, info)
+        return catalog
+
+    def _collect_view_tabs_catalog(self) -> tuple[list[str], list[str], list[tuple[str, dict[str, Any]]]]:
+        """Catégorise les onglets de la vue en ouverts ici, ouverts ailleurs et fermés."""
+        catalog = self._collect_tabs_registry()
+        here_titles = {btn.text().strip() for btn in self.tabs_bar.tabs}
+        open_here_tabs: list[str] = []
+        open_elsewhere_tabs: list[str] = []
+        closed_tabs: list[tuple[str, dict[str, Any]]] = []
+
+        for title, (_p, info) in catalog.items():
+            clean_title = title.strip()
+            if clean_title in here_titles:
+                open_here_tabs.append(clean_title)
+            elif find_tab_owner(clean_title)[0] is not None:
+                open_elsewhere_tabs.append(clean_title)
+            else:
+                closed_tabs.append((clean_title, info))
+
+        return open_here_tabs, open_elsewhere_tabs, closed_tabs
+
+    def _add_closed_tab_actions(self, menu: Any, closed_tabs: list[tuple[str, dict[str, Any]]]) -> None:
+        """Ajoute au menu la section des onglets fermés réouvrables."""
+        lbl = menu.addAction(self.tr("Rouvrir un onglet :"))
+        lbl.setEnabled(False)
+        for clean_title, info in closed_tabs:
+            icon_name = info.get("icon_name", "")
+            icon = load_phosphor_icon(icon_name, color=DesignTokens.TEXT_PRIMARY) if icon_name else QIcon()
+            act = menu.addAction(icon, clean_title)
+            act.setCheckable(True)
+            act.setChecked(False)
+            act.setToolTip(tr("Afficher l'onglet « %1 »", clean_title))
+            act.triggered.connect(lambda checked=False, t=clean_title: self.open_tab(t))
+
+    def _add_other_panel_tab_actions(self, menu: Any, open_elsewhere_tabs: list[str]) -> None:
+        """Ajoute au menu la section des onglets ouverts dans d'autres panneaux."""
+        lbl_other = menu.addAction(self.tr("Déplacer vers ce panneau :"))
+        lbl_other.setEnabled(False)
+        for clean_title in open_elsewhere_tabs:
+            owner, idx = find_tab_owner(clean_title)
+            icon = owner.tabs_bar.tabs[idx].icon() if owner and 0 <= idx < len(owner.tabs_bar.tabs) else QIcon()
+            act = menu.addAction(icon, clean_title)
+            act.triggered.connect(lambda checked=False, t=clean_title: self.open_tab(t))
+
+    def _add_here_tab_actions(
+        self,
+        menu: Any,
+        open_here_tabs: list[str],
+        catalog: dict[str, tuple["IdePanel", dict[str, Any]]],
+    ) -> None:
+        """Ajoute au menu la section des onglets actifs dans le panneau courant."""
+        lbl_here = menu.addAction(self.tr("Onglets actifs dans ce panneau :"))
+        lbl_here.setEnabled(False)
+        for clean_title in open_here_tabs:
+            _owner_panel, info = catalog.get(clean_title, (self, self._registered_tabs.get(clean_title, {})))
+            icon_name = info.get("icon_name", "")
+            icon = load_phosphor_icon(icon_name, color=DesignTokens.TEXT_PRIMARY) if icon_name else QIcon()
+            act = menu.addAction(icon, clean_title)
+            act.setCheckable(True)
+            act.setChecked(True)
+            if info.get("closable", True):
+                act.setToolTip(tr("Masquer l'onglet « %1 »", clean_title))
+                act.triggered.connect(lambda checked=False, t=clean_title: self.close_tab(t))
+            else:
+                act.setEnabled(False)
+                act.setToolTip(self.tr("Cet onglet principal ne peut pas être masqué"))
+
+    def _populate_tabs_menu(
+        self,
+        menu: Any,
+        open_here_tabs: list[str],
+        open_elsewhere_tabs: list[str],
+        closed_tabs: list[tuple[str, dict[str, Any]]],
+        catalog: dict[str, tuple["IdePanel", dict[str, Any]]] | None = None,
+    ) -> None:
+        """Peuple le StyledMenu des onglets selon les trois catégories calculées."""
+        if not closed_tabs and not open_elsewhere_tabs and not open_here_tabs:
+            action = QAction(self.tr("Aucun onglet disponible"), self)
+            action.setEnabled(False)
+            menu.addAction(action)
+            return
+
+        resolved_catalog = catalog if catalog is not None else self._collect_tabs_registry()
+        if closed_tabs:
+            self._add_closed_tab_actions(menu, closed_tabs)
+        if open_elsewhere_tabs:
+            if closed_tabs:
+                menu.addSeparator()
+            self._add_other_panel_tab_actions(menu, open_elsewhere_tabs)
+        if open_here_tabs:
+            if closed_tabs or open_elsewhere_tabs:
+                menu.addSeparator()
+            self._add_here_tab_actions(menu, open_here_tabs, resolved_catalog)
+
     def _show_tabs_menu_at_button(self, button: QPushButton) -> None:
         from PySide6.QtCore import QPoint
 
         from ankidraft.ui.theme import StyledMenu
 
         menu = StyledMenu(self)
-
-        top_view: QWidget | None = self
-        while top_view and top_view.parentWidget() and top_view.parentWidget() != top_view.window():
-            if top_view.parentWidget().__class__.__name__ == "QStackedWidget":
-                break
-            top_view = top_view.parentWidget()
-
-        if not top_view:
-            top_view = self.window()
-
-        all_view_panels = top_view.findChildren(IdePanel) if top_view else [self]
-        catalog: dict[str, tuple[IdePanel, dict]] = {}
-        for panel in all_view_panels:
-            for title, info in panel._registered_tabs.items():
-                catalog[title] = (panel, info)
-
-        closed_tabs: list[tuple[str, dict]] = []
-        open_here_tabs: list[str] = []
-        open_elsewhere_tabs: list[str] = []
-
-        for title, (_p, info) in catalog.items():
-            clean_title = title.strip()
-            is_open_here = any(btn.text().strip() == clean_title for btn in self.tabs_bar.tabs)
-            if is_open_here:
-                open_here_tabs.append(clean_title)
-            else:
-                owner, _ = find_tab_owner(clean_title)
-                if owner is not None:
-                    open_elsewhere_tabs.append(clean_title)
-                else:
-                    closed_tabs.append((clean_title, info))
-
-        if not closed_tabs and not open_elsewhere_tabs and not open_here_tabs:
-            action = QAction(self.tr("Aucun onglet disponible"), self)
-            action.setEnabled(False)
-            menu.addAction(action)
-        else:
-            # 1. Onglets fermés à réouvrir (Priorité)
-            if closed_tabs:
-                lbl = menu.addAction(self.tr("Rouvrir un onglet :"))
-                lbl.setEnabled(False)
-                for clean_title, info in closed_tabs:
-                    icon_name = info.get("icon_name", "")
-                    icon = load_phosphor_icon(icon_name, color=DesignTokens.TEXT_PRIMARY) if icon_name else QIcon()
-                    act = menu.addAction(icon, clean_title)
-                    act.setCheckable(True)
-                    act.setChecked(False)
-                    act.setToolTip(tr("Afficher l'onglet « %1 »", clean_title))
-                    act.triggered.connect(lambda checked=False, t=clean_title: self.open_tab(t))
-
-            # 2. Onglets ouverts ailleurs (déplaçables ici)
-            if open_elsewhere_tabs:
-                if closed_tabs:
-                    menu.addSeparator()
-                lbl_other = menu.addAction(self.tr("Déplacer vers ce panneau :"))
-                lbl_other.setEnabled(False)
-                for clean_title in open_elsewhere_tabs:
-                    owner, idx = find_tab_owner(clean_title)
-                    icon = owner.tabs_bar.tabs[idx].icon() if owner and 0 <= idx < len(owner.tabs_bar.tabs) else QIcon()
-                    act = menu.addAction(icon, clean_title)
-                    act.triggered.connect(lambda checked=False, t=clean_title: self.open_tab(t))
-
-            # 3. Onglets déjà ouverts dans ce panneau
-            if open_here_tabs:
-                if closed_tabs or open_elsewhere_tabs:
-                    menu.addSeparator()
-                lbl_here = menu.addAction(self.tr("Onglets actifs dans ce panneau :"))
-                lbl_here.setEnabled(False)
-                for clean_title in open_here_tabs:
-                    owner_panel, info = catalog.get(clean_title, (self, self._registered_tabs.get(clean_title, {})))
-                    icon_name = info.get("icon_name", "")
-                    icon = load_phosphor_icon(icon_name, color=DesignTokens.TEXT_PRIMARY) if icon_name else QIcon()
-                    act = menu.addAction(icon, clean_title)
-                    act.setCheckable(True)
-                    act.setChecked(True)
-                    if info.get("closable", True):
-                        act.setToolTip(tr("Masquer l'onglet « %1 »", clean_title))
-                        act.triggered.connect(lambda checked=False, t=clean_title: self.close_tab(t))
-                    else:
-                        act.setEnabled(False)
-                        act.setToolTip(self.tr("Cet onglet principal ne peut pas être masqué"))
-
+        catalog = self._collect_tabs_registry()
+        open_here_tabs, open_elsewhere_tabs, closed_tabs = self._collect_view_tabs_catalog()
+        self._populate_tabs_menu(menu, open_here_tabs, open_elsewhere_tabs, closed_tabs, catalog=catalog)
         menu.exec(button.mapToGlobal(QPoint(0, button.height())))
 
     def _on_menu_action_triggered(self) -> None:

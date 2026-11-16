@@ -582,7 +582,23 @@ class InlineDiffCardWidget(QFrame):
         layout.setContentsMargins(10, 8, 10, 8)
         layout.setSpacing(8)
 
-        # ── 1. En-tête de la proposition ─────────────────────────────────────
+        self._setup_header_section(layout)
+        self._setup_explanation_banner(layout)
+        self._setup_view_mode_bar(layout)
+
+        p_type = self.patch_data.get("type", "card")
+        orig = self.patch_data.get("original", {})
+        mod = self.patch_data.get("modified", {})
+        orig = self._resolve_db_applied_state(orig, mod)
+        if self.is_applied:
+            self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
+
+        self._setup_diff_body(layout, p_type, orig, mod)
+        self._setup_actions_bar(layout)
+        self.set_view_mode(self.current_view_mode, propagate=False)
+
+    def _setup_header_section(self, layout: QVBoxLayout) -> None:
+        """Construit l'en-tête de la carte de diff avec titre et badge de statut."""
         header = QHBoxLayout()
         header.setContentsMargins(0, 0, 0, 0)
 
@@ -597,35 +613,38 @@ class InlineDiffCardWidget(QFrame):
         header.addWidget(self.status_badge)
         layout.addLayout(header)
 
-        # ── 2. Bandeau d'explication de l'IA (si fourni) ──────────────────────
+    def _setup_explanation_banner(self, layout: QVBoxLayout) -> None:
+        """Affiche le bandeau d'explication de l'IA lorsqu'il est renseigné."""
         explanation = self.patch_data.get("explanation", "")
-        if explanation:
-            exp_frame = QFrame()
-            exp_frame.setObjectName("ExpBanner")
-            exp_frame.setStyleSheet(f"""
-                QFrame#ExpBanner {{
-                    background-color: {DesignTokens.BG_PANEL};
-                    border: 1px solid {DesignTokens.BORDER_COLOR};
-                    border-left: 3px solid {DesignTokens.ACCENT_PRIMARY};
-                    border-radius: 4px;
-                }}
-            """)
-            exp_layout = QHBoxLayout(exp_frame)
-            exp_layout.setContentsMargins(8, 6, 8, 6)
-            exp_layout.setSpacing(8)
+        if not explanation:
+            return
+        exp_frame = QFrame()
+        exp_frame.setObjectName("ExpBanner")
+        exp_frame.setStyleSheet(f"""
+            QFrame#ExpBanner {{
+                background-color: {DesignTokens.BG_PANEL};
+                border: 1px solid {DesignTokens.BORDER_COLOR};
+                border-left: 3px solid {DesignTokens.ACCENT_PRIMARY};
+                border-radius: 4px;
+            }}
+        """)
+        exp_layout = QHBoxLayout(exp_frame)
+        exp_layout.setContentsMargins(8, 6, 8, 6)
+        exp_layout.setSpacing(8)
 
-            lbl_bulb = QLabel()
-            lbl_bulb.setPixmap(load_phosphor_icon("ph.lightbulb-filament", color=DesignTokens.ACCENT_PRIMARY).pixmap(16, 16))
-            lbl_bulb.setStyleSheet("border: none; background: transparent;")
-            exp_layout.addWidget(lbl_bulb)
+        lbl_bulb = QLabel()
+        lbl_bulb.setPixmap(load_phosphor_icon("ph.lightbulb-filament", color=DesignTokens.ACCENT_PRIMARY).pixmap(16, 16))
+        lbl_bulb.setStyleSheet("border: none; background: transparent;")
+        exp_layout.addWidget(lbl_bulb)
 
-            lbl_exp = QLabel(tr("<b>Intention de l'IA :</b> %1", html.escape(explanation)))
-            lbl_exp.setStyleSheet(f"font-size: 11px; color: {DesignTokens.TEXT_PRIMARY}; border: none; background: transparent;")
-            lbl_exp.setWordWrap(True)
-            exp_layout.addWidget(lbl_exp, 1)
-            layout.addWidget(exp_frame)
+        lbl_exp = QLabel(tr("<b>Intention de l'IA :</b> %1", html.escape(explanation)))
+        lbl_exp.setStyleSheet(f"font-size: 11px; color: {DesignTokens.TEXT_PRIMARY}; border: none; background: transparent;")
+        lbl_exp.setWordWrap(True)
+        exp_layout.addWidget(lbl_exp, 1)
+        layout.addWidget(exp_frame)
 
-        # ── 3. Barre de Sélection de Mode (Unifié vs Côte à Côte) ────────────
+    def _setup_view_mode_bar(self, layout: QVBoxLayout) -> None:
+        """Construit la barre de sélection de mode (Vue Unifiée vs Côte à côte)."""
         mode_control_layout = QHBoxLayout()
         mode_control_layout.setContentsMargins(0, 2, 0, 4)
         mode_control_layout.setSpacing(6)
@@ -673,92 +692,90 @@ class InlineDiffCardWidget(QFrame):
         mode_control_layout.addStretch()
         layout.addLayout(mode_control_layout)
 
-        # ── 4. Corps : Champs Comparés ou Scission ───────────────────────────
-        p_type = self.patch_data.get("type", "card")
-        orig = self.patch_data.get("original", {})
-        mod = self.patch_data.get("modified", {})
+    @staticmethod
+    def _is_mod_already_applied(db_content: Any, mod: Any) -> bool:
+        """Indique si le contenu actif en base correspond déjà au dictionnaire proposé."""
+        if not (isinstance(mod, dict) and isinstance(db_content, dict)):
+            return False
+        return all(str(db_content.get(k, "")).strip() == str(v).strip() for k, v in mod.items() if str(k).lower() not in ["id", "note_id"])
 
+    def _resolve_db_applied_state(self, orig: Any, mod: Any) -> Any:
+        """Détecte si la note en BDD reflète déjà la modification proposée et complète `orig`."""
         note_id = self.patch_data.get("note_id") or self.patch_data.get("metadata", {}).get("note_id")
+        if not note_id or self.is_applied:
+            return orig
+        try:
+            note_rec = NoteModel.get_or_none(NoteModel.id == int(note_id))
+            act_v = note_rec.versions.where(NoteVersionModel.is_active == True).first() if note_rec else None  # noqa: E712
+            if not (note_rec and act_v and act_v.content):
+                return orig
+            db_content = json.loads(act_v.content) if isinstance(act_v.content, str) else act_v.content
+            if not orig:
+                prev_v = note_rec.versions.where(NoteVersionModel.version_number < act_v.version_number).order_by(NoteVersionModel.version_number.desc()).first()
+                orig = json.loads(prev_v.content) if prev_v and prev_v.content else dict(db_content)
+            if self._is_mod_already_applied(db_content, mod):
+                self.is_applied = True
+        except Exception as e:
+            logger.debug("Vérification BDD diff note #%s: %s", note_id, e)
+        return orig
 
-        # Vérifier si la carte est déjà appliquée en BDD (purgeant tout cache ou artefact résiduel)
-        if note_id and not self.is_applied:
-            try:
-                note_rec = NoteModel.get_or_none(NoteModel.id == int(note_id))
-                if note_rec:
-                    act_v = note_rec.versions.where(NoteVersionModel.is_active == True).first()  # noqa: E712
-                    if act_v and act_v.content:
-                        db_content = json.loads(act_v.content) if isinstance(act_v.content, str) else act_v.content
-                        if not orig:
-                            # Charger l'ancienne version si disponible
-                            prev_v = note_rec.versions.where(NoteVersionModel.version_number < act_v.version_number).order_by(NoteVersionModel.version_number.desc()).first()
-                            orig = json.loads(prev_v.content) if prev_v and prev_v.content else dict(db_content)
-
-                        # Détecter si la note en BDD a déjà la valeur de la proposition modifiée
-                        if (
-                            isinstance(mod, dict)
-                            and isinstance(db_content, dict)
-                            and all(str(db_content.get(k, "")).strip() == str(v).strip() for k, v in mod.items() if str(k).lower() not in ["id", "note_id"])
-                        ):
-                            self.is_applied = True
-            except Exception as e:
-                logger.debug("Vérification BDD diff note #%s: %s", note_id, e)
-
-        if self.is_applied:
-            self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
-
+    def _setup_diff_body(self, layout: QVBoxLayout, p_type: str, orig: Any, mod: Any) -> None:
+        """Construit le corps de comparaison selon le type de patch (split, card, ou texte/CSS)."""
         if p_type == "split" and isinstance(mod, list):
-            # Mode Scission : affichage de chaque carte atomique fille
-            lbl_split_intro = QLabel(tr("Cette note est scindée en %1 cartes atomiques. Vous pouvez ajuster ou décocher :", len(mod)))
-            lbl_split_intro.setStyleSheet(f"font-size: 11px; color: {DesignTokens.TEXT_SECONDARY};")
-            layout.addWidget(lbl_split_intro)
+            self._build_split_widgets(layout, mod)
+            return
+        if p_type == "card" and isinstance(mod, dict):
+            self._build_card_field_widgets(layout, orig, mod)
+            return
+        self.diff_view = QTextBrowser()
+        self.diff_view.setMaximumHeight(160)
+        self.diff_view.setStyleSheet(f"""
+            QTextBrowser {{
+                background-color: {DesignTokens.BG_PANEL};
+                border: 1px solid {DesignTokens.BORDER_COLOR};
+                border-radius: {DesignTokens.RADIUS_SM}px;
+                padding: 6px;
+                font-family: {DesignTokens.FONT_CODE};
+                font-size: 11px;
+                color: {DesignTokens.TEXT_PRIMARY};
+            }}
+        """)
+        raw_text = str(mod) if not isinstance(mod, dict | list) else json.dumps(mod, ensure_ascii=False, indent=2)
+        self.diff_view.setPlainText(raw_text)
+        layout.addWidget(self.diff_view)
 
-            for idx, c_data in enumerate(mod):
-                if isinstance(c_data, dict):
-                    sc_widget = SplitCardItemWidget(idx, c_data, parent=self)
-                    self.split_widgets.append(sc_widget)
-                    layout.addWidget(sc_widget)
+    def _build_split_widgets(self, layout: QVBoxLayout, mod: list[Any]) -> None:
+        """Construit la liste des cartes atomiques proposées en mode scission."""
+        lbl_split_intro = QLabel(tr("Cette note est scindée en %1 cartes atomiques. Vous pouvez ajuster ou décocher :", len(mod)))
+        lbl_split_intro.setStyleSheet(f"font-size: 11px; color: {DesignTokens.TEXT_SECONDARY};")
+        layout.addWidget(lbl_split_intro)
 
-        elif p_type == "card" and isinstance(mod, dict):
-            # Mode Carte : affichage comparatif par champ avec word-diff et direct edit
-            all_keys: list[str] = []
-            if isinstance(orig, dict):
-                for k in orig:
+        for idx, c_data in enumerate(mod):
+            if isinstance(c_data, dict):
+                sc_widget = SplitCardItemWidget(idx, c_data, parent=self)
+                self.split_widgets.append(sc_widget)
+                layout.addWidget(sc_widget)
+
+    def _build_card_field_widgets(self, layout: QVBoxLayout, orig: Any, mod: dict[str, Any]) -> None:
+        """Construit les widgets FieldDiffWidget champ par champ."""
+        all_keys: list[str] = []
+        for source_map in (orig, mod):
+            if isinstance(source_map, dict):
+                for k in source_map:
                     if k not in all_keys and str(k).lower() not in ["id", "note_id"]:
                         all_keys.append(k)
-            for k in mod:
-                if k not in all_keys and str(k).lower() not in ["id", "note_id"]:
-                    all_keys.append(k)
+        if not all_keys:
+            all_keys = ["Front", "Back"]
 
-            if not all_keys:
-                all_keys = ["Front", "Back"]
+        for field_key in all_keys:
+            o_val = str(orig.get(field_key, "")) if isinstance(orig, dict) else ""
+            m_val = str(mod.get(field_key, ""))
+            fw = FieldDiffWidget(field_key, o_val, m_val, is_applied=self.is_applied, parent=self)
+            self.field_widgets.append(fw)
+            layout.addWidget(fw)
 
-            for field_key in all_keys:
-                o_val = str(orig.get(field_key, "")) if isinstance(orig, dict) else ""
-                m_val = str(mod.get(field_key, "")) if isinstance(mod, dict) else ""
-                fw = FieldDiffWidget(field_key, o_val, m_val, is_applied=self.is_applied, parent=self)
-                self.field_widgets.append(fw)
-                layout.addWidget(fw)
-
-        else:
-            # Fallback : Vue texte / CSS
-            self.diff_view = QTextBrowser()
-            self.diff_view.setMaximumHeight(160)
-            self.diff_view.setStyleSheet(f"""
-                QTextBrowser {{
-                    background-color: {DesignTokens.BG_PANEL};
-                    border: 1px solid {DesignTokens.BORDER_COLOR};
-                    border-radius: {DesignTokens.RADIUS_SM}px;
-                    padding: 6px;
-                    font-family: {DesignTokens.FONT_CODE};
-                    font-size: 11px;
-                    color: {DesignTokens.TEXT_PRIMARY};
-                }}
-            """)
-            raw_text = str(mod) if not isinstance(mod, dict | list) else json.dumps(mod, ensure_ascii=False, indent=2)
-            self.diff_view.setPlainText(raw_text)
-            layout.addWidget(self.diff_view)
-
-        # ── 4. Boutons d'Action Directs ──────────────────────────────────────
+    def _setup_actions_bar(self, layout: QVBoxLayout) -> None:
+        """Construit la barre de boutons d'action (Appliquer/Revert, Rejeter, Éditeur)."""
         actions_layout = QHBoxLayout()
         actions_layout.setContentsMargins(0, 0, 0, 0)
         actions_layout.setSpacing(6)
@@ -803,16 +820,18 @@ class InlineDiffCardWidget(QFrame):
         layout.addLayout(actions_layout)
 
         if self.is_applied:
-            self.btn_apply.setText(self.tr("Annuler (Revert)"))
-            self.btn_apply.setIcon(load_on_accent_icon("ph.arrow-u-up-left"))
-            try:
-                self.btn_apply.clicked.disconnect()
-            except RuntimeError:
-                pass
-            self.btn_apply.clicked.connect(self._on_revert_clicked)
-            self.btn_reject.setEnabled(False)
+            self._switch_apply_button_to_revert()
 
-        self.set_view_mode(self.current_view_mode, propagate=False)
+    def _switch_apply_button_to_revert(self) -> None:
+        """Configure le bouton Appliquer en bouton Annuler (Revert) et désactive Rejeter."""
+        self.btn_apply.setText(self.tr("Annuler (Revert)"))
+        self.btn_apply.setIcon(load_on_accent_icon("ph.arrow-u-up-left"))
+        try:
+            self.btn_apply.clicked.disconnect()
+        except RuntimeError as exc:
+            logger.debug("Déconnexion préalable btn_apply ignorée : %s", exc)
+        self.btn_apply.clicked.connect(self._on_revert_clicked)
+        self.btn_reject.setEnabled(False)
 
     def set_view_mode(self, mode: str, propagate: bool = True) -> None:
         """Bascule tous les champs entre la Vue Unifiée et la Vue Côte à côte et mémorise le choix."""
@@ -853,6 +872,135 @@ class InlineDiffCardWidget(QFrame):
                 except RuntimeError:
                     pass
 
+    def _mark_applied_state(self) -> None:
+        """Bascule la carte dans l'état visuel « Appliqué en BDD » avec bouton Annuler (Revert)."""
+        self.is_applied = True
+        self.patch_data["is_applied"] = True
+        self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
+        self._switch_apply_button_to_revert()
+        for fw in self.field_widgets:
+            fw.set_applied(True)
+
+    def _sync_staged_card_edits(self, staged_patch: Any, p_type: str) -> None:
+        """Met à jour le payload d'un patch en attente avec les retouches saisies dans l'IHM."""
+        if p_type != "card" or not self.field_widgets:
+            return
+        staged_modified = {fw.field_name: fw.get_current_value() for fw in self.field_widgets}
+        try:
+            p_data = json.loads(staged_patch.diff_payload) if isinstance(staged_patch.diff_payload, str) else staged_patch.diff_payload
+        except Exception as exc:
+            logger.debug("Payload staged illisible, réinitialisation : %s", exc)
+            p_data = {}
+        p_data["modified"] = staged_modified
+        staged_patch.diff_payload = json.dumps(p_data, ensure_ascii=False)
+        staged_patch.save()
+
+    def _apply_staged_patch(self, patch_id: Any, p_type: str) -> bool:
+        """Applique un patch du registre StagedPatchRegistry s'il est en attente."""
+        from ankidraft.services.ai.staged_patch_registry import StagedPatchRegistry
+
+        staged_patch = StagedPatchRegistry.get_patch(str(patch_id))
+        if not (staged_patch and staged_patch.status == "pending"):
+            return False
+
+        self._sync_staged_card_edits(staged_patch, p_type)
+        result = StagedPatchRegistry.apply_staged_patch(str(patch_id))
+        status = result.get("status")
+        if status == "conflict":
+            show_toast(self, result.get("message", "Conflit de version détecté."), is_error=True)
+            self.status_badge.setText(self.tr("⚠️ Conflit de version"))
+            return True
+        if status != "applied":
+            show_toast(self, result.get("message") or self.tr("Échec lors de l'application du patch."), is_error=True)
+            return True
+
+        self._mark_applied_state()
+        self.applied.emit(f"Patch {patch_id} appliqué")
+        show_toast(self, result.get("message", f"Patch #{patch_id} appliqué !"))
+        return True
+
+    def _apply_css_patch(self, metadata: dict[str, Any]) -> None:
+        """Applique un extrait CSS proposé directement sur le NoteTypeModel cible."""
+        model_name = metadata.get("note_type_name", "")
+        snippet = metadata.get("snippet", str(self.patch_data.get("modified", "")))
+        nt = NoteTypeModel.get_or_none(NoteTypeModel.name == model_name) if model_name else NoteTypeModel.select().first()
+        if not nt:
+            return
+        with db.atomic():
+            nt.css_style = (nt.css_style or "") + f"\n\n/* Appliqué depuis le Chat */\n{snippet}"
+            nt.save()
+        self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
+        self.btn_apply.setEnabled(False)
+        self.btn_reject.setEnabled(False)
+        self.applied.emit(f"CSS validé pour {nt.name}")
+        show_toast(self, tr("Style CSS appliqué sur '%1' !", nt.name))
+
+    def _apply_card_patch(self, note_id: Any) -> None:
+        """Crée une nouvelle version active de la note avec les valeurs éditées dans l'IHM."""
+        if self.field_widgets:
+            final_modified: dict[str, Any] = {fw.field_name: fw.get_current_value() for fw in self.field_widgets}
+        else:
+            raw_mod = self.patch_data.get("modified", {})
+            final_modified = raw_mod if isinstance(raw_mod, dict) else {"Front": str(raw_mod)}
+
+        note = NoteModel.get_or_none(NoteModel.id == int(note_id))
+        if not note:
+            return
+        with db.atomic():
+            active_v = note.versions.where(NoteVersionModel.is_active == True).first()  # noqa: E712
+            if active_v:
+                active_v.is_active = False
+                active_v.save()
+            new_v_num = (note.versions.select(fn.MAX(NoteVersionModel.version_number)).scalar() or 1) + 1
+            NoteVersionModel.create(
+                note=note,
+                version_number=new_v_num,
+                content=json.dumps(final_modified, ensure_ascii=False),
+                source="consultant_inline",
+                is_active=True,
+            )
+        self._mark_applied_state()
+        self.applied.emit(f"Note #{note.id} refactorisée")
+        show_toast(self, tr("Note #%1 mise à jour en BDD (version %2) !", note.id, new_v_num))
+
+    def _apply_split_patch(self, note_id: Any) -> None:
+        """Scinde une note existante en cartes atomiques cochées par l'utilisateur."""
+        if self.split_widgets:
+            cards_to_apply = [sw.get_card_data() for sw in self.split_widgets if sw.is_selected()]
+        else:
+            cards_list = self.patch_data.get("modified", [])
+            cards_to_apply = cards_list if isinstance(cards_list, list) else []
+
+        note = NoteModel.get_or_none(NoteModel.id == int(note_id))
+        if not (note and cards_to_apply):
+            return
+        card_rel = note.cards.first()
+        target_deck = card_rel.deck if card_rel else DeckModel.select().first()
+        with db.atomic():
+            for c_data in cards_to_apply:
+                new_note = NoteModel.create(
+                    guid=str(uuid.uuid4())[:12],
+                    note_type=note.note_type,
+                    tags=note.tags,
+                    status="pending",
+                )
+                NoteVersionModel.create(
+                    note=new_note,
+                    version_number=1,
+                    content=json.dumps(c_data, ensure_ascii=False),
+                    source="consultant_split_inline",
+                    is_active=True,
+                )
+                if target_deck:
+                    CardModel.create(note=new_note, deck=target_deck, template_index=0)
+            note.status = "archived"
+            note.save()
+        self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
+        self.btn_apply.setEnabled(False)
+        self.btn_reject.setEnabled(False)
+        self.applied.emit(f"Note #{note.id} scindée en {len(cards_to_apply)} cartes")
+        show_toast(self, tr("Note #%1 scindée en %2 cartes atomiques !", note.id, len(cards_to_apply)))
+
     @Slot()
     def _on_apply_clicked(self) -> None:
         """Applique la modification en base de données en tenant compte des retouches faites en direct."""
@@ -862,152 +1010,14 @@ class InlineDiffCardWidget(QFrame):
         patch_id = self.patch_data.get("patch_id") or metadata.get("patch_id")
 
         try:
-            if patch_id:
-                from ankidraft.services.ai.staged_patch_registry import StagedPatchRegistry
-
-                staged_patch = StagedPatchRegistry.get_patch(str(patch_id))
-                if staged_patch and staged_patch.status == "pending":
-                    # Si l'utilisateur a modifié des champs en direct dans l'IHM
-                    if p_type == "card" and self.field_widgets:
-                        staged_modified: dict[str, Any] = {}
-                        for fw in self.field_widgets:
-                            staged_modified[fw.field_name] = fw.get_current_value()
-                        try:
-                            p_data = json.loads(staged_patch.diff_payload) if isinstance(staged_patch.diff_payload, str) else staged_patch.diff_payload
-                        except Exception:
-                            p_data = {}
-                        p_data["modified"] = staged_modified
-                        staged_patch.diff_payload = json.dumps(p_data, ensure_ascii=False)
-                        staged_patch.save()
-
-                    result = StagedPatchRegistry.apply_staged_patch(str(patch_id))
-                    if result.get("status") == "conflict":
-                        show_toast(self, result.get("message", "Conflit de version détecté."), is_error=True)
-                        self.status_badge.setText(self.tr("⚠️ Conflit de version"))
-                        return
-                    if result.get("status") != "applied":
-                        show_toast(
-                            self,
-                            result.get("message") or self.tr("Échec lors de l'application du patch."),
-                            is_error=True,
-                        )
-                        return
-                    else:
-                        self.is_applied = True
-                        self.patch_data["is_applied"] = True
-                        self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
-                        self.btn_apply.setText(self.tr("Annuler (Revert)"))
-                        self.btn_apply.setIcon(load_on_accent_icon("ph.arrow-u-up-left"))
-                        try:
-                            self.btn_apply.clicked.disconnect()
-                        except RuntimeError:
-                            pass
-                        self.btn_apply.clicked.connect(self._on_revert_clicked)
-                        self.btn_reject.setEnabled(False)
-                        for fw in self.field_widgets:
-                            fw.set_applied(True)
-                        self.applied.emit(f"Patch {patch_id} appliqué")
-                        show_toast(self, result.get("message", f"Patch #{patch_id} appliqué !"))
-                        return
-
+            if patch_id and self._apply_staged_patch(patch_id, p_type):
+                return
             if p_type == "css":
-                model_name = metadata.get("note_type_name", "")
-                snippet = metadata.get("snippet", str(self.patch_data.get("modified", "")))
-                nt = NoteTypeModel.get_or_none(NoteTypeModel.name == model_name) if model_name else NoteTypeModel.select().first()
-                if nt:
-                    with db.atomic():
-                        nt.css_style = (nt.css_style or "") + f"\n\n/* Appliqué depuis le Chat */\n{snippet}"
-                        nt.save()
-                    self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
-                    self.btn_apply.setEnabled(False)
-                    self.btn_reject.setEnabled(False)
-                    self.applied.emit(f"CSS validé pour {nt.name}")
-                    show_toast(self, tr("Style CSS appliqué sur '%1' !", nt.name))
-
+                self._apply_css_patch(metadata)
             elif p_type == "card" and note_id:
-                # Récupérer les valeurs effectives des champs (potentiellement retouchées par l'utilisateur)
-                final_modified: dict[str, Any] = {}
-                if self.field_widgets:
-                    for fw in self.field_widgets:
-                        final_modified[fw.field_name] = fw.get_current_value()
-                else:
-                    raw_mod = self.patch_data.get("modified", {})
-                    final_modified = raw_mod if isinstance(raw_mod, dict) else {"Front": str(raw_mod)}
-
-                note = NoteModel.get_or_none(NoteModel.id == int(note_id))
-                if note:
-                    with db.atomic():
-                        active_v = note.versions.where(NoteVersionModel.is_active == True).first()  # noqa: E712
-                        if active_v:
-                            active_v.is_active = False
-                            active_v.save()
-                        new_v_num = (note.versions.select(fn.MAX(NoteVersionModel.version_number)).scalar() or 1) + 1
-                        NoteVersionModel.create(
-                            note=note,
-                            version_number=new_v_num,
-                            content=json.dumps(final_modified, ensure_ascii=False),
-                            source="consultant_inline",
-                            is_active=True,
-                        )
-                    self.is_applied = True
-                    self.patch_data["is_applied"] = True
-                    self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
-                    self.btn_apply.setText(self.tr("Annuler (Revert)"))
-                    self.btn_apply.setIcon(load_on_accent_icon("ph.arrow-u-up-left"))
-                    try:
-                        self.btn_apply.clicked.disconnect()
-                    except RuntimeError:
-                        pass
-                    self.btn_apply.clicked.connect(self._on_revert_clicked)
-                    self.btn_reject.setEnabled(False)
-
-                    # Basculer tous les champs en unification totale propre sans ratures
-                    for fw in self.field_widgets:
-                        fw.set_applied(True)
-
-                    self.applied.emit(f"Note #{note.id} refactorisée")
-                    show_toast(self, tr("Note #%1 mise à jour en BDD (version %2) !", note.id, new_v_num))
-
+                self._apply_card_patch(note_id)
             elif p_type == "split" and note_id:
-                # Récupérer les cartes cochées par l'utilisateur
-                cards_to_apply: list[dict[str, Any]] = []
-                if self.split_widgets:
-                    for sw in self.split_widgets:
-                        if sw.is_selected():
-                            cards_to_apply.append(sw.get_card_data())
-                else:
-                    cards_list = self.patch_data.get("modified", [])
-                    cards_to_apply = cards_list if isinstance(cards_list, list) else []
-
-                note = NoteModel.get_or_none(NoteModel.id == int(note_id))
-                if note and cards_to_apply:
-                    card_rel = note.cards.first()
-                    target_deck = card_rel.deck if card_rel else DeckModel.select().first()
-                    with db.atomic():
-                        for c_data in cards_to_apply:
-                            new_note = NoteModel.create(
-                                guid=str(uuid.uuid4())[:12],
-                                note_type=note.note_type,
-                                tags=note.tags,
-                                status="pending",
-                            )
-                            NoteVersionModel.create(
-                                note=new_note,
-                                version_number=1,
-                                content=json.dumps(c_data, ensure_ascii=False),
-                                source="consultant_split_inline",
-                                is_active=True,
-                            )
-                            if target_deck:
-                                CardModel.create(note=new_note, deck=target_deck, template_index=0)
-                        note.status = "archived"
-                        note.save()
-                    self.status_badge.setText(self.tr("✅ Appliqué en BDD"))
-                    self.btn_apply.setEnabled(False)
-                    self.btn_reject.setEnabled(False)
-                    self.applied.emit(f"Note #{note.id} scindée en {len(cards_to_apply)} cartes")
-                    show_toast(self, tr("Note #%1 scindée en %2 cartes atomiques !", note.id, len(cards_to_apply)))
-
+                self._apply_split_patch(note_id)
         except Exception as e:
             logger.error("Erreur application inline diff : %s", e)
             show_toast(self, tr("Erreur d'application : %1", e), is_error=True)

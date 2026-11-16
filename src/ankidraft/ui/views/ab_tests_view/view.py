@@ -1524,45 +1524,46 @@ class ABTestsView(QWidget):
                 self.index_a += 1
             self._update_views()
 
-    @Slot()
-    def _on_run_ab_test(self) -> None:
-        text_source = self.source_editor.get_text()
-        if not text_source:
-            show_toast(self, self.tr("Veuillez saisir un texte source à tester."), is_error=True)
-            return
+    @staticmethod
+    def _build_inference_cfg(temp: Any, tok: Any) -> dict[str, Any]:
+        """Construit le dictionnaire d'hyperparamètres d'inférence optionnels."""
+        cfg: dict[str, Any] = {}
+        if temp is not None:
+            cfg["temperature"] = temp
+        if tok is not None:
+            cfg["max_tokens"] = tok
+        return cfg
 
+    def _extract_note_type_context(self) -> dict[str, Any]:
+        """Extrait les métadonnées de type de note et de paquet sélectionnés."""
         selected_nt = self.model_field.get_value()
         nt_id = selected_nt.id if selected_nt and hasattr(selected_nt, "id") else 1
         nt_schema = json.loads(selected_nt.fields_schema) if selected_nt and selected_nt.fields_schema else ["Front", "Back"]
         if not isinstance(nt_schema, list):
             nt_schema = ["Front", "Back"]
-        nt_first = nt_schema[0] if len(nt_schema) > 0 else "Front"
-        nt_second = nt_schema[1] if len(nt_schema) > 1 else "Back"
-        nt_fields_str = ", ".join([f'"{f}"' for f in nt_schema])
         selected_deck = self.deck_field.get_value()
-        deck_name = selected_deck.name if selected_deck else "Défaut"
-        nt_name = selected_nt.name if selected_nt else "Basique"
+        return {
+            "selected_nt": selected_nt,
+            "nt_id": nt_id,
+            "nt_schema": nt_schema,
+            "nt_first": nt_schema[0] if len(nt_schema) > 0 else "Front",
+            "nt_second": nt_schema[1] if len(nt_schema) > 1 else "Back",
+            "nt_fields_str": ", ".join([f'"{f}"' for f in nt_schema]),
+            "deck_name": selected_deck.name if selected_deck else "Défaut",
+            "nt_name": selected_nt.name if selected_nt else "Basique",
+        }
 
-        mode_idx = self.mode_combo.currentIndex()
-
+    def _build_ab_branch_configs(self, mode_idx: int) -> dict[str, Any]:
+        """Résout les configurations moteur/persona/pipeline des deux branches A/B selon le mode."""
         temp_a = self._effective_temperature("A")
         tok_a = self._effective_max_tokens("A")
         temp_b = self._effective_temperature("B")
         tok_b = self._effective_max_tokens("B")
+        inf_cfg_a = self._build_inference_cfg(temp_a, tok_a)
+        inf_cfg_b = self._build_inference_cfg(temp_b, tok_b)
 
-        inf_cfg_a: dict[str, Any] = {}
-        if temp_a is not None:
-            inf_cfg_a["temperature"] = temp_a
-        if tok_a is not None:
-            inf_cfg_a["max_tokens"] = tok_a
-        inf_cfg_b: dict[str, Any] = {}
-        if temp_b is not None:
-            inf_cfg_b["temperature"] = temp_b
-        if tok_b is not None:
-            inf_cfg_b["max_tokens"] = tok_b
-
-        steps_a = None
-        steps_b = None
+        steps_a: list[PipelineStepModel] | None = None
+        steps_b: list[PipelineStepModel] | None = None
         self._persona_cfg_a = None
         self._persona_cfg_b = None
         self._pipeline_cfg_a = None
@@ -1577,7 +1578,6 @@ class ABTestsView(QWidget):
             if common_persona:
                 steps_a = [PipelineStepModel(persona=common_persona, step_type="LLM_PROMPT", step_order=1, config_data=json.dumps(inf_cfg_a))]
                 steps_b = [PipelineStepModel(persona=common_persona, step_type="LLM_PROMPT", step_order=1, config_data=json.dumps(inf_cfg_b))]
-
         elif mode_idx == 1:
             engine_a = self.global_engine_field.get_value()
             engine_b = self.global_engine_field.get_value()
@@ -1591,7 +1591,6 @@ class ABTestsView(QWidget):
                 steps_a = [PipelineStepModel(persona=p_a, step_type="LLM_PROMPT", step_order=1, config_data=json.dumps(inf_cfg_a))]
             if p_b:
                 steps_b = [PipelineStepModel(persona=p_b, step_type="LLM_PROMPT", step_order=1, config_data=json.dumps(inf_cfg_b))]
-
         else:
             engine_a = self.global_engine_field.get_value()
             engine_b = self.global_engine_field.get_value()
@@ -1601,6 +1600,69 @@ class ABTestsView(QWidget):
             self._pipeline_cfg_b = pipe_b
             pipe_id_a = pipe_a.id if pipe_a else None
             pipe_id_b = pipe_b.id if pipe_b else None
+
+        return {
+            "engine_a": engine_a,
+            "engine_b": engine_b,
+            "pipe_id_a": pipe_id_a,
+            "pipe_id_b": pipe_id_b,
+            "steps_a": steps_a,
+            "steps_b": steps_b,
+            "temp_a": temp_a,
+            "tok_a": tok_a,
+            "temp_b": temp_b,
+            "tok_b": tok_b,
+        }
+
+    def _create_ab_providers(self, engine_a: Any, engine_b: Any) -> tuple[Any, Any]:
+        """Instancie les fournisseurs LLM A et B à partir des configurations sélectionnées."""
+        provider_a = None
+        provider_b = None
+        if self.ai_manager and hasattr(self.ai_manager, "create_provider_from_config"):
+            try:
+                if engine_a:
+                    provider_a = self.ai_manager.create_provider_from_config(engine_a)
+                if engine_b:
+                    provider_b = self.ai_manager.create_provider_from_config(engine_b)
+            except Exception as e:
+                logger.warning("Erreur instanciation providers A/B: %s", e)
+        return provider_a, provider_b
+
+    @staticmethod
+    def _build_ab_initial_state(
+        text_source: str,
+        nt_ctx: dict[str, Any],
+        temp: Any,
+        tok: Any,
+    ) -> PipelineRunState:
+        """Initialise un PipelineRunState avec le contexte document/modèle et les options d'inférence."""
+        selected_nt = nt_ctx["selected_nt"]
+        state = PipelineRunState(initial_prompt=text_source[:120])
+        state.set_variable("text_source", text_source)
+        state.set_variable("fields", nt_ctx["nt_schema"])
+        state.set_variable("fields_str", nt_ctx["nt_fields_str"])
+        state.set_variable("first_field", nt_ctx["nt_first"])
+        state.set_variable("second_field", nt_ctx["nt_second"])
+        state.set_variable("note_type_id", nt_ctx["nt_id"])
+        state.set_variable("note_type", nt_ctx["nt_name"])
+        state.set_variable("note_type_fields_schema", nt_ctx["nt_schema"])
+        state.set_variable("target_deck", nt_ctx["deck_name"])
+        state.set_variable("selected_models", [selected_nt] if selected_nt else [])
+        if temp is not None:
+            state.set_variable("temperature", temp)
+        if tok is not None:
+            state.set_variable("max_tokens", tok)
+        return state
+
+    @Slot()
+    def _on_run_ab_test(self) -> None:
+        text_source = self.source_editor.get_text()
+        if not text_source:
+            show_toast(self, self.tr("Veuillez saisir un texte source à tester."), is_error=True)
+            return
+
+        nt_ctx = self._extract_note_type_context()
+        cfg = self._build_ab_branch_configs(self.mode_combo.currentIndex())
 
         show_toast(self, self.tr("Lancement du test A/B en parallèle via le Moteur DAG..."))
         self._update_config_summary()
@@ -1614,59 +1676,20 @@ class ABTestsView(QWidget):
         self.kpi_b.set_running()
         self._elapsed_timer.start()
 
-        provider_a = None
-        provider_b = None
-        if self.ai_manager and hasattr(self.ai_manager, "create_provider_from_config"):
-            try:
-                if engine_a:
-                    provider_a = self.ai_manager.create_provider_from_config(engine_a)
-                if engine_b:
-                    provider_b = self.ai_manager.create_provider_from_config(engine_b)
-            except Exception as e:
-                logger.warning("Erreur instanciation providers A/B: %s", e)
+        provider_a, provider_b = self._create_ab_providers(cfg["engine_a"], cfg["engine_b"])
+        state_a = self._build_ab_initial_state(text_source, nt_ctx, cfg["temp_a"], cfg["tok_a"])
+        state_b = self._build_ab_initial_state(text_source, nt_ctx, cfg["temp_b"], cfg["tok_b"])
 
-        state_a = PipelineRunState(initial_prompt=text_source[:120])
-        state_a.set_variable("text_source", text_source)
-        state_a.set_variable("fields", nt_schema)
-        state_a.set_variable("fields_str", nt_fields_str)
-        state_a.set_variable("first_field", nt_first)
-        state_a.set_variable("second_field", nt_second)
-        state_a.set_variable("note_type_id", nt_id)
-        state_a.set_variable("note_type", nt_name)
-        state_a.set_variable("note_type_fields_schema", nt_schema)
-        state_a.set_variable("target_deck", deck_name)
-        state_a.set_variable("selected_models", [selected_nt] if selected_nt else [])
-        if temp_a is not None:
-            state_a.set_variable("temperature", temp_a)
-        if tok_a is not None:
-            state_a.set_variable("max_tokens", tok_a)
-
-        state_b = PipelineRunState(initial_prompt=text_source[:120])
-        state_b.set_variable("text_source", text_source)
-        state_b.set_variable("fields", nt_schema)
-        state_b.set_variable("fields_str", nt_fields_str)
-        state_b.set_variable("first_field", nt_first)
-        state_b.set_variable("second_field", nt_second)
-        state_b.set_variable("note_type_id", nt_id)
-        state_b.set_variable("note_type", nt_name)
-        state_b.set_variable("note_type_fields_schema", nt_schema)
-        state_b.set_variable("target_deck", deck_name)
-        state_b.set_variable("selected_models", [selected_nt] if selected_nt else [])
-        if temp_b is not None:
-            state_b.set_variable("temperature", temp_b)
-        if tok_b is not None:
-            state_b.set_variable("max_tokens", tok_b)
-
-        self._engine_cfg_a = engine_a
-        self._engine_cfg_b = engine_b
+        self._engine_cfg_a = cfg["engine_a"]
+        self._engine_cfg_b = cfg["engine_b"]
         self._start_time_a = time.perf_counter()
         self._start_time_b = time.perf_counter()
         self._ab_run_id = uuid.uuid4().hex
 
         self.orchestrator_a = PipelineOrchestrator(
-            pipeline_id=pipe_id_a,
+            pipeline_id=cfg["pipe_id_a"],
             initial_state=state_a,
-            steps=steps_a,
+            steps=cfg["steps_a"],
             ai_provider=provider_a,
             ab_run_id=f"{self._ab_run_id}:A",
         )
@@ -1674,9 +1697,9 @@ class ABTestsView(QWidget):
         self.orchestrator_a.signals.error_occurred.connect(lambda err: self._on_error_a(err))
 
         self.orchestrator_b = PipelineOrchestrator(
-            pipeline_id=pipe_id_b,
+            pipeline_id=cfg["pipe_id_b"],
             initial_state=state_b,
-            steps=steps_b,
+            steps=cfg["steps_b"],
             ai_provider=provider_b,
             ab_run_id=f"{self._ab_run_id}:B",
         )
