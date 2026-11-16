@@ -1907,7 +1907,7 @@ Voulez-vous mettre à jour les documents existants (contenu rafraîchi) ?</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+180"/>
+        <location line="+185"/>
         <source>Espace Serveur MCP &amp; Agents actif.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1944,7 +1944,7 @@ Souhaitez-vous reprendre l&apos;exécution de ce pipeline ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+362"/>
+        <location line="+365"/>
         <source>Vous avez du travail non enregistré dans :
 %1
 
@@ -1952,7 +1952,7 @@ Voulez-vous vraiment %2 ? Ce travail sera perdu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+247"/>
+        <location line="+292"/>
         <source>AnkiDraft%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3474,7 +3474,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+413"/>
+        <location line="+414"/>
         <source>Document &apos;%1&apos; chargé !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5390,8 +5390,8 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+544"/>
-        <location line="+86"/>
+        <location line="+545"/>
+        <location line="+85"/>
         <source>Forger des cartes (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9179,13 +9179,13 @@ Une nouvelle version sera automatiquement créée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/widgets/tour_guide.py" line="+202"/>
+        <location filename="../../ui/widgets/tour_guide.py" line="+214"/>
         <location line="+247"/>
         <source>%1/%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+248"/>
+        <location line="+254"/>
         <source>Bibliothèque de Sources</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9362,6 +9362,151 @@ Une nouvelle version sera automatiquement créée.</source>
     <message>
         <location line="+1"/>
         <source>Testez vos textes à trous et formules mathématiques avant l&apos;export .apkg.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+81"/>
+        <source>1. Sources et couverture documentaire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Votre mini-cours de sciences cognitives est déjà découpé et indexé localement. Ouvrez maintenant l&apos;onglet « Analyse &amp; Audit IA » pour inspecter la couverture des sections.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>2. Hôpital Wozniak (20 règles)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Deux cartes sangsues ont été détectées dans le paquet d&apos;exemple. Appliquez une suggestion ou ignorez une règle sur une carte pour valider cette étape.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>3. Garde-Fou MCP en deux temps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Une modification proposée par un agent attend votre accord dans « Serveur MCP &amp; Agents ». Approuvez ou rejetez ce patch pour valider la gouvernance humaine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>4. Édition KaTeX, Cloze et aperçu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Inspectez les cartes Basique, Cloze et KaTeX dans l&apos;éditeur. Basculez la visibilité du volet d&apos;aperçu en direct pour passer à l&apos;étape finale.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>5. Export vers Anki (.apkg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Vous pouvez exporter vos cartes vers un paquet .apkg à IDs stables sans altérer la planification FSRS, ou cliquer sur Terminer pour accéder aux modules complémentaires.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>1. Ouvrir Batch Factory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Une tâche pré-calculée sur la Section 3 vous attend dans Batch Factory sans nécessiter de clé API. Cliquez sur « Batch Factory » dans la navigation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>2. Réviser le lot en staging</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Examinez les cartes générées depuis la Section 3 puis validez ou rejetez la tâche dans le panneau de revue.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>1. Éditeur d&apos;Agents et Personas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Découvrez comment spécialiser les personas pédagogiques sans modifier le pipeline global, puis ouvrez « Pipelines » dans le Laboratoire IA.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>2. Orchestrateur de Pipelines DAG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enchaînez prompts LLM, récupération RAG, Map-Reduce et validation humaine. Ouvrez ensuite « Tests A/B » pour comparer plusieurs modèles ou prompts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>3. Banc d&apos;essai A/B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Comparez objectivement deux stratégies de génération sur un même fragment avant de les adopter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>1. Types de note et Gabarits Jinja2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Inspectez les modèles Basique, Texte à trous et Démonstration (KaTeX) fournis dans l&apos;exemple, puis revenez dans « Édition &amp; Navigateur ».</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>2. Directives Cloze, KaTeX et aperçu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Basculez le panneau d&apos;aperçu en direct dans l&apos;éditeur pour contrôler le rendu des formules KaTeX et des occlusions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Atelier AnkiDraft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Explorez vos documents, révisez vos cartes en lot, éditez avec aperçu en direct et auditez la qualité selon Wozniak.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Édition et aperçu des cartes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ouvrez une note dans l&apos;éditeur pour inspecter son rendu recto-verso et l&apos;exporter vers Anki (.apkg).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+247"/>
+        <source>%1/%2 parcours terminés</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12102,7 +12247,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>BatchView</name>
     <message>
-        <location filename="../../ui/views/batch_view/view.py" line="-1822"/>
+        <location filename="../../ui/views/batch_view/view.py" line="-1823"/>
         <source>CIBLES ANKI</source>
         <extracomment>Cartes enregistrées sans lien de couverture (fragment source non résolu), remonté au récapitulatif de fin de lot.</extracomment>
         <translation type="unfinished"></translation>
@@ -12183,7 +12328,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+175"/>
+        <location line="+176"/>
         <source>Sélectionner un paquet cible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13891,7 +14036,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+75"/>
+        <location line="+90"/>
         <source>Exemple d&apos;introduction réinitialisé.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18081,7 +18226,7 @@ exact → section → page → lexical</source>
 <context>
     <name>IntroSandboxBanner</name>
     <message>
-        <location filename="../../ui/views/dashboard_view.py" line="-1095"/>
+        <location filename="../../ui/views/dashboard_view.py" line="-1110"/>
         <source>Mode Découverte · Exemple d&apos;introduction (sans clé API)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19694,7 +19839,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../ui/main_window.py" line="-956"/>
+        <location filename="../../ui/main_window.py" line="-1004"/>
         <source>Nouveau jeton d&apos;authentification MCP généré.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19704,7 +19849,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+528"/>
+        <location line="+531"/>
         <source>Modifications non sauvegardées</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19714,27 +19859,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>Atelier AnkiDraft</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Explorez vos documents, révisez vos cartes en lot, éditez avec aperçu en direct et auditez la qualité selon Wozniak.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+5"/>
-        <source>Édition et aperçu des cartes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Ouvrez une note dans l&apos;éditeur pour inspecter son rendu recto-verso et l&apos;exporter vers Anki (.apkg).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+105"/>
+        <location line="+173"/>
         <source>Profil en cours d&apos;utilisation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -23864,7 +23989,7 @@ Utilisez {{ text_source }}.</source>
 <context>
     <name>TourBubble</name>
     <message>
-        <location filename="../../ui/widgets/tour_guide.py" line="-693"/>
+        <location filename="../../ui/widgets/tour_guide.py" line="-1146"/>
         <source>Titre</source>
         <translation type="unfinished"></translation>
     </message>
@@ -23941,6 +24066,54 @@ Utilisez {{ text_source }}.</source>
     <message>
         <location line="+10"/>
         <source>Terminer</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TourHubWidget</name>
+    <message>
+        <location line="+712"/>
+        <source>Hub du Tutoriel Interactif</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Tronc commun : L&apos;essentiel AnkiDraft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Parcours guidé réactif (5 étapes) : couverture Smart Coverage, Hôpital Wozniak, Garde-Fou MCP, aperçu KaTeX/Cloze et export .apkg.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Forge &amp; Batch Factory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Réviser la tâche pré-calculée sur la Section 3.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Laboratoire IA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Explorer Éditeur d&apos;Agents, Pipelines DAG et Tests A/B.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Types de note &amp; Jinja2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Inspecter gabarits Cloze, KaTeX et Starter Pack.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -24258,6 +24431,46 @@ https://blog.example.com/article-1</source>
     <message>
         <location line="+1"/>
         <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>_TourTrackCard</name>
+    <message>
+        <location filename="../../ui/widgets/tour_guide.py" line="-130"/>
+        <location line="+24"/>
+        <source>Lancer le tronc commun</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-22"/>
+        <location line="+22"/>
+        <source>Lancer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <source>Terminé</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Revoir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>En cours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Reprendre</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>À faire</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

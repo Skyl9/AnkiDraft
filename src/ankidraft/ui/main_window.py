@@ -205,6 +205,7 @@ class MainWindow(QMainWindow):
         self._export_dialog: QWidget | None = None
         self._notif_popup: QWidget | None = None
         self._tour_controller: Any | None = None
+        self._intro_tour_timer: QTimer | None = None
         self._web_engine_prewarmer: QWidget | None = None
         self._update_worker: Any | None = None
         self._latest_update_info: Any | None = None
@@ -279,6 +280,10 @@ class MainWindow(QMainWindow):
         # Désactivée automatiquement en mode test, headless ou smoke-test.
         if not (is_testing() or os.environ.get("QT_QPA_PLATFORM", "").lower() == "offscreen" or "--smoke-test" in sys.argv):
             QTimer.singleShot(2500, self._check_startup_support_dialog)
+            self._intro_tour_timer = QTimer(self)
+            self._intro_tour_timer.setSingleShot(True)
+            self._intro_tour_timer.timeout.connect(self.maybe_auto_start_intro_tour)
+            self._intro_tour_timer.start(600)
 
     def _prewarm_web_engine(self) -> None:
         """Préchauffe silencieusement Chromium au démarrage pour éviter tout rechargement visuel lors de la première navigation vers un composant WebEngine."""
@@ -958,6 +963,9 @@ class MainWindow(QMainWindow):
                 if hasattr(real_widget, "leave_intro_example_requested"):
                     real_widget.leave_intro_example_requested.connect(self.leave_intro_example_profile)
 
+                if hasattr(real_widget, "launch_tour_track_requested"):
+                    real_widget.launch_tour_track_requested.connect(self.start_tour_guide)
+
                 if view_id == "consultant":
                     if hasattr(real_widget, "mcp_start_requested"):
                         real_widget.mcp_start_requested.connect(self.start_mcp_server)
@@ -1247,28 +1255,73 @@ class MainWindow(QMainWindow):
         self._crash_dialog = CrashReportDialog(crash_info=crash_info, parent=self)
         self._crash_dialog.show()
 
-    def start_tour_guide(self) -> None:
-        """Lance le compagnon de visite guidée interactive d'AnkiForge."""
-        from ankidraft.ui.widgets.tour_guide import InteractiveTourController, InteractiveTourStep
+    def start_tour_guide(self, module_id: str | None = None) -> None:
+        """Lance un parcours interactif ciblé (ou le tronc commun / aperçu selon le profil)."""
+        from ankidraft.database.seeds.demo_seed import is_intro_example_profile
+        from ankidraft.ui.widgets.tour_guide import (
+            TOUR_TRACK_CORE,
+            TOUR_TRACK_IDS,
+            InteractiveTourController,
+            build_tour_track_steps,
+            load_tour_progress,
+            save_tour_track_status,
+        )
 
         if self._tour_controller is None:
             self._tour_controller = InteractiveTourController(self)
+            self._tour_controller.tour_finished.connect(self._on_tour_track_finished)
 
-        base_steps = [
-            InteractiveTourStep(
-                step_id="overview-dashboard",
-                title_factory=lambda: self.tr("Atelier AnkiDraft"),
-                text_factory=lambda: self.tr("Explorez vos documents, révisez vos cartes en lot, éditez avec aperçu en direct et auditez la qualité selon Wozniak."),
-                target_view_id="dashboard",
-            ),
-            InteractiveTourStep(
-                step_id="overview-edition",
-                title_factory=lambda: self.tr("Édition et aperçu des cartes"),
-                text_factory=lambda: self.tr("Ouvrez une note dans l'éditeur pour inspecter son rendu recto-verso et l'exporter vers Anki (.apkg)."),
-                target_view_id="edition",
-            ),
-        ]
-        self._tour_controller.start(base_steps, track_id="default")
+        explicit = module_id if isinstance(module_id, str) and module_id.strip() else None
+        if explicit == "hub":
+            self._on_view_selected("dashboard")
+            return
+
+        if explicit is not None:
+            track_id = explicit
+        elif is_intro_example_profile():
+            if load_tour_progress().get(TOUR_TRACK_CORE) == "done":
+                self._on_view_selected("dashboard")
+                return
+            track_id = TOUR_TRACK_CORE
+        else:
+            track_id = "default"
+
+        if track_id in TOUR_TRACK_IDS:
+            current_status = load_tour_progress().get(track_id, "todo")
+            if current_status != "done":
+                save_tour_track_status(track_id, "in_progress")
+            self._refresh_dashboard_tour_hub()
+
+        steps = build_tour_track_steps(track_id)
+        self._tour_controller.start(steps, track_id=track_id)
+
+    def _on_tour_track_finished(self, track_id: str) -> None:
+        """Persiste la complétion d'un parcours du tutoriel et synchronise le Hub Dashboard."""
+        from ankidraft.ui.widgets.tour_guide import TOUR_TRACK_IDS, save_tour_track_status
+
+        if track_id in TOUR_TRACK_IDS:
+            save_tour_track_status(track_id, "done")
+            self._refresh_dashboard_tour_hub()
+
+    def _refresh_dashboard_tour_hub(self) -> None:
+        """Rafraîchit ``TourHubWidget`` si ``DashboardView`` est déjà instanciée."""
+        dash = self._view_widgets.get("dashboard")
+        if dash is not None and hasattr(dash, "tour_hub"):
+            cast(Any, dash).tour_hub.refresh_progress()
+
+    def maybe_auto_start_intro_tour(self) -> bool:
+        """Démarre automatiquement le tronc commun à la première ouverture de Exemple d'introduction."""
+        from ankidraft.database.seeds.demo_seed import is_intro_example_profile
+        from ankidraft.ui.widgets.tour_guide import TOUR_TRACK_CORE, load_tour_progress
+
+        if not is_intro_example_profile():
+            return False
+        if self._tour_controller is not None and self._tour_controller.is_active:
+            return False
+        if load_tour_progress().get(TOUR_TRACK_CORE) == "done":
+            return False
+        self.start_tour_guide(TOUR_TRACK_CORE)
+        return True
 
     def _open_import_dialog(self) -> None:
         """Ouvre la boîte de dialogue d'importation de paquets Anki."""
@@ -1434,6 +1487,8 @@ class MainWindow(QMainWindow):
 
         event_bus.publish(ProfileSwitchedEvent(profile_name=new_profile))
         show_toast(self, tr("Espace de travail actif : « %1 »", display_name))
+        if new_profile == INTRO_PROFILE_ID:
+            self.maybe_auto_start_intro_tour()
 
     def _reset_view_widgets(self) -> None:
         """Réinitialise les instances de vues pour nettoyer tout cache BDD lié au précédent profil.
@@ -1489,6 +1544,8 @@ class MainWindow(QMainWindow):
             return
 
         event_bus.unsubscribe(OpenConsultantRequestedEvent, self._on_open_consultant_requested)
+        if getattr(self, "_intro_tour_timer", None) is not None:
+            self._intro_tour_timer.stop()
         if getattr(self, "_tour_controller", None) is not None:
             self._tour_controller.quit_tour()
         # Arrêt propre du serveur MCP d'arrière-plan

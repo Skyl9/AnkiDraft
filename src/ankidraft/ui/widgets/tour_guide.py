@@ -8,13 +8,14 @@ et ``TourCompanionCard``).
 from __future__ import annotations
 
 import contextlib
+import json
 import logging
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Literal
 
 from PySide6.QtCore import QEvent, QObject, QPoint, Qt, Signal
-from PySide6.QtGui import QScreen
+from PySide6.QtGui import QFont, QScreen
 from PySide6.QtWidgets import (
     QApplication,
     QFrame,
@@ -24,9 +25,20 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from ankidraft.ui.components.buttons import ActionButton, PrimaryButton, apply_compact_style
+from ankidraft.ui.components.buttons import ActionButton, PrimaryButton, SecondaryButton, apply_compact_style
 from ankidraft.ui.theme import DesignTokens, apply_shadow
-from ankidraft.utils.event_bus import AppEvent, AppEventBus, event_bus
+from ankidraft.utils.event_bus import (
+    AppEvent,
+    AppEventBus,
+    BatchTaskReviewedEvent,
+    CardPreviewToggledEvent,
+    MCPDataMutatedEvent,
+    MCPPatchRejectedEvent,
+    PackageExportedEvent,
+    ViewNavigatedEvent,
+    WozniakAuditResolvedEvent,
+    event_bus,
+)
 from ankidraft.utils.i18n import tr
 from ankidraft.utils.icon_loader import load_on_accent_icon, load_phosphor_icon
 
@@ -53,7 +65,7 @@ class InteractiveTourStep:
     text_factory: Callable[[], str]
     target_view_id: str | None = None
     on_enter: Callable[[], None] | None = None
-    completion_event: type[AppEvent] | None = None
+    completion_event: type[AppEvent] | tuple[type[AppEvent], ...] | None = None
     completion_predicate: Callable[[AppEvent], bool] | None = None
 
 
@@ -508,9 +520,14 @@ class InteractiveTourController(QObject):
         self._track_id: str = "default"
         self._current_index: int = 0
         self._completed_steps: set[str] = set()
-        self._active_subscription: tuple[type[AppEvent], Callable[[AppEvent], None]] | None = None
+        self._active_subscriptions: list[tuple[type[AppEvent], Callable[[AppEvent], None]]] = []
         self._card: TourCompanionCard | None = None
         self._host_filter_installed = False
+
+    @property
+    def is_active(self) -> bool:
+        """Retourne True si un parcours est actuellement affiché."""
+        return bool(self._steps and self._card is not None and self._card.isVisible())
 
     @property
     def companion_card(self) -> TourCompanionCard | None:
@@ -605,20 +622,21 @@ class InteractiveTourController(QObject):
         if step.completion_event is None or step.step_id in self._completed_steps:
             return
 
-        event_cls = step.completion_event
+        event_classes = step.completion_event if isinstance(step.completion_event, tuple) else (step.completion_event,)
 
         def _handler(ev: AppEvent) -> None:
             self._on_step_event(ev)
 
-        self._event_bus.subscribe(event_cls, _handler)
-        self._active_subscription = (event_cls, _handler)
+        for event_cls in event_classes:
+            self._event_bus.subscribe(event_cls, _handler)
+            self._active_subscriptions.append((event_cls, _handler))
 
     def _unsubscribe_current_event(self) -> None:
-        if self._active_subscription is None:
+        if not self._active_subscriptions:
             return
-        event_cls, handler = self._active_subscription
-        self._event_bus.unsubscribe(event_cls, handler)
-        self._active_subscription = None
+        for event_cls, handler in self._active_subscriptions:
+            self._event_bus.unsubscribe(event_cls, handler)
+        self._active_subscriptions.clear()
 
     def _on_step_event(self, event: AppEvent) -> None:
         if not self._steps or not 0 <= self._current_index < len(self._steps):
@@ -805,3 +823,457 @@ def start_view_tour(view_key: str, view_widget: QWidget, parent_window: QWidget 
     bubble.steps = create_view_tour_steps(view_key, view_widget)
     bubble.start_tour()
     return bubble
+
+
+TourTrackStatus = Literal["todo", "in_progress", "done"]
+TOUR_TRACK_CORE = "core"
+TOUR_TRACK_BATCH = "batch"
+TOUR_TRACK_AI_LAB = "ai_lab"
+TOUR_TRACK_TEMPLATES = "templates"
+TOUR_TRACK_IDS: tuple[str, ...] = (
+    TOUR_TRACK_CORE,
+    TOUR_TRACK_BATCH,
+    TOUR_TRACK_AI_LAB,
+    TOUR_TRACK_TEMPLATES,
+)
+_VALID_TRACK_STATUSES: frozenset[str] = frozenset({"todo", "in_progress", "done"})
+
+
+def load_tour_progress() -> dict[str, TourTrackStatus]:
+    """Charge l'état d'avancement des parcours depuis SettingModel (JSON)."""
+    from ankidraft.database.models import SettingModel
+    from ankidraft.database.seeds.demo_seed import SETTING_TOUR_PROGRESS
+
+    try:
+        raw = SettingModel.get_value(SETTING_TOUR_PROGRESS, "{}")
+    except Exception as exc:
+        logger.debug("Lecture de %s ignorée : %s", SETTING_TOUR_PROGRESS, exc)
+        return {}
+
+    parsed: Any = raw
+    if isinstance(raw, str):
+        try:
+            parsed = json.loads(raw) if raw.strip() else {}
+        except json.JSONDecodeError:
+            return {}
+
+    if not isinstance(parsed, dict):
+        return {}
+
+    result: dict[str, TourTrackStatus] = {}
+    for key, val in parsed.items():
+        if isinstance(key, str) and isinstance(val, str) and val in _VALID_TRACK_STATUSES:
+            result[key] = val
+    return result
+
+
+def save_tour_track_status(track_id: str, status: TourTrackStatus) -> dict[str, TourTrackStatus]:
+    """Enregistre le statut d'un parcours dans ``app/tour_progress_json``."""
+    from ankidraft.database.models import SettingModel
+    from ankidraft.database.seeds.demo_seed import SETTING_TOUR_PROGRESS
+
+    progress = load_tour_progress()
+    progress[track_id] = status
+    try:
+        SettingModel.set_value(
+            SETTING_TOUR_PROGRESS,
+            json.dumps(progress, ensure_ascii=False, sort_keys=True),
+            category="app",
+        )
+    except Exception as exc:
+        logger.debug("Impossible de persister %s : %s", SETTING_TOUR_PROGRESS, exc)
+    return progress
+
+
+def _build_core_track_steps() -> list[InteractiveTourStep]:
+    return [
+        InteractiveTourStep(
+            step_id="core-sources",
+            title_factory=lambda: tr("1. Sources et couverture documentaire"),
+            text_factory=lambda: tr(
+                "Votre mini-cours de sciences cognitives est déjà découpé et indexé localement. Ouvrez maintenant l'onglet « Analyse & Audit IA » pour inspecter la couverture des sections."
+            ),
+            target_view_id="documents",
+            completion_event=ViewNavigatedEvent,
+            completion_predicate=lambda ev: isinstance(ev, ViewNavigatedEvent) and ev.view_id == "analysis",
+        ),
+        InteractiveTourStep(
+            step_id="core-wozniak",
+            title_factory=lambda: tr("2. Hôpital Wozniak (20 règles)"),
+            text_factory=lambda: tr("Deux cartes sangsues ont été détectées dans le paquet d'exemple. Appliquez une suggestion ou ignorez une règle sur une carte pour valider cette étape."),
+            target_view_id="analysis",
+            completion_event=WozniakAuditResolvedEvent,
+        ),
+        InteractiveTourStep(
+            step_id="core-mcp",
+            title_factory=lambda: tr("3. Garde-Fou MCP en deux temps"),
+            text_factory=lambda: tr("Une modification proposée par un agent attend votre accord dans « Serveur MCP & Agents ». Approuvez ou rejetez ce patch pour valider la gouvernance humaine."),
+            target_view_id="consultant",
+            completion_event=(MCPDataMutatedEvent, MCPPatchRejectedEvent),
+        ),
+        InteractiveTourStep(
+            step_id="core-edition",
+            title_factory=lambda: tr("4. Édition KaTeX, Cloze et aperçu"),
+            text_factory=lambda: tr("Inspectez les cartes Basique, Cloze et KaTeX dans l'éditeur. Basculez la visibilité du volet d'aperçu en direct pour passer à l'étape finale."),
+            target_view_id="edition",
+            completion_event=CardPreviewToggledEvent,
+        ),
+        InteractiveTourStep(
+            step_id="core-export",
+            title_factory=lambda: tr("5. Export vers Anki (.apkg)"),
+            text_factory=lambda: tr(
+                "Vous pouvez exporter vos cartes vers un paquet .apkg à IDs stables sans altérer la planification FSRS, ou cliquer sur Terminer pour accéder aux modules complémentaires."
+            ),
+            target_view_id="edition",
+            completion_event=PackageExportedEvent,
+        ),
+    ]
+
+
+def _build_batch_track_steps() -> list[InteractiveTourStep]:
+    return [
+        InteractiveTourStep(
+            step_id="batch-open",
+            title_factory=lambda: tr("1. Ouvrir Batch Factory"),
+            text_factory=lambda: tr("Une tâche pré-calculée sur la Section 3 vous attend dans Batch Factory sans nécessiter de clé API. Cliquez sur « Batch Factory » dans la navigation."),
+            target_view_id="dashboard",
+            completion_event=ViewNavigatedEvent,
+            completion_predicate=lambda ev: isinstance(ev, ViewNavigatedEvent) and ev.view_id == "batch",
+        ),
+        InteractiveTourStep(
+            step_id="batch-review",
+            title_factory=lambda: tr("2. Réviser le lot en staging"),
+            text_factory=lambda: tr("Examinez les cartes générées depuis la Section 3 puis validez ou rejetez la tâche dans le panneau de revue."),
+            target_view_id="batch",
+            completion_event=BatchTaskReviewedEvent,
+        ),
+    ]
+
+
+def _build_ai_lab_track_steps() -> list[InteractiveTourStep]:
+    return [
+        InteractiveTourStep(
+            step_id="ai-lab-agents",
+            title_factory=lambda: tr("1. Éditeur d'Agents et Personas"),
+            text_factory=lambda: tr("Découvrez comment spécialiser les personas pédagogiques sans modifier le pipeline global, puis ouvrez « Pipelines » dans le Laboratoire IA."),
+            target_view_id="agents",
+            completion_event=ViewNavigatedEvent,
+            completion_predicate=lambda ev: isinstance(ev, ViewNavigatedEvent) and ev.view_id == "pipelines",
+        ),
+        InteractiveTourStep(
+            step_id="ai-lab-pipelines",
+            title_factory=lambda: tr("2. Orchestrateur de Pipelines DAG"),
+            text_factory=lambda: tr("Enchaînez prompts LLM, récupération RAG, Map-Reduce et validation humaine. Ouvrez ensuite « Tests A/B » pour comparer plusieurs modèles ou prompts."),
+            target_view_id="pipelines",
+            completion_event=ViewNavigatedEvent,
+            completion_predicate=lambda ev: isinstance(ev, ViewNavigatedEvent) and ev.view_id == "ab-tests",
+        ),
+        InteractiveTourStep(
+            step_id="ai-lab-ab",
+            title_factory=lambda: tr("3. Banc d'essai A/B"),
+            text_factory=lambda: tr("Comparez objectivement deux stratégies de génération sur un même fragment avant de les adopter."),
+            target_view_id="ab-tests",
+        ),
+    ]
+
+
+def _build_templates_track_steps() -> list[InteractiveTourStep]:
+    return [
+        InteractiveTourStep(
+            step_id="templates-models",
+            title_factory=lambda: tr("1. Types de note et Gabarits Jinja2"),
+            text_factory=lambda: tr("Inspectez les modèles Basique, Texte à trous et Démonstration (KaTeX) fournis dans l'exemple, puis revenez dans « Édition & Navigateur »."),
+            target_view_id="card-models",
+            completion_event=ViewNavigatedEvent,
+            completion_predicate=lambda ev: isinstance(ev, ViewNavigatedEvent) and ev.view_id == "edition",
+        ),
+        InteractiveTourStep(
+            step_id="templates-preview",
+            title_factory=lambda: tr("2. Directives Cloze, KaTeX et aperçu"),
+            text_factory=lambda: tr("Basculez le panneau d'aperçu en direct dans l'éditeur pour contrôler le rendu des formules KaTeX et des occlusions."),
+            target_view_id="edition",
+            completion_event=CardPreviewToggledEvent,
+        ),
+    ]
+
+
+def _build_default_track_steps() -> list[InteractiveTourStep]:
+    return [
+        InteractiveTourStep(
+            step_id="default-dashboard",
+            title_factory=lambda: tr("Atelier AnkiDraft"),
+            text_factory=lambda: tr("Explorez vos documents, révisez vos cartes en lot, éditez avec aperçu en direct et auditez la qualité selon Wozniak."),
+            target_view_id="dashboard",
+        ),
+        InteractiveTourStep(
+            step_id="default-edition",
+            title_factory=lambda: tr("Édition et aperçu des cartes"),
+            text_factory=lambda: tr("Ouvrez une note dans l'éditeur pour inspecter son rendu recto-verso et l'exporter vers Anki (.apkg)."),
+            target_view_id="edition",
+        ),
+    ]
+
+
+_TRACK_STEP_BUILDERS: dict[str, Callable[[], list[InteractiveTourStep]]] = {
+    TOUR_TRACK_CORE: _build_core_track_steps,
+    TOUR_TRACK_BATCH: _build_batch_track_steps,
+    TOUR_TRACK_AI_LAB: _build_ai_lab_track_steps,
+    TOUR_TRACK_TEMPLATES: _build_templates_track_steps,
+}
+
+
+def build_tour_track_steps(track_id: str) -> list[InteractiveTourStep]:
+    """Construit la liste déclarative des étapes d'un parcours nommé."""
+    builder = _TRACK_STEP_BUILDERS.get(track_id, _build_default_track_steps)
+    return builder()
+
+
+_STATUS_PILL_ATTRS: dict[TourTrackStatus, tuple[tuple[str, str], tuple[str, str], tuple[str, str]]] = {
+    "done": (("color_green_bg", "COLOR_GREEN_BG"), ("color_green_border", "COLOR_GREEN_BORDER"), ("color_green_text", "COLOR_GREEN_TEXT")),
+    "in_progress": (("accent_bg", "ACCENT_BG"), ("accent_border", "ACCENT_BORDER"), ("color_purple_text", "COLOR_PURPLE_TEXT")),
+    "todo": (("bg_panel", "BG_PANEL"), ("border_color", "BORDER_COLOR"), ("text_muted", "TEXT_MUTED")),
+}
+
+
+def _resolve_token(profile: Any, profile_attr: str, design_attr: str) -> str:
+    value = getattr(profile, profile_attr, "") if profile is not None else ""
+    return str(value or getattr(DesignTokens, design_attr))
+
+
+class _TourTrackCard(QFrame):
+    """Carte de module dans le Hub du Tutoriel affichant statut et bouton de lancement."""
+
+    launch_requested = Signal(str)
+
+    def __init__(
+        self,
+        track_id: str,
+        icon_name: str,
+        title_factory: Callable[[], str],
+        desc_factory: Callable[[], str],
+        *,
+        featured: bool = False,
+        parent: QWidget | None = None,
+    ) -> None:
+        super().__init__(parent)
+        self.track_id = track_id
+        self._icon_name = icon_name
+        self._title_factory = title_factory
+        self._desc_factory = desc_factory
+        self._featured = featured
+        self._status: TourTrackStatus = "todo"
+        self._last_profile: Any = None
+
+        self.setObjectName("TourTrackFeaturedCard" if featured else "TourTrackModuleCard")
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self._build_ui()
+        self.set_status("todo")
+
+    def _build_ui(self) -> None:
+        root = QVBoxLayout(self)
+        root.setContentsMargins(12, 10, 12, 10)
+        root.setSpacing(6)
+
+        top = QHBoxLayout()
+        top.setSpacing(8)
+        self.lbl_icon = QLabel(self)
+        self.lbl_icon.setFixedSize(18, 18)
+        top.addWidget(self.lbl_icon)
+
+        self.lbl_title = QLabel(self._title_factory(), self)
+        self.lbl_title.setFont(QFont(DesignTokens.FONT_MAIN, 12 if self._featured else 11, QFont.Weight.Bold))
+        self.lbl_title.setWordWrap(True)
+        top.addWidget(self.lbl_title, 1)
+
+        self.lbl_badge = QLabel(self)
+        self.lbl_badge.setObjectName("TourTrackStatusPill")
+        top.addWidget(self.lbl_badge)
+        root.addLayout(top)
+
+        self.lbl_desc = QLabel(self._desc_factory(), self)
+        self.lbl_desc.setWordWrap(True)
+        root.addWidget(self.lbl_desc, 1)
+
+        footer = QHBoxLayout()
+        footer.addStretch()
+        if self._featured:
+            self.btn_launch: PrimaryButton | SecondaryButton = PrimaryButton(self.tr("Lancer le tronc commun"), parent=self)
+        else:
+            self.btn_launch = SecondaryButton(self.tr("Lancer"), parent=self)
+        apply_compact_style(self.btn_launch)
+        self.btn_launch.clicked.connect(lambda: self.launch_requested.emit(self.track_id))
+        footer.addWidget(self.btn_launch)
+        root.addLayout(footer)
+
+    @property
+    def current_status(self) -> TourTrackStatus:
+        return self._status
+
+    def set_status(self, status: TourTrackStatus) -> None:
+        self._status = status
+        self.lbl_title.setText(self._title_factory())
+        self.lbl_desc.setText(self._desc_factory())
+        if status == "done":
+            self.lbl_badge.setText(self.tr("Terminé"))
+            self.btn_launch.setText(self.tr("Revoir"))
+        elif status == "in_progress":
+            self.lbl_badge.setText(self.tr("En cours"))
+            self.btn_launch.setText(self.tr("Reprendre"))
+        else:
+            self.lbl_badge.setText(self.tr("À faire"))
+            self.btn_launch.setText(self.tr("Lancer le tronc commun") if self._featured else self.tr("Lancer"))
+        self.refresh_theme(self._last_profile)
+
+    def refresh_theme(self, profile: Any = None) -> None:
+        self._last_profile = profile
+        text_primary = _resolve_token(profile, "text_primary", "TEXT_PRIMARY")
+        text_secondary = _resolve_token(profile, "text_secondary", "TEXT_SECONDARY")
+        accent = _resolve_token(profile, "accent_primary", "ACCENT_PRIMARY")
+        bg_card = _resolve_token(profile, *("accent_bg", "ACCENT_BG") if self._featured else ("bg_input", "BG_INPUT"))
+        border_card = _resolve_token(profile, *("accent_border", "ACCENT_BORDER") if self._featured else ("border_color", "BORDER_COLOR"))
+
+        self.setStyleSheet(f"""
+            QFrame#{self.objectName()} {{
+                background-color: {bg_card};
+                border: 1px solid {border_card};
+                border-radius: {DesignTokens.RADIUS_MD}px;
+            }}
+        """)
+        self.lbl_title.setStyleSheet(f"color: {text_primary}; border: none; background: transparent;")
+        self.lbl_desc.setStyleSheet(f"color: {text_secondary}; font-size: 11px; border: none; background: transparent;")
+        self.lbl_icon.setPixmap(load_phosphor_icon(self._icon_name, color=accent if self._featured else text_primary).pixmap(16, 16))
+        self.btn_launch.refresh_theme(profile)
+
+        bg_spec, border_spec, fg_spec = _STATUS_PILL_ATTRS.get(self._status, _STATUS_PILL_ATTRS["todo"])
+        pill_bg = _resolve_token(profile, *bg_spec)
+        pill_border = _resolve_token(profile, *border_spec)
+        pill_fg = _resolve_token(profile, *fg_spec)
+
+        self.lbl_badge.setStyleSheet(f"""
+            QLabel#TourTrackStatusPill {{
+                background-color: {pill_bg};
+                border: 1px solid {pill_border};
+                border-radius: {DesignTokens.RADIUS_SM}px;
+                color: {pill_fg};
+                font-size: 10px;
+                font-weight: 600;
+                padding: 2px 7px;
+            }}
+        """)
+
+
+class TourHubWidget(QFrame):
+    """Hub du Tutoriel remplaçant la checklist statique sur le profil Exemple d'introduction."""
+
+    launch_track_requested = Signal(str)
+
+    def __init__(self, parent: QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setObjectName("TourHubWidget")
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.track_cards: dict[str, _TourTrackCard] = {}
+        self._build_ui()
+        self.refresh_theme()
+        self.refresh_progress()
+
+    def _build_ui(self) -> None:
+        root = QVBoxLayout(self)
+        root.setContentsMargins(12, 10, 12, 10)
+        root.setSpacing(8)
+
+        header = QHBoxLayout()
+        header.setSpacing(8)
+        self.lbl_header_icon = QLabel(self)
+        self.lbl_header_icon.setFixedSize(18, 18)
+        header.addWidget(self.lbl_header_icon)
+
+        self.lbl_title = QLabel(self.tr("Hub du Tutoriel Interactif"), self)
+        self.lbl_title.setFont(QFont(DesignTokens.FONT_MAIN, 12, QFont.Weight.Bold))
+        header.addWidget(self.lbl_title)
+
+        self.lbl_summary = QLabel(self)
+        header.addWidget(self.lbl_summary)
+        header.addStretch()
+        root.addLayout(header)
+
+        core_card = _TourTrackCard(
+            TOUR_TRACK_CORE,
+            "compass",
+            lambda: self.tr("Tronc commun : L'essentiel AnkiDraft"),
+            lambda: self.tr("Parcours guidé réactif (5 étapes) : couverture Smart Coverage, Hôpital Wozniak, Garde-Fou MCP, aperçu KaTeX/Cloze et export .apkg."),
+            featured=True,
+            parent=self,
+        )
+        core_card.launch_requested.connect(self.launch_track)
+        self.track_cards[TOUR_TRACK_CORE] = core_card
+        root.addWidget(core_card)
+
+        modules_row = QHBoxLayout()
+        modules_row.setSpacing(8)
+        module_specs = [
+            (
+                TOUR_TRACK_BATCH,
+                "stack",
+                lambda: self.tr("Forge & Batch Factory"),
+                lambda: self.tr("Réviser la tâche pré-calculée sur la Section 3."),
+            ),
+            (
+                TOUR_TRACK_AI_LAB,
+                "cpu",
+                lambda: self.tr("Laboratoire IA"),
+                lambda: self.tr("Explorer Éditeur d'Agents, Pipelines DAG et Tests A/B."),
+            ),
+            (
+                TOUR_TRACK_TEMPLATES,
+                "swatches",
+                lambda: self.tr("Types de note & Jinja2"),
+                lambda: self.tr("Inspecter gabarits Cloze, KaTeX et Starter Pack."),
+            ),
+        ]
+        for track_id, icon_name, title_fn, desc_fn in module_specs:
+            card = _TourTrackCard(track_id, icon_name, title_fn, desc_fn, featured=False, parent=self)
+            card.launch_requested.connect(self.launch_track)
+            self.track_cards[track_id] = card
+            modules_row.addWidget(card, 1)
+        root.addLayout(modules_row)
+
+    def launch_track(self, track_id: str) -> None:
+        """Émet la demande d'ouverture d'un parcours nommé."""
+        self.launch_track_requested.emit(track_id)
+
+    def status_for_track(self, track_id: str) -> TourTrackStatus:
+        """Retourne le statut mémorisé pour un parcours du Hub."""
+        card = self.track_cards.get(track_id)
+        return card.current_status if card is not None else "todo"
+
+    def refresh_progress(self) -> None:
+        """Relit ``app/tour_progress_json`` et synchronise les badges des 4 parcours."""
+        progress = load_tour_progress()
+        done_count = 0
+        for track_id, card in self.track_cards.items():
+            status = progress.get(track_id, "todo")
+            if status == "done":
+                done_count += 1
+            card.set_status(status)
+        self.lbl_summary.setText(tr("%1/%2 parcours terminés", done_count, len(self.track_cards)))
+
+    def refresh_theme(self, profile: Any = None) -> None:
+        """Applique les jetons sémantiques du thème actif au Hub et ses cartes."""
+        bg_panel = (profile.bg_panel if profile else "") or DesignTokens.BG_PANEL
+        border_color = (profile.border_color if profile else "") or DesignTokens.BORDER_COLOR
+        text_primary = (profile.text_primary if profile else "") or DesignTokens.TEXT_PRIMARY
+        text_muted = (profile.text_muted if profile else "") or DesignTokens.TEXT_MUTED
+        accent = (profile.accent_primary if profile else "") or DesignTokens.ACCENT_PRIMARY
+
+        self.setStyleSheet(f"""
+            QFrame#TourHubWidget {{
+                background-color: {bg_panel};
+                border: 1px solid {border_color};
+                border-radius: {DesignTokens.RADIUS_MD}px;
+            }}
+        """)
+        self.lbl_header_icon.setPixmap(load_phosphor_icon("squares-four", color=accent).pixmap(16, 16))
+        self.lbl_title.setStyleSheet(f"color: {text_primary}; border: none; background: transparent;")
+        self.lbl_summary.setStyleSheet(f"color: {text_muted}; font-size: 11px; border: none; background: transparent;")
+        for card in self.track_cards.values():
+            card.refresh_theme(profile)

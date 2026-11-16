@@ -824,6 +824,7 @@ class DashboardView(QWidget):
     dashboard_data_updated = Signal(dict)
     explore_intro_example_requested = Signal()
     leave_intro_example_requested = Signal(str, bool)
+    launch_tour_track_requested = Signal(str)
 
     def __init__(
         self,
@@ -905,21 +906,20 @@ class DashboardView(QWidget):
         self.intro_banner.leave_requested.connect(self._on_leave_intro_example)
         content_layout.addWidget(self.intro_banner)
 
-        # 1b. Checklist interactive de premiers pas
+        # 1b. Checklist interactive (vrais profils) & Hub du Tutoriel (Exemple d'introduction)
+        from ankidraft.ui.widgets.tour_guide import TourHubWidget
+
         self.onboarding_checklist = OnboardingChecklistWidget(self)
         self.onboarding_checklist.step_action_requested.connect(self._on_onboarding_step_action)
         self.onboarding_checklist.hidden_permanently.connect(self._on_hide_onboarding_checklist)
         self.onboarding_checklist.explore_intro_requested.connect(self.explore_intro_example_requested.emit)
-        self._sync_intro_sandbox_ui()
-        try:
-            from ankidraft.database.models import SettingModel
 
-            hidden_setting = SettingModel.get_or_none(SettingModel.key == "ui/onboarding_checklist_hidden")
-            if hidden_setting is not None and hidden_setting.value == "true":
-                self.onboarding_checklist.setVisible(False)
-        except Exception:
-            logger.debug("Impossible de lire ui/onboarding_checklist_hidden à l'initialisation")
+        self.tour_hub = TourHubWidget(self)
+        self.tour_hub.launch_track_requested.connect(self.launch_tour_track_requested.emit)
+
         content_layout.addWidget(self.onboarding_checklist)
+        content_layout.addWidget(self.tour_hub)
+        self._sync_intro_sandbox_ui()
 
         # 2. Actions Rapides élargies (82px)
         actions_header = QHBoxLayout()
@@ -1099,20 +1099,35 @@ class DashboardView(QWidget):
             logger.debug("Erreur rafraîchissement checklist premiers pas")
 
     def _sync_intro_sandbox_ui(self) -> None:
-        """Synchronise l'affichage du bandeau Découverte et du lien sur la checklist."""
+        """Synchronise l'affichage du bandeau Découverte, du Hub du Tutoriel et de la checklist."""
+        from ankidraft.database.models import SettingModel
         from ankidraft.database.seeds.demo_seed import is_intro_example_profile
 
         is_demo = is_intro_example_profile()
         if hasattr(self, "intro_banner"):
             self.intro_banner.setVisible(is_demo)
-        if hasattr(self, "onboarding_checklist") and hasattr(self.onboarding_checklist, "btn_explore_intro"):
-            self.onboarding_checklist.btn_explore_intro.setVisible(not is_demo)
+        if hasattr(self, "tour_hub"):
+            self.tour_hub.setVisible(is_demo)
+            if is_demo:
+                self.tour_hub.refresh_progress()
+        if hasattr(self, "onboarding_checklist"):
+            checklist_hidden = False
+            try:
+                hidden_setting = SettingModel.get_or_none(SettingModel.key == "ui/onboarding_checklist_hidden")
+                checklist_hidden = hidden_setting is not None and hidden_setting.value == "true"
+            except Exception:
+                logger.debug("Impossible de lire ui/onboarding_checklist_hidden")
+            self.onboarding_checklist.setVisible((not is_demo) and (not checklist_hidden))
+            if hasattr(self.onboarding_checklist, "btn_explore_intro"):
+                self.onboarding_checklist.btn_explore_intro.setVisible(not is_demo)
 
     def _on_reset_intro_example(self) -> None:
         """Réinitialise atomiquement le jeu de données Exemple d'introduction et rafraîchit la vue."""
         from ankidraft.database.seeds.demo_seed import reset_intro_example_data
         from ankidraft.ui.widgets.toast import ToastLevel, show_toast
 
+        if self.worker is not None and self.worker.isRunning():
+            self.worker.wait()
         reset_intro_example_data()
         win = self.window()
         if win is not None and win is not self and hasattr(win, "_purge_inactive_views"):
@@ -1296,6 +1311,8 @@ class DashboardView(QWidget):
             self.hero_banner.refresh_theme(profile)
         if hasattr(self, "intro_banner"):
             self.intro_banner.refresh_theme(profile)
+        if hasattr(self, "tour_hub"):
+            self.tour_hub.refresh_theme(profile)
         if hasattr(self, "btn_forge"):
             self.btn_forge.refresh_theme(profile)
         if hasattr(self, "btn_import"):
