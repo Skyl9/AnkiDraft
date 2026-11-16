@@ -175,8 +175,8 @@ def test_safe_web_engine_view_has_file_urls_enabled(qtbot: Any) -> None:
 @pytest.mark.ui
 @LINUX_QTWEBENGINE_UNSTABLE
 @pytest.mark.skipif(
-    sys.platform == "darwin" and os.environ.get("QT_QPA_PLATFORM") == "offscreen",
-    reason="WebEngine offscreen macOS bloque le rendu JS KaTeX",
+    os.environ.get("QT_QPA_PLATFORM") == "offscreen" and sys.platform in ("darwin", "win32"),
+    reason="WebEngine offscreen macOS/Windows bloque le rendu JS KaTeX",
 )
 def test_webengine_headless_renders_katex_formulas(qtbot: Any) -> None:
     """Test réel offscreen dans QWebEnginePage pour confirmer que KaTeX s'exécute et génère .katex."""

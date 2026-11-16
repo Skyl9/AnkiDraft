@@ -1205,7 +1205,10 @@ def test_settings_modal_tabs_no_horizontal_scrollbar(qtbot: Any, size: tuple[int
     """Aux tailles 820x560 et 880x620, le contenu des 4 onglets s'adapte sans imposer de barre de défilement horizontale."""
     from PySide6.QtWidgets import QScrollArea
 
-    with patch("ankidraft.utils.environment.is_development", return_value=True):
+    with (
+        patch("ankidraft.utils.environment.is_development", return_value=True),
+        patch("ankidraft.ui.widgets.settings_modal.modal.is_development", return_value=True),
+    ):
         modal = SettingsModal()
         qtbot.addWidget(modal)
         modal.resize(*size)

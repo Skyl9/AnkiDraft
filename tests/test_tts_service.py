@@ -652,7 +652,7 @@ def test_piper_ensure_venv(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> N
     exe_path = PiperSidecarProvider.ensure_venv()
     assert exe_path is not None
     assert exe_path.exists()
-    assert any("venv" in cmd and str(tmp_path) in str(cmd) for cmd in commands_run)
+    assert any("venv" in cmd and any(str(tmp_path) in arg for arg in cmd) for cmd in commands_run)
     assert any("piper-tts" in cmd for cmd in commands_run)
 
 
@@ -798,6 +798,7 @@ Zuzana              cs_CZ    # Dobrý den, jmenuji se Zuzana.
 """
 
     monkeypatch.setattr(platform, "system", lambda: "Darwin")
+    monkeypatch.setattr("ankidraft.services.cards.tts_service.SystemSpeechProvider.is_available", lambda self: True)
     monkeypatch.setattr(subprocess, "check_output", lambda *args, **kwargs: fake_say_output)
 
     provider = SystemSpeechProvider()
@@ -834,6 +835,7 @@ Kyoko (Japonais (Japon)) ja_JP    # こんにちは!
 Thomas (Français (France)) fr_FR    # Bonjour
 """
     monkeypatch.setattr(platform, "system", lambda: "Darwin")
+    monkeypatch.setattr("ankidraft.services.cards.tts_service.SystemSpeechProvider.is_available", lambda self: True)
     monkeypatch.setattr(subprocess, "check_output", lambda *args, **kwargs: fake_say_output)
 
     provider = SystemSpeechProvider()
@@ -874,6 +876,7 @@ def test_tts_service_facade_get_voices(monkeypatch: pytest.MonkeyPatch) -> None:
 Thomas (Français (France)) fr_FR    # Bonjour
 """
     monkeypatch.setattr(platform, "system", lambda: "Darwin")
+    monkeypatch.setattr("ankidraft.services.cards.tts_service.SystemSpeechProvider.is_available", lambda self: True)
     monkeypatch.setattr(subprocess, "check_output", lambda *args, **kwargs: fake_say_output)
 
     service = TTSService()

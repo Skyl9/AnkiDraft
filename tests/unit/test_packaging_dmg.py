@@ -1,4 +1,5 @@
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -69,14 +70,15 @@ def test_package_dmg_script_integrity() -> None:
     assert DMG_SCRIPT_PATH.is_file(), f"Script manquant : {DMG_SCRIPT_PATH}"
     assert not OBSOLETE_SCRIPT_PATH.exists(), f"L'ancien script obsolète {OBSOLETE_SCRIPT_PATH} doit être supprimé"
 
-    # Vérification syntaxique bash
-    proc = subprocess.run(
-        ["bash", "-n", str(DMG_SCRIPT_PATH)],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    assert proc.returncode == 0, f"Erreur de syntaxe bash dans {DMG_SCRIPT_PATH} : {proc.stderr}"
+    # Vérification syntaxique bash (ignorée sur Windows où bash.exe peut être le stub WSL sans distro)
+    if sys.platform != "win32":
+        proc = subprocess.run(
+            ["bash", "-n", str(DMG_SCRIPT_PATH)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert proc.returncode == 0, f"Erreur de syntaxe bash dans {DMG_SCRIPT_PATH} : {proc.stderr}"
 
     content = DMG_SCRIPT_PATH.read_text(encoding="utf-8")
     assert "dmgbuild" in content

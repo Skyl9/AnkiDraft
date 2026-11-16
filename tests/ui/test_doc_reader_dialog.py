@@ -1,5 +1,6 @@
 """Tests unitaires et UI pour le lecteur de documentation applicatif DocReaderDialog."""
 
+from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -72,7 +73,8 @@ def test_doc_reader_dialog_open_lifecycle_guide_and_svg_assets(qtbot: Any) -> No
     user_docs_path = get_user_docs_path()
     guides_dir = user_docs_path / "guides"
     base_url = dialog.text_browser.document().baseUrl()
-    assert base_url.toLocalFile() == str(guides_dir) + "/"
+    assert base_url.toLocalFile().endswith("/")
+    assert Path(base_url.toLocalFile()).resolve() == guides_dir.resolve()
 
     # Vérification que l'asset SVG principal est résolu par QTextDocument
     img_resource = dialog.text_browser.document().resource(

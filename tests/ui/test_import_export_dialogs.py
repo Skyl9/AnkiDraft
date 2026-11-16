@@ -76,13 +76,15 @@ def test_export_dialog_browse_destination_adds_apkg_suffix(mock_save_dialog, qtb
     dialog = ExportDialog()
     qtbot.addWidget(dialog)
 
+    from pathlib import Path
+
     mock_save_dialog.return_value = ("/tmp/custom_name", "Archives Anki (*.apkg)")
     dialog._browse_destination()
-    assert dialog.dest_input.text() == "/tmp/custom_name.apkg"
+    assert dialog.dest_input.text() == str(Path("/tmp/custom_name.apkg"))
 
     mock_save_dialog.return_value = ("/tmp/existing.apkg", "Archives Anki (*.apkg)")
     dialog._browse_destination()
-    assert dialog.dest_input.text() == "/tmp/existing.apkg"
+    assert dialog.dest_input.text() == str(Path("/tmp/existing.apkg"))
 
 
 @patch("ankidraft.ui.dialogs.export_dialog.QMessageBox.information")

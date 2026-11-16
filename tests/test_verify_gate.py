@@ -318,8 +318,12 @@ def test_decode_return_code_unknown_signal() -> None:
     assert "99" in result
 
 
-def test_get_step_environment_sets_faulthandler() -> None:
+def test_get_step_environment_sets_faulthandler(monkeypatch: pytest.MonkeyPatch) -> None:
     """get_step_environment doit injecter PYTHONFAULTHANDLER=1."""
+    monkeypatch.delenv("PYTHONFAULTHANDLER", raising=False)
+    monkeypatch.delenv("PYTHONUNBUFFERED", raising=False)
+    monkeypatch.delenv("QT_QPA_PLATFORM", raising=False)
+
     from script.verify import get_step_environment
 
     env = get_step_environment()

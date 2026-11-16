@@ -100,10 +100,14 @@ def _engine_rule(selector: str) -> str:
 @pytest.fixture
 def inspector(qtbot: Any, mock_db: Any) -> SimpleNamespace:
     """Inspecteur affichant une section couverte, sa carte liée prête à être cliquée."""
+    from PySide6.QtWidgets import QApplication
+
     doc, chunk, note = _document_with_linked_note()
     panel = DocumentInspectorPanel(doc)
     qtbot.addWidget(panel)
     panel.show()
+    panel.activateWindow()
+    QApplication.processEvents()
     panel.inspect_chunk(chunk.id)
     return SimpleNamespace(panel=panel, note=note, chunk=chunk)
 

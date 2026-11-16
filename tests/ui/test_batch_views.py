@@ -1279,6 +1279,7 @@ def test_batch_review_terminal_toggle_expands_and_collapses(qtbot: Any) -> None:
     """Le toggle du terminal replie (36px) et déplie (hauteur stockée) autour de l'onglet Revue."""
     view = BatchTab(ai_manager=None)
     qtbot.addWidget(view)
+    view.show()
 
     idx = view._terminal_splitter_index()
     assert idx >= 0, "Le terminal doit être enfant du splitter"
@@ -2083,6 +2084,7 @@ def test_batch_view_terminal_toggle_exact_height_without_drift(qtbot: Any) -> No
     """Le repli/dépli du terminal respecte exactement 36px et la hauteur précédente sans dérive."""
     view = BatchTab(ai_manager=None)
     qtbot.addWidget(view)
+    view.show()
 
     idx = view._terminal_splitter_index()
     assert idx >= 0

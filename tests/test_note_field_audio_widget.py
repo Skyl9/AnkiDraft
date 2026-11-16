@@ -100,7 +100,7 @@ def test_note_field_audio_playback_trigger(qtbot: QtBot, tmp_path: Path) -> None
 
         mock_player.setSource.assert_called_once()
         source_url = mock_player.setSource.call_args[0][0]
-        assert source_url.toLocalFile() == str(audio_file.resolve())
+        assert Path(source_url.toLocalFile()).resolve() == audio_file.resolve()
         mock_player.play.assert_called_once()
 
     # Gestion d'erreur : le slot consigne en log et notifie via un toast
