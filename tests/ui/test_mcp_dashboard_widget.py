@@ -89,8 +89,9 @@ def test_mcp_dashboard_widget_snippets_generation(qtbot: Any) -> None:
     # 2. Antigravity agy
     agy_cfg = widget.get_snippet_config("agy")
     parsed_agy = json.loads(agy_cfg)
-    assert parsed_agy["name"] == "ankidraft"
-    assert parsed_agy["url"] == "http://127.0.0.1:8765/mcp"
+    assert "mcpServers" in parsed_agy
+    assert parsed_agy["mcpServers"]["ankidraft"]["url"] == "http://127.0.0.1:8765/mcp"
+    assert parsed_agy["mcpServers"]["ankidraft"]["headers"]["Authorization"] == "Bearer secret_abc"
 
     # 3. Cursor
     cursor_cfg = widget.get_snippet_config("cursor")
