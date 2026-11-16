@@ -874,7 +874,8 @@ class BatchView(QWidget):
         sync_vision_capability(self.vision_cap_badge, self.vision_cap_notice, self.engine_combo.currentData(), self.cb_vision)
 
     def is_dirty(self) -> bool:
-        return len(self.queue_tasks_data) > 0
+        """Retourne True uniquement s'il existe des tâches utilisateur (hors tâche démo)."""
+        return any(not bool(task.get("_is_demo_task", False)) for task in self.queue_tasks_data)
 
     def pending_work_count(self) -> int:
         """Tâches encore actives (en attente, en cours, à réviser, en échec) — pastille de navigation.
