@@ -106,7 +106,7 @@ def _normalize_catalog_locations(catalog: bytes) -> bytes:
     relative_root = Path("..") / ".."
 
     def replace(match: re.Match[bytes]) -> bytes:
-        filename = match.group(1)
+        filename = match.group(1).replace(b"\\", b"/")
         marker = filename.find(source_prefix)
         if marker < 0:
             return match.group(0)

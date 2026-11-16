@@ -333,8 +333,8 @@ def test_source_catalog_is_committed() -> None:
 
 def test_committed_catalog_matches_a_fresh_extraction() -> None:
     """Le `.ts` versionné doit correspondre au code : un catalogue périmé traduit du vide."""
+    from script.extract_translations import _normalize_catalog_locations, ts_path
     from script.extract_translations import extract as extract_catalog
-    from script.extract_translations import ts_path
 
     stale: list[str] = []
     for language in ("fr", "en"):
@@ -348,7 +348,9 @@ def test_committed_catalog_matches_a_fresh_extraction() -> None:
         probe = TRANSLATIONS_DIR / f".audit_{language}.ts"
         try:
             extract_catalog(language, probe)
-            if probe.read_bytes() != reference.read_bytes():
+            probe_norm = _normalize_catalog_locations(probe.read_bytes()).replace(b"\r\n", b"\n")
+            ref_norm = _normalize_catalog_locations(reference.read_bytes()).replace(b"\r\n", b"\n")
+            if probe_norm != ref_norm:
                 stale.append(reference.name)
         finally:
             probe.unlink(missing_ok=True)

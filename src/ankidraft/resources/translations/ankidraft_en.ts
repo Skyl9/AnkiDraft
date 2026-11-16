@@ -1912,7 +1912,7 @@ Voulez-vous mettre à jour les documents existants (contenu rafraîchi) ?</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+231"/>
         <source>Un pipeline DAG « %1 » n&apos;a pas été terminé lors de la session précédente (interrompu à l&apos;étape %2).
 
 Souhaitez-vous reprendre l&apos;exécution de ce pipeline ?</source>
@@ -3449,7 +3449,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/batch_view/view.py" line="+387"/>
+        <location filename="../../ui/views/batch_view/view.py" line="+388"/>
         <source>Vision (PDF)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8860,7 +8860,7 @@ Toutes les cartes, documents, personas et médias associés seront définitiveme
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/widgets/settings_modal/tabs/developer_tab.py" line="+344"/>
+        <location filename="../../ui/widgets/settings_modal/tabs/developer_tab.py" line="+356"/>
         <source>Dernier test : CrashReportDialog exécuté (code %1).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14116,12 +14116,12 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>DeveloperTab</name>
     <message>
-        <location filename="../../ui/widgets/settings_modal/tabs/developer_tab.py" line="-287"/>
+        <location filename="../../ui/widgets/settings_modal/tabs/developer_tab.py" line="-297"/>
         <source>Cockpit Runtime &amp; Environnement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>Métadonnées d&apos;exécution et localisation des données du profil développeur.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14131,7 +14131,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+18"/>
         <source>Environnement :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14156,17 +14156,17 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+38"/>
         <source>Galerie de Test des Boîtes de Dialogue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>Instanciez les dialogues majeurs de l&apos;application avec des données mockées sans impacter la base réelle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>Ouvrir la Galerie Plein Écran</source>
         <translation type="unfinished"></translation>
     </message>
