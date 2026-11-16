@@ -23,6 +23,7 @@ from ankidraft.utils.event_bus import (
     OpenFeedbackRequestedEvent,
     ProfileSwitchedEvent,
     ThemeChangedEvent,
+    ViewNavigatedEvent,
     event_bus,
 )
 from ankidraft.utils.i18n import tr
@@ -203,7 +204,7 @@ class MainWindow(QMainWindow):
         self._import_dialog: QWidget | None = None
         self._export_dialog: QWidget | None = None
         self._notif_popup: QWidget | None = None
-        self._tour_bubble: Any | None = None
+        self._tour_controller: Any | None = None
         self._web_engine_prewarmer: QWidget | None = None
         self._update_worker: Any | None = None
         self._latest_update_info: Any | None = None
@@ -854,6 +855,8 @@ class MainWindow(QMainWindow):
                 self._settings_window.refresh_theme(profile)
             except Exception as err:
                 logger.debug("Refresh du thème de la fenêtre de réglages ignoré : %s", err)
+        if hasattr(self, "_tour_controller") and self._tour_controller is not None and self._tour_controller.companion_card is not None:
+            self._tour_controller.companion_card.refresh_theme(profile)
         theme_id = getattr(profile, "theme_id", "") if profile else ""
         event_bus.publish(ThemeChangedEvent(theme_name=str(theme_id)))
 
@@ -1017,6 +1020,8 @@ class MainWindow(QMainWindow):
 
             if view_id == "documents" and isinstance(data, dict) and "doc_id" in data and hasattr(widget, "_select_doc_id_in_tree"):
                 cast(Any, widget)._select_doc_id_in_tree(data["doc_id"])
+
+            event_bus.publish(ViewNavigatedEvent(view_id=view_id))
 
         self._refresh_nav_badges()
 
@@ -1243,14 +1248,27 @@ class MainWindow(QMainWindow):
         self._crash_dialog.show()
 
     def start_tour_guide(self) -> None:
-        """Lance la visite guidée interactive d'AnkiForge."""
-        from ankidraft.ui.widgets.tour_guide import TourBubble, create_default_tour_steps
+        """Lance le compagnon de visite guidée interactive d'AnkiForge."""
+        from ankidraft.ui.widgets.tour_guide import InteractiveTourController, InteractiveTourStep
 
-        if self._tour_bubble is None:
-            self._tour_bubble = TourBubble(self)
-        steps = create_default_tour_steps(self)
-        self._tour_bubble.set_scenario(steps)
-        self._tour_bubble.start_tour()
+        if self._tour_controller is None:
+            self._tour_controller = InteractiveTourController(self)
+
+        base_steps = [
+            InteractiveTourStep(
+                step_id="overview-dashboard",
+                title_factory=lambda: self.tr("Atelier AnkiDraft"),
+                text_factory=lambda: self.tr("Explorez vos documents, révisez vos cartes en lot, éditez avec aperçu en direct et auditez la qualité selon Wozniak."),
+                target_view_id="dashboard",
+            ),
+            InteractiveTourStep(
+                step_id="overview-edition",
+                title_factory=lambda: self.tr("Édition et aperçu des cartes"),
+                text_factory=lambda: self.tr("Ouvrez une note dans l'éditeur pour inspecter son rendu recto-verso et l'exporter vers Anki (.apkg)."),
+                target_view_id="edition",
+            ),
+        ]
+        self._tour_controller.start(base_steps, track_id="default")
 
     def _open_import_dialog(self) -> None:
         """Ouvre la boîte de dialogue d'importation de paquets Anki."""
@@ -1365,6 +1383,9 @@ class MainWindow(QMainWindow):
         if self.profile_name and self.profile_name != new_profile:
             ProfileLockService.release_lock(self.profile_name)
 
+        if self._tour_controller is not None:
+            self._tour_controller.quit_tour()
+
         logger.info("Bascule de l'espace de travail vers le profil '%s'", new_profile)
 
         # Feedback visuel immédiat non bloquant : overlay + spinner affichés AVANT les
@@ -1468,6 +1489,8 @@ class MainWindow(QMainWindow):
             return
 
         event_bus.unsubscribe(OpenConsultantRequestedEvent, self._on_open_consultant_requested)
+        if getattr(self, "_tour_controller", None) is not None:
+            self._tour_controller.quit_tour()
         # Arrêt propre du serveur MCP d'arrière-plan
         if hasattr(self, "mcp_daemon") and self.mcp_daemon is not None and self.mcp_daemon.is_running:
             try:

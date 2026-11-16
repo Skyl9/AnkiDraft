@@ -133,7 +133,7 @@ L&apos;accès simultané au même profil est formellement bloqué pour éviter t
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../../ui/main_window.py" line="+83"/>
+        <location filename="../../ui/main_window.py" line="+84"/>
         <location filename="../../ui/widget_gallery/families/layouts.py" line="+30"/>
         <source>Général</source>
         <extracomment>view_id -&gt; (catégorie, icône, titre, fabrique_ou_classe) La table est produite par `view_registry()` plutôt que déclarée en dur : les libellés ne peuvent être résolus qu&apos;une fois le traducteur installé, donc au premier usage. Une constante de classe figerait le français à l&apos;import du module — c&apos;est-à-dire avant `install_translator()` — et la navigation resterait française dans une interface anglaise. Le 4e élément est soit une classe Qt directe, soit une fabrique paresseuse (`Callable[[], type[QWidget]]`) qui n&apos;importe le module de vue qu&apos;à la première navigation, allégeant le chemin critique de démarrage. La catégorie sert de clef de regroupement dans le layout IDE : la traduire ne casse rien, les vues d&apos;un même groupe partagent toujours la même clef.</extracomment>
@@ -570,7 +570,7 @@ Cliquer pour tronquer la saisie à ce niveau</source>
     </message>
     <message>
         <location line="+6"/>
-        <location filename="../../ui/views/edition_view/view.py" line="+1149"/>
+        <location filename="../../ui/views/edition_view/view.py" line="+1150"/>
         <location filename="../../ui/widgets/card_create_view_widget.py" line="+679"/>
         <location filename="../../ui/widgets/time_machine_dialog.py" line="+168"/>
         <source>Type de note : %1</source>
@@ -751,7 +751,7 @@ Voulez-vous vraiment continuer ?</source>
         <location line="+5"/>
         <location filename="../../ui/views/agents_view/widgets/persona_item.py" line="+49"/>
         <location filename="../../ui/views/consultant_view/widgets/mcp_tool_catalog_widget.py" line="+714"/>
-        <location filename="../../ui/views/edition_view/view.py" line="-625"/>
+        <location filename="../../ui/views/edition_view/view.py" line="-626"/>
         <location line="+211"/>
         <location line="+8"/>
         <location filename="../../ui/widgets/editor_toolbar_widget.py" line="+101"/>
@@ -859,7 +859,7 @@ Cliquer pour voir les détails</source>
     </message>
     <message>
         <location line="+271"/>
-        <location filename="../../ui/dialogs/export_dialog.py" line="+342"/>
+        <location filename="../../ui/dialogs/export_dialog.py" line="+343"/>
         <source>✅ %1 cartes exportées avec succès !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1135,9 +1135,9 @@ Le document `%1` n&apos;a pas pu être chargé.</source>
         <location filename="../../ui/views/analysis_view/tabs/sources_tab.py" line="+1791"/>
         <location line="+3"/>
         <location line="+1"/>
-        <location filename="../../ui/views/analysis_view/tabs/wozniak_tab.py" line="+122"/>
+        <location filename="../../ui/views/analysis_view/tabs/wozniak_tab.py" line="+123"/>
         <location filename="../../ui/views/card_models_view/view.py" line="-280"/>
-        <location filename="../../ui/views/edition_view/view.py" line="+745"/>
+        <location filename="../../ui/views/edition_view/view.py" line="+746"/>
         <source>%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1152,7 +1152,7 @@ Le document `%1` n&apos;a pas pu être chargé.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+14"/>
         <source>Impossible d&apos;exporter le paquet :
 %1</source>
         <translation type="unfinished"></translation>
@@ -1944,7 +1944,7 @@ Souhaitez-vous reprendre l&apos;exécution de ce pipeline ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+358"/>
+        <location line="+362"/>
         <source>Vous avez du travail non enregistré dans :
 %1
 
@@ -1952,7 +1952,7 @@ Voulez-vous vraiment %2 ? Ce travail sera perdu.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+234"/>
+        <location line="+247"/>
         <source>AnkiDraft%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1969,7 +1969,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+62"/>
         <source>Espace de travail actif : « %1 »</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3409,7 +3409,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+23"/>
         <source>Note #%1 marquée comme conforme.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3449,7 +3449,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/batch_view/view.py" line="+386"/>
+        <location filename="../../ui/views/batch_view/view.py" line="+387"/>
         <source>Vision (PDF)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3554,7 +3554,7 @@ Clic droit pour exclure cette section de l&apos;analyse.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+478"/>
+        <location line="+480"/>
         <source>Batch terminé : %1 réussis, %2 erreurs (%3 cartes créées%4)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5970,7 +5970,7 @@ Hors périmètre (titre seul) : seul le conteneur est exclu, ses sous-sections r
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/edition_view/view.py" line="-551"/>
+        <location filename="../../ui/views/edition_view/view.py" line="-552"/>
         <source>%1 cartes sélectionnées (sur %2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5996,7 +5996,7 @@ Hors périmètre (titre seul) : seul le conteneur est exclu, ses sous-sections r
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+171"/>
         <source>(%1 champ%2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9179,12 +9179,13 @@ Une nouvelle version sera automatiquement créée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/widgets/tour_guide.py" line="+189"/>
+        <location filename="../../ui/widgets/tour_guide.py" line="+202"/>
+        <location line="+247"/>
         <source>%1/%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+158"/>
+        <location line="+248"/>
         <source>Bibliothèque de Sources</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10446,7 +10447,7 @@ Tous les clients MCP externes configurés (Claude Desktop, etc.) devront être m
 <context>
     <name>AIWozniakLinterTab</name>
     <message>
-        <location filename="../../ui/views/analysis_view/tabs/wozniak_tab.py" line="-485"/>
+        <location filename="../../ui/views/analysis_view/tabs/wozniak_tab.py" line="-486"/>
         <source>Audit Wozniak</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12101,7 +12102,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
 <context>
     <name>BatchView</name>
     <message>
-        <location filename="../../ui/views/batch_view/view.py" line="-1820"/>
+        <location filename="../../ui/views/batch_view/view.py" line="-1822"/>
         <source>CIBLES ANKI</source>
         <extracomment>Cartes enregistrées sans lien de couverture (fragment source non résolu), remonté au récapitulatif de fin de lot.</extracomment>
         <translation type="unfinished"></translation>
@@ -12242,7 +12243,7 @@ Utilisez {{ text_source }} et les variables Jinja2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location line="+68"/>
         <source>Section 3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15794,7 +15795,7 @@ exact → section → page → lexical</source>
 <context>
     <name>EditionView</name>
     <message>
-        <location filename="../../ui/views/edition_view/view.py" line="-2258"/>
+        <location filename="../../ui/views/edition_view/view.py" line="-2259"/>
         <source>📝 Notes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15805,18 +15806,18 @@ exact → section → page → lexical</source>
     </message>
     <message>
         <location line="+33"/>
-        <location line="+1102"/>
+        <location line="+1103"/>
         <source>Dossier : Tous ▾</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1083"/>
-        <location line="+1363"/>
+        <location line="-1084"/>
+        <location line="+1364"/>
         <source>Type de note : Tous ▾</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1344"/>
+        <location line="-1345"/>
         <source>Drapeau : Tous ▾</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15875,13 +15876,13 @@ exact → section → page → lexical</source>
         <location line="+4"/>
         <location line="+443"/>
         <location line="+12"/>
-        <location line="+1657"/>
+        <location line="+1658"/>
         <location line="+110"/>
         <source>Aucune carte sélectionnée</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-2218"/>
+        <location line="-2219"/>
         <source>Carte suivante (Alt+Down)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15918,7 +15919,7 @@ exact → section → page → lexical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+418"/>
+        <location line="+419"/>
         <location line="+688"/>
         <source>Changer le type de note...</source>
         <translation type="unfinished"></translation>
@@ -16329,7 +16330,7 @@ exact → section → page → lexical</source>
 <context>
     <name>ExportDialog</name>
     <message>
-        <location filename="../../ui/dialogs/export_dialog.py" line="-301"/>
+        <location filename="../../ui/dialogs/export_dialog.py" line="-306"/>
         <source>Exporter un Paquet Anki</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16419,7 +16420,7 @@ exact → section → page → lexical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+14"/>
         <source>Erreur d&apos;exportation.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19693,7 +19694,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../../ui/main_window.py" line="-936"/>
+        <location filename="../../ui/main_window.py" line="-956"/>
         <source>Nouveau jeton d&apos;authentification MCP généré.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19703,7 +19704,7 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+524"/>
+        <location line="+528"/>
         <source>Modifications non sauvegardées</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19713,7 +19714,27 @@ Tous les clients MCP externes connectés (Claude Desktop, etc.) devront être mi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+115"/>
+        <location line="+16"/>
+        <source>Atelier AnkiDraft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Explorez vos documents, révisez vos cartes en lot, éditez avec aperçu en direct et auditez la qualité selon Wozniak.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Édition et aperçu des cartes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ouvrez une note dans l&apos;éditeur pour inspecter son rendu recto-verso et l&apos;exporter vers Anki (.apkg).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+105"/>
         <source>Profil en cours d&apos;utilisation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -23843,7 +23864,7 @@ Utilisez {{ text_source }}.</source>
 <context>
     <name>TourBubble</name>
     <message>
-        <location filename="../../ui/widgets/tour_guide.py" line="-355"/>
+        <location filename="../../ui/widgets/tour_guide.py" line="-693"/>
         <source>Titre</source>
         <translation type="unfinished"></translation>
     </message>
@@ -23853,18 +23874,73 @@ Utilisez {{ text_source }}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+16"/>
+        <source>Quitter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Précédent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>1/x</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+71"/>
-        <source> Terminer</source>
+        <location line="+13"/>
+        <location line="+60"/>
+        <source>Suivant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source> Suivant</source>
+        <location line="-3"/>
+        <source>Terminer</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TourCompanionCard</name>
+    <message>
+        <location line="+148"/>
+        <source>Quitter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Précédent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Passer l&apos;étape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+95"/>
+        <source>Suivant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-17"/>
+        <source>Action détectée — étape validée</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>En attente de votre action dans l&apos;atelier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Lecture libre — cliquez sur Suivant lorsque vous êtes prêt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Terminer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

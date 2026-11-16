@@ -1,37 +1,41 @@
 """Tour Guide & Onboarding interactif pour AnkiForge.
 
-Affiche une bulle d'aide flottante guidant l'utilisateur à travers les zones clés de l'application.
+Fournit à la fois les bulles d'aide contextuelles par vue (``TourBubble``)
+et le moteur compagnon non bloquant piloté par événements (``InteractiveTourController``
+et ``TourCompanionCard``).
 """
 
 from __future__ import annotations
 
+import contextlib
 import logging
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from typing import Any
 
-from PySide6.QtCore import QPoint, Qt, Signal
-from PySide6.QtGui import QColor, QScreen
+from PySide6.QtCore import QEvent, QObject, QPoint, Qt, Signal
+from PySide6.QtGui import QScreen
 from PySide6.QtWidgets import (
     QApplication,
-    QGraphicsDropShadowEffect,
+    QFrame,
     QHBoxLayout,
     QLabel,
     QVBoxLayout,
     QWidget,
 )
 
-from ankidraft.ui.components.buttons import ActionButton, PrimaryButton
-from ankidraft.ui.theme import DesignTokens
+from ankidraft.ui.components.buttons import ActionButton, PrimaryButton, apply_compact_style
+from ankidraft.ui.theme import DesignTokens, apply_shadow
+from ankidraft.utils.event_bus import AppEvent, AppEventBus, event_bus
 from ankidraft.utils.i18n import tr
-from ankidraft.utils.icon_loader import load_on_accent_icon
+from ankidraft.utils.icon_loader import load_on_accent_icon, load_phosphor_icon
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
 class TourStep:
-    """Étape individuelle de la visite guidée."""
+    """Étape individuelle de la bulle d'aide contextuelle par vue."""
 
     title: str
     text: str
@@ -40,8 +44,21 @@ class TourStep:
     action: Callable[[], None] | None = None
 
 
+@dataclass
+class InteractiveTourStep:
+    """Étape déclarative d'un parcours interactif piloté par événements."""
+
+    step_id: str
+    title_factory: Callable[[], str]
+    text_factory: Callable[[], str]
+    target_view_id: str | None = None
+    on_enter: Callable[[], None] | None = None
+    completion_event: type[AppEvent] | None = None
+    completion_predicate: Callable[[AppEvent], bool] | None = None
+
+
 class TourBubble(QWidget):
-    """La bulle d'information flottante qui guide l'utilisateur."""
+    """Bulle d'information flottante utilisée pour l'aide contextuelle des vues."""
 
     tour_finished = Signal()
 
@@ -74,12 +91,7 @@ class TourBubble(QWidget):
                 border-radius: {DesignTokens.RADIUS_LG}px;
             }}
         """)
-
-        shadow = QGraphicsDropShadowEffect(self)
-        shadow.setBlurRadius(24)
-        shadow.setColor(QColor(0, 0, 0, 160))
-        shadow.setOffset(0, 6)
-        self.bg_frame.setGraphicsEffect(shadow)
+        apply_shadow(self.bg_frame, blur=24, offset_y=6, color=DesignTokens.ACCENT_GLOW)
 
         bg_layout = QVBoxLayout(self.bg_frame)
         bg_layout.setContentsMargins(20, 20, 20, 18)
@@ -107,17 +119,18 @@ class TourBubble(QWidget):
         bg_layout.addWidget(self.lbl_text)
         bg_layout.addSpacing(6)
 
-        # --- BARRE DE BOUTONS ---
         btn_layout = QHBoxLayout()
         btn_layout.setSpacing(8)
 
-        self.btn_skip = ActionButton("x", " Quitter", parent=self)
+        self.btn_skip = ActionButton("x", "", parent=self)
+        self.btn_skip.setText(self.tr("Quitter"))
         self.btn_skip.clicked.connect(self.end_tour)
         btn_layout.addWidget(self.btn_skip)
 
         btn_layout.addStretch()
 
-        self.btn_prev = ActionButton("arrow-left", " Précédent", parent=self)
+        self.btn_prev = ActionButton("arrow-left", "", parent=self)
+        self.btn_prev.setText(self.tr("Précédent"))
         self.btn_prev.clicked.connect(self.prev_step)
         btn_layout.addWidget(self.btn_prev)
 
@@ -134,7 +147,7 @@ class TourBubble(QWidget):
         self.lbl_counter.setAlignment(Qt.AlignmentFlag.AlignCenter)
         btn_layout.addWidget(self.lbl_counter)
 
-        self.btn_next = PrimaryButton("Suivant ", parent=self)
+        self.btn_next = PrimaryButton(self.tr("Suivant"), parent=self)
         self.btn_next.setIcon(load_on_accent_icon("arrow-right"))
         self.btn_next.clicked.connect(self.next_step)
         btn_layout.addWidget(self.btn_next)
@@ -188,19 +201,17 @@ class TourBubble(QWidget):
         self.lbl_text.setText(step.text)
         self.lbl_counter.setText(tr("%1/%2", self.current_step + 1, len(self.steps)))
 
-        # Gestion des boutons
         self.btn_prev.setVisible(self.current_step > 0)
 
         if self.current_step == len(self.steps) - 1:
-            self.btn_next.setText(self.tr(" Terminer"))
+            self.btn_next.setText(self.tr("Terminer"))
             self.btn_next.setIcon(load_on_accent_icon("check"))
         else:
-            self.btn_next.setText(self.tr(" Suivant"))
+            self.btn_next.setText(self.tr("Suivant"))
             self.btn_next.setIcon(load_on_accent_icon("arrow-right"))
 
         QApplication.processEvents()
 
-        # Résolution du widget cible
         target = step.target_widget
         if step.target_widget_getter and callable(step.target_widget_getter):
             try:
@@ -226,26 +237,21 @@ class TourBubble(QWidget):
 
         target_pos = target_widget.mapToGlobal(QPoint(0, 0))
 
-        # Essayer d'abord à droite
         if target_pos.x() + target_widget.width() + 16 + self.width() <= screen_rect.right():
             x = target_pos.x() + target_widget.width() + 16
             y = target_pos.y()
-        # Sinon à gauche
         elif target_pos.x() - self.width() - 16 >= screen_rect.left():
             x = target_pos.x() - self.width() - 16
             y = target_pos.y()
-        # Sinon en-dessous
         else:
             x = max(screen_rect.left() + 10, target_pos.x())
             y = target_pos.y() + target_widget.height() + 16
 
-        # Clamping vertical
         if y + self.height() > screen_rect.bottom() - 16:
             y = screen_rect.bottom() - self.height() - 16
         if y < screen_rect.top() + 16:
             y = screen_rect.top() + 16
 
-        # Clamping horizontal
         if x + self.width() > screen_rect.right() - 16:
             x = screen_rect.right() - self.width() - 16
         if x < screen_rect.left() + 16:
@@ -280,67 +286,411 @@ class TourBubble(QWidget):
         self.tour_finished.emit()
 
 
-def create_default_tour_steps(main_window: Any) -> list[TourStep]:
-    """Génère le parcours d'onboarding standard pour AnkiDraft."""
-    return [
-        TourStep(
-            title="✨ Bienvenue dans AnkiDraft",
-            text=(
-                "AnkiDraft est votre atelier professionnel de création, d'ingestion "
-                "et d'audit de cartes Anki assisté par IA.\n\n"
-                "Ce guide rapide vous présente en 5 étapes les zones clés de l'application."
-            ),
-            target_widget=None,
-        ),
-        TourStep(
-            title="🧭 Barre de Navigation & Espaces",
-            text=(
-                "La barre latérale regroupe tous vos ateliers : Tableau de bord, Studio de création, "
-                "Éditeur de notes, Audit Wozniak & SRS, Consultant IA, Pipelines et Laboratoire A/B.\n"
-                "Vous pouvez la replier à tout moment pour maximiser votre espace de travail."
-            ),
-            target_widget_getter=lambda: getattr(main_window, "sidebar", None),
-        ),
-        TourStep(
-            title="⚡ Studio de Création & Ingestion",
-            text=("Transformez vos cours et documents (PDF, Markdown, pages web, vidéos YouTube) en cartes mémoires atomiques de haute qualité grâce à l'IA et aux pipelines modulaires."),
-            target_widget_getter=lambda: main_window.sidebar._items.get("creation") if hasattr(main_window, "sidebar") and hasattr(main_window.sidebar, "_items") else None,
-            action=lambda: main_window._on_view_selected("creation") if hasattr(main_window, "_on_view_selected") else None,
-        ),
-        TourStep(
-            title="🎴 Édition & Navigateur de Cartes",
-            text=(
-                "Visualisez, filtrez et peaufinez vos notes avec aperçu en temps réel (Bureau, Tablette, Mobile). Profitez du support KaTeX, du gestionnaire de cloze et de l'historique Time Machine."
-            ),
-            target_widget_getter=lambda: main_window.sidebar._items.get("edition") if hasattr(main_window, "sidebar") and hasattr(main_window.sidebar, "_items") else None,
-            action=lambda: main_window._on_view_selected("edition") if hasattr(main_window, "_on_view_selected") else None,
-        ),
-        TourStep(
-            title="🔬 Analyse, Audit Wozniak & RAG",
-            text=(
-                "Vérifiez l'atomicité et l'efficacité mémorielle de vos cartes selon les 20 règles de Piotr Wozniak. "
-                "Identifiez les lacunes documentaires et projetez votre charge de révision à l'équilibre (FSRS)."
-            ),
-            target_widget_getter=lambda: main_window.sidebar._items.get("analysis") if hasattr(main_window, "sidebar") and hasattr(main_window.sidebar, "_items") else None,
-            action=lambda: main_window._on_view_selected("analysis") if hasattr(main_window, "_on_view_selected") else None,
-        ),
-        TourStep(
-            title="🤖 Consultant IA & Palette de Commandes",
-            text=(
-                "Votre copilote autonome disponible pour auditer ou enrichir vos paquets. "
-                "Astuce : ouvrez la Palette de commandes à tout moment via Ctrl+K / ⌘K "
-                "pour rechercher et naviguer instantanément !"
-            ),
-            target_widget_getter=lambda: main_window.sidebar._items.get("consultant") if hasattr(main_window, "sidebar") and hasattr(main_window.sidebar, "_items") else None,
-            action=lambda: main_window._on_view_selected("consultant") if hasattr(main_window, "_on_view_selected") else None,
-        ),
-    ]
+class TourCompanionCard(QFrame):
+    """Carte compagnon non bloquante ancrée en bas à droite de la fenêtre hôte."""
+
+    prev_requested = Signal()
+    skip_requested = Signal()
+    next_requested = Signal()
+    quit_requested = Signal()
+
+    ANCHOR_MARGIN = 20
+
+    def __init__(self, host_window: QWidget) -> None:
+        super().__init__(host_window)
+        self._host_window = host_window
+        self._is_completed = False
+        self._waiting_for_event = False
+        self.setObjectName("TourCompanionCard")
+        self.setMinimumWidth(420)
+        self.setMaximumWidth(460)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+
+        self._build_ui()
+        self.refresh_theme()
+        self.hide()
+
+    def _build_ui(self) -> None:
+        root = QVBoxLayout(self)
+        root.setContentsMargins(16, 14, 16, 14)
+        root.setSpacing(10)
+
+        header = QHBoxLayout()
+        header.setSpacing(8)
+
+        self.lbl_icon = QLabel(self)
+        self.lbl_icon.setFixedSize(20, 20)
+        header.addWidget(self.lbl_icon)
+
+        self.lbl_title = QLabel(self)
+        self.lbl_title.setWordWrap(True)
+        header.addWidget(self.lbl_title, 1)
+
+        self.lbl_counter = QLabel(self)
+        self.lbl_counter.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        header.addWidget(self.lbl_counter)
+        root.addLayout(header)
+
+        self.status_badge = QFrame(self)
+        self.status_badge.setObjectName("TourStatusBadge")
+        badge_layout = QHBoxLayout(self.status_badge)
+        badge_layout.setContentsMargins(10, 5, 10, 5)
+        badge_layout.setSpacing(6)
+        self.lbl_status_icon = QLabel(self.status_badge)
+        self.lbl_status_icon.setFixedSize(14, 14)
+        badge_layout.addWidget(self.lbl_status_icon)
+        self.lbl_status = QLabel(self.status_badge)
+        self.lbl_status.setWordWrap(True)
+        badge_layout.addWidget(self.lbl_status, 1)
+        root.addWidget(self.status_badge)
+
+        self.lbl_text = QLabel(self)
+        self.lbl_text.setWordWrap(True)
+        root.addWidget(self.lbl_text)
+
+        controls = QHBoxLayout()
+        controls.setSpacing(6)
+
+        self.btn_quit = ActionButton("x", "", parent=self)
+        self.btn_quit.setText(self.tr("Quitter"))
+        apply_compact_style(self.btn_quit)
+        self.btn_quit.clicked.connect(self.quit_requested.emit)
+        controls.addWidget(self.btn_quit)
+
+        controls.addStretch()
+
+        self.btn_prev = ActionButton("arrow-left", "", parent=self)
+        self.btn_prev.setText(self.tr("Précédent"))
+        apply_compact_style(self.btn_prev)
+        self.btn_prev.clicked.connect(self.prev_requested.emit)
+        controls.addWidget(self.btn_prev)
+
+        self.btn_skip = ActionButton("skip-forward", "", parent=self)
+        self.btn_skip.setText(self.tr("Passer l'étape"))
+        apply_compact_style(self.btn_skip)
+        self.btn_skip.clicked.connect(self.skip_requested.emit)
+        controls.addWidget(self.btn_skip)
+
+        self.btn_next = PrimaryButton(self.tr("Suivant"), parent=self)
+        apply_compact_style(self.btn_next)
+        self.btn_next.setIcon(load_on_accent_icon("arrow-right"))
+        self.btn_next.clicked.connect(self.next_requested.emit)
+        controls.addWidget(self.btn_next)
+
+        root.addLayout(controls)
+
+    def refresh_theme(self, profile: Any = None) -> None:
+        """Applique les jetons sémantiques du thème actif à la carte compagnon."""
+        self._last_profile = profile
+        bg_panel = (profile.bg_panel if profile else "") or DesignTokens.BG_PANEL
+        accent = (profile.accent_primary if profile else "") or DesignTokens.ACCENT_PRIMARY
+        text_primary = (profile.text_primary if profile else "") or DesignTokens.TEXT_PRIMARY
+        text_secondary = (profile.text_secondary if profile else "") or DesignTokens.TEXT_SECONDARY
+        text_muted = (profile.text_muted if profile else "") or DesignTokens.TEXT_MUTED
+        accent_glow = (profile.accent_glow if profile else "") or DesignTokens.ACCENT_GLOW
+
+        self.setStyleSheet(f"""
+            QFrame#TourCompanionCard {{
+                background-color: {bg_panel};
+                border: 2px solid {accent};
+                border-radius: {DesignTokens.RADIUS_LG}px;
+            }}
+        """)
+        apply_shadow(self, blur=20, offset_y=4, color=accent_glow)
+        self.lbl_title.setStyleSheet(f"color: {text_primary}; font-size: 14px; font-weight: 700; background: transparent; border: none;")
+        self.lbl_text.setStyleSheet(f"color: {text_secondary}; font-size: 12px; line-height: 1.4; background: transparent; border: none;")
+        self.lbl_counter.setStyleSheet(f"color: {text_muted}; font-size: 11px; font-weight: 600; font-family: '{DesignTokens.FONT_CODE}'; background: transparent; border: none;")
+        self.lbl_icon.setPixmap(load_phosphor_icon("compass", color=accent).pixmap(18, 18))
+        self.btn_quit.refresh_theme(profile)
+        self.btn_prev.refresh_theme(profile)
+        self.btn_skip.refresh_theme(profile)
+        self.btn_next.refresh_theme(profile)
+        self._apply_status_style(profile)
+
+    def _apply_status_style(self, profile: Any = None) -> None:
+        active_profile = profile if profile is not None else getattr(self, "_last_profile", None)
+        if self._is_completed:
+            bg = (active_profile.color_green_bg if active_profile else "") or DesignTokens.COLOR_GREEN_BG
+            border = (active_profile.color_green_border if active_profile else "") or DesignTokens.COLOR_GREEN_BORDER
+            fg = (active_profile.color_green_text if active_profile else "") or DesignTokens.COLOR_GREEN_TEXT
+            icon_name = "check-circle"
+        else:
+            bg = (active_profile.accent_bg if active_profile else "") or DesignTokens.ACCENT_BG
+            border = (active_profile.accent_border if active_profile else "") or DesignTokens.ACCENT_BORDER
+            fg = (active_profile.color_purple_text if active_profile else "") or DesignTokens.COLOR_PURPLE_TEXT
+            icon_name = "sparkle"
+
+        self.status_badge.setStyleSheet(f"""
+            QFrame#TourStatusBadge {{
+                background-color: {bg};
+                border: 1px solid {border};
+                border-radius: {DesignTokens.RADIUS_SM}px;
+            }}
+        """)
+        self.lbl_status.setStyleSheet(f"color: {fg}; font-size: 11px; font-weight: 600; background: transparent; border: none;")
+        self.lbl_status_icon.setPixmap(load_phosphor_icon(icon_name, color=fg).pixmap(14, 14))
+
+    def update_step(
+        self,
+        title: str,
+        text: str,
+        index: int,
+        total: int,
+        *,
+        completed: bool,
+        waiting_for_event: bool,
+    ) -> None:
+        """Met à jour le contenu affiché et ré-ancre la carte sur la fenêtre hôte."""
+        self._is_completed = completed
+        self._waiting_for_event = waiting_for_event
+
+        self.lbl_title.setText(title)
+        self.lbl_text.setText(text)
+        self.lbl_counter.setText(tr("%1/%2", index + 1, total))
+
+        if completed:
+            self.lbl_status.setText(self.tr("Action détectée — étape validée"))
+        elif waiting_for_event:
+            self.lbl_status.setText(self.tr("En attente de votre action dans l'atelier"))
+        else:
+            self.lbl_status.setText(self.tr("Lecture libre — cliquez sur Suivant lorsque vous êtes prêt"))
+
+        self.status_badge.setVisible(waiting_for_event or completed)
+        self._apply_status_style()
+
+        is_last = index >= total - 1
+        self.btn_prev.setVisible(index > 0)
+        self.btn_skip.setVisible(not is_last)
+
+        if is_last:
+            self.btn_next.setText(self.tr("Terminer"))
+            self.btn_next.setIcon(load_on_accent_icon("check"))
+        else:
+            self.btn_next.setText(self.tr("Suivant"))
+            self.btn_next.setIcon(load_on_accent_icon("arrow-right"))
+
+        self.adjustSize()
+        self.anchor_to_host()
+
+    def anchor_to_host(self) -> None:
+        """Positionne la carte dans le coin inférieur droit de la fenêtre hôte."""
+        if self._host_window is None:
+            return
+        self.adjustSize()
+        margin = self.ANCHOR_MARGIN
+        host_w = self._host_window.width()
+        host_h = self._host_window.height()
+        x = max(margin, host_w - self.width() - margin)
+        y = max(margin, host_h - self.height() - margin)
+        self.move(x, y)
+        self.raise_()
+
+
+class InteractiveTourController(QObject):
+    """Contrôleur réactif orchestrant les parcours interactifs via AppEventBus."""
+
+    step_changed = Signal(int, int)
+    step_completed = Signal(str)
+    tour_finished = Signal(str)
+    tour_cancelled = Signal(str)
+
+    def __init__(
+        self,
+        main_window: QWidget,
+        *,
+        event_bus_instance: AppEventBus | None = None,
+        parent: QObject | None = None,
+    ) -> None:
+        super().__init__(parent or main_window)
+        self._main_window = main_window
+        self._event_bus = event_bus_instance or event_bus
+        self._steps: list[InteractiveTourStep] = []
+        self._track_id: str = "default"
+        self._current_index: int = 0
+        self._completed_steps: set[str] = set()
+        self._active_subscription: tuple[type[AppEvent], Callable[[AppEvent], None]] | None = None
+        self._card: TourCompanionCard | None = None
+        self._host_filter_installed = False
+
+    @property
+    def companion_card(self) -> TourCompanionCard | None:
+        """Retourne l'instance de carte compagnon courante."""
+        return self._card
+
+    @property
+    def current_index(self) -> int:
+        """Index (base 0) de l'étape actuellement affichée."""
+        return self._current_index
+
+    @property
+    def completed_steps(self) -> set[str]:
+        """Ensemble des identifiants d'étapes validées durant ce parcours."""
+        return set(self._completed_steps)
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:
+        """Ré-ancre la carte compagnon lorsque la fenêtre hôte est redimensionnée."""
+        if watched is self._main_window and event.type() == QEvent.Type.Resize and self._card is not None and self._card.isVisible():
+            self._card.anchor_to_host()
+        return super().eventFilter(watched, event)
+
+    def start(self, steps: Sequence[InteractiveTourStep], *, track_id: str = "default") -> None:
+        """Démarre ou redémarre un parcours interactif nommé."""
+        self._unsubscribe_current_event()
+        self._steps = list(steps)
+        self._track_id = track_id
+        self._current_index = 0
+        self._completed_steps = set()
+
+        if not self._steps:
+            if self._card is not None:
+                self._card.hide()
+            return
+
+        self._ensure_card()
+        if not self._host_filter_installed:
+            self._main_window.installEventFilter(self)
+            self._host_filter_installed = True
+
+        self._activate_step(0)
+
+    def _ensure_card(self) -> TourCompanionCard:
+        if self._card is None:
+            self._card = TourCompanionCard(self._main_window)
+            self._card.prev_requested.connect(self.prev_step)
+            self._card.skip_requested.connect(self.skip_step)
+            self._card.next_requested.connect(self.next_step)
+            self._card.quit_requested.connect(self.quit_tour)
+        return self._card
+
+    def _activate_step(self, index: int) -> None:
+        self._unsubscribe_current_event()
+        self._current_index = index
+        step = self._steps[index]
+
+        self._navigate_to_step_view(step)
+        self._run_step_on_enter(step)
+        self._subscribe_step_event(step)
+
+        card = self._ensure_card()
+        card.update_step(
+            step.title_factory(),
+            step.text_factory(),
+            index,
+            len(self._steps),
+            completed=step.step_id in self._completed_steps,
+            waiting_for_event=step.completion_event is not None,
+        )
+        card.show()
+        self.step_changed.emit(index, len(self._steps))
+
+    def _navigate_to_step_view(self, step: InteractiveTourStep) -> None:
+        if not step.target_view_id or not hasattr(self._main_window, "_on_view_selected"):
+            return
+        if getattr(self._main_window, "_current_view_id", None) == step.target_view_id:
+            return
+        try:
+            self._main_window._on_view_selected(step.target_view_id)
+        except Exception as exc:
+            logger.warning("Navigation impossible vers '%s' pendant le tutoriel : %s", step.target_view_id, exc)
+
+    def _run_step_on_enter(self, step: InteractiveTourStep) -> None:
+        if step.on_enter is None:
+            return
+        try:
+            step.on_enter()
+        except Exception as exc:
+            logger.warning("Erreur on_enter pour l'étape '%s' : %s", step.step_id, exc)
+
+    def _subscribe_step_event(self, step: InteractiveTourStep) -> None:
+        if step.completion_event is None or step.step_id in self._completed_steps:
+            return
+
+        event_cls = step.completion_event
+
+        def _handler(ev: AppEvent) -> None:
+            self._on_step_event(ev)
+
+        self._event_bus.subscribe(event_cls, _handler)
+        self._active_subscription = (event_cls, _handler)
+
+    def _unsubscribe_current_event(self) -> None:
+        if self._active_subscription is None:
+            return
+        event_cls, handler = self._active_subscription
+        self._event_bus.unsubscribe(event_cls, handler)
+        self._active_subscription = None
+
+    def _on_step_event(self, event: AppEvent) -> None:
+        if not self._steps or not 0 <= self._current_index < len(self._steps):
+            return
+        step = self._steps[self._current_index]
+        if step.completion_predicate is not None:
+            try:
+                if not step.completion_predicate(event):
+                    return
+            except Exception as exc:
+                logger.warning("Erreur prédicat d'étape '%s' : %s", step.step_id, exc)
+                return
+
+        self._unsubscribe_current_event()
+        self._completed_steps.add(step.step_id)
+        self.step_completed.emit(step.step_id)
+
+        if self._current_index + 1 < len(self._steps):
+            self._activate_step(self._current_index + 1)
+            return
+
+        if self._card is not None:
+            self._card.update_step(
+                step.title_factory(),
+                step.text_factory(),
+                self._current_index,
+                len(self._steps),
+                completed=True,
+                waiting_for_event=True,
+            )
+            self._card.show()
+
+    def prev_step(self) -> None:
+        """Revient à l'étape précédente du parcours."""
+        if self._current_index > 0:
+            self._activate_step(self._current_index - 1)
+
+    def skip_step(self) -> None:
+        """Passe l'étape active et avance vers la suivante (ou termine)."""
+        self.next_step()
+
+    def next_step(self) -> None:
+        """Passe à l'étape suivante ou termine le parcours."""
+        if self._current_index + 1 < len(self._steps):
+            self._activate_step(self._current_index + 1)
+        else:
+            self.finish_tour()
+
+    def finish_tour(self) -> None:
+        """Finalise le parcours en cours et notifie les abonnés."""
+        track_id = self._track_id
+        self._stop_tour()
+        self.tour_finished.emit(track_id)
+
+    def quit_tour(self) -> None:
+        """Interrompt prématurément le parcours sans marquer de réussite complète."""
+        track_id = self._track_id
+        self._stop_tour()
+        self.tour_cancelled.emit(track_id)
+
+    def _stop_tour(self) -> None:
+        self._unsubscribe_current_event()
+        if self._host_filter_installed and self._main_window is not None:
+            with contextlib.suppress(RuntimeError):
+                self._main_window.removeEventFilter(self)
+            self._host_filter_installed = False
+        if self._card is not None:
+            self._card.hide()
 
 
 def create_view_tour_steps(view_key: str, view_widget: QWidget) -> list[TourStep]:
     """Génère une mini-visite guidée thématique (3 à 4 étapes) pour une vue donnée."""
-    from ankidraft.utils.i18n import tr
-
     tours: dict[str, list[TourStep]] = {
         "documents": [
             TourStep(
