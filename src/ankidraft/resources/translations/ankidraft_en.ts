@@ -1490,11 +1490,11 @@ Nombre de planches : %2</source>
     </message>
     <message>
         <location line="+1"/>
-        <location filename="../../ui/views/ab_tests_view/view.py" line="+1432"/>
+        <location filename="../../ui/views/ab_tests_view/view.py" line="+1435"/>
         <location line="+26"/>
         <location filename="../../ui/views/batch_view/widgets/batch_staging_panel.py" line="+476"/>
         <location filename="../../ui/views/creation_view/view.py" line="+211"/>
-        <location filename="../../ui/views/documents_view/view.py" line="+1689"/>
+        <location filename="../../ui/views/documents_view/view.py" line="+1695"/>
         <location filename="../../ui/views/documents_view/widgets/audio_player.py" line="+234"/>
         <location line="+11"/>
         <location line="+29"/>
@@ -2872,7 +2872,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/ab_tests_view/view.py" line="-964"/>
+        <location filename="../../ui/views/ab_tests_view/view.py" line="-967"/>
         <source>Lancer le test comparatif A/B sur les deux configurations (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2932,7 +2932,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+766"/>
+        <location line="+769"/>
         <source>Erreur Branche A: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2970,7 +2970,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/agents_view/dialogs/persona_wizard_dialog.py" line="+166"/>
+        <location filename="../../ui/views/agents_view/dialogs/persona_wizard_dialog.py" line="+167"/>
         <source>✨ Modèles Prêts à l&apos;Emploi</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2980,7 +2980,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+266"/>
+        <location line="+265"/>
         <source>%1📁 %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5588,7 +5588,7 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/views/documents_view/view.py" line="-887"/>
+        <location filename="../../ui/views/documents_view/view.py" line="-892"/>
         <source>Importer un document (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5598,7 +5598,7 @@ Voulez-vous vraiment fermer sans enregistrer ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+205"/>
+        <location line="+210"/>
         <source>Markdown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9513,7 +9513,7 @@ Une nouvelle version sera automatiquement créée.</source>
 <context>
     <name>ABTestsView</name>
     <message>
-        <location filename="../../ui/views/ab_tests_view/view.py" line="-1577"/>
+        <location filename="../../ui/views/ab_tests_view/view.py" line="-1580"/>
         <source>Température :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9594,18 +9594,18 @@ Une nouvelle version sera automatiquement créée.</source>
     </message>
     <message>
         <location line="+17"/>
-        <location line="+615"/>
+        <location line="+618"/>
         <source>Moteur A :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-605"/>
-        <location line="+606"/>
+        <location line="-608"/>
+        <location line="+609"/>
         <source>Moteur B :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-586"/>
+        <location line="-589"/>
         <source>Réglages indépendants A/B</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9675,13 +9675,13 @@ Une nouvelle version sera automatiquement créée.</source>
     <message>
         <location line="+7"/>
         <location line="+30"/>
-        <location line="+691"/>
+        <location line="+694"/>
         <location line="+26"/>
         <source>0 / 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-724"/>
+        <location line="-727"/>
         <source>Branche B :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9691,7 +9691,7 @@ Une nouvelle version sera automatiquement créée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+92"/>
         <source>Prompt A :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15228,7 +15228,7 @@ exact → section → page → lexical</source>
 <context>
     <name>DocumentsView</name>
     <message>
-        <location filename="../../ui/views/documents_view/view.py" line="-2643"/>
+        <location filename="../../ui/views/documents_view/view.py" line="-2648"/>
         <source>Importer depuis le Web / YouTube</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15239,12 +15239,12 @@ exact → section → page → lexical</source>
     </message>
     <message>
         <location line="+3"/>
-        <location line="+1893"/>
+        <location line="+1898"/>
         <source>Supprimer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1889"/>
+        <location line="-1894"/>
         <source>Importer des documents depuis un autre profil</source>
         <translation type="unfinished"></translation>
     </message>
@@ -15304,7 +15304,7 @@ exact → section → page → lexical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+39"/>
         <source>Sélectionnez un document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21041,7 +21041,7 @@ Aucune anomalie détectée dans votre collection.</source>
 <context>
     <name>PersonaCreationWizardDialog</name>
     <message>
-        <location filename="../../ui/views/agents_view/dialogs/persona_wizard_dialog.py" line="-380"/>
+        <location filename="../../ui/views/agents_view/dialogs/persona_wizard_dialog.py" line="-379"/>
         <source>Créer un Nouvel Agent IA — Galerie de Modèles</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21051,7 +21051,7 @@ Aucune anomalie détectée dans votre collection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+63"/>
         <source>NOM DE VOTRE NOUVEL AGENT :</source>
         <translation type="unfinished"></translation>
     </message>
