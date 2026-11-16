@@ -631,12 +631,12 @@ Cliquer pour tronquer la saisie à ce niveau</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ui/components/panels.py" line="+589"/>
+        <location filename="../../ui/components/panels.py" line="+584"/>
         <source>Afficher l&apos;onglet « %1 »</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+30"/>
         <source>Masquer l&apos;onglet « %1 »</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2932,7 +2932,7 @@ L&apos;accès simultané au même profil est bloqué pour protéger vos données
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+769"/>
+        <location line="+792"/>
         <source>Erreur Branche A: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4190,7 +4190,7 @@ Gabarits : %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+72"/>
+        <location line="+88"/>
         <source>&lt;b&gt;🛡️ %1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4200,32 +4200,32 @@ Gabarits : %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+28"/>
         <source>&lt;b&gt;Intention de l&apos;IA :&lt;/b&gt; %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+89"/>
+        <location line="+109"/>
         <source>Cette note est scindée en %1 cartes atomiques. Vous pouvez ajuster ou décocher :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+214"/>
+        <location line="+187"/>
         <source>Style CSS appliqué sur &apos;%1&apos; !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+28"/>
         <source>Note #%1 mise à jour en BDD (version %2) !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+38"/>
         <source>Note #%1 scindée en %2 cartes atomiques !</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+21"/>
         <source>Erreur d&apos;application : %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9513,7 +9513,7 @@ Une nouvelle version sera automatiquement créée.</source>
 <context>
     <name>ABTestsView</name>
     <message>
-        <location filename="../../ui/views/ab_tests_view/view.py" line="-1580"/>
+        <location filename="../../ui/views/ab_tests_view/view.py" line="-1603"/>
         <source>Température :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9721,17 +9721,17 @@ Une nouvelle version sera automatiquement créée.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+221"/>
+        <location line="+351"/>
         <source>Veuillez saisir un texte source à tester.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+6"/>
         <source>Lancement du test A/B en parallèle via le Moteur DAG...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+167"/>
+        <location line="+128"/>
         <source>Test A/B terminé avec succès !</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16467,7 +16467,7 @@ exact → section → page → lexical</source>
 <context>
     <name>EmptyStateWidget</name>
     <message>
-        <location filename="../../ui/components/panels.py" line="+449"/>
+        <location filename="../../ui/components/panels.py" line="+485"/>
         <source>Lire le guide</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16874,7 +16874,7 @@ exact → section → page → lexical</source>
 <context>
     <name>FieldDiffWidget</name>
     <message>
-        <location filename="../../ui/views/consultant_view/widgets/inline_diff_card_widget.py" line="-835"/>
+        <location filename="../../ui/views/consultant_view/widgets/inline_diff_card_widget.py" line="-845"/>
         <source>🔍 Ratures</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17778,7 +17778,7 @@ exact → section → page → lexical</source>
 <context>
     <name>IdePanel</name>
     <message>
-        <location filename="../../ui/components/panels.py" line="-673"/>
+        <location filename="../../ui/components/panels.py" line="-705"/>
         <source>Aucun onglet affiché</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17793,28 +17793,28 @@ exact → section → page → lexical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+177"/>
-        <source>Aucun onglet disponible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+178"/>
         <source>Rouvrir un onglet :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+13"/>
         <source>Déplacer vers ce panneau :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Onglets actifs dans ce panneau :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Cet onglet principal ne peut pas être masqué</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Aucun onglet disponible</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -18134,7 +18134,15 @@ exact → section → page → lexical</source>
 <context>
     <name>InlineDiffCardWidget</name>
     <message>
-        <location filename="../../ui/views/consultant_view/widgets/inline_diff_card_widget.py" line="+190"/>
+        <location filename="../../ui/views/consultant_view/widgets/inline_diff_card_widget.py" line="+151"/>
+        <location line="+285"/>
+        <location line="+53"/>
+        <location line="+66"/>
+        <source>✅ Appliqué en BDD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-346"/>
         <source>Vue :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18149,16 +18157,7 @@ exact → section → page → lexical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+42"/>
-        <location line="+191"/>
-        <location line="+23"/>
-        <location line="+33"/>
-        <location line="+51"/>
-        <source>✅ Appliqué en BDD</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-227"/>
+        <location line="+111"/>
         <source>Éditeur ↗</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18168,24 +18167,22 @@ exact → section → page → lexical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
-        <location line="+93"/>
-        <location line="+56"/>
+        <location line="+29"/>
         <source>Annuler (Revert)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-69"/>
+        <location line="+84"/>
         <source>⚠️ Conflit de version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+3"/>
         <source>Échec lors de l&apos;application du patch.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+153"/>
+        <location line="+140"/>
         <source>↩️ Annulé</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21020,7 +21017,7 @@ Aucune anomalie détectée dans votre collection.</source>
 <context>
     <name>PanelPlaceholderWidget</name>
     <message>
-        <location filename="../../ui/components/panels.py" line="-496"/>
+        <location filename="../../ui/components/panels.py" line="-504"/>
         <source>Panneau Libre</source>
         <translation type="unfinished"></translation>
     </message>
