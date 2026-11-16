@@ -404,6 +404,121 @@ class DocumentParser:
 
         return "\n\n[SPLIT]\n\n".join(pages_text)
 
+    @staticmethod
+    def _extract_page_text_blocks(page: Any) -> list[tuple[float, str, str]]:
+        """Extrait les blocs de texte d'une page PyMuPDF avec leur coordonnée verticale y0."""
+        page_blocks: list[tuple[float, str, str]] = []
+        try:
+            for block in page.get_text("blocks") or []:
+                # block: (x0, y0, x1, y1, text, block_no, block_type)
+                btype = block[6] if len(block) > 6 else 0
+                if btype != 0:
+                    continue
+                text = str(block[4] or "").strip()
+                if text:
+                    page_blocks.append((float(block[1]), "text", text))
+        except Exception as exc:
+            logger.debug("Repli sur page.get_text() simple après échec lecture par blocs : %s", exc)
+            text = (page.get_text() or "").strip()
+            if text:
+                page_blocks.append((0.0, "text", text))
+        return page_blocks
+
+    @staticmethod
+    def _format_figure_bbox(bbox: Any) -> tuple[str | None, float]:
+        """Formate une boîte englobante PyMuPDF en chaîne CSV et retourne son ordonnée y0."""
+        resolved_bbox = bbox or (0, 0, 0, 0)
+        try:
+            bbox_str: str | None = ",".join(str(round(float(v), 2)) for v in resolved_bbox)
+            y0 = float(resolved_bbox[1]) if isinstance(resolved_bbox, (tuple, list)) and len(resolved_bbox) > 1 else 0.0
+        except Exception as exc:
+            logger.debug("Impossible de formater bbox figure (%s) : %s", resolved_bbox, exc)
+            bbox_str = None
+            y0 = 0.0
+        return bbox_str, y0
+
+    def _store_pdf_figure(
+        self,
+        doc: Any,
+        info: dict[str, Any],
+        page_index: int,
+        figure_index: int,
+    ) -> tuple[str, str | None, float] | None:
+        """Extrait et archive une figure PDF admissible ; retourne (filename, bbox_str, y0) ou None."""
+        if not self._is_figure_admissible(info.get("width"), info.get("height")):
+            return None
+        xref = info.get("xref")
+        if xref is None:
+            return None
+        try:
+            extracted = doc.extract_image(xref)
+        except Exception as exc:
+            logger.debug("Extraction image xref=%s ignorée : %s", xref, exc)
+            return None
+        image_bytes = extracted.get("image") if extracted else None
+        if not image_bytes:
+            return None
+        ext = (extracted.get("ext") or "png").lower()
+        original_name = f"page_{page_index + 1}_figure_{figure_index}.{ext}"
+        mime_type = f"image/{ext}" if ext != "jpg" else "image/jpeg"
+        media = self.media_manager.store_media_bytes(
+            data=image_bytes,
+            original_name=original_name,
+            mime_type=mime_type,
+        )
+        filename = getattr(media, "filename", None) if media else None
+        if not filename:
+            return None
+        bbox_str, y0 = self._format_figure_bbox(info.get("bbox"))
+        return str(filename), bbox_str, y0
+
+    def _extract_page_figures(
+        self,
+        doc: Any,
+        page: Any,
+        page_index: int,
+    ) -> tuple[list[tuple[float, str, str]], dict[str, str]]:
+        """Extrait, filtre et stocke les figures admissibles d'une page PDF."""
+        image_blocks: list[tuple[float, str, str]] = []
+        media_bboxes: dict[str, str] = {}
+        try:
+            image_infos = page.get_image_info(xrefs=True) or []
+        except Exception as exc:
+            logger.debug("Impossible de lister les images de la page %d : %s", page_index + 1, exc)
+            image_infos = []
+
+        figure_counter = 0
+        for info in image_infos:
+            stored = self._store_pdf_figure(doc, info, page_index, figure_counter + 1)
+            if stored is None:
+                continue
+            filename, bbox_str, y0 = stored
+            figure_counter += 1
+            if bbox_str:
+                media_bboxes[filename] = bbox_str
+            tag = f"![Figure {figure_counter} (Page {page_index + 1})]({filename})"
+            image_blocks.append((y0, "image", tag))
+        return image_blocks, media_bboxes
+
+    @staticmethod
+    def _format_pdf_page(
+        page_index: int,
+        page_blocks: list[tuple[float, str, str]],
+        media_bboxes: dict[str, str],
+    ) -> str:
+        """Trie verticalement les blocs d'une page PDF et formate son Markdown avec métadonnées bbox."""
+        sorted_blocks = sorted(page_blocks, key=lambda item: item[0])
+        parts = [block[2] for block in sorted_blocks if block[2].strip()]
+        # conserve la cartographie des bboxes pour la liaison en base (chunk metadata)
+        page_content = "\n\n".join(parts).strip()
+        if not page_content:
+            return ""
+        if media_bboxes:
+            # encode dans un commentaire HTML discret pour ne pas altérer le texte
+            meta = "<!-- media_bboxes: " + json.dumps(media_bboxes) + " -->"
+            page_content = page_content + "\n\n" + meta
+        return f"## Page {page_index + 1}\n\n{page_content}"
+
     def _parse_pdf_with_pymupdf(self, file_path: str | Path, progress_callback: Any = None, check_cancel: Any = None) -> str:
         """Extraction native rapide via PyMuPDF (texte + figures filtrées, entrelacées selon y0)."""
         if fitz is None:
@@ -421,90 +536,21 @@ class DocumentParser:
                 if check_cancel and check_cancel():
                     raise InterruptedError("Extraction annulée par l'utilisateur.")
 
-                page_blocks: list[tuple[float, str, str]] = []
-                # Texte par blocs (coordonnée verticale y0)
-                try:
-                    for block in page.get_text("blocks") or []:
-                        # block: (x0, y0, x1, y1, text, block_no, block_type)
-                        btype = block[6] if len(block) > 6 else 0
-                        if btype != 0:
-                            continue
-                        text = str(block[4] or "").strip()
-                        if text:
-                            page_blocks.append((float(block[1]), "text", text))
-                except Exception:
-                    text = (page.get_text() or "").strip()
-                    if text:
-                        page_blocks.append((0.0, "text", text))
+                page_blocks = self._extract_page_text_blocks(page)
+                figure_blocks, media_bboxes = self._extract_page_figures(doc, page, i)
+                page_blocks.extend(figure_blocks)
 
-                # Figures filtrées
-                figure_counter = 0
-                media_bboxes: dict[str, str] = {}
-                try:
-                    image_infos = page.get_image_info(xrefs=True) or []
-                except Exception:
-                    image_infos = []
-                for info in image_infos:
-                    width = info.get("width")
-                    height = info.get("height")
-                    if not self._is_figure_admissible(width, height):
-                        continue
-                    xref = info.get("xref")
-                    if xref is None:
-                        continue
-                    try:
-                        extracted = doc.extract_image(xref)
-                    except Exception:  # nosec B112
-                        continue
-                    if not extracted:
-                        continue
-                    image_bytes = extracted.get("image")
-                    ext = (extracted.get("ext") or "png").lower()
-                    if not image_bytes:
-                        continue
-                    original_name = f"page_{i + 1}_figure_{figure_counter + 1}.{ext}"
-                    mime_type = f"image/{ext}" if ext != "jpg" else "image/jpeg"
-                    media = self.media_manager.store_media_bytes(
-                        data=image_bytes,
-                        original_name=original_name,
-                        mime_type=mime_type,
-                    )
-                    if not media:
-                        continue
-                    filename = getattr(media, "filename", None)
-                    if not filename:
-                        continue
-                    figure_counter += 1
-                    bbox = info.get("bbox") or (0, 0, 0, 0)
-                    try:
-                        bbox_str = ",".join(str(round(float(v), 2)) for v in bbox)
-                    except Exception:
-                        bbox_str = None
-                    if bbox_str:
-                        media_bboxes[str(filename)] = bbox_str
-                    tag = f"![Figure {figure_counter} (Page {i + 1})]({filename})"
-                    y0 = float(bbox[1]) if isinstance(bbox, (tuple, list)) and len(bbox) > 1 else 0.0
-                    page_blocks.append((y0, "image", tag))
-
-                # Entrelacement vertical par y0
-                page_blocks.sort(key=lambda item: item[0])
-                parts = [block[2] for block in page_blocks if block[2].strip()]
-                # conserve la cartographie des bboxes pour la liaison en base (chunk metadata)
-                page_content = "\n\n".join(parts).strip()
-                if page_content:
-                    if media_bboxes:
-                        # encode dans un commentaire HTML discret pour ne pas altérer le texte
-                        meta = "<!-- media_bboxes: " + json.dumps(media_bboxes) + " -->"
-                        page_content = page_content + "\n\n" + meta
-                    pages_text.append(f"## Page {i + 1}\n\n{page_content}")
+                formatted_page = self._format_pdf_page(i, page_blocks, media_bboxes)
+                if formatted_page:
+                    pages_text.append(formatted_page)
 
                 if progress_callback:
                     progress_callback(f"Lecture de la page {i + 1} / {num_pages}...")
         finally:
             try:
                 doc.close()
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.debug("Fermeture du document PyMuPDF ignorée : %s", exc)
 
         if not pages_text:
             raise ValueError("Aucun texte extractible trouvé dans ce fichier PDF (il s'agit peut-être d'un document scanné/image nécessitant Marker OCR).")

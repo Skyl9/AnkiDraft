@@ -23,8 +23,10 @@ import logging
 import math
 import re
 import shutil
+import sqlite3
 import unicodedata
 from collections.abc import Iterable
+from pathlib import Path
 from typing import Any, cast
 
 from peewee import fn
@@ -1451,6 +1453,120 @@ class CoverageAlignmentService:
         )
         return target_chunk
 
+    @staticmethod
+    def _read_source_document_snapshot(source_profile: str, doc_id: int) -> dict[str, Any] | None:
+        """Lit de manière atomique le document source, ses médias, fragments et planches depuis sa base SQLite."""
+        src_dir = get_profile_dir(source_profile)
+        src_db_path = src_dir / "ankidraft.db"
+        if not src_db_path.exists():
+            logger.warning("Base source introuvable pour profil '%s' : %s", source_profile, src_db_path)
+            return None
+
+        src_con = sqlite3.connect(src_db_path)
+        try:
+            src_con.row_factory = sqlite3.Row
+            src_cur = src_con.cursor()
+
+            doc_row = src_cur.execute("SELECT * FROM documentmodel WHERE id = ?", (doc_id,)).fetchone()
+            if not doc_row:
+                return None
+
+            doc_dict = dict(doc_row)
+            original_media: dict[str, Any] | None = None
+            if doc_dict.get("original_media_id"):
+                m_row = src_cur.execute("SELECT * FROM mediamodel WHERE id = ?", (doc_dict["original_media_id"],)).fetchone()
+                if m_row:
+                    original_media = dict(m_row)
+
+            chunks_rows = [
+                dict(r)
+                for r in src_cur.execute(
+                    "SELECT * FROM document_chunks WHERE document_id = ? ORDER BY chunk_index",
+                    (doc_id,),
+                ).fetchall()
+            ]
+
+            pages_payload: list[dict[str, Any]] = []
+            for r in src_cur.execute(
+                "SELECT * FROM document_pages WHERE document_id = ? ORDER BY page_number",
+                (doc_id,),
+            ).fetchall():
+                r_dict = dict(r)
+                media_payload: dict[str, Any] | None = None
+                media_id = r_dict.get("media_id")
+                if media_id:
+                    m_row = src_cur.execute("SELECT * FROM mediamodel WHERE id = ?", (media_id,)).fetchone()
+                    if m_row:
+                        media_payload = dict(m_row)
+                pages_payload.append({**r_dict, "media": media_payload})
+
+            return {
+                "src_dir": src_dir,
+                "doc": doc_dict,
+                "original_media": original_media,
+                "chunks": chunks_rows,
+                "pages": pages_payload,
+            }
+        finally:
+            src_con.close()
+
+    @staticmethod
+    def _copy_profile_media_file(src_media_dir: Path, target_media_dir: Path, filename: str) -> bool:
+        """Copie un fichier média du profil source vers le profil cible s'il existe et n'est pas déjà présent."""
+        if not filename:
+            return False
+        src_media_file = src_media_dir / filename
+        dst_media_file = target_media_dir / filename
+        if src_media_file.exists() and not dst_media_file.exists():
+            shutil.copy2(str(src_media_file), str(dst_media_file))
+            return True
+        return False
+
+    @classmethod
+    def _import_profile_media(
+        cls,
+        src_media_dir: Path,
+        target_media_dir: Path,
+        media_payload: dict[str, Any] | None,
+    ) -> int | None:
+        """Copie le fichier média source si besoin et retourne l'identifiant du MediaModel cible."""
+        if not media_payload or not media_payload.get("filename"):
+            return None
+        media_filename = str(media_payload["filename"])
+        chksum = str(media_payload.get("checksum") or media_filename)
+        cls._copy_profile_media_file(src_media_dir, target_media_dir, media_filename)
+        target_media, _ = MediaModel.get_or_create(
+            checksum=chksum,
+            defaults={
+                "filename": media_filename,
+                "original_name": str(media_payload.get("original_name") or media_filename),
+                "mime_type": str(media_payload.get("mime_type") or "application/octet-stream"),
+            },
+        )
+        return int(target_media.id)
+
+    @classmethod
+    def _copy_album_pages(
+        cls,
+        new_doc: DocumentModel,
+        pages_payload: list[dict[str, Any]],
+        src_media_dir: Path,
+        target_media_dir: Path,
+    ) -> None:
+        """Recrée les planches DocumentPageModel et leurs médias associés pour un album copié."""
+        for r_dict in pages_payload:
+            page_media_id = cls._import_profile_media(src_media_dir, target_media_dir, r_dict.get("media"))
+            DocumentPageModel.create(
+                document=new_doc,
+                media_id=page_media_id,
+                page_number=int(r_dict.get("page_number") or 1),
+                rotation=int(r_dict.get("rotation") or 0),
+                crop_data=r_dict.get("crop_data"),
+                ocr_text=str(r_dict.get("ocr_text") or ""),
+                bounding_boxes=r_dict.get("bounding_boxes"),
+                status=str(r_dict.get("status") or "ready"),
+            )
+
     @classmethod
     def copy_document_from_profile(
         cls,
@@ -1462,78 +1578,17 @@ class CoverageAlignmentService:
 
         Copie également les fichiers physiques associés (original_media).
         """
-        import sqlite3
-
-        src_dir = get_profile_dir(source_profile)
-        src_db_path = src_dir / "ankidraft.db"
-        if not src_db_path.exists():
-            logger.warning("Base source introuvable pour profil '%s' : %s", source_profile, src_db_path)
+        snapshot = cls._read_source_document_snapshot(source_profile, doc_id)
+        if snapshot is None:
             return None
 
-        src_con = sqlite3.connect(src_db_path)
-        src_con.row_factory = sqlite3.Row
-        src_cur = src_con.cursor()
-
-        doc_row = src_cur.execute("SELECT * FROM documentmodel WHERE id = ?", (doc_id,)).fetchone()
-        if not doc_row:
-            src_con.close()
-            return None
-
-        media_filename = None
-        orig_name = None
-        mime = None
-        chksum = None
-        if doc_row["original_media_id"]:
-            m_row = src_cur.execute("SELECT * FROM mediamodel WHERE id = ?", (doc_row["original_media_id"],)).fetchone()
-            if m_row:
-                media_filename = m_row["filename"]
-                orig_name = m_row["original_name"]
-                mime = m_row["mime_type"]
-                chksum = m_row["checksum"]
-
-        chunks_rows = src_cur.execute(
-            "SELECT * FROM document_chunks WHERE document_id = ? ORDER BY chunk_index",
-            (doc_id,),
-        ).fetchall()
-
-        pages_payload: list[dict[str, Any]] = []
-        for r in src_cur.execute(
-            "SELECT * FROM document_pages WHERE document_id = ? ORDER BY page_number",
-            (doc_id,),
-        ).fetchall():
-            r_dict = dict(r)
-            media_payload: dict[str, Any] | None = None
-            media_id = r_dict.get("media_id")
-            if media_id:
-                m_row = src_cur.execute("SELECT * FROM mediamodel WHERE id = ?", (media_id,)).fetchone()
-                if m_row:
-                    media_payload = dict(m_row)
-            pages_payload.append({**r_dict, "media": media_payload})
-
-        src_con.close()
-
-        target_media_id = None
+        src_media_dir = Path(snapshot["src_dir"]) / "media"
         target_media_dir = get_profile_dir(target_profile) / "media"
         target_media_dir.mkdir(parents=True, exist_ok=True)
 
-        if media_filename:
-            src_media_file = src_dir / "media" / media_filename
-            if src_media_file.exists():
-                dst_media_file = target_media_dir / media_filename
-                if not dst_media_file.exists():
-                    shutil.copy2(src_media_file, dst_media_file)
+        target_media_id = cls._import_profile_media(src_media_dir, target_media_dir, snapshot["original_media"])
 
-            target_media, _ = MediaModel.get_or_create(
-                checksum=chksum or media_filename,
-                defaults={
-                    "filename": media_filename,
-                    "original_name": orig_name or media_filename,
-                    "mime_type": mime or "application/octet-stream",
-                },
-            )
-            target_media_id = target_media.id
-
-        doc_dict = dict(doc_row)
+        doc_dict = snapshot["doc"]
         new_doc, _ = DocumentModel.get_or_create(
             title=doc_dict["title"],
             defaults={
@@ -1545,10 +1600,10 @@ class CoverageAlignmentService:
             },
         )
 
+        chunks_rows = snapshot["chunks"]
         with db.atomic():
             DocumentChunkModel.delete().where(DocumentChunkModel.document == new_doc).execute()
-            for r in chunks_rows:
-                r_dict = dict(r)
+            for r_dict in chunks_rows:
                 DocumentChunkModel.create(
                     document=new_doc,
                     chunk_index=r_dict["chunk_index"],
@@ -1561,43 +1616,7 @@ class CoverageAlignmentService:
                 )
 
             if doc_dict["file_type"] == "album":
-                for r in pages_payload:
-                    r_dict = dict(r)
-                    page_media_id: int | None = None
-                    media_payload = r_dict.get("media")
-                    if media_payload:
-                        media_filename = str(media_payload["filename"])
-                        chksum = str(media_payload["checksum"]) if media_payload.get("checksum") else media_filename
-                        existing_media = MediaModel.get_or_none(MediaModel.checksum == chksum)
-                        if existing_media is None:
-                            src_media_file = src_dir / "media" / media_filename
-                            dst_media_file = target_media_dir / media_filename
-                            if not dst_media_file.exists() and src_media_file.exists():
-                                shutil.copy2(str(src_media_file), str(dst_media_file))
-                            target_media = MediaModel.create(
-                                filename=media_filename,
-                                original_name=str(media_payload.get("original_name") or media_filename),
-                                checksum=chksum,
-                                mime_type=str(media_payload.get("mime_type") or "application/octet-stream"),
-                            )
-                            page_media_id = target_media.id
-                        else:
-                            page_media_id = existing_media.id
-                            dst_media_file = target_media_dir / media_filename
-                            if not dst_media_file.exists():
-                                src_media_file = src_dir / "media" / media_filename
-                                if src_media_file.exists():
-                                    shutil.copy2(str(src_media_file), str(dst_media_file))
-                    DocumentPageModel.create(
-                        document=new_doc,
-                        media_id=page_media_id,
-                        page_number=int(r_dict.get("page_number") or 1),
-                        rotation=int(r_dict.get("rotation") or 0),
-                        crop_data=r_dict.get("crop_data"),
-                        ocr_text=str(r_dict.get("ocr_text") or ""),
-                        bounding_boxes=r_dict.get("bounding_boxes"),
-                        status=str(r_dict.get("status") or "ready"),
-                    )
+                cls._copy_album_pages(new_doc, snapshot["pages"], src_media_dir, target_media_dir)
 
         mark_document_version(new_doc)
 
