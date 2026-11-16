@@ -402,15 +402,23 @@ class MainWindow(QMainWindow):
 
         self._sync_mcp_ui("stopped", port=mcp_port)
 
+        self._mcp_startup_timer: QTimer | None = None
         if not is_testing() and mcp_enabled:
-            QTimer.singleShot(500, lambda: self.start_mcp_server(port=mcp_port))
+            self._mcp_startup_timer = QTimer(self)
+            self._mcp_startup_timer.setSingleShot(True)
+            self._mcp_startup_timer.timeout.connect(lambda: self.start_mcp_server(port=mcp_port))
+            self._mcp_startup_timer.start(500)
 
     def _sync_mcp_ui(self, status: str, port: int | None = None, token: str | None = None, message: str = "") -> None:
         """Synchronise l'état du serveur MCP sur le bouton de la sidebar et le tableau de bord de la vue MCP & Agents."""
-        if hasattr(self, "mcp_status_widget") and self.mcp_status_widget is not None:
+        import shiboken6
+
+        if not shiboken6.isValid(self):
+            return
+        if hasattr(self, "mcp_status_widget") and self.mcp_status_widget is not None and shiboken6.isValid(self.mcp_status_widget):
             self.mcp_status_widget.set_status(status, port=port, token=token, message=message)
         consultant_view = self._view_widgets.get("consultant")
-        if consultant_view and hasattr(consultant_view, "mcp_dashboard"):
+        if consultant_view and shiboken6.isValid(consultant_view) and hasattr(consultant_view, "mcp_dashboard") and shiboken6.isValid(consultant_view.mcp_dashboard):
             consultant_view.mcp_dashboard.set_status(status, port=port, token=token, message=message)
 
     def start_mcp_server(self, port: int | None = None) -> bool:
@@ -1544,6 +1552,8 @@ class MainWindow(QMainWindow):
             return
 
         event_bus.unsubscribe(OpenConsultantRequestedEvent, self._on_open_consultant_requested)
+        if getattr(self, "_mcp_startup_timer", None) is not None:
+            self._mcp_startup_timer.stop()
         if getattr(self, "_intro_tour_timer", None) is not None:
             self._intro_tour_timer.stop()
         if getattr(self, "_tour_controller", None) is not None:

@@ -6,6 +6,17 @@ from collections.abc import Callable
 import pytest
 from peewee import SqliteDatabase
 
+# Keep CI's Xvfb/xcb backend when it is explicitly configured. Local headless
+# runs still default to offscreen when no display backend was provided.
+# Ces variables DOIVENT être définies AVANT tout import d'ankidraft.*, car
+# ankidraft.database.base appelle get_default_db_path() -> get_current_environment()
+# dès l'import et met _current_env en cache pour tout le processus.
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+os.environ.setdefault("QTWEBENGINE_DISABLE_SANDBOX", "1")
+os.environ.setdefault("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox --disable-gpu --disable-software-rasterizer --offscreen --disable-dev-shm-usage")
+os.environ.setdefault("ANKIFORGE_MOCK_WEBENGINE", "1")
+os.environ.setdefault("ANKIFORGE_ENV", "testing")
+
 # Neutralise le trousseau OS durant les tests : aucun accès au Keychain/Credential
 # Manager CI, et le code refuse alors toute persistance de clé en clair (sécurité).
 with contextlib.suppress(Exception):
@@ -46,14 +57,6 @@ from ankidraft.database.models import (
     TokenUsageModel,
     db,
 )
-
-# Keep CI's Xvfb/xcb backend when it is explicitly configured. Local headless
-# runs still default to offscreen when no display backend was provided.
-os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-os.environ.setdefault("QTWEBENGINE_DISABLE_SANDBOX", "1")
-os.environ.setdefault("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox --disable-gpu --disable-software-rasterizer --offscreen --disable-dev-shm-usage")
-os.environ.setdefault("ANKIFORGE_MOCK_WEBENGINE", "1")
-os.environ.setdefault("ANKIFORGE_ENV", "testing")
 
 # Document Marker typique (fixture partagée) : un sommaire dont les entrées sont
 # balisées comme des titres Markdown, suivi du corps réel des chapitres sous les
@@ -236,9 +239,18 @@ def mock_db():
         # Les préférences d'apparence et de layout vivent dans le scope « obsidian ».
         get_app_qsettings("obsidian").clear()
     with contextlib.suppress(Exception):
+        from ankidraft.services.ai.staged_patch_registry import StagedPatchRegistry
+
+        StagedPatchRegistry._active_bundles.clear()
+    with contextlib.suppress(Exception):
         SettingModel.delete().where(SettingModel.key.startswith("profiles/")).execute()
 
     yield test_db  # Le test s'exécute ici
+
+    with contextlib.suppress(Exception):
+        from ankidraft.services.ai.staged_patch_registry import StagedPatchRegistry
+
+        StagedPatchRegistry._active_bundles.clear()
 
     with contextlib.suppress(Exception):
         from ankidraft.utils.environment import get_app_qsettings

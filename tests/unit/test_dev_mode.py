@@ -22,13 +22,18 @@ pytestmark = pytest.mark.unit
 
 @pytest.fixture(autouse=True)
 def reset_env():
-    original = os.environ.get("ANKIFORGE_ENV")
+    original_ankidraft = os.environ.get("ANKIDRAFT_ENV")
+    original_ankiforge = os.environ.get("ANKIFORGE_ENV")
     yield
     import ankidraft.utils.environment as env_mod
 
     env_mod._current_env = None
-    if original is not None:
-        os.environ["ANKIFORGE_ENV"] = original
+    if original_ankidraft is not None:
+        os.environ["ANKIDRAFT_ENV"] = original_ankidraft
+    else:
+        os.environ.pop("ANKIDRAFT_ENV", None)
+    if original_ankiforge is not None:
+        os.environ["ANKIFORGE_ENV"] = original_ankiforge
     else:
         os.environ.pop("ANKIFORGE_ENV", None)
 
