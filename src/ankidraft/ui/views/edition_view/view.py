@@ -77,7 +77,7 @@ from ankidraft.ui.widgets.note_editor_widget import NoteFieldEditorWidget, NoteF
 from ankidraft.ui.widgets.time_machine_dialog import TimeMachineDialog
 from ankidraft.ui.widgets.toast import show_toast
 from ankidraft.utils.anki_renderer import get_max_cloze_index
-from ankidraft.utils.event_bus import FlagLabelsUpdatedEvent, event_bus
+from ankidraft.utils.event_bus import CardPreviewToggledEvent, FlagLabelsUpdatedEvent, event_bus
 from ankidraft.utils.hierarchy import descendants_prefix
 from ankidraft.utils.i18n import tr
 from ankidraft.utils.icon_loader import load_phosphor_icon
@@ -1013,6 +1013,7 @@ class EditionView(QWidget):
         else:
             self._saved_preview_width = max(260, sizes[1])
             self.fields_splitter.setSizes([sizes[0] + sizes[1], 0])
+        event_bus.publish(CardPreviewToggledEvent(visible=self._preview_visible))
 
     @Slot(str)
     def set_view_mode(self, mode: str) -> None:

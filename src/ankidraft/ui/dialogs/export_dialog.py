@@ -24,13 +24,14 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from ankidraft.database.models import CardModel, DeckModel
+from ankidraft.database.models import CardModel, DeckModel, SettingModel
 from ankidraft.services.cards.export_manager import ExportManager
 from ankidraft.ui.components.buttons import PrimaryButton, SecondaryButton
 from ankidraft.ui.components.deck_select_window import DeckSelectWindow
 from ankidraft.ui.components.inputs import StyledLineEdit
 from ankidraft.ui.theme import DesignTokens
 from ankidraft.ui.widgets.toast import show_toast
+from ankidraft.utils.event_bus import PackageExportedEvent, event_bus
 from ankidraft.utils.hierarchy import descendants_prefix, to_filename_safe
 from ankidraft.utils.i18n import tr
 from ankidraft.utils.icon_loader import load_on_accent_icon, load_phosphor_icon
@@ -345,7 +346,12 @@ class ExportDialog(QDialog):
                 self.tr("Exportation Réussie"),
                 tr("Le fichier a été exporté avec succès :\n\n%1\n\n• %2 carte(s) empaquetée(s)\n• Prêt à être importé dans Anki Desktop !", dest_path, count),
             )
+            try:
+                SettingModel.set_value("telemetry/first_apkg_exported", "true", category="telemetry")
+            except Exception as exc:
+                logger.debug("Impossible d'enregistrer telemetry/first_apkg_exported : %s", exc)
             self.export_finished.emit(dest_path, count)
+            event_bus.publish(PackageExportedEvent(output_path=dest_path, card_count=count))
             self.accept()
 
         except Exception as e:

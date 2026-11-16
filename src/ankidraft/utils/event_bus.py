@@ -393,6 +393,52 @@ class LLMModelsChangedEvent(AppEvent):
     provider: str = ""
 
 
+# Navigation & Interactive Onboarding Tour Events
+@dataclass(frozen=True)
+class ViewNavigatedEvent(AppEvent):
+    """Événement émis lorsqu'une vue applicative devient active dans MainWindow."""
+
+    view_id: str = ""
+
+
+@dataclass(frozen=True)
+class WozniakAuditResolvedEvent(AppEvent):
+    """Événement émis lorsqu'une proposition d'audit Wozniak est appliquée ou ignorée."""
+
+    note_id: int = 0
+    resolution: str = ""  # "applied" ou "ignored"
+
+
+@dataclass(frozen=True)
+class MCPPatchRejectedEvent(AppEvent):
+    """Événement émis lorsqu'un patch MCP en attente est rejeté par l'utilisateur."""
+
+    patch_id: str = ""
+
+
+@dataclass(frozen=True)
+class BatchTaskReviewedEvent(AppEvent):
+    """Événement émis lorsqu'une tâche du Studio Batch est validée ou rejetée en revue."""
+
+    task_uid: str = ""
+    decision: str = ""  # "accepted" ou "rejected"
+
+
+@dataclass(frozen=True)
+class CardPreviewToggledEvent(AppEvent):
+    """Événement émis lors du basculement de visibilité de l'aperçu carte dans Édition."""
+
+    visible: bool = False
+
+
+@dataclass(frozen=True)
+class PackageExportedEvent(AppEvent):
+    """Événement émis après l'exportation réussie d'un paquet Anki (.apkg)."""
+
+    output_path: str = ""
+    card_count: int = 0
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # AppEventBus Singleton & Dispatcher
 # ─────────────────────────────────────────────────────────────────────────────
@@ -436,13 +482,25 @@ _EVENT_NAME_ALIASES: dict[str, type[AppEvent]] = {
     "llm_models_changed": LLMModelsChangedEvent,
     "open_consultant_requested": OpenConsultantRequestedEvent,
     "open_feedback_requested": OpenFeedbackRequestedEvent,
+    "view_navigated": ViewNavigatedEvent,
+    "wozniak_audit_resolved": WozniakAuditResolvedEvent,
+    "mcp_patch_rejected": MCPPatchRejectedEvent,
+    "batch_task_reviewed": BatchTaskReviewedEvent,
+    "card_preview_toggled": CardPreviewToggledEvent,
+    "package_exported": PackageExportedEvent,
 }
+
+
+_EVENT_TYPE_TO_ALIAS: dict[type[AppEvent], str] = {event_cls: alias for alias, event_cls in _EVENT_NAME_ALIASES.items()}
 
 
 def _event_name(event_type: type[AppEvent]) -> str:
     """Retourne le nom stable en snake_case utilisé par les API des addons historiques."""
+    if event_type in _EVENT_TYPE_TO_ALIAS:
+        return _EVENT_TYPE_TO_ALIAS[event_type]
     name = event_type.__name__.removesuffix("Event")
-    return re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+    s1 = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", name)
+    return re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
 
 class AppEventBus:

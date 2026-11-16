@@ -251,6 +251,12 @@ class StagedPatchRegistry:
             patch.save()
 
         logger.info("Patch rejeté : %s (raison: %s)", patch_id, reason)
+        try:
+            from ankidraft.utils.event_bus import MCPPatchRejectedEvent, event_bus
+
+            event_bus.publish(MCPPatchRejectedEvent(patch_id=patch_id))
+        except Exception as e:
+            logger.debug("Erreur publication event_bus MCPPatchRejectedEvent : %s", e)
         return {
             "status": "rejected",
             "patch_id": patch_id,

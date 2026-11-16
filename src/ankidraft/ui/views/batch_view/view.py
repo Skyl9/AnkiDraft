@@ -76,6 +76,7 @@ from ankidraft.ui.views.batch_view.widgets import (
 )
 from ankidraft.ui.widgets.toast import show_toast
 from ankidraft.utils.anki_renderer import get_max_cloze_index, should_generate_card
+from ankidraft.utils.event_bus import BatchTaskReviewedEvent, event_bus
 from ankidraft.utils.i18n import tr
 from ankidraft.utils.icon_loader import load_on_accent_icon, load_phosphor_icon
 from ankidraft.utils.logger import log_and_notify_error
@@ -1866,6 +1867,7 @@ class BatchView(QWidget):
         self._mark_demo_batch_reviewed_if_needed(task)
         self._advance_review()
         self._refresh_review_badge()
+        event_bus.publish(BatchTaskReviewedEvent(task_uid=task_uid, decision="accepted"))
 
     @Slot(str)
     def _on_staging_rejected(self, task_uid: str) -> None:
@@ -1884,6 +1886,7 @@ class BatchView(QWidget):
         self._mark_demo_batch_reviewed_if_needed(task)
         self._advance_review()
         self._refresh_review_badge()
+        event_bus.publish(BatchTaskReviewedEvent(task_uid=task_uid, decision="rejected"))
 
     def _hydrate_demo_batch_task(self) -> None:
         """Injecte en file la tâche de revue pré-calculée en mode Exemple d'introduction."""

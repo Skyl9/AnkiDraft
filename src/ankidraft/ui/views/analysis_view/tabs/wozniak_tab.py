@@ -44,6 +44,7 @@ from ankidraft.ui.components.linter_widgets import (
 from ankidraft.ui.shortcuts import ShortcutId, get_shortcut_sequence
 from ankidraft.ui.theme import DesignTokens
 from ankidraft.ui.widgets.toast import show_toast
+from ankidraft.utils.event_bus import WozniakAuditResolvedEvent, event_bus
 from ankidraft.utils.i18n import tr
 from ankidraft.utils.icon_loader import load_on_accent_icon, load_phosphor_icon
 
@@ -557,6 +558,7 @@ class AIWozniakLinterTab(QWidget):
             logger.info("Proposition appliquée avec succès pour la note #%d", note_id)
             show_toast(self, tr("Note #%1 mise à jour avec succès !", note_id))
             widget_to_remove.deleteLater()
+            event_bus.publish(WozniakAuditResolvedEvent(note_id=note_id, resolution="applied"))
 
         except Exception as e:
             logger.error("Erreur lors de l'application de la proposition pour la note #%d : %s", note_id, e)
@@ -578,6 +580,7 @@ class AIWozniakLinterTab(QWidget):
             widget_to_remove.deleteLater()
             logger.info("Note #%d ignorée et marquée comme conforme.", note_id)
             show_toast(self, tr("Note #%1 marquée comme conforme.", note_id))
+            event_bus.publish(WozniakAuditResolvedEvent(note_id=note_id, resolution="ignored"))
 
         except Exception as e:
             logger.error("Erreur lors de l'ignorance de la note #%d : %s", note_id, e)
